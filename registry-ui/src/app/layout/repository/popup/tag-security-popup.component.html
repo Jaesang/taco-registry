@@ -1,0 +1,33 @@
+<!-- Layer Popup -->
+<div class="layout-popup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area type-large">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="close()"></a>
+        <h1 class="txt-title">Security Scan : {{ imageId ? imageId.substr(0, 12) : '' }}</h1>
+
+        <!-- Popup Security Scan -->
+        <div class="popup-security-scan">
+          <!-- Tab -->
+          <ul class="component-tab">
+            <li [attr.aria-selected]="tabIndex == 0"><a href="javascript:;" class="link-tab" (click)="tabIndex = 0">Image Vulnerabilities</a></li>
+            <li [attr.aria-selected]="tabIndex == 1"><a href="javascript:;" class="link-tab" (click)="tabIndex = 1">Packages</a></li>
+          </ul>
+          <!-- //Tab -->
+
+          <!-- Tab Content(vulnerability) -->
+          <div tag-security-vulnerability [hidden]="tabIndex != 0"></div>
+          <!-- //Tab Content(vulnerability) -->
+
+          <!-- Tab Content(packages) -->
+          <div tag-security-packages [hidden]="tabIndex != 1"></div>
+          <!-- //Tab Content(packages) -->
+        </div>
+        <!-- //Popup Security Scan -->
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup -->

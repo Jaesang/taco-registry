@@ -1,0 +1,53 @@
+<div class="taco-login-wrap">
+  <div class="section-login">
+    <div class="login-area">
+
+      <!-- Login box -->
+      <div class="box-login">
+        <div class="login-block">
+          <h1 class="logo-login" aria-label="TACO Registry"></h1>
+          <div class="form-login">
+            <!--
+                [D] Input에 Focus 또는 값이 입력되어 있으면 'is-activated' 클래스 추가
+            -->
+            <div class="component-login is-activated">
+              <input type="text" class="input-text" placeholder="Username or E-mail Address" [(ngModel)]="userId" #userIdInput>
+            </div>
+            <div class="component-login type-password">
+              <input type="password" class="input-text" placeholder="Password" [(ngModel)]="password" (keyup.enter)="login()">
+            </div>
+          </div>
+          <div class="link-info">
+            <a href="javascript:;" class="link-forgot" (click)="forgotClick()">Forgot Password?</a>
+          </div>
+
+          <div class="login-button">
+            <!-- Error Message -->
+            <span class="txt-error" *ngIf="showError">Invalid Username(E-mail Address) or Password.</span>
+            <!-- //Error Message -->
+            <!--
+                [D] Input에 입력값이 있으면 Disabled 속성 제거
+            -->
+            <button type="button" class="btn-action type-login" (click)="login()" [disabled]="!userId && !password">SIGN IN</button>
+          </div>
+        </div>
+      </div>
+      <!-- //Login box -->
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="section-footer">
+    Copyright &copy; 2018 Container Registry All Rights Reserved.
+  </div>
+  <!-- //Footer -->
+</div>
+
+<form #f id="form" method="post" action="http://192.168.30.147/oauth/authorizeapp" style="display: inline-block" class="ng-pristine ng-valid">
+  <input type="hidden" name="client_id" value="5S5W9P3VEUTT9GVELT4H">
+  <input type="hidden" name="redirect_uri" value="http://localhost:4200/login">
+  <input type="hidden" name="scope" value="org:admin repo:create repo:read user:read">
+  <input type="hidden" name="_csrf_token" value="S04ny3+STF7VYHA7Ko5cO8p5EZ0JXMwjQRTDjOAW1vJaPrYgB0/5OOdsbsbVfRTI">
+  <button type="submit" class="btn btn-success">Authorize Application</button>
+</form>

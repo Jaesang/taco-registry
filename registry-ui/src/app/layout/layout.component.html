@@ -1,0 +1,24 @@
+<div class="taco-wrap">
+  <gnb></gnb>
+
+  <lnb></lnb>
+
+  <!-- Content -->
+  <div class="layout-content">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- Create Repository -->
+  <div class="layout-create">
+    <button type="button" class="btn-create-repository" aria-label="Create Image" title="Create Image" (click)="createRepoClick()"></button>
+  </div>
+  <!-- //Create Repository -->
+
+  <!-- Footer -->
+  <div class="layout-footer">
+    Copyright © 2019 Taco Registry All Rights Reserved.
+  </div>
+  <!-- //Footer -->
+</div>
+
+<div create-repo-popup [show]="showCreateRepoPopup" (onClose)="createRepoPopupClose()"></div>

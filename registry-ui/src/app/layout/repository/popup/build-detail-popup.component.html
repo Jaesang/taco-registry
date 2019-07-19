@@ -1,0 +1,120 @@
+<!-- Layer Popup -->
+<div class="layout-popup" *ngIf="show">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area type-large">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="close()"></a>
+        <h1 class="txt-title">Build ID : {{ buildId }}</h1>
+
+        <!-- Popup Build -->
+        <div class="popup-build-log">
+
+          <!-- Build -->
+          <div class="section-build-detail">
+            <!-- Build Info -->
+            <div class="build-area">
+              <div class="status-block">
+                <!-- Loading -->
+                <div class="txt-status" *ngIf="build.phase == BuildPhase.waiting || build.phase == BuildPhase.pulling || build.phase == BuildPhase.building">
+                  <div class="component-loading">
+                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                  </div>
+                  <span>Waiting for available build worker</span>
+                </div>
+                <!-- //Loading -->
+
+                <!-- Loading -->
+                <div class="txt-status" *ngIf="build.phase == BuildPhase.pushing">
+                  <div class="component-loading">
+                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                  </div>
+                  <span>Pushing image built from Dockerfile</span>
+                </div>
+                <!-- //Loading -->
+
+                <!-- Success -->
+                <div class="txt-status type-success" *ngIf="build.phase == BuildPhase.complete">
+                  <span>Dockerfile build completed and pushed!</span>
+                </div>
+                <!-- //Success -->
+
+                <!-- Fail -->
+                <div class="txt-status type-fail" *ngIf="build.phase == BuildPhase.error">
+                  <span>Dockerfile build failed</span>
+                </div>
+                <!-- //Fail -->
+
+                <!-- Cancel -->
+                <div class="txt-status type-cancel" *ngIf="build.phase == BuildPhase.cancelled">
+                  <span>This build was previously cancelled.</span>
+                </div>
+                <!-- //Cancel -->
+              </div>
+              <div class="info-block">
+                <span class="txt-user">{{ build.manual_user }}</span>
+                <span class="txt-time">{{ build.started | dateTimeFormat:'YYYY-MM-DD HH:mm' }}</span>
+              </div>
+            </div>
+            <!-- //Build Info -->
+
+            <!-- Build Log -->
+            <div class="log-area">
+              <!-- 우측 버튼 -->
+              <div class="button-block" *ngIf="!logNotFound">
+                <button type="button" class="btn-log type-download" (click)="downloadLogsClick()">Download Logs</button>
+                <button type="button" class="btn-log type-copy" (click)="copyLogsClick()">Copy Logs</button>
+                <button type="button" class="btn-log" *ngIf="build.phase == BuildPhase.waiting || build.phase == BuildPhase.pulling || build.phase == BuildPhase.building" (click)="cancelBuildClick()">Cancel Build</button>
+              </div>
+              <!-- //우측 버튼 -->
+
+              <!-- Loading Message -->
+              <div class="txt-build-loading" *ngIf="build.phase == BuildPhase.waiting">
+                Waiting for build to start...
+              </div>
+              <!-- //Loading Message -->
+
+              <!-- Cancel Message -->
+              <div class="txt-build-cancel" *ngIf="logNotFound">
+                Failed to load builds logs. Please reload and try again. If this problem persists, please check for JavaScript or networking issues and contact support.
+              </div>
+              <!-- //Cancel Message -->
+
+              <div *ngIf="build.phase != BuildPhase.waiting">
+                <!-- 단계별 Log -->
+                <div *ngFor="let item of buildLogListTop; let index = index;" [ngClass]="getClassBuildStep(item, index)">{{ getBuildMessage(item) }}</div>
+                <!-- //단계별 Log -->
+
+                <!-- Log 상세 -->
+                <ul class="build-log" *ngIf="buildLogListMiddle.length">
+                  <li *ngFor="let item of buildLogListMiddle">
+                    <div [ngClass]="'log-type ' + buildHistoryService.getClassCommandLog(item.commandName)" [attr.aria-expanded]="item.expand" (click)="item.expand = !item.expand">
+                      <strong class="txt-type">{{ item.commandName }}</strong>
+                      <strong class="txt-desc">{{ item.command }}</strong>
+                    </div>
+                    <div class="log-detail" *ngFor="let child of item.children">
+                      <span class="txt-date">{{ child.data.datetime | dateTimeFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+                      <span class="txt-desc">{{ child.message }}</span>
+                    </div>
+                  </li>
+                </ul>
+                <!-- //Log 상세 -->
+
+                <!-- 완료 -->
+                <div *ngFor="let item of buildLogListBottom" [ngClass]="getClassBuildStep(item)">{{ getBuildMessage(item) }}</div>
+                <!-- //완료 -->
+
+              </div>
+            </div>
+            <!-- //Build Log -->
+          </div>
+          <!-- //Build -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup -->
+
+<a #fileDownload [hidden]="true"></a>

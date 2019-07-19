@@ -1,0 +1,17 @@
+<!-- Usage Logs -->
+<div class="page-usage-logs">
+  <h2 class="section-sub-title" [class.type-org]="logType == MainType.organization" [class.type-user]="logType == MainType.user">
+    {{ this.orgName }}
+  </h2>
+
+  <!-- Title -->
+  <div class="section-title">
+    <h2 class="txt-title">Usage Logs</h2>
+  </div>
+  <!-- //Title -->
+
+  <!-- Log -->
+  <div logs [logList]="logList" (onDateSelect)="dateSelect($event)"></div>
+  <!-- //Log -->
+</div>
+<!-- //Usage Logs -->

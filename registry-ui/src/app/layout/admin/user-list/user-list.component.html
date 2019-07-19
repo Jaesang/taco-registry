@@ -1,0 +1,309 @@
+<!-- User Management -->
+<!--suppress HtmlFormInputWithoutLabel, NsUnresolvedStyleClassReference, JSUnnecessarySemicolon -->
+<h2 class="section-sub-title">
+  Administration
+</h2>
+
+<!-- Title, Filter -->
+<div class="section-title">
+  <h2 class="txt-title">Users</h2>
+  <!-- Filter -->
+  <div class="filter-area">
+
+    <div class="component-search type-filter">
+      <input type="text" class="input-search" placeholder="Search for Username / E-mail" #searchInput (keyup.enter)="searchKey = searchInput.value">
+      <span class="icon-search"></span>
+      <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="searchInput.value = ''"></a>
+    </div>
+
+    <!-- Button -->
+    <div class="button-block">
+      <button type="button" class="btn-action type-small" (click)="createNewUserClick()">Create New User</button>
+    </div>
+    <!-- //Button -->
+  </div>
+  <!-- //Filter -->
+</div>
+<!-- //Title, Filter -->
+
+<!-- Repository Table -->
+<div class="component-table">
+  <table class="table-management">
+    <colgroup>
+      <col width="*" />
+      <col width="45%" />
+      <col width="80" />
+    </colgroup>
+    <thead>
+    <tr>
+      <th>
+        <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'username' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'username' && sortDirection == 'desc'" (click)="sortClick('username')">Username</a>
+      </th>
+      <th>
+        <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'email' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'email' && sortDirection == 'desc'" (click)="sortClick('email')">E-mail Address</a>
+      </th>
+      <th>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users | sort:sortProperty:sortDirection | filter:{ email: searchKey, username: searchKey }; let index = index;">
+      <td>
+        <span class="name-area">
+          <em class="txt-name">{{ user.username }}</em>
+          <em class="status-badge type-admin" *ngIf="user.superuser">Administrator</em>
+          <em class="status-badge type-you" *ngIf="user.name == userService.user.username">You</em>
+          <em class="status-badge type-disabled" *ngIf="!user.enabled">Disabled</em>
+        </span>
+      </td>
+      <td>
+        <span class="txt-email">{{ user.email }}</span>
+      </td>
+      <td class="align-center">
+        <div class="buttons">
+          <a href="javascript:;" class="btn-setting" (click)="settingClick(index)"></a>
+
+          <!-- Layer Setting -->
+          <div class="layer-setting" [attr.aria-expanded]="index == currentSettingIndex">
+            <a href="javascript:;" class="link-item" (click)="changeEmailPopupClick(user)">Change E-mail Address</a>
+            <a href="javascript:;" class="link-item" (click)="changePasswordPopupClick(user)">Change Password</a>
+            <a href="javascript:;" class="link-item" (click)="deleteUserClick(user)">Delete User</a>
+            <a href="javascript:;" class="link-item" (click)="disableUser(user)">{{ user.enabled ? 'Disable' : 'Enable' }} User</a>
+          </div>
+          <!-- //Layer Setting -->
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<!-- //Repository Table -->
+
+<!-- Layer Popup(create user) -->
+<div class="layout-popup" *ngIf="showCreateUserPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showCreateUserPopup = false"></a>
+        <h1 class="txt-title">Create New User</h1>
+
+        <!-- Popup User Registration -->
+        <div class="popup-user-registration">
+          <table class="form-registration">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">Username</label>
+              </th>
+              <td>
+                <div class="component-input">
+                  <div class="input-area">
+                    <input type="text" class="input-text" placeholder="Requested Username" [(ngModel)]="addUser.username">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="addUser.username = ''" tabIndex="-1"></a>
+                  </div>
+                  <span class="txt-error">Error Message.</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">E-mail Address</label>
+              </th>
+              <td>
+                <div class="component-input">
+                  <div class="input-area">
+                    <input type="text" class="input-text" placeholder="Your E-mail Address" [(ngModel)]="addUser.email">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="addUser.email = ''" tabIndex="-1"></a>
+                  </div>
+                  <span class="txt-error">Error Message.</span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup User Registration -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="showCreateUserPopup = false">Cancel</button>
+          <button type="button" class="btn-action type-small" (click)="createUserClick()">Create User</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup(create user) -->
+
+<!-- Layer Popup(create user confirm) -->
+<div class="layout-popup" *ngIf="showCreateUserConfirmPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showCreateUserConfirmPopup = false"></a>
+        <h1 class="txt-title">Create New User</h1>
+
+        <!-- Popup User Registration -->
+        <div class="popup-user-registration">
+          <table class="form-registration">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th>
+                <label class="txt-label">Username</label>
+              </th>
+              <td>
+                {{ addUser.username }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <label class="txt-label">E-mail Address</label>
+              </th>
+              <td>
+                {{ addUser.email }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <label class="txt-label">Password</label>
+              </th>
+              <td>
+                {{ addUser.password }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup User Registration -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-action type-small" (click)="showCreateUserConfirmPopup = false">OK</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup(create user confirm) -->
+
+<!-- Layer Popup(change mail) -->
+<div class="layout-popup" *ngIf="showChangeEmailPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showChangeEmailPopup = false"></a>
+        <h1 class="txt-title">Change User E-mail Address</h1>
+
+        <!-- Popup User Registration -->
+        <div class="popup-user-registration">
+          <table class="form-registration">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">E-mail Address</label>
+              </th>
+              <td>
+                <div class="component-input">
+                  <div class="input-area">
+                    <input type="text" class="input-text" placeholder="Your E-mail Address" [(ngModel)]="currentSelectedUser.email">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="currentSelectedUser.email = ''" tabIndex="-1"></a>
+                  </div>
+                  <span class="txt-error">Error Message.</span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup User Registration -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="showChangeEmailPopup = false">Cancel</button>
+          <button type="button" class="btn-action type-small" (click)="changeUserEmailClick()">Change User E-mail</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup(change mail) -->
+
+<!-- Layer Popup(change password) -->
+<div class="layout-popup" *ngIf="showChangePasswordPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showChangePasswordPopup = false;"></a>
+        <h1 class="txt-title">Change User Password</h1>
+
+        <!-- Popup User Registration -->
+        <div class="popup-user-registration">
+          <table class="form-registration">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">New Password</label>
+              </th>
+              <td>
+                <div class="component-input">
+                  <div class="input-area">
+                    <input type="password" class="input-text" placeholder="User’s new password" [(ngModel)]="currentSelectedUser.password">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="currentSelectedUser.password = ''" tabIndex="-1"></a>
+                  </div>
+                  <span class="txt-error">Error Message.</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">Verify Password</label>
+              </th>
+              <td>
+                <div class="component-input">
+                  <div class="input-area">
+                    <input type="password" class="input-text" placeholder="Verify new password" [(ngModel)]="verifyNewPassword">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="verifyNewPassword = ''" tabIndex="-1"></a>
+                  </div>
+                  <span class="txt-error">Error Message.</span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup User Registration -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="showChangePasswordPopup = false">Cancel</button>
+          <button type="button" class="btn-action type-small" (click)="changeUserPasswordClick()">Change User Password</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup(change password) -->

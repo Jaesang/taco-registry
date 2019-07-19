@@ -1,0 +1,25 @@
+<!-- File -->
+<div class="component-file">
+  <div class="file-attachment">
+    <input type="file" id="fileInput" class="input-file"
+           #fileInput
+           (click)="fileInput.value = null; findClick();"
+           (change)="changeFile($event)"/>
+           <!--[multiple]="fileMaxLength > 1"-->
+           <!--[attr.accept]="acceptFileExt"/>-->
+    <div class="form-attachment">
+      <div class="input-area">
+        <input type="text" class="input-text" readonly [attr.value]="file ? file.name : ''">
+      </div>
+      <div class="button-area">
+        <button type="button" class="btn-sub">{{ buttonLabel }}</button>
+      </div>
+    </div>
+  </div>
+  <!-- Description -->
+  <div class="file-description">
+    <p class="txt-desc" [class.type-success]="isSuccess" [class.type-error]="isError">{{ description }}</p>
+  </div>
+  <!-- //Description -->
+</div>
+<!-- //File -->

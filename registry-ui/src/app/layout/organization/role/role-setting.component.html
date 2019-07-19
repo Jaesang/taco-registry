@@ -1,0 +1,159 @@
+<!-- Team & Role Settings -->
+<div class="page-organization">
+  <h2 class="section-sub-title">
+    {{ orgName }}
+  </h2>
+
+  <!-- Title, Filter -->
+  <div class="section-title">
+    <h2 class="txt-title">Team &amp; Role Settings</h2>
+    <!-- Filter -->
+    <div class="filter-area">
+      <!-- Button -->
+      <div class="button-block">
+        <button type="button" class="btn-action type-small" (click)="popupCreateTeamClick()">Create New Team</button>
+      </div>
+      <!-- //Button -->
+    </div>
+    <!-- //Filter -->
+  </div>
+  <!-- //Title, Filter -->
+
+  <!-- Team/Role Table -->
+  <div class="component-table">
+    <table class="table-role">
+      <colgroup>
+        <col width="370" />
+        <col width="370" />
+        <col width="*" />
+      </colgroup>
+      <thead>
+      <tr>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'name' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'name' && sortDirection == 'desc'" (click)="sortClick('name')">Team Name</a>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort type-asc" [class.type-asc]="sortProperty == 'member_count' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'member_count' && sortDirection == 'desc'" (click)="sortClick('member_count')">Members</a>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort type-desc" [class.type-asc]="sortProperty == 'role' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'role' && sortDirection == 'desc'" (click)="sortClick('role')">Team Roles</a>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of teamList | sort:sortProperty:sortDirection;">
+        <td>
+          <a href="javascript:;" class="txt-team" (click)="moveToDetail(item)">{{ item.name }}</a>
+        </td>
+        <td>
+          <a href="javascript:;" class="txt-members" (click)="moveToDetail(item)">{{ item.member_count }} member</a>
+        </td>
+        <td>
+          <div class="role-area">
+            <span class="txt-role" [class.type-admin]="item.role == 'admin'" [class.type-creator]="item.role == 'creator'" [class.type-member]="item.role == 'member'">{{ item.role }}</span>
+            <!-- Selectbox -->
+            <div select-box [initializeValues]="getRoleList(item.role)" (onSelected)="roleChange(item, $event)"></div>
+            <!-- //Selectbox -->
+            <button type="button" class="btn-delete" aria-label="삭제" (click)="deleteTeamRole(item)"></button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- //Team/Role Table -->
+</div>
+<!-- //Team & Role Settings -->
+
+<!-- Layer Popup -->
+<div class="layout-popup" [hidden]="!showCreateTeamPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showCreateTeamPopup = false"></a>
+        <h1 class="txt-title">Create New Team</h1>
+
+        <!-- Popup 신규팀 생성 -->
+        <div class="popup-create-team">
+          <table class="form-create">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th>
+                <label class="txt-label">Team Name</label>
+              </th>
+              <td>
+                <div class="component-input" [class.is-error]="errorMsg != ''">
+                  <div class="input-area">
+                    <input type="text" class="input-text" [(ngModel)]="createTeam.name">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+                  </div>
+                  <span class="txt-error">{{ errorMsg }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">Team Role</label>
+              </th>
+              <td>
+                <ul class="list-role">
+                  <li>
+                    <div class="component-radio">
+                      <input type="radio" id="radio1" class="input-radio" value="admin" [(ngModel)]="createTeam.role">
+                      <label for="radio1" class="label">
+                        <span class="icon-radio"></span>
+                        <span class="txt-label">
+															Admin
+															<em>Full admin access to the organization</em>
+														</span>
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="component-radio">
+                      <input type="radio" id="radio2" class="input-radio" value="creator" [(ngModel)]="createTeam.role">
+                      <label for="radio2" class="label">
+                        <span class="icon-radio"></span>
+                        <span class="txt-label">
+															Creator
+															<em>Member and can create new images</em>
+														</span>
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="component-radio">
+                      <input type="radio" id="radio3" class="input-radio" value="member" [(ngModel)]="createTeam.role">
+                      <label for="radio3" class="label">
+                        <span class="icon-radio"></span>
+                        <span class="txt-label">
+															Member
+															<em>Read-Only Permission</em>
+														</span>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup 신규팀 생성 -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="showCreateTeamPopup = false">Cancel</button>
+          <button type="button" class="btn-action type-small" (click)="createTeamClick()">Create Team</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup -->

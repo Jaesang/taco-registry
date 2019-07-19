@@ -1,0 +1,29 @@
+<!-- Layer Popup -->
+<div class="layout-popup" *ngIf="show">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area type-large">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="close()"></a>
+        <h1 class="txt-title">Image Layers : {{ imageId.substr(0, 12) }}</h1>
+
+        <!-- Popup Image Layers -->
+        <div class="popup-image-layers">
+          <div class="section-image">
+            <ul class="list-image">
+              <li *ngFor="let item of layerList">
+                <span class="txt-image">{{ item.id.substr(0, 12) }}</span>
+                <span class="image-line"><em></em></span>
+                <span [ngClass]="'txt-type ' + buildHistoryService.getClassCommandLog(item.commandName)">{{ item.commandName }}</span>
+                <span class="txt-desc">{{ item.commandText }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- //Popup Image Layers -->
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup -->

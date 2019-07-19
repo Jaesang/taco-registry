@@ -1,0 +1,97 @@
+<!-- LNB -->
+<div class="layout-lnb" [hidden]="!show">
+  <div class="section-lnb">
+    <div class="lnb-area">
+      <!-- //Organization -->
+      <ul class="list-lnb" *ngIf="currentLnbType == LnbType.ORG">
+        <li>
+          <a href="javascript:;" class="link-repository" [attr.aria-selected]="selectedIndex == 0" (click)="selectedIndex = 0; router.navigate(['app/organization/' + pathVariable + '/repository'])">
+            <span class="lnb-tooltip">Repository</span>
+          </a>
+        </li>
+        <li *ngIf="admin">
+          <a href="javascript:;" class="link-member" [attr.aria-selected]="selectedIndex == 1" (click)="selectedIndex = 1; router.navigate(['app/organization/' + pathVariable + '/team/owners'])">
+            <span class="lnb-tooltip">Members</span>
+          </a>
+        </li>
+        <li *ngIf="admin">
+          <a href="javascript:;" class="link-log" [attr.aria-selected]="selectedIndex == 2" (click)="selectedIndex = 2; router.navigate(['app/organization/' + pathVariable + '/usage-log'])">
+            <span class="lnb-tooltip">Usage Logs</span>
+          </a>
+        </li>
+        <li *ngIf="admin">
+          <a href="javascript:;" class="link-setting" [attr.aria-selected]="selectedIndex == 3" (click)="selectedIndex = 3; router.navigate(['app/organization/' + pathVariable + '/setting'])">
+            <span class="lnb-tooltip">Organization Settings</span>
+          </a>
+        </li>
+      </ul>
+      <!-- //Organization -->
+
+      <!-- //Organization User -->
+      <ul class="list-lnb" *ngIf="currentLnbType == LnbType.ORG_USER">
+        <li>
+          <a href="javascript:;" class="link-repository" [attr.aria-selected]="selectedIndex == 0" (click)="selectedIndex = 0; router.navigate(['app/user/' + pathVariable + '/image'])">
+            <span class="lnb-tooltip">Repository</span>
+          </a>
+        </li>
+        <li *ngIf="admin">
+          <a href="javascript:;" class="link-log" [attr.aria-selected]="selectedIndex == 1" (click)="selectedIndex = 1; router.navigate(['app/user/' + pathVariable + '/usage-log'])">
+            <span class="lnb-tooltip">Usage Logs</span>
+          </a>
+        </li>
+        <li *ngIf="admin">
+          <a href="javascript:;" class="link-setting" [attr.aria-selected]="selectedIndex == 2" (click)="selectedIndex = 2; router.navigate(['app/user/' + pathVariable + '/user-setting'])">
+            <span class="lnb-tooltip">Account Settings</span>
+          </a>
+        </li>
+      </ul>
+      <!-- //Organization User -->
+
+      <!-- Repository -->
+      <ul class="list-lnb" *ngIf="currentLnbType == LnbType.REPO">
+        <li>
+          <a href="javascript:;" class="link-repository-info" [attr.aria-selected]="selectedIndex == 0" (click)="selectedIndex = 0; router.navigate(['app/image/' + pathVariable + '/info'])">
+            <span class="lnb-tooltip">Information</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:;" class="link-repository-tag" [attr.aria-selected]="selectedIndex == 1" (click)="selectedIndex = 1; router.navigate(['app/image/' + pathVariable + '/tag-info'])">
+            <span class="lnb-tooltip">Image Tags</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:;" class="link-repository-history" [attr.aria-selected]="selectedIndex == 2" (click)="selectedIndex = 2; router.navigate(['app/image/' + pathVariable + '/tag-history'])">
+            <span class="lnb-tooltip">Tag History</span>
+          </a>
+        </li>
+        <li *ngIf="writer">
+          <a href="javascript:;" class="link-repository-build" [attr.aria-selected]="selectedIndex == 3" (click)="selectedIndex = 3; router.navigate(['app/image/' + pathVariable + '/build'])">
+            <span class="lnb-tooltip">Build History</span>
+          </a>
+        </li>
+        <li *ngIf="admin">
+          <a href="javascript:;" class="link-log" [attr.aria-selected]="selectedIndex == 4" (click)="selectedIndex = 4; router.navigate(['app/image/' + pathVariable + '/usage-log'])">
+            <span class="lnb-tooltip">Usage Logs</span>
+          </a>
+        </li>
+        <li *ngIf="admin">
+          <a href="javascript:;" class="link-setting" [attr.aria-selected]="selectedIndex == 5" (click)="selectedIndex = 5; router.navigate(['app/image/' + pathVariable + '/setting'])">
+            <span class="lnb-tooltip">Image Settings</span>
+          </a>
+        </li>
+      </ul>
+      <!-- //Repository -->
+
+      <!-- Admin -->
+      <ul class="list-lnb" *ngIf="currentLnbType == LnbType.ADMIN">
+        <li>
+          <a href="javascript:;" class="link-user-management" [attr.aria-selected]="selectedIndex == 0" (click)="selectedIndex = 0; router.navigate(['app/admin/users'])">
+            <span class="lnb-tooltip">User Management</span>
+          </a>
+        </li>
+      </ul>
+      <!-- //Admin -->
+    </div>
+  </div>
+</div>
+<!-- //LNB -->

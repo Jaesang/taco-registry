@@ -1,0 +1,27 @@
+<!-- Layer Popup -->
+<div class="layout-popup" [hidden]="!show">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="close()"></a>
+        <h1 class="txt-title">Start Image Build</h1>
+
+        <!-- Popup Start Repository Build -->
+        <div class="popup-repository-build">
+          <div file-upload [status]="fileStatus" (onChange)="fileChange($event)"></div>
+        </div>
+        <!-- //Popup Start Repository Build -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="close()">Cancel</button>
+          <!-- [D] Success 인 경우 disabled 속성 제거 -->
+          <button type="button" class="btn-action type-small" [disabled]="fileStatus != 'success'" (click)="startBuildClick()">Start Build</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup -->

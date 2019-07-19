@@ -1,0 +1,65 @@
+<!-- Starred -->
+<div class="section-starred" *ngIf="searchKey == '' || (starredList | filter:{name: searchKey, namespace: searchKey}).length">
+  <span class="txt-title">STARRED</span>
+  <ol class="list-repository">
+    <li *ngFor="let item of starredList | filter:{name: searchKey, namespace: searchKey}; let index = index;">
+      <div class="box-card" [class.type-private]="!item.is_public" *ngIf="item != -1">
+        <div class="component-starred">
+          <input type="checkbox" class="input-checkbox" [attr.id]="'starred' + index" [checked]="item.is_starred" (change)="starChange(item)">
+          <label [attr.for]="'starred' + index" class="txt-label"></label>
+        </div>
+        <a href="javascript:;" class="link-card" (click)="moveToDetail(item.namespace, item.name)">
+          <strong class="txt-repository" [title]="item.namespace + '/' + item.name">{{ item.namespace }}/{{ item.name }}</strong>
+          <span class="txt-date">{{ item.description }}</span>
+        </a>
+      </div>
+    </li>
+  </ol>
+  <!-- Starred Nodata -->
+  <div class="nodata-area" *ngIf="searchKey == '' && (!starredList || starredList.length == 0)">
+    <span class="txt-nodata">You haven’t starred any images yet.</span>
+    <p class="txt-desc">
+      Stars allow you to easily access your favorite images.
+    </p>
+  </div>
+  <!-- //Starred Nodata -->
+</div>
+<!-- //Starred -->
+
+<!-- Repository List -->
+<div class="section-list">
+  <ol class="list-repository">
+    <li *ngFor="let item of repositoryList | filter:{name: searchKey, namespace: searchKey}; let index = index;">
+      <div class="box-card" [class.type-private]="!item.is_public">
+        <div class="component-starred">
+          <input type="checkbox" class="input-checkbox" [attr.id]="'non-starred' + index" [checked]="item.is_starred" (change)="starChange(item)">
+          <label [attr.for]="'non-starred' + index" class="txt-label"></label>
+        </div>
+        <a href="javascript:;" class="link-card" (click)="moveToDetail(item.namespace, item.name)">
+          <strong class="txt-repository" [title]="item.namespace + '/' + item.name">{{ item.namespace }}/{{ item.name }}</strong>
+          <span class="txt-date">{{ item.description }}</span>
+        </a>
+      </div>
+    </li>
+  </ol>
+
+  <!-- Repository List Nodata -->
+  <div class="nodata-area" *ngIf="searchKey == '' && repositoryList.length == 0">
+    <span class="txt-nodata">You don’t have any viewable images.</span>
+    <p class="txt-desc">
+      Either no images exist yet or you may not have permission to view any.<br>
+      If you have permission, try creating a new image.
+    </p>
+  </div>
+  <!-- //Repository List Nodata -->
+</div>
+<!-- //Repository List -->
+
+<!-- Search No Data -->
+<div class="nodata-area type-search" *ngIf="searchKey != '' && (!repositoryList || (repositoryList | filter:{name: searchKey, namespace: searchKey}).length == 0)">
+  <span class="txt-nodata">No matching images found.</span>
+  <p class="txt-desc">
+    There are no matching images for the search.
+  </p>
+</div>
+<!-- //Search No Data -->

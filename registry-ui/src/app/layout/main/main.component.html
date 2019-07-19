@@ -1,0 +1,77 @@
+<!-- Page : Main -->
+<div class="page-main">
+  <!-- Title, Filter -->
+  <div class="section-title">
+    <h2 class="txt-title">Images</h2>
+    <!-- Filter -->
+    <div class="filter-area">
+      <div pagination (onPageClick)="pageClick($event)" #paginationTop></div>
+    </div>
+    <!-- //Filter -->
+  </div>
+  <!-- //Title, Filter -->
+
+  <!-- Repository List -->
+  <div class="section-list">
+    <ol class="list-repository">
+      <li *ngFor="let item of repositoryList; let index = index;">
+        <div class="box-main-card" [class.type-private]="!item.is_public">
+          <a href="javascript:;" class="link-card" (click)="moveToDetail(item.namespace.name, item.name)">
+            <span class="card-repository">
+              <span class="txt-repository">{{ item.namespace.name }}/{{ item.name }}</span>
+              <span class="txt-desc">{{ item.description }}</span>
+            </span>
+
+            <span class="txt-date">
+              Last Modified : {{ item.last_modified ? (item.last_modified * 1000 | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}
+            </span>
+            <span class="info-repository">
+              <span class="txt-starred">{{ item.stars }}</span>
+              <!--
+                  [D]
+                  1개 : type-1st
+                  2개 : type-2nd
+                  3개 : type-3rd
+                  4개 : typs-all
+              -->
+              <ul class="component-activity" [class.type-1st]="item.popularity == 1" [class.type-2nd]="item.popularity == 2" [class.type-3rd]="item.popularity == 3" [class.type-4th]="item.popularity == 4" [class.type-max]="item.popularity >= 5">
+                <li class="bar"></li>
+                <li class="bar"></li>
+                <li class="bar"></li>
+                <li class="bar"></li>
+              </ul>
+            </span>
+          </a>
+        </div>
+      </li>
+    </ol>
+
+    <div class="pagination-area">
+      <!-- Pagination -->
+      <div pagination (onPageClick)="pageClick($event)" #paginationBottom></div>
+      <!-- //Pagination -->
+    </div>
+  </div>
+  <!-- //Repository List -->
+
+  <!-- Search No Data -->
+  <div class="nodata-area type-main" *ngIf="!isSearching && searchKey != '' && !repositoryList.length">
+    <span class="txt-nodata">No result for {{ searchKey }}</span>
+    <p class="txt-desc">
+      There are no results for this search in TACO Registry.
+    </p>
+    <a href="javascript:;" class="link-back" (click)="clearSearchClick()">Clear Search</a>
+  </div>
+  <!-- //Search No Data -->
+
+  <!-- Repository Table Nodata -->
+  <div class="nodata-area" *ngIf="!isSearching && searchKey == '' && !repositoryList.length">
+    <span class="txt-nodata">You don’t have any viewable images.</span>
+    <p class="txt-desc">
+      Either no images exist yet or you may not have permission to view any.<br>
+      If you have permission, try creating a new image.
+    </p>
+  </div>
+  <!-- //Repository Table Nodata -->
+</div>
+<!-- //Page : Main -->

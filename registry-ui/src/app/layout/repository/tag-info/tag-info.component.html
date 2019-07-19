@@ -1,0 +1,427 @@
+<!-- Repository Tag Info -->
+<div class="page-repository-tag">
+  <!-- Repository Header -->
+  <div repository-header></div>
+  <!-- //Repository Header -->
+
+  <!-- Title, Filter -->
+  <div class="section-title">
+    <h2 class="txt-title">Image Tags</h2>
+    <!-- Filter -->
+    <div class="filter-area">
+      <div class="component-search type-filter">
+        <input type="text" class="input-search" placeholder="Search for Tags" #searchInput (keyup.enter)="searchKey = searchInput.value">
+        <span class="icon-search"></span>
+        <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="searchInput.value = ''"></a>
+      </div>
+    </div>
+    <!-- //Filter -->
+  </div>
+  <!-- //Title, Filter -->
+
+  <!-- Tags -->
+  <div class="component-table" *ngIf="(tagList | filter:{id: searchKey}).length">
+    <table class="table-tags">
+      <colgroup>
+        <col width="*" />
+        <col width="140" />
+        <col width="220" />
+        <col width="100" />
+        <col width="150" />
+        <col width="160" />
+        <col width="90" />
+      </colgroup>
+      <thead>
+      <tr>
+        <th>
+          <div class="component-checkbox">
+            <input type="checkbox" class="input-checkbox" id="tagHeaderCheckbox" (change)="allCheckChange($event)">
+            <label class="txt-label" for="tagHeaderCheckbox">Tags</label>
+          </div>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'formatted_last_modified' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'formatted_last_modified' && sortDirection == 'desc'" (click)="sortClick('formatted_last_modified')">Last Modified</a>
+        </th>
+        <th>
+          Security Scan
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'size' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'size' && sortDirection == 'desc'" (click)="sortClick('size')">Size</a>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'formatted_expiration' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'formatted_expiration' && sortDirection == 'desc'" (click)="sortClick('formatted_expiration')">Expires</a>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'manifest_digest' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'manifest_digest' && sortDirection == 'desc'" (click)="sortClick('manifest_digest')">Image</a>
+        </th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr aria-selected="true" *ngFor="let item of tagList | sort:sortProperty:sortDirection | filter:{ id: searchKey }; let index = index;">
+        <td>
+          <div class="component-checkbox">
+            <input type="checkbox" class="input-checkbox" [attr.id]="'tagCheckbox' + index" [checked]="checkStatus(item)" (change)="checkChange(item)">
+            <label class="txt-label" [attr.for]="'tagCheckbox' + index">{{ item.name }}</label>
+          </div>
+        </td>
+        <td>
+          <span class="txt-date">{{ item.formatted_last_modified }}</span>
+        </td>
+        <td>
+          <span class="txt-scan type-success" *ngIf="getSecurity(item.image_id).fixableCount == 0 && getSecurity(item.image_id).vulnerabilityHighCount == 0" (click)="scanClick(item)">
+            Passed
+            <!-- Tooltip -->
+            <div class="component-tooltip">
+              <div class="box-tooltip">
+                The image for this tag has no vulnerabilities as found in our database
+              </div>
+            </div>
+            <!-- //Tooltip -->
+          </span>
+
+          <span class="txt-scan type-scan" *ngIf="getSecurity(item.image_id).fixableCount != 0 || getSecurity(item.image_id).vulnerabilityHighCount != 0" (click)="scanClick(item)">
+            <em>{{ getSecurity(item.image_id).vulnerabilityHighCount }} High</em> · {{ getSecurity(item.image_id).fixableCount }} Fixable
+            <!-- Tooltip -->
+            <div class="component-tooltip">
+              <div class="box-tooltip">
+                This tag has {{ getSecurity(item.image_id).fixableCount }} vulnerabilities across {{ getSecurity(item.image_id).fixablePackageCount }} packages
+              </div>
+            </div>
+            <!-- //Tooltip -->
+          </span>
+
+          <!--<span class="txt-scan type-fail" *ngIf="item.security.fixableCount == 0 && item.security.vulnerabilityHighCount == 0">-->
+            <!--Could not load-->
+            <!--&lt;!&ndash; Tooltip &ndash;&gt;-->
+            <!--<div class="component-tooltip">-->
+              <!--<div class="box-tooltip">-->
+                <!--The vulnerabilities for this tag could not be retrieved at the present time, try again later-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; //Tooltip &ndash;&gt;-->
+          <!--</span>-->
+        </td>
+        <td>
+          <span class="txt-size">{{ item.size | fileSize }}</span>
+        </td>
+        <td>
+          <a href="javascript:;" class="txt-expires" (click)="changeExpirationPopupClick(item)">{{ item.expiration ? item.formatted_expiration : 'Never' }}</a>
+        </td>
+        <td>
+          <div class="image-area">
+            <em class="txt-image" (click)="manifestClick(item)">
+              SHA256
+              <!-- Tooltip -->
+              <div class="component-tooltip">
+                <div class="box-tooltip">
+                  The content-addressable SHA256 hash of this tag
+                </div>
+              </div>
+              <!-- //Tooltip -->
+            </em>
+            <a href="javascript:;" class="link-image" (click)="imageClick(item)">{{ item.manifest_digest.split(':')[1].substr(0, 12) }}</a>
+          </div>
+        </td>
+        <td>
+          <div class="buttons">
+            <a href="javascript:;" class="btn-download" aria-label="Fetch Tag" (click)="fetchTagClick(item)"></a>
+            <a href="javascript:;" class="btn-setting" aria-label="Setting" (click)="settingClick(index)" *ngIf="writer"></a>
+
+            <!-- Layer Setting -->
+            <div class="layer-setting" [attr.aria-expanded]="index == currentSettingIndex">
+              <a href="javascript:;" class="link-item type-add" (click)="addNewTagPopupClick(item)">Add New Tag</a>
+              <a href="javascript:;" class="link-item type-delete" (click)="deleteTagPopupClick(item)">Delete Tag</a>
+              <a href="javascript:;" class="link-item type-change" (click)="changeExpirationPopupClick(item)">Change Expiration</a>
+            </div>
+            <!-- //Layer Setting -->
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- //Tags -->
+
+  <!-- No Data (Text + Description) -->
+  <div class="component-nodata" *ngIf="(!searchKey || searchKey == '') && !(tagList | filter:{id: searchKey}).length">
+    <span class="txt-nodata">This image is empty.</span>
+    <p class="txt-desc">
+      Push a tag or initiate a build to populate this image.
+    </p>
+  </div>
+  <!-- //No Data (Text + Description) -->
+
+  <!-- No Data (Search) -->
+  <div class="component-nodata" *ngIf="(searchKey && searchKey != '') && !(tagList | filter:{id: searchKey}).length">
+    <span class="txt-nodata">No matching tags found.</span>
+    <p class="txt-desc">There are not matching tags for the search.</p>
+    <a href="javascript:;" class="link-back" (click)="searchInput.value = ''; clearSearchClick()">Clear Search</a>
+  </div>
+  <!-- //No Data (Search) -->
+
+  <!-- Button -->
+  <div class="section-button" *ngIf="(tagList | filter:{id: searchKey}).length">
+    <button type="button" class="btn-sub-action" (click)="deleteTags()" *ngIf="writer">Delete Tag</button>
+    <button type="button" class="btn-sub-action" (click)="changeExpirationTags()" *ngIf="writer">Change Expiration</button>
+  </div>
+  <!-- //Button -->
+</div>
+<!-- //Repository Tag Info -->
+
+<!-- Layer Popup(manifest) -->
+<div class="layout-popup" *ngIf="showManifestPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showManifestPopup = false"></a>
+        <h1 class="txt-title">Manifest SHA256</h1>
+
+        <!-- Popup Tag Manifest -->
+        <div class="popup-tag-manifest">
+          <div class="component-input type-copy">
+            <div class="input-area">
+              <input type="text" class="input-text" value="Docker pull username/imagename" readonly [(ngModel)]="currentSelectedTag.manifest_digest">
+              <a href="javascript:;" class="btn-copy" aria-label="Copy" (click)="manifestCopyClick()"></a>
+            </div>
+          </div>
+        </div>
+        <!-- //Popup Tag Manifest -->
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup(manifest) -->
+
+<!-- Layer Popup(add tag) -->
+<div class="layout-popup" *ngIf="showCreateTagPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showCreateTagPopup = false"></a>
+        <h1 class="txt-title">Add Tag to Image {{ currentSelectedTag.image_id.substr(0, 12) }}</h1>
+
+        <!-- Popup Add Tag -->
+        <div class="popup-add-tag">
+          <table class="form-create">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">Tag Name</label>
+              </th>
+              <td>
+                <div class="component-input" [class.is-error]="createErrorMsg != ''">
+                  <div class="input-area">
+                    <input type="text" class="input-text" #createTagInput [(ngModel)]="createTag.name">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="createTagInput.value = ''; createTag.name = ''"></a>
+                  </div>
+                  <span class="txt-error">{{ createErrorMsg }}</span>
+                </div>
+                <p class="txt-desc">
+                  Must be alphanumeric, .(period), -(minus sign), _(under bar), at least 1 characters long and at most 40 characters long. latest can not be added.
+                </p>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup Add Tag -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="showCreateTagPopup = false">Cancel</button>
+          <button type="button" class="btn-action type-small" (click)="addTagClick()">Add Tag</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup(add tag) -->
+
+<!-- Layer Popup(fetch tag) -->
+<div class="layout-popup" [hidden]="!showFetchTagPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showFetchTagPopup = false"></a>
+        <h1 class="txt-title">Fetch Tag:  {{ currentSelectedTag.name }}</h1>
+
+        <!-- Popup Fetch Tag -->
+        <div class="popup-fetch-tag">
+          <table class="form-create">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">Select Image Format</label>
+              </th>
+              <td>
+                <!-- Selectbox -->
+                <div select-box #fetchPopupSelect (onSelected)="fetchSelect($event)"></div>
+                <!-- //Selectbox -->
+              </td>
+            </tr>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">Command</label>
+              </th>
+              <td>
+                <div class="box-command">
+                  {{ fetchPullPath }}
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup Fetch Tag -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="showFetchTagPopup = false">Close</button>
+          <button type="button" class="btn-action type-small" (click)="fetchCopyCommandClick()">Copy Command</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup(fetch tag) -->
+
+<!-- Layer Popup(delete tag) -->
+<div class="layout-popup" *ngIf="showDeleteTagPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showDeleteTagPopup = false"></a>
+        <h1 class="txt-title">Delete Tag{{ currentSelectedTagList.length ? 's' : '' }}</h1>
+
+        <!-- Popup Delete Tag -->
+        <div class="popup-delete-tag">
+
+          <div class="txt-confirm">
+            Are you sure you want to delete the following tag{{ currentSelectedTagList.length ? 's' : '' }}?
+          </div>
+
+          <div class="tag-block" *ngIf="currentSelectedTagList.length">
+            <span class="txt-tag" *ngFor="let item of currentSelectedTagList">{{ item.name }}</span>
+          </div>
+
+          <div class="tag-block" *ngIf="!currentSelectedTagList.length">
+            <span class="txt-tag">{{ currentSelectedTag.name }}</span>
+          </div>
+
+          <p class="txt-desc">This operation can take several minutes.</p>
+
+        </div>
+        <!-- //Popup Delete Tag -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="showDeleteTagPopup = false">Cancel</button>
+          <button type="button" class="btn-action type-small" (click)="deleteTagClick()">Delete Tag</button>
+        </div>
+        <!-- //Button -->
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup(delete tag) -->
+
+<!-- Layer Popup(change expiration) -->
+<div class="layout-popup" [hidden]="!showChangeExpirationPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showChangeExpirationPopup = false"></a>
+        <h1 class="txt-title">Change Expiration</h1>
+
+        <!-- Popup 신규팀 생성 -->
+        <div class="popup-create-team">
+          <table class="form-create">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th>
+                <label class="txt-label">Tags that will be updated</label>
+              </th>
+              <td>
+                <span class="txt-content" *ngFor="let item of currentSelectedTagList">{{ item.name }}</span>
+              </td>
+            </tr>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">Expiration Date</label>
+              </th>
+              <td>
+                <ul class="list-role">
+                  <li>
+                    <div class="component-radio">
+                      <input type="radio" id="radio1" class="input-radio" [value]="0" [(ngModel)]="selectedExpirationType" name="expiration">
+                      <label for="radio1" class="label">
+                        <span class="icon-radio"></span>
+                        <span class="txt-label">
+															Never
+															<em>The tag(s) will not expire.</em>
+														</span>
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="component-radio">
+                      <input type="radio" id="radio2" class="input-radio" [value]="1" [(ngModel)]="selectedExpirationType" name="expiration">
+                      <label for="radio2" class="label">
+                        <span class="icon-radio"></span>
+                        <span class="txt-label">
+															Expiration
+															<em>Can only enter dates after today.</em>
+														</span>
+                      </label>
+                    </div>
+                    <!-- Date picker -->
+                    <div class="component-datepicker">
+                      <input type="text" class="input-date" placeholder="YYYY-MM-DD HH-MM" readonly id="dateInput">
+                    </div>
+                    <!-- //Date picker -->
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup 신규팀 생성 -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="showChangeExpirationPopup = false">Cancel</button>
+          <button type="button" class="btn-action type-small" (click)="changeExpirationClick()">Change Expiration</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup(change expiration) -->
+
+<div tag-layer-popup *ngIf="showTagLayerPopup" [imageId]="selectedImageId" (onClose)="showTagLayerPopup = false"></div>
+
+<div tag-security-popup *ngIf="showTagSecurityPopup" [imageId]="selectedImageId" (onClose)="showTagSecurityPopup = false"></div>

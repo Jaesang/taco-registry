@@ -1,0 +1,56 @@
+<!-- Team & Role Settings -->
+<div class="page-team-role">
+  <h2 class="section-sub-title type-org">
+    {{ orgName }}
+  </h2>
+
+  <!-- Title, Filter -->
+  <div class="section-title">
+    <h2 class="txt-title">Members</h2>
+    <!-- Filter -->
+    <div class="filter-area">
+      <!-- 검색 -->
+      <div autocomplete [matchList]="matchList" [type]="AutocompleteType.MEMBER"
+           (onSearch)="searchEvent($event)"
+           (onEnter)="searchEnterEvent($event)"
+           (onAutocompleteSelect)="searchAutocompleteSelect($event)"></div>
+      <!-- //검색 -->
+    </div>
+    <!-- //Filter -->
+  </div>
+  <!-- //Title, Filter -->
+
+  <!-- Team/Role Table -->
+  <div class="component-table">
+    <table class="table-role">
+      <colgroup>
+        <col width="*" />
+        <col width="100" />
+      </colgroup>
+      <thead>
+      <tr>
+        <th>
+          <a>Username</a>
+        </th>
+        <th>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of memberList">
+        <td>
+          <a href="javascript:;" class="txt-team" (click)="memberClick(item)">{{ item.name }}</a>
+        </td>
+        <td class="align-right">
+          <button type="button" class="btn-delete" aria-label="삭제" (click)="deleteMemberClick(item)"></button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- //Team/Role Table -->
+</div>
+<!-- //Team & Role Settings -->
+
+
+

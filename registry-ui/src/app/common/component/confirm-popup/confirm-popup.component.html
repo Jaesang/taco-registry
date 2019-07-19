@@ -1,0 +1,27 @@
+<!-- Layer Popup -->
+<div class="layout-popup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="close()" *ngIf="!isAlert"></a>
+        <h1 class="txt-title">{{data?.title}}</h1>
+
+        <!-- Popup Delete Repository -->
+        <div class="popup-delete-repository">
+          <span class="txt-confirm">{{data?.content}}</span>
+          <p class="txt-desc" *ngIf="data?.accentContent">{{data?.accentContent}}</p>
+        </div>
+        <!-- //Popup Delete Repository -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="cancel()" *ngIf="!isAlert">{{data?.cancelButtonLabel}}</button>
+          <button type="button" class="btn-action type-small" (click)="done()">{{data?.doneButtonLabel}}</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup -->

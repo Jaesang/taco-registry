@@ -1,0 +1,94 @@
+<!-- Logs -->
+<div class="section-logs">
+  <!-- 필터, 기간, 검색 -->
+  <div class="filter-area">
+    <div class="left-block">
+      <!-- Selectbox -->
+      <div select-box [placeholder]="'Filter Usage Logs'" (onSelectedValues)="selectValues($event)"></div>
+      <!-- //Selectbox -->
+    </div>
+    <div class="right-block">
+      <!-- Date picker -->
+      <div class="component-datepicker">
+        <label class="txt-label">Date</label>
+        <input type="text" class="input-date" readonly id="dateInput">
+      </div>
+      <!-- //Date picker -->
+
+      <!-- Search -->
+      <div class="component-search type-filter">
+        <input type="text" class="input-search" placeholder="Search for Logs" #searchInput (keyup.enter)="searchKey = searchInput.value">
+        <span class="icon-search"></span>
+        <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="searchInput.value = ''"></a>
+      </div>
+      <!-- //Search -->
+    </div>
+  </div>
+  <!-- //필터, 기간, 검색 -->
+
+  <!-- Logs Table -->
+  <div class="component-table" *ngIf="(filteredList | filter:{kind: searchKey, ip: searchKey}).length">
+    <table class="table-logs">
+      <colgroup>
+        <col width="*" />
+        <col width="150" />
+        <col width="150" />
+        <col width="190" />
+      </colgroup>
+      <thead>
+      <tr>
+        <th>
+          <a>Description</a>
+        </th>
+        <th>
+          <a>Date</a>
+        </th>
+        <th>
+          <a>Username</a>
+        </th>
+        <th>
+          <a>IP Address</a>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of filteredList | filter:{kind: searchKey, ip: searchKey}">
+        <td>
+          <span class="txt-desc" [innerHTML]="logsService.getDescription(item)">
+          </span>
+        </td>
+        <td>
+          <span class="txt-date">{{ item.datetime | dateTimeFormat:'YYYY-MM-DD HH:mm' }}</span>
+        </td>
+        <td>
+          <span [class.txt-user]="item.performer" (click)="performerClick(item)">
+            {{ item.performer ? item.performer.name : '(anonymous)' }}
+          </span>
+        </td>
+        <td>
+          <span class="txt-ip">{{ item.ip }}</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- //Logs Table -->
+
+  <!-- No Data (Text + Description) -->
+  <div class="component-nodata" *ngIf="(!searchKey || searchKey == '') && !(filteredList | filter:{kind: searchKey, ip: searchKey}).length">
+    <span class="txt-nodata">No usage logs.</span>
+    <p class="txt-desc">
+      There has not been any usage logs.
+    </p>
+  </div>
+  <!-- //No Data (Text + Description) -->
+
+  <!-- No Data (Search) -->
+  <div class="component-nodata" *ngIf="(searchKey && searchKey != '') && !(filteredList | filter:{kind: searchKey, ip: searchKey}).length">
+    <span class="txt-nodata">No matching logs found.</span>
+    <p class="txt-desc">There are not matching logs for the search.</p>
+    <a href="javascript:;" class="link-back" (click)="searchInput.value = ''; clearSearchClick()">Clear Search</a>
+  </div>
+  <!-- //No Data (Search) -->
+</div>
+<!-- //Logs -->

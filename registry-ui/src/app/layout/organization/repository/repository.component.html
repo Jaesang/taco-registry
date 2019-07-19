@@ -1,0 +1,42 @@
+<!-- 저장소 -->
+<div class="page-organization">
+  <h2 class="section-sub-title" [class.type-org]="namespaceType == MainType.organization" [class.type-user]="namespaceType == MainType.user">
+    {{ orgName }}
+  </h2>
+
+  <!-- Title, Filter -->
+  <div class="section-title">
+    <h2 class="txt-title">Repository</h2>
+    <!-- Filter -->
+    <div class="filter-area">
+      <div class="component-search type-filter">
+        <input type="text" class="input-search" placeholder="Search for Image Name" #searchInput (keyup.enter)="searchKey = searchInput.value">
+        <span class="icon-search"></span>
+        <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="searchInput.value = ''"></a>
+      </div>
+
+      <!-- Toggle -->
+      <div class="toggle-block">
+        <a href="javascript:;" class="btn-toggle type-card" [attr.aria-selected]="showCard" aria-label="Card" (click)="showCard = true;"></a>
+        <a href="javascript:;" class="btn-toggle type-table" [attr.aria-selected]="!showCard" aria-label="Table" (click)="showCard = false;"></a>
+      </div>
+      <!-- //Toggle -->
+    </div>
+    <!-- //Filter -->
+  </div>
+  <!-- //Title, Filter -->
+
+  <repository-card *ngIf="showCard" [repositoryList]="repositoryList" [searchKey]="searchKey"></repository-card>
+
+  <repository-list *ngIf="!showCard" [repositoryList]="repositoryList" [searchKey]="searchKey" [namespaceType]="namespaceType"></repository-list>
+
+  <!-- Repository Table -->
+  <div class="nodata-area" *ngIf="!showCard && !isSearching && searchKey == '' && !repositoryList.length">
+    <span class="txt-nodata">You don’t have any viewable images.</span>
+    <p class="txt-desc">
+      Either no images exist yet or you may not have permission to view any.<br>
+      If you have permission, try creating a new repository.
+    </p>
+  </div>
+  <!-- //Repository Table -->
+</div>

@@ -1,0 +1,25 @@
+<!-- Header -->
+<div class="layout-header">
+  <h1 class="logo-header"><a href="javascript:;" aria-label="TACO Registry" (click)="logoClick()"></a></h1>
+  <!-- 우측 상단 -->
+  <div class="section-info">
+    <!-- My Organization -->
+    <div organization-area></div>
+    <!-- //My Organization -->
+
+    <!-- My Profile -->
+    <div profile-area></div>
+    <!-- //My Profile -->
+
+    <a href="javascript:;" class="btn-admin" aria-label="Administration" (click)="adminClick()" *ngIf="isAdmin"></a>
+  </div>
+  <!-- //우측 상단 -->
+  <!-- 검색 -->
+  <div autocomplete [matchList]="matchList" [type]="AutocompleteType.ALL"
+       (onSearch)="searchEvent($event)"
+       (onEnter)="searchEnterEvent($event)"
+       (onAutocompleteSelect)="searchAutocompleteSelect($event)"
+       [searchKey]="searchKey"></div>
+  <!-- //검색 -->
+</div>
+<!-- //Header -->

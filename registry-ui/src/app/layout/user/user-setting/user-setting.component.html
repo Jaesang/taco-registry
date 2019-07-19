@@ -1,0 +1,134 @@
+<!-- Account Settings -->
+<div class="page-account-setting">
+  <h2 class="section-sub-title type-user">
+    {{ user.username }}
+  </h2>
+
+  <!-- Title -->
+  <div class="section-title">
+    <h2 class="txt-title">Account Settings</h2>
+  </div>
+  <!-- //Title -->
+
+  <!-- Form Setting -->
+  <table class="form-setting">
+    <colgroup>
+      <col width="150" />
+      <col width="420" />
+    </colgroup>
+    <tbody>
+    <tr>
+      <th>
+        <label class="txt-label">Username</label>
+      </th>
+      <td>
+        {{ user.username }}
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <label class="txt-label">User E-mail</label>
+      </th>
+      <td>
+        {{ user.email }}
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <label class="txt-label">Images</label>
+      </th>
+      <td>
+        <a href="javascript:;" class="link-item" (click)="repoClick()">{{ repoCount ? (repoCount + (repoCount > 1 ? ' Images' : ' Image')) : 'Empty Image' }}</a>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <label class="txt-label">Password</label>
+      </th>
+      <td>
+        <button type="button" class="btn-sub" (click)="changePasswordPopupClick()">Change Password</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <!-- //Form Setting -->
+
+  <!-- Button -->
+  <div class="section-button">
+    <button type="button" class="btn-sub-action" (click)="deleteAccountClick()">Delete Account</button>
+  </div>
+  <!-- //Button -->
+</div>
+<!-- //Account Settings -->
+
+<!-- Layer Popup -->
+<div class="layout-popup" [hidden]="!showChangePasswordPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showChangePasswordPopup = false"></a>
+        <h1 class="txt-title">Change Password</h1>
+
+        <!-- Popup 비밀번호 변경 -->
+        <div class="popup-change-password">
+          <table class="form-password">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">Current Password</label>
+              </th>
+              <td>
+                <div class="component-input">
+                  <div class="input-area">
+                    <input type="password" class="input-text" placeholder="Enter Current Password" [(ngModel)]="currentPassword">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="currentPassword = ''" tabIndex="-1"></a>
+                  </div>
+                  <span class="txt-error" tabIndex="-1">Error Message.</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">New Password</label>
+              </th>
+              <td>
+                <div class="component-input">
+                  <div class="input-area">
+                    <input type="password" class="input-text" placeholder="Enter New Password" [(ngModel)]="newPassword">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="newPassword = ''" tabIndex="-1"></a>
+                  </div>
+                  <span class="txt-error">Error Message.</span>
+                </div>
+                <div class="component-input">
+                  <div class="input-area">
+                    <input type="password" class="input-text" placeholder="Verify New Password" [(ngModel)]="newPasswordConfirm">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="newPasswordConfirm = ''" tabIndex="-1"></a>
+                  </div>
+                  <span class="txt-error">Error Message.</span>
+                </div>
+                <p class="txt-desc">
+                  Passwords must be at least 8 characters in length.
+                </p>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup 비밀번호 변경 -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="showChangePasswordPopup = false">Cancel</button>
+          <button type="button" class="btn-action type-small" (click)="changePasswordClick()">Change Password</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup -->

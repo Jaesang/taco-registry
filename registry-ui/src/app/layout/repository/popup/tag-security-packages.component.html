@@ -1,0 +1,223 @@
+<!-- Tab Content(packages) -->
+<div class="tab-content">
+  <!-- Graph -->
+  <div class="section-graph">
+    <div class="graph-area type-package">
+      <!-- 그래프 영역 -->
+      <div class="graph-block" id="chartPackages" style="width: 176px; height: 176px;"></div>
+      <!-- //그래프 영역 -->
+    </div>
+
+    <div class="description-area">
+      <span class="txt-title">
+        TACO Security Scanner has recognized <strong>{{ packageCount }}</strong> packages.
+      </span>
+      <ul class="list-legend">
+        <li *ngIf="highCount">
+          <em style="background-color:#f8523f;"></em>
+          <span class="txt-legend">
+            <strong>{{ highCount }}</strong>
+            packages with High-level vulnerabilities.
+          </span>
+        </li>
+        <li *ngIf="mediumCount">
+          <em style="background-color:#fd7e14;"></em>
+          <span class="txt-legend">
+            <strong>{{ mediumCount }}</strong>
+            packages with Medium-level vulnerabilities.
+          </span>
+        </li>
+        <li *ngIf="lowCount">
+          <em style="background-color:#fcc419;"></em>
+          <span class="txt-legend">
+            <strong>{{ lowCount }}</strong>
+            packages with Low-level vulnerabilities.
+          </span>
+        </li>
+        <li *ngIf="negiCount">
+          <em style="background-color:#b7b9c2;"></em>
+          <span class="txt-legend">
+            <strong>{{ negiCount }}</strong>
+            packages with Negligible-level vulnerabilities.
+          </span>
+        </li>
+        <li>
+          <em style="background-color:#40c057;"></em>
+          <span class="txt-legend">
+            <strong>{{ noCount }}</strong>
+            packages with no vulnerabilities.
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- //Graph -->
+
+  <!-- Filter -->
+  <div class="section-filter" [hidden]="!(packageList | filter:{Name: searchKey, packageName: searchKey}).length">
+    <div class="filter-area">
+      <div class="component-search type-filter">
+        <input type="text" class="input-search" placeholder="Filter Packages" #searchInput (keyup.enter)="searchKey = searchInput.value">
+        <span class="icon-search"></span>
+        <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="searchInput.value = ''; searchKey = ''"></a>
+      </div>
+    </div>
+  </div>
+  <!-- //Filter -->
+
+  <!-- List -->
+  <div class="component-table" *ngIf="(packageList | filter:{Name: searchKey, Version: searchKey}).length">
+    <table class="table-package">
+      <colgroup>
+        <col width="*" />
+        <col width="130" />
+        <col width="190" />
+        <col width="220" />
+        <col width="120" />
+        <col width="240" />
+      </colgroup>
+      <thead>
+      <tr>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'Name' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'Name' && sortDirection == 'desc'" (click)="sortClick('Name')">Package Name</a>
+        </th>
+        <th>
+          <a>Package Version</a>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'vScore' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'vScore' && sortDirection == 'desc'" (click)="sortClick('vScore')">Vulnerability</a>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'remainScore' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'remainScore' && sortDirection == 'desc'" (click)="sortClick('remainScore')">Remaining After Upgrade</a>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'upgradeScore' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'upgradeScore' && sortDirection == 'desc'" (click)="sortClick('upgradeScore')">Upgrade Impact</a>
+        </th>
+        <th>
+          <a>Introduced in layer</a>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of packageList | sort:sortProperty:sortDirection | filter:{Name: searchKey, Version: searchKey};">
+        <td>
+          <span class="txt-package" [title]="item.Name">{{ item.Name }}</span>
+        </td>
+        <td>
+          <span class="txt-ver" [title]="item.Version">{{ item.Version }}</span>
+        </td>
+        <td>
+          <div class="vulnerability-area" *ngIf="item.vHighCount">
+            <span class="txt-status">
+              <em style="background-color:#f8523f;"></em>
+              <span style="color:#f8523f;">{{ item.vHighCount }} High</span>
+            </span>
+            {{ item.vCount != item.vHighCount ? '+ ' + (item.vCount - item.vHighCount) + ' Additional' : '' }}
+          </div>
+
+          <div class="vulnerability-area" *ngIf="item.vHighCount == 0 && item.vMediumCount">
+            <span class="txt-status">
+              <em style="background-color:#fd7e14;"></em>
+              <span style="color:#fd7e14;">{{ item.vMediumCount }} Medium</span>
+            </span>
+            {{ item.vCount != item.vMediumCount ? '+ ' + (item.vCount - item.vMediumCount) + ' Additional' : '' }}
+          </div>
+
+          <div class="vulnerability-area" *ngIf="item.vHighCount == 0 && item.vMediumCount == 0 && item.vLowCount">
+            <span class="txt-status">
+              <em style="background-color:#fcc419;"></em>
+              <span style="color:#fcc419;">{{ item.vLowCount }} Low</span>
+            </span>
+            {{ item.vCount != item.vLowCount ? '+ ' + (item.vCount - item.vLowCount) + ' Additional' : '' }}
+          </div>
+
+          <div class="vulnerability-area" *ngIf="item.vHighCount == 0 && item.vMediumCount == 0 && item.vLowCount == 0 && item.vNegiCount">
+            <span class="txt-status">
+              <em style="background-color:#b7b9c2;"></em>
+              <span style="color:#b7b9c2;">{{ item.vNegiCount }} Negligible</span>
+            </span>
+            {{ item.vCount != item.vNegiCount ? '+ ' + (item.vCount - item.vNegiCount) + ' Additional' : '' }}
+          </div>
+
+          <div class="vulnerability-area" *ngIf="item.vCount == 0">
+            <span class="txt-status">
+              <em style="background-color:#40c057;"></em>
+              <span style="color:#40c057;">None Detected</span>
+            </span>
+          </div>
+        </td>
+        <td>
+          <div class="remaining-area" *ngIf="item.remainHighCount">
+            <span class="txt-status">
+              <span style="color:#f8523f;">{{ item.remainHighCount }} High</span>
+            </span>
+            {{ item.remainCount != item.remainHighCount ? '+ ' + (item.remainCount - item.vHighCount) + ' Additional' : '' }}
+          </div>
+
+          <div class="remaining-area" *ngIf="item.remainHighCount == 0 && item.remainMediumCount">
+            <span class="txt-status">
+              <span style="color:#fd7e14;">{{ item.remainMediumCount }} Medium</span>
+            </span>
+            {{ item.remainCount != item.remainMediumCount ? '+ ' + (item.remainCount - item.remainMediumCount) + ' Additional' : '' }}
+          </div>
+
+          <div class="remaining-area" *ngIf="item.remainHighCount == 0 && item.remainMediumCount == 0 && item.remainLowCount">
+            <span class="txt-status">
+              <span style="color:#fcc419;">{{ item.remainLowCount }} Low</span>
+            </span>
+            {{ item.remainCount != item.remainLowCount ? '+ ' + (item.remainCount - item.remainLowCount) + ' Additional' : '' }}
+          </div>
+
+          <div class="remaining-area" *ngIf="item.remainHighCount == 0 && item.remainMediumCount == 0 && item.remainLowCount == 0 && item.remainNegiCount">
+            <span class="txt-status">
+              <span style="color:#b7b9c2;">{{ item.remainNegiCount }} Negligible</span>
+            </span>
+            {{ item.remainCount != item.remainNegiCount ? '+ ' + (item.remainCount - item.remainNegiCount) + ' Additional' : '' }}
+          </div>
+
+          <div class="remaining-area" *ngIf="item.vCount && item.remainCount == 0">
+            <span class="txt-status">
+              <span style="color:#40c057;">All identified vulnerabilities fixed</span>
+            </span>
+          </div>
+
+          <div class="remaining-area" *ngIf="item.vCount == 0 && item.remainCount == 0">
+            <span class="txt-none">(N/A)</span>
+          </div>
+        </td>
+        <td>
+          <ul class="component-activity" *ngIf="item.upgradeScore" [class.type-1st]="item.upgradeScore >= 20" [class.type-2nd]="item.upgradeScore >= 40" [class.type-3rd]="item.upgradeScore >= 60" [class.type-4th]="item.upgradeScore >= 80" [class.type-max]="item.upgradeScore >= 100">
+            <li class="bar"></li>
+            <li class="bar"></li>
+            <li class="bar"></li>
+            <li class="bar"></li>
+          </ul>
+
+          <span class="txt-upgrade" *ngIf="item.vCount != 0 && item.vCount == item.remainCount">(No Changes)</span>
+
+          <span class="txt-upgrade" *ngIf="item.vCount == 0 && item.remainCount == 0">(N/A)</span>
+
+          <!--<span class="txt-upgrade">{{ item.upgradeScore }}</span>-->
+        </td>
+        <td>
+          <div class="introduce-area">
+            <span [ngClass]="'txt-type ' + buildHistoryService.getClassCommandLog(item.layer.commandName)">{{ item.layer.commandName }}</span>
+            <span class="txt-desc">{{ item.layer.commandText }}</span>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- //List -->
+
+  <!-- No Data (Search) -->
+  <div class="component-nodata" *ngIf="(searchKey && searchKey != '') && !(packageList | filter:{Name: searchKey, Version: searchKey}).length">
+    <span class="txt-nodata">No matching vulnerabilities found.</span>
+    <p class="txt-desc">There are not matching vulnerabilities for the search.</p>
+    <a href="javascript:;" class="link-back" (click)="searchInput.value = ''; clearSearchClick()">Clear Search</a>
+  </div>
+  <!-- //No Data (Search) -->
+</div>
+<!-- //Tab Content(packages) -->
+

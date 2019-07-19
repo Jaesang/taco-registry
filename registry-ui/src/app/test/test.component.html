@@ -1,0 +1,17 @@
+
+<div class="taco-wrap">
+  <!-- Content -->
+  <div class="layout-content">
+    <div select-box #select1
+         (onSelectedValues)="selectedValues($event)"
+    ></div>
+
+    <div select-box #select2
+         (onSelected)="selectedValue($event)"
+    ></div>
+
+
+    <input type="text" id="minMaxDate" type="text" readonly="readonly">
+  </div>
+
+</div>

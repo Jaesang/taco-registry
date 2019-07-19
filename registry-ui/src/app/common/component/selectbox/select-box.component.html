@@ -1,0 +1,31 @@
+<span [ngClass]="getSelectedClass()" *ngIf="!isMulti && selectedValue === null" (click)="folding()">{{placeholder}}</span>
+<span [ngClass]="getSelectedClass()" *ngIf="!isMulti && selectedValue !== null" (click)="folding()">{{selectedValue.label}}</span>
+<span [ngClass]="getSelectedClass()" *ngIf="isMulti" (click)="folding()">{{placeholder}} ({{selectedValues.length && selectedValues[0].value == 'ALL' ? 'ALL' : selectedValues.length}})</span>
+<!-- Layer Option -->
+<div class="layer-option" [attr.aria-expanded]="!isFolding">
+  <ul class="list-option">
+    <li *ngFor="let value of selectValues; let index = index" (click)="$event.preventDefault(); clickSelectValue(value)">
+      <div [class.component-radio]="!isMulti" [class.component-checkbox]="isMulti">
+        <input type="radio" *ngIf="!isMulti"
+               class="input-radio"
+               [attr.id]="UUID + index"
+               [checked]="value.checked"
+        />
+        <input type="checkbox" *ngIf="isMulti"
+               class="input-checkbox"
+               [attr.id]="UUID + index"
+               [checked]="value.checked"
+        />
+        <label class="txt-label" *ngIf="!value.desc"
+               [attr.for]="UUID + index">
+          {{value.label}}
+        </label>
+        <label [attr.for]="UUID + index" [ngClass]="'txt-label ' + value.labelClass" *ngIf="value.desc">
+          <span class="txt-option">{{value.label}}</span>
+          <span class="txt-desc">{{value.desc}}</span>
+        </label>
+      </div>
+    </li>
+  </ul>
+</div>
+<!-- //Layer Option -->

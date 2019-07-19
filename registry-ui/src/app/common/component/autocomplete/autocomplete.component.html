@@ -1,0 +1,18 @@
+<div class="component-search" [class.type-member]="type == AutocompleteType.MEMBER">
+  <input type="text" class="input-search" [placeholder]="type == AutocompleteType.MEMBER ? 'Select a Member' : 'Search for Image Name'" (keyup)="keyup($event, searchInput.value)" (keydown)="keydown($event)" #searchInput>
+  <span class="icon-search"></span>
+  <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="init()"></a>
+  <!-- 자동완성 레이어 -->
+  <div class="layer-autocomplete" aria-expanded="true" *ngIf="matchList && matchList.length">
+    <ul class="list-result">
+      <li *ngFor="let item of matchList; let index = index;" [class.is-hover]="currentRowIndex == index" (mouseover)="currentRowIndex = index;">
+        <a href="javascript:;" class="item-result" (click)="autocompleteItemClick(item)"
+           [class.type-user]="item.type == AutocompleteItemType.USER" [class.type-org]="item.type == AutocompleteItemType.ORG" [class.type-repository]="item.type == AutocompleteItemType.REPO">
+          <strong class="txt-category">{{ item.type }}</strong>
+          <em class="txt-result" [innerHTML]="item.matchText"></em>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!-- //자동완성 레이어 -->
+</div>

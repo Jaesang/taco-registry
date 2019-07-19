@@ -1,0 +1,104 @@
+<!-- Repository Settings -->
+<div class="page-repository-setting">
+  <!-- Repository Header -->
+  <div repository-header></div>
+  <!-- //Repository Header -->
+
+  <!-- Title -->
+  <div class="section-title">
+    <h2 class="txt-title">Image Settings</h2>
+  </div>
+  <!-- //Title -->
+
+  <!-- Members -->
+  <div class="section-member">
+    <div class="title-area">
+      <h3 class="txt-title">Members</h3>
+      <!-- Filter -->
+      <div class="filter-area">
+        <!-- 검색 -->
+        <div autocomplete [matchList]="matchList" [type]="AutocompleteType.MEMBER" [searchKey]="addMember.name"
+             (onSearch)="searchEvent($event)"
+             (onEnter)="searchEnterEvent($event)"
+             (onAutocompleteSelect)="searchAutocompleteSelect($event)"></div>
+        <!-- //검색 -->
+
+        <!-- Selectbox -->
+        <div select-box #addMemberSelect class="type-role" (onSelected)="roleChange($event)"></div>
+        <!-- //Selectbox -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-sub-action type-small" (click)="addMemberClick()" [disabled]="!addMemberEnable">Add Member</button>
+        </div>
+        <!-- //Button -->
+      </div>
+      <!-- //Filter -->
+    </div>
+
+    <!-- Members Table -->
+    <div class="component-table" *ngIf="memberList.length">
+      <table class="table-role">
+        <colgroup>
+          <col width="*" />
+          <col width="300" />
+        </colgroup>
+        <thead>
+        <tr>
+          <th>
+            <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'name' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'name' && sortDirection == 'desc'" (click)="sortClick('name')">Username</a>
+          </th>
+          <th>
+            <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'role' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'role' && sortDirection == 'desc'" (click)="sortClick('role')">Permission</a>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of memberList | sort:sortProperty:sortDirection">
+          <td>
+            <a href="javascript:;" class="txt-team" (click)="memberClick(item)">{{ item.name }}</a>
+          </td>
+          <td>
+            <div class="role-area">
+              <!-- Selectbox -->
+              <div select-box [initializeValues]="getSelectData(item)" (onSelected)="roleChange($event, item)" class="type-role"></div>
+              <!-- //Selectbox -->
+              <button type="button" class="btn-delete" aria-label="삭제" (click)="deleteMemberClick(item)"></button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- //Members Table -->
+  </div>
+  <!-- //Members -->
+
+  <!-- No Data (Text + Description) -->
+  <div class="component-nodata" *ngIf="!memberList.length">
+    <span class="txt-nodata">No members found.</span>
+    <p class="txt-desc">
+      To add a member, enter the information below and click "Add member".
+    </p>
+  </div>
+  <!-- //No Data (Text + Description) -->
+
+  <!-- Repository Visibility -->
+  <div class="section-visibility">
+    <h3 class="txt-title">Image Visibility</h3>
+    <div class="make-public">
+      <button type="button" class="btn-sub" (click)="changeVisibilityClick()">Make {{ this.repo.is_public ? 'Private' : 'Public' }}</button>
+      <p class="txt-desc">
+        This Image is currently <span>{{ this.repo.is_public ? 'public' : 'private' }}</span>. Only users on the permissions list may view and interact with it.
+      </p>
+    </div>
+  </div>
+  <!-- //Repository Visibility -->
+
+  <!-- Button -->
+  <div class="section-button">
+    <button type="button" class="btn-sub-action" (click)="deleteRepoClick()">Delete Image</button>
+  </div>
+  <!-- //Button -->
+</div>
+<!-- //Repository Settings -->

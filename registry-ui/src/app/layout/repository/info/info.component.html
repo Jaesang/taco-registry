@@ -1,0 +1,130 @@
+<!-- Repository 상세정보 -->
+<div class="page-repositories-info">
+  <!-- Repository Header -->
+  <div repository-header></div>
+  <!-- //Repository Header -->
+
+  <!-- 상세 -->
+  <div class="section-detail">
+    <!-- 왼쪽 영역 -->
+    <div class="left-info">
+      <h3 class="txt-title">Description</h3>
+      <div class="detail-area">
+        <div class="component-textarea">
+          <textarea class="textarea" placeholder="Team Description"  [(ngModel)]="repo.description" [readonly]="!mine"></textarea>
+        </div>
+        <div class="button-block" *ngIf="mine">
+          <button type="button" class="btn-sub" (click)="saveClick()">Save</button>
+        </div>
+      </div>
+
+      <h3 class="txt-title">Docker Pull Command</h3>
+      <div class="detail-area">
+        <div class="component-input type-copy">
+          <div class="input-area">
+            <input type="text" class="input-text" [(ngModel)]="dockerPullCommand" readonly>
+            <a href="javascript:;" class="btn-copy" aria-label="Copy" (click)="dockerPullCommandCopyClick()"></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Build -->
+      <h3 class="txt-title">
+        Recent Build
+        <a href="javascript:;" class="link-text" (click)="historyViewMoreClick()" *ngIf="mine && buildHistoryList.length">View More</a>
+      </h3>
+      <div class="detail-area">
+        <div class="component-table">
+          <table class="table-build" *ngIf="buildHistoryList.length">
+            <colgroup>
+              <col width="60" />
+              <col width="*" />
+              <col width="140" />
+              <col width="170" />
+            </colgroup>
+            <thead>
+            <tr>
+              <th></th>
+              <th>
+                <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'id' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'id' && sortDirection == 'desc'" (click)="sortClick('id')">Build ID</a>
+              </th>
+              <th>
+                <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'manual_user' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'manual_user' && sortDirection == 'desc'" (click)="sortClick('manual_user')">Triggered By</a>
+              </th>
+              <th>
+                <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'formatted_started' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'formatted_started' && sortDirection == 'desc'" (click)="sortClick('formatted_started')">Date Started</a>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of buildHistoryList | sort:sortProperty:sortDirection;">
+              <td class="align-center">
+                <span [ngClass]="buildHistoryService.getPhaseClass(item.phase)">
+                  <div class="lds-ellipsis" *ngIf="item.phase == Phase.waiting || item.phase == Phase.building || item.phase == Phase.pulling || item.phase == Phase.pushing"><div></div><div></div><div></div><div></div></div>
+                </span>
+              </td>
+              <td>
+                <a href="javascript:;" class="link-item" (click)="popupBuildDetail(item)">{{ item.id }}</a>
+              </td>
+              <td>
+            <span class="txt-user">
+              {{ item.manual_user }}
+            </span>
+              </td>
+              <td>
+                <span class="txt-date">{{ item.formatted_started }}</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- No Data (Text + Button) -->
+        <div class="component-nodata type-button" *ngIf="!buildHistoryList.length">
+          <span class="txt-nodata">No builds have been run for this image.</span>
+          <button class="btn-action type-small" (click)="startNewBuildClick()" *ngIf="mine">Start New Build</button>
+        </div>
+        <!-- //No Data (Text + Button) -->
+      </div>
+      <!-- //Recent Build -->
+    </div>
+    <!-- //왼쪽 영역 -->
+
+    <!-- 오른쪽 영역 -->
+    <div class="right-info">
+      <h3 class="txt-title">Recent Activity</h3>
+      <div class="detail-area">
+        <table class="table-activity">
+          <colgroup>
+            <col width="" />
+            <col width="" />
+            <col width="" />
+            <col width="" />
+          </colgroup>
+          <thead>
+          <tr>
+            <th></th>
+            <th *ngFor="let item of monthList">{{ item }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of stats; let index = index;">
+            <th>{{ index + 1 }}</th>
+            <td *ngFor="let data of item" [class.is-nothing]="data == -1">{{ data > -1 ? data : '' }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- //오른쪽 영역 -->
+
+  </div>
+  <!-- //상세 -->
+</div>
+<!-- //Repository 상세정보 -->
+
+<!-- Layer Popup -->
+<div build-detail-popup [namespace]="orgName" [repoName]="repoName" [buildId]="currentBuildId" [show]="showBuildDetailPopup" (onClose)="buildDetailPopupClose()"></div>
+<!-- //Layer Popup -->
+
+<div build-popup [show]="showBuildPopup" (onClose)="buildPopupClose()"></div>

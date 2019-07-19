@@ -1,0 +1,54 @@
+<!-- Organization Settings -->
+<div class="page-organization-setting">
+  <h2 class="section-sub-title type-org">
+    {{ org.name }}
+  </h2>
+
+  <!-- Title -->
+  <div class="section-title">
+    <h2 class="txt-title">Organization Settings</h2>
+  </div>
+  <!-- //Title -->
+
+  <!-- Form Setting -->
+  <table class="form-setting">
+    <colgroup>
+      <col width="150" />
+      <col width="420" />
+    </colgroup>
+    <tbody>
+    <tr>
+      <th>
+        <label class="txt-label">Organization Name</label>
+      </th>
+      <td>
+        {{ org.name }}
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <label class="txt-label">Images</label>
+      </th>
+      <td>
+        <a href="javascript:;" class="link-item" (click)="repoClick()">{{ repoCount ? (repoCount + (repoCount > 1 ? ' Images' : ' Image')) : 'Empty Image' }}</a>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <label class="txt-label">Members</label>
+      </th>
+      <td>
+        <a href="javascript:;" class="link-item" (click)="memberClick()">{{ memberCount > 1 ? memberCount + ' Members' : memberCount + ' Member' }}</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <!-- //Form Setting -->
+
+  <!-- Button -->
+  <div class="section-button">
+    <button type="button" class="btn-sub-action" (click)="deleteOrgClick()">Delete Organization</button>
+  </div>
+  <!-- //Button -->
+</div>
+<!-- //Organization Settings -->

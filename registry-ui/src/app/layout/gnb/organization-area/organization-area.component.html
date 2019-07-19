@@ -1,0 +1,18 @@
+<!--suppress NsUnresolvedStyleClassReference, JSUnnecessarySemicolon -->
+<div class="organization-block">
+  <span class="txt-label">
+    My Organization
+  </span>
+  <!-- Layer -->
+  <div class="layer-organization">
+    <a href="javascript:;" class="btn-create" (click)="createOrganization()">Create New Organization</a>
+    <ul class="list-org">
+      <li *ngFor="let organization of organizations">
+        <a href="javascript:;" class="link-item" (click)="selectOrganization(organization)">{{organization.name}}</a>
+      </li>
+    </ul>
+  </div>
+  <!-- //Layer -->
+</div>
+
+<div create-org-popup [show]="showCreateOrgPopup" (onClose)="createOrgPopupClose()"></div>

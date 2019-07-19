@@ -1,0 +1,51 @@
+<!-- Layer Popup -->
+<div class="layout-popup" *ngIf="show">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="close()"></a>
+        <h1 class="txt-title">Create New Organization</h1>
+
+        <!-- Popup 새로운 조직생성 -->
+        <div class="popup-create-organization">
+          <table class="form-create">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">Organization Name</label>
+              </th>
+              <td>
+                <div class="component-input" [class.is-error]="errorMsg != ''">
+                  <div class="input-area">
+                    <input type="text" class="input-text" [(ngModel)]="orgName" maxlength="40">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="orgName = ''"></a>
+                  </div>
+                  <span class="txt-error">{{ errorMsg }}</span>
+                </div>
+                <p class="txt-desc">
+                  Must be alphanumeric, all lowercase, at least 2 characters long and at most 40 characters long.
+                  Organization names less than 4 or more than 30 characters are only compatible with Docker 1.6+
+                </p>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup 새로운 조직생성 -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="close()">Cancel</button>
+          <button type="button" class="btn-action type-small" (click)="createOrgClick()">Create Organization</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup -->

@@ -1,0 +1,80 @@
+<!-- Repository Build History -->
+<div class="page-build-history">
+  <!-- Repository Header -->
+  <div repository-header></div>
+  <!-- //Repository Header -->
+
+  <!-- Title, Filter -->
+  <div class="section-title">
+    <h2 class="txt-title">Image Build History</h2>
+  </div>
+  <!-- //Title, Filter -->
+
+  <!-- Build History -->
+  <div class="component-table" *ngIf="buildHistoryList.length">
+    <table class="table-build">
+      <colgroup>
+        <col width="60" />
+        <col width="*" />
+        <col width="170" />
+        <col width="200" />
+        <col width="220" />
+      </colgroup>
+      <thead>
+      <tr>
+        <th></th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'id' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'id' && sortDirection == 'desc'" (click)="sortClick('id')">Build ID</a>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'manual_user' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'manual_user' && sortDirection == 'desc'" (click)="sortClick('manual_user')">Triggered By</a>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'formatted_started' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'formatted_started' && sortDirection == 'desc'" (click)="sortClick('formatted_started')">Date Started</a>
+        </th>
+        <th>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'tags' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'tags' && sortDirection == 'desc'" (click)="sortClick('tags')">Tags</a>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of buildHistoryList | sort:sortProperty:sortDirection;">
+        <td class="align-center">
+          <span [ngClass]="buildHistoryService.getPhaseClass(item.phase)">
+            <div class="lds-ellipsis" *ngIf="item.phase == Phase.waiting || item.phase == Phase.building || item.phase == Phase.pulling || item.phase == Phase.pushing"><div></div><div></div><div></div><div></div></div>
+          </span>
+        </td>
+        <td>
+          <a href="javascript:;" class="link-item" (click)="popupBuildDetail(item)">{{ item.id }}</a>
+        </td>
+        <td>
+          <span class="txt-user">
+            {{ item.manual_user }}
+          </span>
+        </td>
+        <td>
+          <span class="txt-date">{{ item.formatted_started }}</span>
+        </td>
+        <td>
+          <span class="txt-tag">{{ item.tags.join(', ') }}</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- //Build History -->
+
+  <!-- No Data (Text + Description) -->
+  <div class="component-nodata" *ngIf="!buildHistoryList.length">
+    <span class="txt-nodata">No builds have been run for this image.</span>
+    <p class="txt-desc">
+      Please start new build.
+    </p>
+  </div>
+  <!-- //No Data (Text + Description) -->
+</div>
+<!-- //Repository Build History -->
+
+<!-- Layer Popup -->
+<div build-detail-popup [namespace]="orgName" [repoName]="repoName" [buildId]="currentBuildId" [show]="showBuildDetailPopup" (onClose)="buildDetailPopupClose()"></div>
+<!-- //Layer Popup -->
