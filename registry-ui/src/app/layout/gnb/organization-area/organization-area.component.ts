@@ -34,7 +34,7 @@ export class OrganizationAreaComponent extends AbstractComponent implements OnIn
       this.userService.changeOrganizationList.subscribe(
         value => {
           this.userService.getUser().then(result => {
-            this.userService.user = result.data;
+            this.userService.user = result;
             this.organizations = this.userService.user.organizations;
             return true;
           });

@@ -87,6 +87,14 @@ public class Path {
     // (GET) 상세
     public static final String ORG_DETAIL                   = API + "/organization/{name}";
 
+    // member
+    // (GET) 목록
+    public static final String ORG_MEMBER                   = API + "/organization/{name}/members";
+
+    // member 상세
+    // (PUT) 등록
+    public static final String ORG_MEMBER_DETAIL            = API + "/organization/{name}/members/{username}";
+
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Image
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -99,6 +107,17 @@ public class Path {
     // image 상세
     // (GET) 상세
     public static final String IMAGE_DETAIL                 = API + "/image/{namespace}/{name}";
+
+    // build 목록
+    public static final String IMAGE_DETAIL_BUILD           = IMAGE_DETAIL + "/build";
+
+    /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	| Search
+	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+
+    // 유저 찾기
+    // (GET) 목록
+    public static final String SEARCH_MEMBER                = API + "/entities/{username}";
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
    | Download

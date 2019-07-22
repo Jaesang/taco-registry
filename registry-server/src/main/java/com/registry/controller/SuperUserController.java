@@ -9,6 +9,7 @@ import com.registry.value.common.Result;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 @RestController
 public class SuperUserController {
@@ -83,16 +86,12 @@ public class SuperUserController {
 //            @RequestParam String sortProperty,
 //            @RequestParam String sortDirection
     ) throws Exception{
-        Result result = new Result();
-        try {
-            result.setData(mapper.mapAsList(userService.getUsers(), UserDto.VIEW.class));
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
+        JSONObject result = new JSONObject();
+
+        List<User> userList = userService.getUsers();
+        userList = userList == null ? new ArrayList<>() : userList;
+        result.put("users", mapper.mapAsList(userList, UserDto.VIEW.class));
+
         return result;
     }
 
@@ -117,19 +116,8 @@ public class SuperUserController {
             @RequestHeader(name = "Authorization") String authorization,
             @RequestBody UserDto.CREATE user
     ) throws Exception{
-        Result result = new Result();
-        try {
-            User newUser = userService.saveUser(mapper.map(user, User.class), "USER", true);
-
-            result.setData(mapper.map(newUser, UserDto.CREATE.class));
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
-        return result;
+        User newUser = userService.saveUser(mapper.map(user, User.class), "USER", true);
+        return mapper.map(newUser, UserDto.CREATE.class);
     }
 
     /**
@@ -153,18 +141,9 @@ public class SuperUserController {
             @RequestHeader(name = "Authorization") String authorization,
             @RequestBody UserDto.EDIT user
     ) throws Exception{
-        Result result = new Result();
-        try {
-            userService.saveUser(mapper.map(user, User.class), null, false);
+        userService.saveUser(mapper.map(user, User.class), null, false);
 
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
-        return result;
+        return true;
     }
 
     /**
@@ -188,18 +167,9 @@ public class SuperUserController {
             @RequestHeader(name = "Authorization") String authorization,
             @PathVariable(name = "username") String username
     ) throws Exception{
-        Result result = new Result();
-        try {
-            userService.deleteUser(username);
+        userService.deleteUser(username);
 
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
-        return result;
+        return true;
     }
 
     /**
@@ -222,17 +192,7 @@ public class SuperUserController {
             )
             @RequestHeader(name = "Authorization") String authorization
     ) throws Exception{
-        Result result = new Result();
-        try {
-            result.setData(true);
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
-        return result;
+        return true;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

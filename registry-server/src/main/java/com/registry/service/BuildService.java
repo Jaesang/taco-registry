@@ -1,8 +1,12 @@
 package com.registry.service;
 
-import com.registry.repository.common.CodeEntity;
-import com.registry.repository.common.CodeRepository;
+import com.registry.repository.image.Build;
+import com.registry.repository.image.BuildRepository;
+import com.registry.repository.image.Image;
+import com.registry.repository.image.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,15 +15,19 @@ import java.util.List;
  * Created by boozer on 2019. 7. 15
  */
 @Service
-public class CommonService extends AbstractService {
+public class BuildService extends AbstractService {
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-    /** Common Repo */
+    /** Build Repo */
     @Autowired
-    private CodeRepository _codeRepo;
+    private BuildRepository _buildRepository;
+
+    /** Image Service */
+    @Autowired
+    private ImageService _imageService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -41,14 +49,13 @@ public class CommonService extends AbstractService {
     | Public Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-    /**
-     * Code 목록 조회
-     */
-    public List<CodeEntity> getCodeList(String groupCode) {
-        logger.info("get code list : {}", groupCode);
+    public List<Build> getImages(String namespace, String name, int limit) {
+        logger.info("image namespace : {}", namespace);
 
-        List<CodeEntity> codeList = _codeRepo.findByGroupCodeAndEnabled(groupCode, true);
-        return codeList;
+        Image image = _imageService.getImage(namespace, name);
+
+        Pageable pageable = PageRequest.of(0, limit);
+        return _buildRepository.findAllByImageId(image.getId(), pageable);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

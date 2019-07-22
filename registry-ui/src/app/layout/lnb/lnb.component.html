@@ -5,7 +5,7 @@
       <!-- //Organization -->
       <ul class="list-lnb" *ngIf="currentLnbType == LnbType.ORG">
         <li>
-          <a href="javascript:;" class="link-repository" [attr.aria-selected]="selectedIndex == 0" (click)="selectedIndex = 0; router.navigate(['app/organization/' + pathVariable + '/repository'])">
+          <a href="javascript:;" class="link-repository" [attr.aria-selected]="selectedIndex == 0" (click)="selectedIndex = 0; router.navigate(['app/organization/' + pathVariable + '/image'])">
             <span class="lnb-tooltip">Repository</span>
           </a>
         </li>

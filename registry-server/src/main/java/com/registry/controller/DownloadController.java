@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 @RestController
 public class DownloadController {
@@ -58,7 +58,7 @@ public class DownloadController {
      * @return
      * @throws Exception
      */
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping(Path.FILE_DOWNLOAD_KUBE_CONFIG)
     @ApiOperation(
             value = "kube-config file download",

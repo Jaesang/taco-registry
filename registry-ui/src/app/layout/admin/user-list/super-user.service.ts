@@ -36,7 +36,7 @@ export class SuperUserService extends AbstractService {
    * @param user
    * @returns {Promise<any>}
    */
-  public createUser(user: SuperUser.Entity): Promise<CommonResult> {
+  public createUser(user: SuperUser.Entity): Promise<SuperUser.Entity> {
     return this.post(`${environment.apiUrl}/superuser/users/`, user);
   }
 

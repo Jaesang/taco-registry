@@ -1,37 +1,34 @@
 package com.registry.controller;
 
-import com.registry.constant.CommonConstant;
 import com.registry.constant.Path;
-import com.registry.repository.common.CodeEntity;
-import com.registry.service.CommonService;
-import com.registry.value.common.Result;
+import com.registry.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import ma.glasnost.orika.MapperFacade;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by boozer on 2019. 7. 15
  */
 @RestController
-public class CommonController {
+public class SearchController {
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-    protected static final Logger logger = LoggerFactory.getLogger(CommonController.class);
+    protected static final Logger logger = LoggerFactory.getLogger(SearchController.class);
 
     @Autowired
-    private CommonService commonService;
+    private UserService userService;
+
+    @Autowired
+    private MapperFacade mapper;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -54,42 +51,37 @@ public class CommonController {
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     /**
-     * Code 목록 조회
+     * 추가할 멤버 찾기
      * @return
      * @throws Exception
      */
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @GetMapping(Path.COMMON_CODE)
+    @GetMapping(Path.SEARCH_MEMBER)
     @ApiOperation(
-        value = "get code",
-        notes = "Code 조회"
+            value = "find new member",
+            notes = "멤버 찾기"
     )
-    public Object getCodeList(
+    public Object getOrg(
             @ApiParam(
                     defaultValue="bearer ",
                     value ="토큰",
                     required = true
             )
             @RequestHeader(name = "Authorization") String authorization,
-            // execution Seq
-            @ApiParam(name = "groupCode",
-                    defaultValue = "STATUS",
-                    required = true)
-            @RequestParam String groupCode
+            @ApiParam(
+                    name = "username",
+                    required = true
+            )
+            @PathVariable("username") String username,
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @RequestParam("namespace") String namespace
     ) throws Exception{
-        Result result = new Result();
+        JSONObject result = new JSONObject();
 
-        try {
-            List<CodeEntity> codeList = commonService.getCodeList(groupCode);
-
-            result.setData(codeList);
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
+        result.put("results", userService.findMembers(username, namespace));
         return result;
     }
 

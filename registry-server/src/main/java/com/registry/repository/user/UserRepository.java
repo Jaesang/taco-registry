@@ -10,4 +10,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findUserByUsername(@Param("username") String username);
 
     List<User> findAllByDelYn(@Param("delYn") boolean delYn);
+
+    List<User> findAllByUsernameContaining(@Param("username") String username);
 }

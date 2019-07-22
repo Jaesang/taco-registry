@@ -47,7 +47,7 @@ export class UserService extends AbstractService {
 	 * User Info
 	 * @returns {Promise<any>}
 	 */
-	public getUser(): Promise<CommonResult> {
+	public getUser(): Promise<User.Entity> {
 		return this.get(`${environment.apiUrl}/user`);
 	}
 

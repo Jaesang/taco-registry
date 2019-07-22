@@ -32,7 +32,7 @@ import {BuildHistoryService} from "./repository/build-history/build-history.serv
             path: 'main',
             loadChildren: 'app/layout/main/main.module#MainModule',
             canActivate: [
-              OrganizationGuard
+              // OrganizationGuard
             ]
           },
           {

@@ -27,7 +27,7 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import javax.sql.DataSource;
 
 /**
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 @Configuration
 @EnableWebSecurity
@@ -66,9 +66,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .authoritiesByUsernameQuery(
                         " SELECT    id, " +
-                                "           name " +
-                                " FROM      user_role " +
-                                " WHERE     user_id = ? "
+                                "           CASE " +
+                                " WHEN super_user = 1 " +
+                                " THEN 'ADMIN' " +
+                                " ELSE 'USER' " +
+                                " END AS name" +
+                                " FROM      user " +
+                                " WHERE     id = ? "
                 );
     }
 

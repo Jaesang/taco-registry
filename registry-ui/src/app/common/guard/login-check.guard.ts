@@ -41,7 +41,7 @@ export class LoginCheckGuard implements CanActivate {
 	 */
 	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 		return this.userService.getUser().then(result => {
-		  this.userService.user = result.data;
+		  this.userService.user = result;
 		  this.commonService.logedIn = true;
       return true;
     }).catch(reason => {

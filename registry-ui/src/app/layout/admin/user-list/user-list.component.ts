@@ -66,7 +66,7 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
     this.loaderService.show.next(true);
 
     this.superUserService.createUser(this.addUser).then(result => {
-      this.addUser = result.data;
+      this.addUser = result;
       this.showCreateUserPopup = false;
       this.showCreateUserConfirmPopup = true;
 
@@ -250,7 +250,7 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
     this.superUserService.getUsers()
       .then(result => {
 
-        const users: SuperUser.Entity[] = result.data;
+        const users: SuperUser.Entity[] = result.users;
         if (_.isNil(users)) {
           this.users = [];
         }

@@ -3,7 +3,7 @@ package com.registry.value.common;
 import java.io.Serializable;
 
 /**
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 public class Result implements Serializable {
 

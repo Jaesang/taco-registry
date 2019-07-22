@@ -46,7 +46,7 @@ export class AdminGuard implements CanActivate {
 	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     return this.superuserService.getSuperuserVerify().then(result => {
-      if (result.data) {
+      if (result) {
         return true;
       } else {
         this.router.navigate(['app/main']);

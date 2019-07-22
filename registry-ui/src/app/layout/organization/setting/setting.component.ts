@@ -40,7 +40,7 @@ export class SettingComponent extends PageComponent implements OnInit {
 
     // repository list 조회
     this.repositoryService.getRepositoryList(this.org.name).then(result => {
-      this.repoCount = result.data.length;
+      this.repoCount = result.images.length;
     });
   }
 
@@ -48,7 +48,7 @@ export class SettingComponent extends PageComponent implements OnInit {
    * repo 클릭
    */
   public repoClick() {
-    this.router.navigate([`app/organization/${this.org.name}/repository`]);
+    this.router.navigate([`app/organization/${this.org.name}/image`]);
   }
 
   /**

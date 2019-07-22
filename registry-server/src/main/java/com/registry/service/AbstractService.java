@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 /**
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 public abstract class AbstractService {
 

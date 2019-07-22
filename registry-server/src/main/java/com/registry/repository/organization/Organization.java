@@ -1,8 +1,11 @@
 package com.registry.repository.organization;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.registry.repository.AbstractEntity;
 import com.registry.repository.user.User;
 import com.registry.repository.user.UserOrganization;
+import com.registry.util.SecurityUtil;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,7 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "organization")
 @org.hibernate.annotations.DynamicUpdate
-public class Organization implements Serializable {
+public class Organization extends AbstractEntity {
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Private Variables
@@ -48,6 +51,14 @@ public class Organization implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<UserOrganization> userOrg = new ArrayList<UserOrganization>();
+
+	@JsonProperty
+	@Transient
+	private Boolean is_admin;
+
+	@JsonProperty
+	@Transient
+	private Boolean is_member;
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Variables
@@ -103,7 +114,31 @@ public class Organization implements Serializable {
 		this.userOrg = userOrg;
 	}
 
-/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	public Boolean getIs_admin() {
+		this.is_admin = false;
+		if (userOrg != null && userOrg.size() > 0) {
+			userOrg.stream().forEach(value -> {
+				if (value.getUser().getId().equals(SecurityUtil.getUser())) {
+					this.is_admin = true;
+				}
+			});
+		}
+		return is_admin;
+	}
+
+	public Boolean getIs_member() {
+		this.is_member = true;
+		if (userOrg != null && userOrg.size() > 0) {
+			userOrg.stream().forEach(value -> {
+				if (value.getUser().getId().equals(SecurityUtil.getUser())) {
+					this.is_member = false;
+				}
+			});
+		}
+		return is_member;
+	}
+
+	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Method
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 	

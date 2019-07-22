@@ -60,7 +60,7 @@ export class TeamService extends AbstractService {
    * @returns {Promise<any>}
    */
   public getTeamMemberList(org: string, team: string): Promise<Member.MemberList> {
-    return this.get(`${environment.apiUrl}/organization/${org}/team/${team}/members?includePending=true`);
+    return this.get(`${environment.apiUrl}/organization/${org}/members?includePending=true`);
   }
 
   /**
@@ -76,7 +76,7 @@ export class TeamService extends AbstractService {
    * @returns {Promise<any>}
    */
   public createTeamMember(org: string, team: string, username: string): Promise<Member.Results> {
-    return this.put(`${environment.apiUrl}/organization/${org}/team/${team}/members/${username}`, null);
+    return this.put(`${environment.apiUrl}/organization/${org}/members/${username}`, null);
   }
 
   /**
@@ -84,7 +84,7 @@ export class TeamService extends AbstractService {
    * @returns {Promise<any>}
    */
   public deleteTeamMember(org: string, team: string, username: string): Promise<Member.Results> {
-    return this.delete(`${environment.apiUrl}/organization/${org}/team/${team}/members/${username}`);
+    return this.delete(`${environment.apiUrl}/organization/${org}/members/${username}`);
   }
 
   /**

@@ -38,7 +38,7 @@ export class UserSettingComponent extends PageComponent implements OnInit {
 
     // repository list 조회
     this.repositoryService.getRepositoryList(this.user.username).then(result => {
-      this.repoCount = result.data.length;
+      this.repoCount = result.images.length;
     });
   }
 
@@ -63,7 +63,7 @@ export class UserSettingComponent extends PageComponent implements OnInit {
 
     this.loaderService.show.next(true);
     this.userService.verifyPassword(this.currentPassword).then(result => {
-      if (result.data) {
+      if (result) {
         this.userService.updatePassword(this.newPassword).then(result => {
           this.showChangePasswordPopup = false;
 

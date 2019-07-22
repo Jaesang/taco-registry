@@ -134,6 +134,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
   public createRepoClick() {
     this.loaderService.show.next(true);
 
+    this.repo.is_organization = this.repo.namespace == this.userService.user.username ? false : true;
     this.repositoryService.createRepository(this.repo).then(result => {
       if (this.withDockerfile) {
 

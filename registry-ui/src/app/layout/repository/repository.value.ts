@@ -23,7 +23,7 @@ export namespace Repository {
 	  public date: string;
   }
 
-	export class Result extends CommonResult {
-    public data: Entity[] = [];
+	export class Result {
+    public images: Entity[] = [];
   }
 }

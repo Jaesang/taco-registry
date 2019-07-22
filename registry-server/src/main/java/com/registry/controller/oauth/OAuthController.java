@@ -3,10 +3,12 @@ package com.registry.controller.oauth;
 import com.registry.constant.ApplicationConstant;
 import com.registry.constant.CommonConstant;
 import com.registry.constant.Path;
+import com.registry.exception.AccessDeniedException;
 import com.registry.util.RestApiUtil;
 import com.registry.value.common.Result;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,14 +16,15 @@ import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.LinkedHashMap;
 
 /**
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 @RestController
 public class OAuthController {
 
-        /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
@@ -55,7 +58,7 @@ public class OAuthController {
     | Public Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @DeleteMapping(Path.OAUTH_REVOKE)
     @ApiOperation(
             value = "revokeToken",
@@ -112,8 +115,11 @@ public class OAuthController {
                    required = true
            ) @RequestParam(name = "password") String password ) throws Exception {
         String params = "?grant_type="+grantType+"&scope="+scope+"&username="+username+"&password="+password;
-        Object result = restApiUtil.excute("http://localhost:8080/oauth/token"+params, HttpMethod.POST, null, Object.class, RestApiUtil.MEDIA_TYPE_JSON, authorization);
+        LinkedHashMap result = (LinkedHashMap) restApiUtil.excute("http://localhost:8080/oauth/token"+params, HttpMethod.POST, null, Object.class, RestApiUtil.MEDIA_TYPE_JSON, authorization);
 
+        if (result.get("error") != null) {
+            throw new AccessDeniedException(result.get("error").toString());
+        }
         return result;
     }
 }

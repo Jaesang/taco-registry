@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 @Service
 public class UserService extends AbstractService {
@@ -89,7 +89,7 @@ public class UserService extends AbstractService {
      * @return
      * @throws Exception
      */
-    public User getUserInfo(String username) throws Exception {
+    public User getUserInfo(String username) {
 
         // 사용자정보 조회
         User user = _userRepo.findUserByUsername(username);
@@ -99,7 +99,7 @@ public class UserService extends AbstractService {
         return user;
     }
 
-    public List<User> getUsers() throws Exception {
+    public List<User> getUsers() {
         return _userRepo.findAllByDelYn(false);
     }
 
@@ -278,7 +278,6 @@ public class UserService extends AbstractService {
             user.setPassword(encodePassword);
         }
 
-        List<CodeEntity> codeList = _codeRepo.findByGroupCodeAndEnabled("ROLE",true);
         if(isCreate){
             // 신규 등록
 
@@ -291,21 +290,6 @@ public class UserService extends AbstractService {
             }
 
             user =  _userRepo.save(user);
-
-            for(CodeEntity code : codeList){
-                String insertCodeName = code.getCodeName();
-                if((rolename.equals("USER") && insertCodeName.equals(rolename)) || !rolename.equals("USER")){
-                    // ADMIN 은 전체 USER는 USER만 등록
-                    Role role = new Role();
-                    role.setUser(user);
-                    role.setName(insertCodeName);
-                    role.setStarred(false);
-                    try{
-                        this.setCreatedInfo(role);
-                    }catch(Exception e){}
-                    _roleRepo.save(role);
-                }
-            }
         }else{
             User preUser;
             if (user.getUsername() != null) {
@@ -314,36 +298,11 @@ public class UserService extends AbstractService {
                 preUser = _userRepo.findById(SecurityUtil.getUser()).orElse(null);
             }
 
-            List<Role> roleList = preUser.getRole();
-            // role update
             if (rolename != null) {
-                if(roleList.size() == 2 && rolename.equals("USER")){
-                    // ADMIN -> USER
-                    int idx = 0;
-                    for(Role role : roleList){
-                        if(role.getName().equals("ADMIN")){
-                            // ADMIN권한 회수
-                            _roleRepo.deleteById(role.getId());
-                            preUser.setSuperuser(false);
-                            break;
-                        }
-                        idx++;
-                    }
-                    roleList.remove(idx);
-                    preUser.setRole(roleList);
-                }else if(roleList.size() == 1 && rolename.equals("ADMIN")){
-                    // USER -> ADMIN
-                    Role role = new Role();
-                    role.setUser(preUser);
-                    role.setName("ADMIN");
-                    try{
-                        this.setCreatedInfo(role);
-                    }catch(Exception e){}
-                    // ADMIN 권한 추가
-                    role = _roleRepo.save(role);
-                    roleList.add(role);
-                    preUser.setRole(roleList);
-                    preUser.setSuperuser(true);
+                if (rolename.equals("ADMIN")) {
+                    user.setSuperuser(true);
+                } else {
+                    user.setSuperuser(false);
                 }
             }
 
@@ -376,6 +335,18 @@ public class UserService extends AbstractService {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String p = user.getPassword();
         return bCryptPasswordEncoder.matches(password, p);
+    }
+
+    public List<User> findMembers(String username, String namespace) throws Exception {
+        List<User> users = _userRepo.findAllByUsernameContaining(username);
+        List<User> results = users.stream().filter(value -> {
+            boolean exist = value.getUserOrg().stream().anyMatch(v -> {
+               return namespace.equals(v.getOrganization().getName());
+            });
+
+            return !exist;
+        }).collect(Collectors.toList());
+        return results;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

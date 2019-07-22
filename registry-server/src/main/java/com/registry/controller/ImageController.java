@@ -19,7 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 @RestController
 public class ImageController {
@@ -61,7 +61,7 @@ public class ImageController {
      * @return
      * @throws Exception
      */
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @PostMapping(Path.IMAGE)
     @ApiOperation(
         value = "create image",
@@ -75,23 +75,17 @@ public class ImageController {
             )
             @RequestHeader(name = "Authorization") String authorization,
             @ApiParam(
-                    name = "organization",
+                    name = "image",
                     required = true
             )
             @RequestBody ImageDto.CREATE image
     ) throws Exception{
-        Result result = new Result();
+        Image i = mapper.map(image, Image.class);
+        i.setPublicYn(image.is_public);
+        i.setOrganization(image.is_organization);
+        imageService.create(i);
 
-        try {
-            imageService.create(mapper.map(image, Image.class));
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
-        return result;
+        return true;
     }
 
     /**
@@ -99,13 +93,13 @@ public class ImageController {
      * @return
      * @throws Exception
      */
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping(Path.IMAGE_DETAIL)
     @ApiOperation(
             value = "get image",
             notes = "Image 조회"
     )
-    public Object getOrg(
+    public Object getImage(
             @ApiParam(
                     defaultValue="bearer ",
                     value ="토큰",
@@ -116,25 +110,17 @@ public class ImageController {
                     name = "namespace",
                     required = true
             )
-            @PathVariable("name") String namespace,
+            @PathVariable("namespace") String namespace,
             @ApiParam(
                     name = "name",
                     required = true
             )
             @PathVariable("name") String name
     ) throws Exception{
-        Result result = new Result();
-
-        try {
-            result.setData(mapper.map(imageService.getImage(namespace, name), ImageDto.VIEW.class));
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
-        return result;
+        Image image = imageService.getImage(namespace, name);
+        ImageDto.VIEW imageDto = mapper.map(image, ImageDto.VIEW.class);
+        imageDto.is_organization = image.isOrganization();
+        return imageDto;
     }
 
     /**
@@ -142,13 +128,13 @@ public class ImageController {
      * @return
      * @throws Exception
      */
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping(Path.IMAGE)
     @ApiOperation(
             value = "get image",
             notes = "Image 조회"
     )
-    public Object getOrg(
+    public Object getImages(
             @ApiParam(
                     defaultValue="bearer ",
                     value ="토큰",
@@ -156,22 +142,13 @@ public class ImageController {
             )
             @RequestHeader(name = "Authorization") String authorization,
             @ApiParam(
-                    name = "image",
+                    name = "namespace",
                     required = true
             )
             @RequestParam("namespace") String namespace
     ) throws Exception{
-        Result result = new Result();
-
-        try {
-            result.setData(mapper.mapAsList(imageService.getImages(namespace), ImageDto.VIEW.class));
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
+        JSONObject result = new JSONObject();
+        result.put("images", mapper.mapAsList(imageService.getImages(namespace), ImageDto.VIEW.class));
         return result;
     }
 

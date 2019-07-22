@@ -1,6 +1,7 @@
 package com.registry.service;
 
 import com.registry.dto.OrganizationDto;
+import com.registry.exception.BadRequestException;
 import com.registry.repository.common.CodeEntity;
 import com.registry.repository.common.CodeRepository;
 import com.registry.repository.organization.Organization;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 @Service
 public class OrganizationService extends AbstractService {
@@ -34,6 +35,9 @@ public class OrganizationService extends AbstractService {
     /** Org Repo */
     @Autowired
     private UserOrganizationRepository _userOrgRepo;
+
+    @Autowired
+    private UserService _userService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -62,10 +66,14 @@ public class OrganizationService extends AbstractService {
     public void create(Organization org) {
         logger.info("organization : {}", org);
 
-        _orgRepo.save(org);
-
         User user = new User();
         user.setId(SecurityUtil.getUser());
+
+        org.setCreatedBy(user);
+        org.setUpdatedBy(user);
+        _orgRepo.save(org);
+
+
         UserOrganization userOrganization = new UserOrganization();
         userOrganization.setUser(user);
         userOrganization.setOrganization(org);
@@ -78,6 +86,50 @@ public class OrganizationService extends AbstractService {
         logger.info("organization name : {}", name);
 
         return _orgRepo.findOneByName(name);
+    }
+
+    public List<UserOrganization> getMembers(String orgName) {
+        Organization org = getOrg(orgName);
+
+        return _userOrgRepo.findAllByOrganizationId(org.getId());
+    }
+
+    /**
+     * member 추가
+     * @param username
+     * @param namespace
+     */
+    public void addMember(String username, String namespace) throws Exception {
+        User user = _userService.getUserInfo(username);
+        Organization org = _orgRepo.findOneByName(namespace);
+
+        if (_userOrgRepo.findOneByOrganizationIdAndUserId(org.getId(), user.getId()) == null) {
+            UserOrganization userOrg = new UserOrganization();
+            userOrg.setUser(user);
+            userOrg.setOrganization(org);
+
+            _userOrgRepo.save(userOrg);
+        }
+    }
+
+    /**
+     * member 삭제
+     * @param username
+     * @param namespace
+     * @throws Exception
+     */
+    public void deleteMember(String username, String namespace) throws Exception {
+        User user = _userService.getUserInfo(username);
+        Organization org = _orgRepo.findOneByName(namespace);
+
+        UserOrganization userOrg = _userOrgRepo.findOneByOrganizationIdAndUserId(org.getId(), user.getId());
+        if (userOrg != null) {
+            if (org.getCreatedBy().getId() != user.getId()) {
+                _userOrgRepo.delete(userOrg);
+            } else {
+                throw new BadRequestException("Cannot remove creator.");
+            }
+        }
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

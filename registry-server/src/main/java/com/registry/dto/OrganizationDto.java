@@ -20,6 +20,15 @@ public class OrganizationDto {
     public static class VIEW {
         public String name;
         public Boolean publicYn;
+        public Boolean is_admin;
+        public Boolean is_member;
+    }
+
+    @ApiModel("OrgDto.MEMBER")
+    public static class MEMBER {
+        public String name;
+        public String kind;
+        public String role;
     }
 
 }

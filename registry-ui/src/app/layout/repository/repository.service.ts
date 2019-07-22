@@ -72,15 +72,7 @@ export class RepositoryService extends AbstractService {
    * @returns {Promise<any>}
    */
   public createRepository(repo: Repository.Entity): Promise<Repository.Entity> {
-    let data = {
-      description: repo.description ? repo.description : '',
-      namespace: repo.namespace,
-      repo_kind: "image",
-      repository: repo.name,
-      visibility: repo.is_public ? 'public' : 'private'
-    };
-
-    return this.post(`${environment.apiUrl}/image`, data);
+    return this.post(`${environment.apiUrl}/image`, repo);
   }
 
   /**

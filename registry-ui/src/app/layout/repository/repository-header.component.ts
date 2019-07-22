@@ -70,9 +70,9 @@ export class RepositoryHeaderComponent extends AbstractComponent implements OnIn
   public backClick() {
     let url = '';
     if (this.repo.is_organization) {
-      url = `app/organization/${this.repo.namespace}/repository`;
+      url = `app/organization/${this.repo.namespace}/image`;
     } else {
-      url = `app/user/${this.repo.namespace}/repository`;
+      url = `app/user/${this.repo.namespace}/image`;
     }
     this.router.navigate([url]);
   }

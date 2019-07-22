@@ -19,7 +19,7 @@ import java.net.URLDecoder;
 import java.util.Map;
 
 /**
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 @RestController
 public class UserController {
@@ -62,6 +62,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping(Path.USER)
     @ApiOperation(
             value = "get user",
@@ -75,19 +76,7 @@ public class UserController {
             )
             @RequestHeader(name = "Authorization") String authorization
     ) throws Exception{
-        Result result = new Result();
-
-        try {
-            // 반환
-            result.setData(mapper.map(userService.getLoginUser(), UserDto.VIEW.class));
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
-        return result;
+        return mapper.map(userService.getLoginUser(), UserDto.VIEW.class);
     }
 
     /**
@@ -95,7 +84,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping(Path.USER_DETAIL)
     @ApiOperation(
             value = "get user",
@@ -110,20 +99,9 @@ public class UserController {
             @RequestHeader(name = "Authorization") String authorization,
             @PathVariable("username") String username
     ) throws Exception{
-        Result result = new Result();
 
-        try {
-            User user = userService.getUserInfo(URLDecoder.decode(username, "utf-8"));
-
-            result.setData(mapper.map(user, UserDto.VIEW.class));
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
-        return result;
+        User user = userService.getUserInfo(URLDecoder.decode(username, "utf-8"));
+        return mapper.map(user, UserDto.VIEW.class);
     }
 
     /**
@@ -131,7 +109,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @PutMapping(Path.USER)
     @ApiOperation(
             value = "save user",
@@ -147,18 +125,9 @@ public class UserController {
             @RequestHeader(name = "Authorization") String authorization,
             @RequestBody UserDto.EDIT user
     ) throws Exception{
-        Result result = new Result();
-        try {
-            userService.saveUser(mapper.map(user, User.class), null, false);
+        userService.saveUser(mapper.map(user, User.class), null, false);
 
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
-        return result;
+        return true;
     }
 
     /**
@@ -166,7 +135,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @PostMapping(Path.PASSWORD_VERIFY)
     @ApiOperation(
             value = "password verify",
@@ -182,17 +151,7 @@ public class UserController {
             @RequestHeader(name = "Authorization") String authorization,
             @RequestBody Map<String, Object> map
     ) throws Exception{
-        Result result = new Result();
-        try {
-            result.setData(userService.passwordVerify((String) map.get("password")));
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
-        return result;
+        return userService.passwordVerify((String) map.get("password"));
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

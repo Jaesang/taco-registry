@@ -16,8 +16,8 @@ export namespace SuperUser {
   }
 
   export namespace Result {
-    export class Users extends CommonResult{
-      data: Entity[];
+    export class Users {
+      users: Entity[];
     }
   }
 

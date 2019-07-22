@@ -2,36 +2,43 @@ package com.registry.controller;
 
 import com.registry.constant.CommonConstant;
 import com.registry.constant.Path;
-import com.registry.repository.common.CodeEntity;
-import com.registry.service.CommonService;
+import com.registry.dto.BuildDto;
+import com.registry.dto.ImageDto;
+import com.registry.repository.image.Build;
+import com.registry.repository.image.Image;
+import com.registry.service.BuildService;
+import com.registry.service.ImageService;
 import com.registry.value.common.Result;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import ma.glasnost.orika.MapperFacade;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by boozer on 2019. 7. 15
  */
 @RestController
-public class CommonController {
+public class BuildController {
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-    protected static final Logger logger = LoggerFactory.getLogger(CommonController.class);
+    protected static final Logger logger = LoggerFactory.getLogger(BuildController.class);
 
     @Autowired
-    private CommonService commonService;
+    private BuildService buildService;
+
+    @Autowired
+    private MapperFacade mapper;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -53,43 +60,45 @@ public class CommonController {
     | Public Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-    /**
-     * Code 목록 조회
+    /**d
+     * Build 목록 조회
      * @return
      * @throws Exception
      */
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @GetMapping(Path.COMMON_CODE)
+    @GetMapping(Path.IMAGE_DETAIL_BUILD)
     @ApiOperation(
-        value = "get code",
-        notes = "Code 조회"
+            value = "get build list",
+            notes = "Build 목록 조회"
     )
-    public Object getCodeList(
+    public Object getOrg(
             @ApiParam(
                     defaultValue="bearer ",
                     value ="토큰",
                     required = true
             )
             @RequestHeader(name = "Authorization") String authorization,
-            // execution Seq
-            @ApiParam(name = "groupCode",
-                    defaultValue = "STATUS",
-                    required = true)
-            @RequestParam String groupCode
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable("namespace") String namespace,
+            @ApiParam(
+                    name = "name",
+                    required = true
+            )
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "limit"
+            )
+            @RequestParam("limit") int limit
     ) throws Exception{
-        Result result = new Result();
+        JSONObject result = new JSONObject();
 
-        try {
-            List<CodeEntity> codeList = commonService.getCodeList(groupCode);
+        List<Build> buildList = buildService.getImages(namespace, name, limit);
+        buildList = buildList == null ? new ArrayList<>() : buildList;
+        result.put("builds", mapper.mapAsList(buildList, BuildDto.class));
 
-            result.setData(codeList);
-            result.setCode(CommonConstant.CommonCode.SUCCESS);
-            result.setMessage(CommonConstant.CommonMessage.SUCCESS);
-        } catch(Exception e) {
-            logger.error(e.getMessage());
-            result.setCode(CommonConstant.CommonCode.FAIL);
-            result.setMessage(CommonConstant.CommonMessage.FAIL);
-        }
         return result;
     }
 

@@ -1,7 +1,10 @@
 package com.registry.repository.image;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.registry.repository.AbstractEntity;
 import com.registry.repository.user.Role;
+import com.registry.util.SecurityUtil;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "image")
 @org.hibernate.annotations.DynamicUpdate
-public class Image implements Serializable {
+public class Image extends AbstractEntity {
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Private Variables
@@ -77,6 +80,14 @@ public class Image implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "image", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Tag> tags = new ArrayList<Tag>();
+
+	@JsonProperty
+	@Transient
+	private Boolean can_admin;
+
+	@JsonProperty
+	@Transient
+	private Boolean can_write;
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Variables
@@ -186,6 +197,35 @@ public class Image implements Serializable {
 
 	public void setTags(List<Tag> tags) {
 		this.tags = tags;
+	}
+
+	public Boolean getCan_admin() {
+		this.can_admin = false;
+		if (role != null && role.size() > 0) {
+			role.stream().forEach(value -> {
+				if (value.getUser().getId().equals(SecurityUtil.getUser())) {
+					if ("ADMIN".equals(value.getName())) {
+						this.can_admin = true;
+					}
+				}
+			});
+		}
+		return can_admin;
+	}
+
+	public Boolean getCan_write() {
+		this.can_write = false;
+		if (role != null && role.size() > 0) {
+			role.stream().forEach(value -> {
+				if (value.getUser().getId().equals(SecurityUtil.getUser())) {
+					if ("ADMIN".equals(value.getName()) || "WRITE".equals(value.getName())) {
+						this.can_write = true;
+					}
+				}
+			});
+		}
+
+		return can_write;
 	}
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

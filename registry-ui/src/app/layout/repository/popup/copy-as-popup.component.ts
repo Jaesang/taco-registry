@@ -146,6 +146,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
 
     this.dockerFileContent = this.editor.value;
 
+    this.repo.is_organization = this.repo.namespace == this.userService.user.username ? false : true;
     this.repositoryService.createRepository(this.repo).then(result => {
 
       this.fileService.createFile(this.dockerFileContent).then(result => {

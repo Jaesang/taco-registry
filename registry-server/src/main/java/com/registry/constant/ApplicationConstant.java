@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * application.yaml 파일의 내용을 가져올 수 있도록 해주는 Config Util
- * Created by boozer on 2019. 6. 18
+ * Created by boozer on 2019. 7. 15
  */
 @Component
 @ConfigurationProperties("config")

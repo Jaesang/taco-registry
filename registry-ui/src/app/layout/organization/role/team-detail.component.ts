@@ -50,7 +50,7 @@ export class TeamDetailComponent extends PageComponent implements OnInit {
             this.teamName = params[ 'teamname' ];
           }
 
-          this.getTeamDetail();
+          // this.getTeamDetail();
           this.getTeamMemberList();
         })
     );
