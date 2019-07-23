@@ -34,7 +34,7 @@ public class UserOrganization implements Serializable {
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="user_id", nullable = false)
+	@JoinColumn(name="username", nullable = false)
 	private User user;
 
 	@JsonIgnore

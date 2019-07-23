@@ -76,7 +76,6 @@ public class UserService extends AbstractService {
         // 사용자정보 조회
         User user = _userRepo.findById(SecurityUtil.getUser()).orElse(null);
 
-        setRoleInfo(user);
         setOrgs(user);
 
         return user;
@@ -105,140 +104,16 @@ public class UserService extends AbstractService {
         return _userRepo.findAllByDelYn(false);
     }
 
-    public Map<String,Object> getUsers(String keyword, String role, int page, int size, String sortProperty, String sortDirection) throws Exception {
-        List<User> totalList = _userRepo.findAll();
+    public User getUser(String username) {
+        logger.info("getUser username : {}", username);
 
-        List<User> filteredList = new ArrayList<User>();
-        int startIdx = (page - 1)   * size;
-        int endIdx = startIdx + size;
-        for(User user : totalList){
-            boolean rolePass = false;
-            boolean keywordPass = false;
-            // 검색어 필터
-            if(keyword.equals("")){
-                keywordPass = true;
-            }
-            if(!keywordPass && (user.getEmail().indexOf(keyword) != -1 || user.getName().indexOf(keyword) != -1 || user.getUsername().indexOf(keyword) != -1)){
-                keywordPass = true;
-            }
-            if(keywordPass){
-                setRoleInfo(user);
-                // 롤 필터
-                if(role.equals("ALL")){
-                    rolePass = true;
-                }else {
-                    rolePass = user.getRoles().get(user.getRoles().size() - 1).getName().equals(role);
-                }
-                if(rolePass && keywordPass ){
-                    filteredList.add(user);
-                }
-            }
-        }
-
-        Collections.sort(filteredList, new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                if(sortProperty.equals("name")){
-                    if(o1.getName().equals(o2.getName())){
-                        return 0;
-                    }
-                    if(sortDirection.equals("desc")){
-                        return o2.getName().compareTo(o1.getName());
-                    }else{
-                        return o1.getName().compareTo(o2.getName());
-                    }
-                }else if(sortProperty.equals("email")){
-                    if(o1.getEmail().equals(o2.getEmail())){
-                        return 0;
-                    }
-                    if(sortDirection.equals("desc")){
-                        return o2.getEmail().compareTo(o1.getEmail());
-                    }else{
-                        return o1.getEmail().compareTo(o2.getEmail());
-                    }
-                }else if(sortProperty.equals("regDate")){
-                    Role role1 = null;
-                    Role role2 = null;
-                    List<Role> roleList1 = o1.getRoles();
-                    List<Role> roleList2 = o2.getRoles();
-                    role1 = roleList1.get(roleList1.size() - 1);
-                    role2 = roleList2.get(roleList2.size() - 1);
-                    if(role1.getCreatedDateTimeFormmat().equals(role2.getCreatedDateTimeFormmat())){
-                        return 0;
-                    }
-                    if(sortDirection.equals("desc")){
-                        return role2.getCreatedDateTimeFormmat().compareTo(role1.getCreatedDateTimeFormmat());
-                    }else{
-                        return role1.getCreatedDateTimeFormmat().compareTo(role2.getCreatedDateTimeFormmat());
-                    }
-                }else{
-                    Role role1 = null;
-                    Role role2 = null;
-                    List<Role> roleList1 = o1.getRoles();
-                    List<Role> roleList2 = o2.getRoles();
-                    role1 = roleList1.get(roleList1.size() - 1);
-                    role2 = roleList2.get(roleList2.size() - 1);
-                    if(role1.getName().equals(role2.getName())){
-                        return 0;
-                    }
-                    if(sortDirection.equals("desc")){
-                        return role2.getName().compareTo(role1.getName());
-                    }else{
-                        return role1.getName().compareTo(role2.getName());
-                    }
-                }
-            }
-        });
-
-        List<User> pageList = new ArrayList<User>();
-        if(endIdx > filteredList.size()){
-            endIdx = filteredList.size();
-        }
-        // 페이징 필터
-        for(int i=startIdx;i<endIdx;i++){
-            pageList.add(filteredList.get(i));
-        }
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("total" , filteredList.size());
-        map.put("list", pageList);
-        return map;
-    }
-
-    public User getUser(long id) {
-        logger.info("getUser id : {}", id);
-
-        return _userRepo.findById(id).orElse(null);
+        return _userRepo.findById(username).orElse(null);
     }
 
     public List<User> getUsersByContainUsername(String username) {
         logger.info("getUsersByContainUsername username : {}", username);
 
         return _userRepo.findAllByUsernameContaining(username);
-    }
-
-    /**
-     *  Role 정보 삽입
-     */
-    public void setRoleInfo(User user){
-        logger.info("setRoleInfo user : {}", user);
-
-        // 사용자 롤목록 조회
-        try{
-            List<Role> roleList = _roleRepo.findByUserIdOrderByNameDesc(user.getId());
-            // Role이 무한루프에 빠지지 않도록 유저정보를 지운다
-            for( Role role : roleList ) {
-                // Role ID 제거
-                role.setId(null);
-                // 유저정보 제거
-                role.setUser(null);
-            }
-            // 사용자정보에 롤정보 추가
-            user.setRoles(roleList);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-
-        return;
     }
 
     /**
@@ -254,18 +129,6 @@ public class UserService extends AbstractService {
         }).collect(Collectors.toList());
 
         user.setOrganizations(orgs);
-    }
-
-    /**
-     *  enable 상태 변경
-     */
-    public void updateUserEnabled(long id, boolean enabled){
-        logger.info("updateUserEnabled id : {}", id);
-        logger.info("updateUserEnabled enabled : {}", enabled);
-
-        User user = _userRepo.findById(id).orElse(null);
-        user.setEnabled(enabled);
-        _userRepo.save(user);
     }
 
     /**

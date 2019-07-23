@@ -47,7 +47,7 @@ public class CodeEntity implements Serializable {
     private String comment;
 
     /** 사용여부 */
-    @Column(name = "enabled", columnDefinition="tinyint(1)", nullable=false)
+    @Column(name = "enabled", columnDefinition="", nullable=false)
     private Boolean enabled;
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

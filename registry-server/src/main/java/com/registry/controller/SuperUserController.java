@@ -158,7 +158,7 @@ public class SuperUserController {
             notes = "user 삭제"
     )
     @ResponseBody
-    public Object updateUser(
+    public Object deleteUser(
             @ApiParam(
                     defaultValue="bearer ",
                     value ="토큰",

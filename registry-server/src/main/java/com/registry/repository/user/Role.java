@@ -43,12 +43,12 @@ public class Role extends AbstractEntity {
 	/**
 	 * starred
 	 */
-	@Column(name = "is_starred", columnDefinition="tinyint(1) default 0", nullable=false)
+	@Column(name = "is_starred", nullable=false)
 	private Boolean isStarred;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id", nullable = false)
+	@JoinColumn(name="username", nullable = false)
 	private User user;
 
 	@JsonIgnore

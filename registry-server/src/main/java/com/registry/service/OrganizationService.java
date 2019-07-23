@@ -67,7 +67,7 @@ public class OrganizationService extends AbstractService {
         logger.info("organization : {}", org);
 
         User user = new User();
-        user.setId(SecurityUtil.getUser());
+        user.setUsername(SecurityUtil.getUser());
 
         org.setCreatedBy(user);
         org.setUpdatedBy(user);
@@ -112,7 +112,7 @@ public class OrganizationService extends AbstractService {
         User user = _userService.getUserInfo(username);
         Organization org = _orgRepo.findOneByName(namespace);
 
-        if (_userOrgRepo.findOneByOrganizationIdAndUserId(org.getId(), user.getId()) == null) {
+        if (_userOrgRepo.findOneByOrganizationIdAndUserUsername(org.getId(), user.getUsername()) == null) {
             UserOrganization userOrg = new UserOrganization();
             userOrg.setUser(user);
             userOrg.setOrganization(org);
@@ -134,9 +134,9 @@ public class OrganizationService extends AbstractService {
         User user = _userService.getUserInfo(username);
         Organization org = _orgRepo.findOneByName(namespace);
 
-        UserOrganization userOrg = _userOrgRepo.findOneByOrganizationIdAndUserId(org.getId(), user.getId());
+        UserOrganization userOrg = _userOrgRepo.findOneByOrganizationIdAndUserUsername(org.getId(), user.getUsername());
         if (userOrg != null) {
-            if (org.getCreatedBy().getId() != user.getId()) {
+            if (org.getCreatedBy().getUsername() != user.getUsername()) {
                 _userOrgRepo.delete(userOrg);
             } else {
                 throw new BadRequestException("Cannot remove creator.");

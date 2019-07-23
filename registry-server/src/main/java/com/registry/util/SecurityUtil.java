@@ -1,5 +1,7 @@
 package com.registry.util;
 
+import com.registry.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
@@ -17,7 +19,7 @@ public class SecurityUtil {
      * @return
      * @throws Exception
      */
-    public static Long getUser() {
+    public static String getUser() {
 
         // 인증정보
         Object principal    = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -26,22 +28,22 @@ public class SecurityUtil {
         String username     = user != null ? user.getUsername() : anonymous;
 
         // 유저 ID
-        Long userId = !"anonymousUser".equals(username)
-                ? Long.parseLong(username)
-                : -1;
+//        Long userId = !"anonymousUser".equals(username)
+//                ? Long.parseLong(username)
+//                : -1;
 
         // 반환
-        return userId;
+        return username;
     }
 
     /**
      * 인증된 유저와 ID가 같은지 체크
-     * @param userId
+     * @param username
      * @return
      */
-    public static boolean matchUser(Long userId) {
+    public static boolean matchUser(String username) {
 
         // 반환
-        return userId != null && getUser() == userId;
+        return username != null && getUser() == username;
     }
 }

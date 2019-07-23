@@ -13,7 +13,7 @@ import java.util.List;
  * @author boozer
  */
 @Entity
-@Table(name = "user")
+@Table(name = "cm_user")
 @org.hibernate.annotations.DynamicUpdate
 public class User implements Serializable {
 	
@@ -27,19 +27,15 @@ public class User implements Serializable {
 	| private Variables
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	/** 유저 ID (AutoIncrement) */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	/** 사용여부 */
-  	@Column(name = "enabled", columnDefinition="tinyint(1)", nullable=false)
-  	private Boolean enabled;
-
 	/** 로그인 ID */
+	@Id
 	@Column(name = "username", columnDefinition="varchar(40)", nullable=false)
 	private String username;
-	
+
+	/** 사용여부 */
+  	@Column(name = "enabled", nullable=false)
+  	private Boolean enabled;
+
 	/** 비밀번호 */
 	@JsonIgnore
 	@Column(name = "password", columnDefinition="varchar(255)", nullable=false)
@@ -54,11 +50,11 @@ public class User implements Serializable {
   	private String email;
 
 	/** 삭제여부 */
-	@Column(name = "del_yn", columnDefinition="tinyint(1) default 0", nullable=false)
+	@Column(name = "del_yn", nullable=false)
 	private Boolean delYn;
 
 	/** super user */
-	@Column(name = "super_user", columnDefinition="tinyint(1) default 0", nullable=false)
+	@Column(name = "super_user", nullable=false)
 	private Boolean superuser;
 
 	/** 유저 Role 목록 */
@@ -94,14 +90,6 @@ public class User implements Serializable {
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Getter & Setter Method ( DI Method )
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public Boolean getEnabled() {
 		return enabled;

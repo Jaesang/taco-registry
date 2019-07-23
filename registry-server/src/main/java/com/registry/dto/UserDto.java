@@ -20,7 +20,6 @@ public class UserDto {
 
     @ApiModel("UserDto.EDIT")
     public static class EDIT {
-        public String id;
         public String password;
         public String name;
         public String username;
@@ -30,7 +29,6 @@ public class UserDto {
 
     @ApiModel("UserDto.VIEW")
     public static class VIEW {
-        public Long id;
         public String username;
         public String name;
         public String email;

@@ -97,7 +97,7 @@ public class ImageService extends AbstractService {
         logger.info("getImagesByContainName name : {}", name);
         logger.info("getImagesByContainName pageable : {}", pageable);
 
-        return _imageRepo.findAllByNameContaining(name, pageable);
+        return _imageRepo.findAllByNameContainingOrderByCreatedDateDesc(name, pageable);
     }
 
     public List<Image> getImagesByContainName(String name) {

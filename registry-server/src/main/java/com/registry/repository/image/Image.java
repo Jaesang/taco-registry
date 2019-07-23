@@ -43,11 +43,11 @@ public class Image extends AbstractEntity {
 	private String namespace;
 
 	/** 공개여부 */
-	@Column(name = "public", columnDefinition="tinyint(1) default 1", nullable=false)
+	@Column(name = "public", nullable=false)
 	private boolean publicYn;
 
 	/** 삭제여부 */
-	@Column(name = "del_yn", columnDefinition="tinyint(1) default 0", nullable=false)
+	@Column(name = "del_yn", nullable=false)
 	private boolean delYn;
 
 	/** 설명 */
@@ -59,7 +59,7 @@ public class Image extends AbstractEntity {
 	private Long popularity;
 
 	/** 네임스페이스 종류 */
-	@Column(name = "is_organization", columnDefinition="tinyint(1)", nullable=false)
+	@Column(name = "is_organization", nullable=false)
 	private boolean isOrganization;
 
 	/** 네임스페이스 id */
@@ -203,7 +203,7 @@ public class Image extends AbstractEntity {
 		this.can_admin = false;
 		if (role != null && role.size() > 0) {
 			role.stream().forEach(value -> {
-				if (value.getUser().getId().equals(SecurityUtil.getUser())) {
+				if (value.getUser().getUsername().equals(SecurityUtil.getUser())) {
 					if ("ADMIN".equals(value.getName())) {
 						this.can_admin = true;
 					}
@@ -217,7 +217,7 @@ public class Image extends AbstractEntity {
 		this.can_write = false;
 		if (role != null && role.size() > 0) {
 			role.stream().forEach(value -> {
-				if (value.getUser().getId().equals(SecurityUtil.getUser())) {
+				if (value.getUser().getUsername().equals(SecurityUtil.getUser())) {
 					if ("ADMIN".equals(value.getName()) || "WRITE".equals(value.getName())) {
 						this.can_write = true;
 					}

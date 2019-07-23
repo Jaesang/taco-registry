@@ -40,11 +40,11 @@ public class Organization extends AbstractEntity {
   	private String name;
 
 	/** 공개여부 */
-	@Column(name = "public", columnDefinition="tinyint(1) default 1", nullable=false)
+	@Column(name = "public", nullable=false)
 	private boolean publicYn;
 
 	/** 삭제여부 */
-	@Column(name = "del_yn", columnDefinition="tinyint(1) default 0", nullable=false)
+	@Column(name = "del_yn", nullable=false)
 	private boolean delYn;
 
 	/** UserOrg 목록 */
@@ -118,7 +118,7 @@ public class Organization extends AbstractEntity {
 		this.is_admin = false;
 		if (userOrg != null && userOrg.size() > 0) {
 			userOrg.stream().forEach(value -> {
-				if (value.getUser().getId().equals(SecurityUtil.getUser())) {
+				if (value.getUser().getUsername().equals(SecurityUtil.getUser())) {
 					this.is_admin = true;
 				}
 			});
@@ -130,7 +130,7 @@ public class Organization extends AbstractEntity {
 		this.is_member = true;
 		if (userOrg != null && userOrg.size() > 0) {
 			userOrg.stream().forEach(value -> {
-				if (value.getUser().getId().equals(SecurityUtil.getUser())) {
+				if (value.getUser().getUsername().equals(SecurityUtil.getUser())) {
 					this.is_member = false;
 				}
 			});

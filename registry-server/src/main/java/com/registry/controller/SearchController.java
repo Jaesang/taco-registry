@@ -10,19 +10,23 @@ import com.registry.service.OrganizationService;
 import com.registry.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import ma.glasnost.orika.Converter;
 import ma.glasnost.orika.MapperFacade;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by boozer on 2019. 7. 15
@@ -158,7 +162,26 @@ public class SearchController {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Image> result = imageService.getImagesByContainName(query, pageable);
 
-        return result;
+        // 형 변환
+        List<SearchDto.VIEW> collect = result.getContent()
+                .stream()
+                .map(value -> {
+                    SearchDto.VIEW item = mapper.map(value, SearchDto.VIEW.class);
+                    item.kind = "image";
+                    item.stars = value.getRole().stream().filter(v -> v.getStarred()).count();
+
+                    Timestamp timestamp = Timestamp.valueOf(value.getUpdatedDate());
+                    item.last_modified = timestamp.getTime() / 1000;
+                    item.is_public = value.isPublicYn();
+
+                    SearchDto.VIEW namespace = new SearchDto.VIEW();
+                    namespace.name = value.getNamespace();
+                    namespace.kind = value.isOrganization() ? "organization" : "user";
+                    item.namespace = namespace;
+                    return item;
+                }).collect(Collectors.toList());
+
+        return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
 
     /**
