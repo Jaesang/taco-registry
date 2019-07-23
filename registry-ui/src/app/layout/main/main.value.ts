@@ -3,7 +3,7 @@ import {Page} from "../../common/value/result-value";
 
 export namespace Main {
   export enum Type {
-    repository = <any>'repository',
+    repository = <any>'image',
     user = <any>'user',
     organization = <any>'organization'
   }
@@ -23,7 +23,7 @@ export namespace Main {
   }
 
   export class PageResult extends Page {
-    public results: Entity[];
+    public content: Entity[];
   }
 
 }

@@ -32,8 +32,8 @@ export class PaginationComponent extends AbstractComponent implements OnInit, On
    * 이전 클릭
    */
   public prevClick() {
-    if (this.page.page > 1) {
-      this.onPageClick.emit(this.page.page - 1);
+    if (this.page.number > 0) {
+      this.onPageClick.emit(this.page.number - 1);
     }
   }
 
@@ -41,8 +41,8 @@ export class PaginationComponent extends AbstractComponent implements OnInit, On
    * 다음 클릭
    */
   public nextClick() {
-    if (this.page.has_additional) {
-      this.onPageClick.emit(this.page.page + 1);
+    if (!this.page.last) {
+      this.onPageClick.emit(this.page.number + 1);
     }
   }
 

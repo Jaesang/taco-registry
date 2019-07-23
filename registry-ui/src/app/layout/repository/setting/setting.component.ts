@@ -84,7 +84,7 @@ export class SettingComponent extends PageComponent implements OnInit {
     this.addMemberEnable = false;
 
     this.teamService.searchMember(this.orgName, text).then(result => {
-      let list = result.results.map(value => {
+      let list = result.content.map(value => {
         return new Autocomplete.Entity(value.name, value, Autocomplete.ItemType.USER);
       });
 

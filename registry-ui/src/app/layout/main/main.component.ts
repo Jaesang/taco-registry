@@ -45,7 +45,7 @@ export class MainComponent extends PageComponent implements OnInit {
             this.searchKey = params[ 'query' ];
           }
 
-          this.currentPage = 1;
+          this.currentPage = 0;
           this.getRepositoryList();
         })
     );
@@ -57,7 +57,7 @@ export class MainComponent extends PageComponent implements OnInit {
    */
   public searchClick(searchKey: string) {
     this.searchKey = searchKey;
-    this.currentPage = 1;
+    this.currentPage = 0;
 
     this.getRepositoryList();
   }
@@ -98,7 +98,7 @@ export class MainComponent extends PageComponent implements OnInit {
     this.isSearching = true;
 
     this.mainService.getRepositoryList(this.currentPage, this.searchKey).then(result => {
-      this.repositoryList = result.results;
+      this.repositoryList = result.content;
       this.paginationTop.init(result);
       this.paginationBottom.init(result);
       this.isSearching = false;

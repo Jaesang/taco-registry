@@ -51,7 +51,7 @@ export class MainService extends AbstractService {
    * @returns {Promise<any>}
    */
   public getRepositoryList(page: number, searchKey: string = ''): Promise<Main.PageResult> {
-    return this.get(`${environment.apiUrl}/find/repositories?query=${searchKey}&page=${page}`);
+    return this.get(`${environment.apiUrl}/find/images?query=${searchKey}&page=${page}`);
   }
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

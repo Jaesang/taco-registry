@@ -78,17 +78,23 @@ public class OrganizationService extends AbstractService {
         userOrganization.setUser(user);
         userOrganization.setOrganization(org);
         _userOrgRepo.save(userOrganization);
-
-        logger.info("organization : {}", org);
     }
 
     public Organization getOrg(String name) {
-        logger.info("organization name : {}", name);
+        logger.info("getOrg name : {}", name);
 
         return _orgRepo.findOneByName(name);
     }
 
+    public List<Organization> getOrgsByContainName(String name) {
+        logger.info("getOrgsByContainName name : {}", name);
+
+        return _orgRepo.findAllByNameContaining(name);
+    }
+
     public List<UserOrganization> getMembers(String orgName) {
+        logger.info("getMembers userorgNamename : {}", orgName);
+
         Organization org = getOrg(orgName);
 
         return _userOrgRepo.findAllByOrganizationId(org.getId());
@@ -100,6 +106,9 @@ public class OrganizationService extends AbstractService {
      * @param namespace
      */
     public void addMember(String username, String namespace) throws Exception {
+        logger.info("addMember username : {}", username);
+        logger.info("addMember namespace : {}", namespace);
+
         User user = _userService.getUserInfo(username);
         Organization org = _orgRepo.findOneByName(namespace);
 
@@ -119,6 +128,9 @@ public class OrganizationService extends AbstractService {
      * @throws Exception
      */
     public void deleteMember(String username, String namespace) throws Exception {
+        logger.info("deleteMember username : {}", username);
+        logger.info("deleteMember namespace : {}", namespace);
+
         User user = _userService.getUserInfo(username);
         Organization org = _orgRepo.findOneByName(namespace);
 

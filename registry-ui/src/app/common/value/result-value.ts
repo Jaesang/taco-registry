@@ -18,11 +18,12 @@ export class CommonResult {
  */
 export class Page {
 
-  public has_additional: boolean;
-  public page: number = 0;
-  public page_size: number;
-  public results: Object;
+  public number: number = 0;
+  public size: number;
+  public content: Object;
   public start_index: number;
+  public first: boolean;
+  public last: boolean;
 
 }
 

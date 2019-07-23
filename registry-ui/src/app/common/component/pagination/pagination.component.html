@@ -1,6 +1,6 @@
 <!-- Pagination -->
-<div class="component-pagination" *ngIf="page.page > 1 || page.has_additional">
-  <button type="button" class="btn-prev" (click)="prevClick()" [disabled]="page.page < 2"></button>
-  <button type="button" class="btn-next" (click)="nextClick()" [disabled]="!page.has_additional"></button>
+<div class="component-pagination" *ngIf="page.number > 0 || !page.last">
+  <button type="button" class="btn-prev" (click)="prevClick()" [disabled]="page.number < 1"></button>
+  <button type="button" class="btn-next" (click)="nextClick()" [disabled]="page.last"></button>
 </div>
 <!-- //Pagination -->

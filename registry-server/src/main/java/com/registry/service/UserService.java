@@ -91,6 +91,8 @@ public class UserService extends AbstractService {
      */
     public User getUserInfo(String username) {
 
+        logger.info("getUserInfo username : {}", username);
+
         // 사용자정보 조회
         User user = _userRepo.findUserByUsername(username);
 
@@ -203,13 +205,23 @@ public class UserService extends AbstractService {
     }
 
     public User getUser(long id) {
+        logger.info("getUser id : {}", id);
+
         return _userRepo.findById(id).orElse(null);
+    }
+
+    public List<User> getUsersByContainUsername(String username) {
+        logger.info("getUsersByContainUsername username : {}", username);
+
+        return _userRepo.findAllByUsernameContaining(username);
     }
 
     /**
      *  Role 정보 삽입
      */
     public void setRoleInfo(User user){
+        logger.info("setRoleInfo user : {}", user);
+
         // 사용자 롤목록 조회
         try{
             List<Role> roleList = _roleRepo.findByUserIdOrderByNameDesc(user.getId());
@@ -234,6 +246,7 @@ public class UserService extends AbstractService {
      * @param user
      */
     public void setOrgs(User user) {
+        logger.info("setOrgs user : {}", user);
 
         List<UserOrganization> userOrgs = user.getUserOrg();
         List<Organization> orgs = userOrgs.stream().map(value -> {
@@ -247,6 +260,9 @@ public class UserService extends AbstractService {
      *  enable 상태 변경
      */
     public void updateUserEnabled(long id, boolean enabled){
+        logger.info("updateUserEnabled id : {}", id);
+        logger.info("updateUserEnabled enabled : {}", enabled);
+
         User user = _userRepo.findById(id).orElse(null);
         user.setEnabled(enabled);
         _userRepo.save(user);
@@ -258,6 +274,8 @@ public class UserService extends AbstractService {
      * @throws Exception
      */
     public void deleteUser(String username) throws Exception {
+        logger.info("deleteUser username : {}", username);
+
         User user = _userRepo.findUserByUsername(username);
         user.setDelYn(true);
 
@@ -269,6 +287,10 @@ public class UserService extends AbstractService {
      */
     @Transactional
     public User saveUser(User user, String rolename, boolean isCreate) throws Exception {
+        logger.info("saveUser user : {}", user);
+        logger.info("saveUser rolename : {}", rolename);
+        logger.info("saveUser isCreate : {}", isCreate);
+
         String password = isCreate ? UUID.randomUUID().toString() : user.getPassword();
         if(password != null) {
             // 패스워드 인코더
@@ -331,6 +353,8 @@ public class UserService extends AbstractService {
      * @throws Exception
      */
     public boolean passwordVerify(String password) throws Exception {
+        logger.info("passwordVerify password : {}", password);
+
         User user = this.getLoginUser();
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String p = user.getPassword();
@@ -338,6 +362,9 @@ public class UserService extends AbstractService {
     }
 
     public List<User> findMembers(String username, String namespace) throws Exception {
+        logger.info("findMembers username : {}", username);
+        logger.info("findMembers namespace : {}", namespace);
+
         List<User> users = _userRepo.findAllByUsernameContaining(username);
         List<User> results = users.stream().filter(value -> {
             boolean exist = value.getUserOrg().stream().anyMatch(v -> {

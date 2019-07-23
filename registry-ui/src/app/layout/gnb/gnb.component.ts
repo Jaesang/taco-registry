@@ -48,7 +48,7 @@ export class GnbComponent extends AbstractComponent implements OnInit {
    */
   public searchEvent(text: string) {
     this.mainService.getAllList(text).then(result => {
-      let list = result.results.map(value => {
+      let list = result.content.map(value => {
         let type: Autocomplete.ItemType;
         let name: string = value.name;
         if (value.kind == Main.Type.organization) {

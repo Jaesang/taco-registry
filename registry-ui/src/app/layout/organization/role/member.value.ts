@@ -20,7 +20,7 @@ export namespace Member {
   }
 
   export class Results {
-	  public results: Entity[];
+	  public content: Entity[];
   }
 
   export class Permissions {

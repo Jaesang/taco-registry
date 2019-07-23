@@ -9,6 +9,8 @@ import com.registry.repository.user.RoleRepository;
 import com.registry.repository.user.User;
 import com.registry.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,7 +63,7 @@ public class ImageService extends AbstractService {
      */
     @Transactional
     public void create(Image image) {
-        logger.info("image : {}", image);
+        logger.info("create : {}", image);
 
         User user = _userService.getUser(SecurityUtil.getUser());
 
@@ -79,15 +81,29 @@ public class ImageService extends AbstractService {
     }
 
     public Image getImage(String namespace, String name) {
-        logger.info("image namespace, name : {}, {}", namespace, name);
+        logger.info("getImage namespace : {}", namespace);
+        logger.info("getImage name : {}", name);
 
         return _imageRepo.findOneByNamespaceAndName(namespace, name);
     }
 
     public List<Image> getImages(String namespace) {
-        logger.info("image namespace : {}", namespace);
+        logger.info("getImages namespace : {}", namespace);
 
         return _imageRepo.findAllByNamespace(namespace);
+    }
+
+    public Page<Image> getImagesByContainName(String name, Pageable pageable) {
+        logger.info("getImagesByContainName name : {}", name);
+        logger.info("getImagesByContainName pageable : {}", pageable);
+
+        return _imageRepo.findAllByNameContaining(name, pageable);
+    }
+
+    public List<Image> getImagesByContainName(String name) {
+        logger.info("getImagesByContainName name : {}", name);
+
+        return _imageRepo.findAllByNameContaining(name);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

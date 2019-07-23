@@ -85,7 +85,7 @@ export class TeamDetailComponent extends PageComponent implements OnInit {
   public searchEvent(text: string) {
 
     this.teamService.searchMember(this.orgName, text).then(result => {
-      let list = result.results.map(value => {
+      let list = result.content.map(value => {
         return new Autocomplete.Entity(value.name, value, Autocomplete.ItemType.USER);
       });
 

@@ -50,7 +50,9 @@ public class BuildService extends AbstractService {
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     public List<Build> getImages(String namespace, String name, int limit) {
-        logger.info("image namespace : {}", namespace);
+        logger.info("getImages namespace : {}", namespace);
+        logger.info("getImages name : {}", name);
+        logger.info("getImages limit : {}", limit);
 
         Image image = _imageService.getImage(namespace, name);
 
