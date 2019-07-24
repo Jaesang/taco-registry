@@ -9,8 +9,7 @@
     "build": "ng build --env=prod --prod && npm run cp",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "server:prod": "http-server dist -p 5000 -P http://localhost:8081 -c-1 --cors"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -59,7 +58,6 @@
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "2.3.4",
-    "http-server": "0.11.1"
+    "typescript": "2.3.4"
   }
 }
