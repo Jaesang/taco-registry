@@ -1,14 +1,9 @@
 package com.registry.controller;
 
-import com.registry.constant.CommonConstant;
 import com.registry.constant.Path;
 import com.registry.dto.BuildDto;
-import com.registry.dto.ImageDto;
 import com.registry.repository.image.Build;
-import com.registry.repository.image.Image;
 import com.registry.service.BuildService;
-import com.registry.service.ImageService;
-import com.registry.value.common.Result;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
@@ -18,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +62,7 @@ public class BuildController {
      * @throws Exception
      */
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @GetMapping(Path.IMAGE_DETAIL_BUILD)
+    @GetMapping(Path.IMAGE_BUILD)
     @ApiOperation(
             value = "get build list",
             notes = "Build 목록 조회"
@@ -100,6 +96,51 @@ public class BuildController {
         result.put("builds", mapper.mapAsList(buildList, BuildDto.class));
 
         return result;
+    }
+
+    /**d
+     * Build
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PostMapping(Path.IMAGE_BUILD)
+    @ApiOperation(
+            value = "create build",
+            notes = "Build"
+    )
+    public Object createBuild(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable("namespace") String namespace,
+            @ApiParam(
+                    name = "name",
+                    required = true
+            )
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "file"
+            )
+            @RequestParam("file") MultipartFile file
+    ) throws Exception{
+        String fileName = "aaa";
+        buildService.createBuild(new Build(), file);
+
+//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/downloadFile/")
+//                .path(fileName)
+//                .toUriString();
+
+//        return new FileUploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+        return null;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

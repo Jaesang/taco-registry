@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class BuildService extends AbstractService {
     /** Image Service */
     @Autowired
     private ImageService _imageService;
+
+    @Autowired
+    private FileService _fileService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -58,6 +62,10 @@ public class BuildService extends AbstractService {
 
         Pageable pageable = PageRequest.of(0, limit);
         return _buildRepository.findAllByImageId(image.getId(), pageable);
+    }
+
+    public void createBuild(Build build, MultipartFile file) throws Exception {
+        _fileService.uploadFile(file);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

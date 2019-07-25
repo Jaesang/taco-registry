@@ -12,7 +12,7 @@ export namespace Main {
     public avatar: Avatar;
     public description: string;
     public href: string;
-    public is_public: boolean;
+    public isPublic: boolean;
     public kind: Type;
     public name: string;
     public namespace: Entity;

@@ -40,7 +40,7 @@ export class UsageLogService extends AbstractService {
   public getOrgLogList(org: string, startDate: string, endDate: string, nextPage: string = null): Promise<Logs.Result> {
     let url = `${environment.apiUrl}/organization/${org}/logs?starttime=${startDate}&endtime=${endDate}`;
     if (nextPage) {
-      url += `&next_page=${nextPage}`;
+      url += `&nextPage=${nextPage}`;
     }
     return this.get(url);
   }
@@ -48,7 +48,7 @@ export class UsageLogService extends AbstractService {
   public getUserLogList(startDate: string, endDate: string, nextPage: string = null): Promise<Logs.Result> {
     let url = `${environment.apiUrl}/user/logs?starttime=${startDate}&endtime=${endDate}`;
     if (nextPage) {
-      url += `&next_page=${nextPage}`;
+      url += `&nextPage=${nextPage}`;
     }
     return this.get(url);
   }
@@ -56,7 +56,7 @@ export class UsageLogService extends AbstractService {
   public getRepoLogList(org: string, repo: string, startDate: string, endDate: string, nextPage: string = null): Promise<Logs.Result> {
     let url = `${environment.apiUrl}/image/${org}/${repo}/logs?starttime=${startDate}&endtime=${endDate}`;
     if (nextPage) {
-      url += `&next_page=${nextPage}`;
+      url += `&nextPage=${nextPage}`;
     }
     return this.get(url);
   }

@@ -90,6 +90,34 @@ public class OrganizationController {
     }
 
     /**
+     * Org 삭제
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @DeleteMapping(Path.ORG_DETAIL)
+    @ApiOperation(
+            value = "get org",
+            notes = "Org 조회"
+    )
+    public Object deleteOrg(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "organization",
+                    required = true
+            )
+            @PathVariable("name") String name
+    ) throws Exception{
+        organizationService.deleteOrg(name);
+        return true;
+    }
+
+    /**
      * Org 조회
      * @return
      * @throws Exception

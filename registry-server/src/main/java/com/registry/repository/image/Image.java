@@ -7,7 +7,6 @@ import com.registry.repository.user.Role;
 import com.registry.util.SecurityUtil;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,12 +42,8 @@ public class Image extends AbstractEntity {
 	private String namespace;
 
 	/** 공개여부 */
-	@Column(name = "public", nullable=false)
-	private boolean publicYn;
-
-	/** 삭제여부 */
-	@Column(name = "del_yn", nullable=false)
-	private boolean delYn;
+	@Column(name = "is_public", nullable=false)
+	private boolean isPublic;
 
 	/** 설명 */
 	@Column(name = "description", columnDefinition="varchar(255)")
@@ -61,10 +56,6 @@ public class Image extends AbstractEntity {
 	/** 네임스페이스 종류 */
 	@Column(name = "is_organization", nullable=false)
 	private boolean isOrganization;
-
-	/** 네임스페이스 id */
-	@Column(name = "object_id")
-	private Long objectId;
 
 	/** 유저 Role 목록 */
 	@JsonIgnore
@@ -83,11 +74,15 @@ public class Image extends AbstractEntity {
 
 	@JsonProperty
 	@Transient
-	private Boolean can_admin;
+	private Boolean canAdmin;
 
 	@JsonProperty
 	@Transient
-	private Boolean can_write;
+	private Boolean canWrite;
+
+	@JsonProperty
+	@Transient
+	private Boolean isStarred;
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Variables
@@ -119,28 +114,20 @@ public class Image extends AbstractEntity {
 		this.name = name;
 	}
 
-	public boolean isPublicYn() {
-		return publicYn;
-	}
-
-	public void setPublicYn(boolean publicYn) {
-		this.publicYn = publicYn;
-	}
-
-	public boolean isDelYn() {
-		return delYn;
-	}
-
-	public void setDelYn(boolean delYn) {
-		this.delYn = delYn;
-	}
-
 	public String getNamespace() {
 		return namespace;
 	}
 
 	public void setNamespace(String namespace) {
 		this.namespace = namespace;
+	}
+
+	public boolean getIsPublic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(boolean aPublic) {
+		isPublic = aPublic;
 	}
 
 	public String getDescription() {
@@ -159,20 +146,12 @@ public class Image extends AbstractEntity {
 		this.popularity = popularity;
 	}
 
-	public boolean isOrganization() {
+	public boolean getIsOrganization() {
 		return isOrganization;
 	}
 
-	public void setOrganization(boolean organization) {
+	public void setIsOrganization(boolean organization) {
 		isOrganization = organization;
-	}
-
-	public Long getObjectId() {
-		return objectId;
-	}
-
-	public void setObjectId(Long objectId) {
-		this.objectId = objectId;
 	}
 
 	public List<Role> getRole() {
@@ -199,33 +178,44 @@ public class Image extends AbstractEntity {
 		this.tags = tags;
 	}
 
-	public Boolean getCan_admin() {
-		this.can_admin = false;
+	public Boolean getCanAdmin() {
+		this.canAdmin = false;
 		if (role != null && role.size() > 0) {
 			role.stream().forEach(value -> {
 				if (value.getUser().getUsername().equals(SecurityUtil.getUser())) {
 					if ("ADMIN".equals(value.getName())) {
-						this.can_admin = true;
+						this.canAdmin = true;
 					}
 				}
 			});
 		}
-		return can_admin;
+		return canAdmin;
 	}
 
-	public Boolean getCan_write() {
-		this.can_write = false;
+	public Boolean getCanWrite() {
+		this.canWrite = false;
 		if (role != null && role.size() > 0) {
 			role.stream().forEach(value -> {
 				if (value.getUser().getUsername().equals(SecurityUtil.getUser())) {
 					if ("ADMIN".equals(value.getName()) || "WRITE".equals(value.getName())) {
-						this.can_write = true;
+						this.canWrite = true;
 					}
 				}
 			});
 		}
 
-		return can_write;
+		return canWrite;
+	}
+
+	public Boolean getIsStarred() {
+		this.isStarred = false;
+		if (role != null && role.size() > 0) {
+			role.stream().forEach(value -> {
+				this.isStarred = value.getIsStarred();
+			});
+		}
+
+		return isStarred;
 	}
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

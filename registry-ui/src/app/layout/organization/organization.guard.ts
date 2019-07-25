@@ -51,8 +51,8 @@ export class OrganizationGuard implements CanActivate {
     return this.organizationService.getOrganization(org).then(result => {
       this.organizationService.organization = result;
 
-      this.commonService.lnbAdmin.next(result.is_admin);
-      this.commonService.lnbMember.next(result.is_member);
+      this.commonService.lnbAdmin.next(result.isAdmin);
+      this.commonService.lnbMember.next(result.isMember);
 
       return true;
     }).catch(reason => {

@@ -10,9 +10,9 @@ public class ImageDto {
     public static class CREATE {
         public String name;
         public String namespace;
-        public boolean is_public;
+        public boolean isPublic;
         public String description;
-        public boolean is_organization;
+        public boolean isOrganization;
     }
 
     @ApiModel("Image.EDIT")
@@ -24,10 +24,18 @@ public class ImageDto {
     public static class VIEW {
         public String name;
         public String namespace;
-        public Boolean publicYn;
-        public Boolean can_admin;
-        public Boolean can_write;
-        public Boolean is_organization;
+        public Boolean isPublic;
+        public Boolean canAdmin;
+        public Boolean canWrite;
+        public Boolean isOrganization;
+        public Boolean isStarred;
+    }
+
+    @ApiModel("Image.MEMBER")
+    public static class MEMBER {
+        public String name;
+        public String kind;
+        public String role;
     }
 
 }

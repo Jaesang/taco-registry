@@ -15,7 +15,7 @@
   <div class="section-list">
     <ol class="list-repository">
       <li *ngFor="let item of repositoryList; let index = index;">
-        <div class="box-main-card" [class.type-private]="!item.is_public">
+        <div class="box-main-card" [class.type-private]="!item.isPublic">
           <a href="javascript:;" class="link-card" (click)="moveToDetail(item.namespace.name, item.name)">
             <span class="card-repository">
               <span class="txt-repository">{{ item.namespace.name }}/{{ item.name }}</span>
@@ -23,7 +23,7 @@
             </span>
 
             <span class="txt-date">
-              Last Modified : {{ item.last_modified ? (item.last_modified * 1000 | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}
+              Last Modified : {{ item.lastModified ? (item.lastModified * 1000 | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}
             </span>
             <span class="info-repository">
               <span class="txt-starred">{{ item.stars }}</span>

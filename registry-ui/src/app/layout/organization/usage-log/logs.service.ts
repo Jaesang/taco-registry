@@ -76,15 +76,15 @@ export class LogsService {
         break;
 
       case Logs.Kind.change_tag_expiration:
-        desc = `Tag <em>${log.metadata.tag}</em> set to expire on <em>${moment(log.metadata.expiration_date * 1000).format('YYYY-MM-DD HH:mm')}</em>`;
-        if (log.metadata.old_expiration_date) {
-          desc += ` (previously <em>${moment(log.metadata.old_expiration_date * 1000).format('YYYY-MM-DD HH:mm')}</em>)`;
+        desc = `Tag <em>${log.metadata.tag}</em> set to expire on <em>${moment(log.metadata.expirationDate * 1000).format('YYYY-MM-DD HH:mm')}</em>`;
+        if (log.metadata.oldExpirationDate) {
+          desc += ` (previously <em>${moment(log.metadata.oldExpirationDate * 1000).format('YYYY-MM-DD HH:mm')}</em>)`;
         }
         break;
 
       case Logs.Kind.revert_tag:
-        if (log.metadata.original_image) {
-          desc = `Tag <em>${log.metadata.tag}</em> restored to image <em>${this.substr(log.metadata.image)}</em> from image <em>${this.substr(log.metadata.original_image)}</em>`;
+        if (log.metadata.originalImage) {
+          desc = `Tag <em>${log.metadata.tag}</em> restored to image <em>${this.substr(log.metadata.image)}</em> from image <em>${this.substr(log.metadata.originalImage)}</em>`;
         } else {
           desc = `Tag <em>${log.metadata.tag}</em> recreated pointing to image <em>${this.substr(log.metadata.image)}</em>`;
         }

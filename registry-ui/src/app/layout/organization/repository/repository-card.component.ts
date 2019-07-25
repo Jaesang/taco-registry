@@ -31,8 +31,8 @@ export class RepositoryCardComponent extends RepositoryListBaseComponent impleme
    * @param item
    */
   public starChange(item: Repository.Entity) {
-    item.is_starred = !item.is_starred;
-    this.changeStarred(item.is_starred, item.namespace, item.name);
+    item.isStarred = !item.isStarred;
+    this.changeStarred(item.isStarred, item.namespace, item.name);
 
     this.setStarredList();
   }
@@ -44,7 +44,7 @@ export class RepositoryCardComponent extends RepositoryListBaseComponent impleme
     this.starredList = [];
     if (this.repositoryList) {
       this.repositoryList.forEach(value => {
-        if (value.is_starred) {
+        if (value.isStarred) {
           this.starredList.push(value);
         }
       });

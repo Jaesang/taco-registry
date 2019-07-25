@@ -40,7 +40,7 @@
           </div>
         </th>
         <th>
-          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'formatted_last_modified' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'formatted_last_modified' && sortDirection == 'desc'" (click)="sortClick('formatted_last_modified')">Last Modified</a>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'formattedLastModified' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'formattedLastModified' && sortDirection == 'desc'" (click)="sortClick('formattedLastModified')">Last Modified</a>
         </th>
         <th>
           Security Scan
@@ -49,10 +49,10 @@
           <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'size' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'size' && sortDirection == 'desc'" (click)="sortClick('size')">Size</a>
         </th>
         <th>
-          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'formatted_expiration' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'formatted_expiration' && sortDirection == 'desc'" (click)="sortClick('formatted_expiration')">Expires</a>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'formattedExpiration' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'formattedExpiration' && sortDirection == 'desc'" (click)="sortClick('formattedExpiration')">Expires</a>
         </th>
         <th>
-          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'manifest_digest' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'manifest_digest' && sortDirection == 'desc'" (click)="sortClick('manifest_digest')">Image</a>
+          <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'manifestDigest' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'manifestDigest' && sortDirection == 'desc'" (click)="sortClick('manifestDigest')">Image</a>
         </th>
         <th></th>
       </tr>
@@ -66,7 +66,7 @@
           </div>
         </td>
         <td>
-          <span class="txt-date">{{ item.formatted_last_modified }}</span>
+          <span class="txt-date">{{ item.formattedLastModified }}</span>
         </td>
         <td>
           <span class="txt-scan type-success" *ngIf="getSecurity(item.image_id).fixableCount == 0 && getSecurity(item.image_id).vulnerabilityHighCount == 0" (click)="scanClick(item)">
@@ -106,7 +106,7 @@
           <span class="txt-size">{{ item.size | fileSize }}</span>
         </td>
         <td>
-          <a href="javascript:;" class="txt-expires" (click)="changeExpirationPopupClick(item)">{{ item.expiration ? item.formatted_expiration : 'Never' }}</a>
+          <a href="javascript:;" class="txt-expires" (click)="changeExpirationPopupClick(item)">{{ item.expiration ? item.formattedExpiration : 'Never' }}</a>
         </td>
         <td>
           <div class="image-area">
@@ -120,7 +120,7 @@
               </div>
               <!-- //Tooltip -->
             </em>
-            <a href="javascript:;" class="link-image" (click)="imageClick(item)">{{ item.manifest_digest.split(':')[1].substr(0, 12) }}</a>
+            <a href="javascript:;" class="link-image" (click)="imageClick(item)">{{ item.manifestDigest.split(':')[1].substr(0, 12) }}</a>
           </div>
         </td>
         <td>
@@ -182,7 +182,7 @@
         <div class="popup-tag-manifest">
           <div class="component-input type-copy">
             <div class="input-area">
-              <input type="text" class="input-text" value="Docker pull username/imagename" readonly [(ngModel)]="currentSelectedTag.manifest_digest">
+              <input type="text" class="input-text" value="Docker pull username/imagename" readonly [(ngModel)]="currentSelectedTag.manifestDigest">
               <a href="javascript:;" class="btn-copy" aria-label="Copy" (click)="manifestCopyClick()"></a>
             </div>
           </div>

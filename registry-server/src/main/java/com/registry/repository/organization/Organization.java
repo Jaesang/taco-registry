@@ -41,11 +41,7 @@ public class Organization extends AbstractEntity {
 
 	/** 공개여부 */
 	@Column(name = "public", nullable=false)
-	private boolean publicYn;
-
-	/** 삭제여부 */
-	@Column(name = "del_yn", nullable=false)
-	private boolean delYn;
+	private boolean isPublic;
 
 	/** UserOrg 목록 */
 	@JsonIgnore
@@ -54,11 +50,11 @@ public class Organization extends AbstractEntity {
 
 	@JsonProperty
 	@Transient
-	private Boolean is_admin;
+	private Boolean isAdmin;
 
 	@JsonProperty
 	@Transient
-	private Boolean is_member;
+	private Boolean isMember;
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Variables
@@ -90,20 +86,12 @@ public class Organization extends AbstractEntity {
 		this.name = name;
 	}
 
-	public boolean isPublicYn() {
-		return publicYn;
+	public boolean getIsPublic() {
+		return isPublic;
 	}
 
-	public void setPublicYn(boolean publicYn) {
-		this.publicYn = publicYn;
-	}
-
-	public boolean isDelYn() {
-		return delYn;
-	}
-
-	public void setDelYn(boolean delYn) {
-		this.delYn = delYn;
+	public void setIsPublic(boolean aPublic) {
+		isPublic = aPublic;
 	}
 
 	public List<UserOrganization> getUserOrg() {
@@ -114,28 +102,28 @@ public class Organization extends AbstractEntity {
 		this.userOrg = userOrg;
 	}
 
-	public Boolean getIs_admin() {
-		this.is_admin = false;
+	public Boolean getIsAdmin() {
+		this.isAdmin = false;
 		if (userOrg != null && userOrg.size() > 0) {
 			userOrg.stream().forEach(value -> {
 				if (value.getUser().getUsername().equals(SecurityUtil.getUser())) {
-					this.is_admin = true;
+					this.isAdmin = true;
 				}
 			});
 		}
-		return is_admin;
+		return isAdmin;
 	}
 
-	public Boolean getIs_member() {
-		this.is_member = true;
+	public Boolean getIsMember() {
+		this.isMember = true;
 		if (userOrg != null && userOrg.size() > 0) {
 			userOrg.stream().forEach(value -> {
 				if (value.getUser().getUsername().equals(SecurityUtil.getUser())) {
-					this.is_member = false;
+					this.isMember = false;
 				}
 			});
 		}
-		return is_member;
+		return isMember;
 	}
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

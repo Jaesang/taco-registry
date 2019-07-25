@@ -19,7 +19,7 @@ public class UsageDto {
     @ApiModel("Usage.VIEW")
     public static class VIEW {
         public String name;
-        public Boolean publicYn;
+        public Boolean isPublic;
     }
 
 }

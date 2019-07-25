@@ -19,9 +19,9 @@ public class OrganizationDto {
     @ApiModel("OrgDto.VIEW")
     public static class VIEW {
         public String name;
-        public Boolean publicYn;
-        public Boolean is_admin;
-        public Boolean is_member;
+        public Boolean isPublic;
+        public Boolean isAdmin;
+        public Boolean isMember;
     }
 
     @ApiModel("OrgDto.MEMBER")

@@ -14,8 +14,8 @@ public class SearchDto {
         public VIEW namespace;
         public String description;
         public Long stars;
-        public Long last_modified;
-        public Boolean is_public;
+        public Long lastModified;
+        public Boolean isPublic;
         public Long popularity;
     }
 

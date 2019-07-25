@@ -38,9 +38,9 @@ export namespace Logs {
 	}
 
 	export class Metadata {
-    public build_id: string;
-    public docker_tags: Array<string>;
-    public is_manual: boolean;
+    public buildId: string;
+    public dockerTags: Array<string>;
+    public isManual: boolean;
     public namespace: string;
     public repo: string;
     public role: string;
@@ -49,17 +49,17 @@ export namespace Logs {
     public tag: string;
     public image: string;
     public username: string;
-    public original_image: string;
+    public originalImage: string;
     public visibility: string;
     public description: string;
-    public expiration_date: number;
-    public old_expiration_date: number;
+    public expirationDate: number;
+    public oldExpirationDate: number;
   }
 
 	export class Result {
-    public end_time: string;
+    public endTime: string;
     public logs: Array<Entity>;
-    public next_page: string;
-    public start_time: string;
+    public nextPage: string;
+    public startTime: string;
   }
 }

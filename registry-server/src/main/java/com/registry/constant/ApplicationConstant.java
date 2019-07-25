@@ -27,13 +27,9 @@ public class ApplicationConstant {
     @NestedConfigurationProperty
     private Map<String, String> token = new HashMap<String, String>();
 
-    /** ansible */
+    /** File */
     @NestedConfigurationProperty
-    private Map<String, String> ansible = new HashMap<String, String>();
-
-    /** stash */
-    @NestedConfigurationProperty
-    private Map<String, String> stash = new HashMap<String, String>();
+    private Map<String, String> file = new HashMap<String, String>();
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -59,15 +55,11 @@ public class ApplicationConstant {
         return token;
     }
 
-    public Map<String, String> getAnsible() {
-        return ansible;
+    public Map<String, String> getFile() {
+        return file;
     }
 
-    public Map<String, String> getStash() {
-        return stash;
-    }
-
-    /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Public Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 

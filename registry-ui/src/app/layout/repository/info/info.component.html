@@ -49,10 +49,10 @@
                 <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'id' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'id' && sortDirection == 'desc'" (click)="sortClick('id')">Build ID</a>
               </th>
               <th>
-                <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'manual_user' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'manual_user' && sortDirection == 'desc'" (click)="sortClick('manual_user')">Triggered By</a>
+                <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'manualUser' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'manualUser' && sortDirection == 'desc'" (click)="sortClick('manualUser')">Triggered By</a>
               </th>
               <th>
-                <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'formatted_started' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'formatted_started' && sortDirection == 'desc'" (click)="sortClick('formatted_started')">Date Started</a>
+                <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'formattedStarted' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'formattedStarted' && sortDirection == 'desc'" (click)="sortClick('formattedStarted')">Date Started</a>
               </th>
             </tr>
             </thead>
@@ -68,11 +68,11 @@
               </td>
               <td>
             <span class="txt-user">
-              {{ item.manual_user }}
+              {{ item.manualUser }}
             </span>
               </td>
               <td>
-                <span class="txt-date">{{ item.formatted_started }}</span>
+                <span class="txt-date">{{ item.formattedStarted }}</span>
               </td>
             </tr>
             </tbody>

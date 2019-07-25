@@ -33,8 +33,8 @@ export class RepositoryListComponent extends RepositoryListBaseComponent impleme
    * @param item
    */
   public starChange(item: Repository.Entity) {
-    item.is_starred = !item.is_starred;
-    this.changeStarred(item.is_starred, item.namespace, item.name);
+    item.isStarred = !item.isStarred;
+    this.changeStarred(item.isStarred, item.namespace, item.name);
   }
 
   /**

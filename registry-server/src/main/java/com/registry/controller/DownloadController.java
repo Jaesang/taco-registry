@@ -1,6 +1,5 @@
 package com.registry.controller;
 
-import com.registry.constant.NativeCommandPath;
 import com.registry.constant.Path;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,11 +26,6 @@ public class DownloadController {
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     protected static final Logger logger = LoggerFactory.getLogger(DownloadController.class);
-
-    @Autowired
-    private NativeCommandPath nativeCommandPath;
-
-
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables

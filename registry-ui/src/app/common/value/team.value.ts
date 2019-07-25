@@ -8,9 +8,8 @@ export namespace Team {
   }
 
 	export class Entity {
-    public can_view: boolean;
+    public canView: boolean;
     public description: string;
-    public is_synced: boolean;
     public member_count: number;
     public name: string;
     public repo_count: number;

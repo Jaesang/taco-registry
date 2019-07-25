@@ -87,9 +87,9 @@
   <div class="section-visibility">
     <h3 class="txt-title">Image Visibility</h3>
     <div class="make-public">
-      <button type="button" class="btn-sub" (click)="changeVisibilityClick()">Make {{ this.repo.is_public ? 'Private' : 'Public' }}</button>
+      <button type="button" class="btn-sub" (click)="changeVisibilityClick()">Make {{ this.repo.isPublic ? 'Private' : 'Public' }}</button>
       <p class="txt-desc">
-        This Image is currently <span>{{ this.repo.is_public ? 'public' : 'private' }}</span>. Only users on the permissions list may view and interact with it.
+        This Image is currently <span>{{ this.repo.isPublic ? 'public' : 'private' }}</span>. Only users on the permissions list may view and interact with it.
       </p>
     </div>
   </div>

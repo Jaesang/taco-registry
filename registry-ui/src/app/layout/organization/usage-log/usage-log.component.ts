@@ -86,8 +86,8 @@ export class UsageLogComponent extends PageComponent implements OnInit {
    */
   private setLogList(result: Logs.Result) {
     this.logList = this.logList.concat(result.logs);
-    if (result.next_page) {
-      this.getLogList(result.next_page);
+    if (result.nextPage) {
+      this.getLogList(result.nextPage);
     } else {
       this.loaderService.show.next(false);
     }

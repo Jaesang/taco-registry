@@ -111,7 +111,7 @@ export class TeamService extends AbstractService {
 	public getTeamList(org: Organization.Entity) {
 	  let teamList: Team.Entity[] = [];
 
-	  org.ordered_teams.forEach(value => {
+	  org.orderedTeams.forEach(value => {
 	    teamList.push(org.teams[value]);
     });
 

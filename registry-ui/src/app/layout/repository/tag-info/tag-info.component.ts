@@ -25,7 +25,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
   public orgName: string;
   public repoName: string;
 
-  public sortProperty: string = 'formatted_last_modified';
+  public sortProperty: string = 'formattedLastModified';
   public sortDirection: string = 'desc';
 
   public searchKey: string;
@@ -208,7 +208,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
    * manifest copy 클릭
    */
   public manifestCopyClick() {
-    Utils.StringUtil.copyToClipboard(this.currentSelectedTag.manifest_digest);
+    Utils.StringUtil.copyToClipboard(this.currentSelectedTag.manifestDigest);
     Alert.success(CommonConstant.MESSAGE.COPIED);
   }
 
@@ -251,7 +251,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
     if (item.value == 0) {
       this.fetchPullPath = `docker pull ${environment.hostName}/${this.orgName}/${this.repoName}:${this.currentSelectedTag.name}`;
     } else {
-      this.fetchPullPath = `docker pull ${environment.hostName}/${this.orgName}/${this.repoName}@${this.currentSelectedTag.manifest_digest}`;
+      this.fetchPullPath = `docker pull ${environment.hostName}/${this.orgName}/${this.repoName}@${this.currentSelectedTag.manifestDigest}`;
     }
   }
 
@@ -453,11 +453,11 @@ export class TagInfoComponent extends PageComponent implements OnInit {
 
       for (var key in result.tags) {
         let tag = result.tags[key];
-        tag.formatted_last_modified = moment(tag.last_modified).format('YYYY-MM-DD HH:mm');
+        tag.formattedLastModified = moment(tag.lastModified).format('YYYY-MM-DD HH:mm');
         if (tag.expiration) {
-          tag.formatted_expiration = moment(tag.expiration).format('YYYY-MM-DD HH:mm');
+          tag.formattedExpiration = moment(tag.expiration).format('YYYY-MM-DD HH:mm');
         } else {
-          tag.formatted_expiration = '';
+          tag.formattedExpiration = '';
         }
         this.tagList.push(tag)
       }

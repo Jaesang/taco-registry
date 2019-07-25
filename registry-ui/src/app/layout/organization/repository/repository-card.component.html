@@ -3,9 +3,9 @@
   <span class="txt-title">STARRED</span>
   <ol class="list-repository">
     <li *ngFor="let item of starredList | filter:{name: searchKey, namespace: searchKey}; let index = index;">
-      <div class="box-card" [class.type-private]="!item.is_public" *ngIf="item != -1">
+      <div class="box-card" [class.type-private]="!item.isPublic" *ngIf="item != -1">
         <div class="component-starred">
-          <input type="checkbox" class="input-checkbox" [attr.id]="'starred' + index" [checked]="item.is_starred" (change)="starChange(item)">
+          <input type="checkbox" class="input-checkbox" [attr.id]="'starred' + index" [checked]="item.isStarred" (change)="starChange(item)">
           <label [attr.for]="'starred' + index" class="txt-label"></label>
         </div>
         <a href="javascript:;" class="link-card" (click)="moveToDetail(item.namespace, item.name)">
@@ -30,9 +30,9 @@
 <div class="section-list">
   <ol class="list-repository">
     <li *ngFor="let item of repositoryList | filter:{name: searchKey, namespace: searchKey}; let index = index;">
-      <div class="box-card" [class.type-private]="!item.is_public">
+      <div class="box-card" [class.type-private]="!item.isPublic">
         <div class="component-starred">
-          <input type="checkbox" class="input-checkbox" [attr.id]="'non-starred' + index" [checked]="item.is_starred" (change)="starChange(item)">
+          <input type="checkbox" class="input-checkbox" [attr.id]="'non-starred' + index" [checked]="item.isStarred" (change)="starChange(item)">
           <label [attr.for]="'non-starred' + index" class="txt-label"></label>
         </div>
         <a href="javascript:;" class="link-card" (click)="moveToDetail(item.namespace, item.name)">

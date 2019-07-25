@@ -106,7 +106,7 @@ export class RepositoryService extends AbstractService {
 	public starredRepository(namespace: string, repository: string): Promise<any> {
 	  let data = {
 	    namespace: namespace,
-      repository: repository
+      name: repository
     }
 	  return this.post(`${environment.apiUrl}/user/starred`, data);
   }

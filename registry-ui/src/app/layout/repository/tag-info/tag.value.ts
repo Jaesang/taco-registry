@@ -3,27 +3,27 @@ export namespace Tag {
 
 	export class Entity {
     public image_id: string;
-    public last_modified: string;
-    public manifest_digest: string;
+    public lastModified: string;
+    public manifestDigest: string;
     public name: string;
     public size: number;
     public expiration: any;
 
-    public formatted_last_modified: string;
-    public formatted_expiration: string;
+    public formattedLastModified: string;
+    public formattedExpiration: string;
     public checked: boolean = false;
 	}
 
 	export class History {
-	  public docker_image_id: string;
-    public end_ts: number;
-    public manifest_digest: string;
+	  public dockerImageId: string;
+    public endTs: number;
+    public manifestDigest: string;
     public name: string;
     public reversion: boolean;
-    public start_ts: number;
+    public startTs: number;
 
     public date: number;
-    public formatted_date: string;
+    public formattedDate: string;
     public isMoved: boolean;
     public isDeleted: boolean;
     public beforeHistory: History;
@@ -112,7 +112,7 @@ export namespace Tag {
   }
 
   export class HistoryResult {
-    public has_additional: boolean;
+    public hasAdditional: boolean;
     public page: number;
     public tags: History[];
   }

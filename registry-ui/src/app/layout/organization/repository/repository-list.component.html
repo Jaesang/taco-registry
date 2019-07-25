@@ -14,7 +14,7 @@
             [D] 오름차순 : type-asc 클래스 추가,
             [D] 내림차순 : type-desc 클래스 추가
         -->
-        <a href="javascript:;" class="btn-sort type-starred" [class.type-asc]="sortProperty == 'is_starred' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'is_starred' && sortDirection == 'desc'" (click)="sortClick('is_starred')"></a>
+        <a href="javascript:;" class="btn-sort type-starred" [class.type-asc]="sortProperty == 'isStarred' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'isStarred' && sortDirection == 'desc'" (click)="sortClick('isStarred')"></a>
       </th>
       <th>
         <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'name' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'name' && sortDirection == 'desc'" (click)="sortClick('name')">Image Name</a>
@@ -23,7 +23,7 @@
         <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'popularity' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'popularity' && sortDirection == 'desc'" (click)="sortClick('popularity')">Activity</a>
       </th>
       <th>
-        <a href="javascript:;"class="btn-sort" [class.type-asc]="sortProperty == 'last_modified' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'last_modified' && sortDirection == 'desc'" (click)="sortClick('last_modified')">Last Modified</a>
+        <a href="javascript:;"class="btn-sort" [class.type-asc]="sortProperty == 'lastModified' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'lastModified' && sortDirection == 'desc'" (click)="sortClick('lastModified')">Last Modified</a>
       </th>
     </tr>
     </thead>
@@ -31,7 +31,7 @@
     <tr *ngFor="let item of repositoryList | sort:sortProperty:sortDirection | filter:{name: searchKey, namespace: searchKey}; let index = index;">
       <td class="align-center">
         <div class="component-starred">
-          <input type="checkbox" class="input-checkbox" [attr.id]="'starred' + index" [checked]="item.is_starred" (change)="starChange(item)">
+          <input type="checkbox" class="input-checkbox" [attr.id]="'starred' + index" [checked]="item.isStarred" (change)="starChange(item)">
           <label [attr.for]="'starred' + index" class="txt-label"></label>
         </div>
       </td>
@@ -54,7 +54,7 @@
         </ul>
       </td>
       <td>
-        <span class="txt-date" [class.type-private]="!item.is_public">{{ item.last_modified ? (item.last_modified * 1000 | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}</span>
+        <span class="txt-date" [class.type-private]="!item.isPublic">{{ item.lastModified ? (item.lastModified * 1000 | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}</span>
       </td>
     </tr>
     </tbody>

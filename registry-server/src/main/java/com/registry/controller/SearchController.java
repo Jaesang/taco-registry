@@ -10,7 +10,6 @@ import com.registry.service.OrganizationService;
 import com.registry.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import ma.glasnost.orika.Converter;
 import ma.glasnost.orika.MapperFacade;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -120,7 +119,7 @@ public class SearchController {
 
             SearchDto.VIEW namespace = new SearchDto.VIEW();
             namespace.name = value.getNamespace();
-            namespace.kind = value.isOrganization() ? "organization" : "user";
+            namespace.kind = value.getIsOrganization() ? "organization" : "user";
             item.namespace = namespace;
 
             results.add(item);
@@ -168,15 +167,14 @@ public class SearchController {
                 .map(value -> {
                     SearchDto.VIEW item = mapper.map(value, SearchDto.VIEW.class);
                     item.kind = "image";
-                    item.stars = value.getRole().stream().filter(v -> v.getStarred()).count();
+                    item.stars = value.getRole().stream().filter(v -> v.getIsStarred()).count();
 
                     Timestamp timestamp = Timestamp.valueOf(value.getUpdatedDate());
-                    item.last_modified = timestamp.getTime() / 1000;
-                    item.is_public = value.isPublicYn();
+                    item.lastModified = timestamp.getTime() / 1000;
 
                     SearchDto.VIEW namespace = new SearchDto.VIEW();
                     namespace.name = value.getNamespace();
-                    namespace.kind = value.isOrganization() ? "organization" : "user";
+                    namespace.kind = value.getIsOrganization() ? "organization" : "user";
                     item.namespace = namespace;
                     return item;
                 }).collect(Collectors.toList());
@@ -215,7 +213,7 @@ public class SearchController {
     ) throws Exception{
         JSONObject result = new JSONObject();
 
-        result.put("results", userService.findMembers(username, namespace));
+        result.put("content", userService.findMembers(username, namespace));
         return result;
     }
 

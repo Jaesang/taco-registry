@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface TagRepository extends JpaRepository<Build, Long>{
     List<Build> findAllByImageId(@Param("image_id") Long imageId, Pageable pageable);
+
+    List<Build> findAllByImageId(@Param("image_id") Long imageId);
 }

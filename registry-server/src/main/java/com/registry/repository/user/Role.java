@@ -92,11 +92,11 @@ public class Role extends AbstractEntity {
 		this.user = user;
 	}
 
-	public Boolean getStarred() {
+	public Boolean getIsStarred() {
 		return isStarred;
 	}
 
-	public void setStarred(Boolean starred) {
+	public void setIsStarred(Boolean starred) {
 		isStarred = starred;
 	}
 

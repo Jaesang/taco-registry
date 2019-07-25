@@ -65,7 +65,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
         this.errorMsg = '';
         this.orgName = '';
         this.repo = new Repository.Entity();
-        this.repo.is_public = false;
+        this.repo.isPublic = false;
         this.withDockerfile = false;
         this.errorRepoName = false;
         this.dockerFileContent = '';
@@ -134,7 +134,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
   public createRepoClick() {
     this.loaderService.show.next(true);
 
-    this.repo.is_organization = this.repo.namespace == this.userService.user.username ? false : true;
+    this.repo.isOrganization = this.repo.namespace == this.userService.user.username ? false : true;
     this.repositoryService.createRepository(this.repo).then(result => {
       if (this.withDockerfile) {
 
@@ -174,12 +174,12 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
       return false;
     }
 
-    if (!Validate.checkValidateWithPattern('^[a-z0-9_-]+$', this.repo.name) || Validate.isEmpty(this.repo.name)) {
-      if (!Validate.isEmpty(this.repo.name)) {
-        this.errorMsg = 'error';
-      }
-      return false;
-    }
+    // if (!Validate.checkValidateWithPattern('^[a-z0-9_-]+$', this.repo.name) || Validate.isEmpty(this.repo.name)) {
+    //   if (!Validate.isEmpty(this.repo.name)) {
+    //     this.errorMsg = 'error';
+    //   }
+    //   return false;
+    // }
 
     this.errorMsg = '';
 

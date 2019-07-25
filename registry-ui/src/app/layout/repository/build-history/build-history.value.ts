@@ -42,24 +42,23 @@ export namespace Build {
 	export class Entity {
     public status: Object;
     public error: string;
-    public display_name: string;
+    public displayName: string;
     public repository: Repository.Entity;
     public subdirectory: string;
     public started: string;
     public tags: Array<string>;
-    public archive_url: string;
-    public pull_robot: Object;
+    public archiveUrl: string;
     public trigger: string;
-    public trigger_metadata: string;
+    public triggerMetadata: string;
     public context: string;
-    public is_writer: boolean;
+    public isWriter: boolean;
     public phase: Phase;
-    public resource_key: string;
-    public manual_user: string;
+    public resourceKey: string;
+    public manualUser: string;
     public id: string;
-    public dockerfile_path: string;
+    public dockerfilePath: string;
 
-    public formatted_started: string;
+    public formattedStarted: string;
 	}
 
 	export class Log {
@@ -81,6 +80,6 @@ export namespace Build {
     public logs: Log[];
     public start: number;
     public total: number;
-    public logs_url: string;
+    public logsUrl: string;
   }
 }

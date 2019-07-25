@@ -7,14 +7,14 @@ export namespace Member {
     public name: string;
     public avatar: Avatar;
     public invited: boolean;
-    public is_robot: boolean;
+    public isRobot: boolean;
     public kind: Main.Type;
-    public is_org_member: boolean;
+    public isOrgMember: boolean;
     public role: string;
   }
 
   export class MemberList {
-	  public can_edit: boolean;
+	  public canEdit: boolean;
 	  public members: Entity[];
 	  public name: string;
   }
@@ -24,6 +24,6 @@ export namespace Member {
   }
 
   export class Permissions {
-	  public permissions: Array<any>;
+	  public members: Entity[];
   }
 }

@@ -73,7 +73,7 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
    * @param history
    */
   public imageClick(history: Tag.History) {
-    this.selectedImageId = history.docker_image_id;
+    this.selectedImageId = history.dockerImageId;
     this.showTagLayerPopup = true;
   }
 
@@ -94,11 +94,11 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
     this.loaderService.show.next(true);
 
     let tagName = this.selectedHistory.name;
-    let imageId = this.selectedHistory.docker_image_id;
+    let imageId = this.selectedHistory.dockerImageId;
     let manifrestDigest = null;
 
     if (this.selectedHistory.isDeleted) {
-      manifrestDigest = this.selectedHistory.manifest_digest;
+      manifrestDigest = this.selectedHistory.manifestDigest;
     }
 
     this.tagService.restoreImage(this.orgName, this.repoName, tagName, imageId, manifrestDigest).then(result => {
@@ -131,14 +131,14 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
       this.historyList = [];
       result.tags.forEach((value, index) => {
         this.historyList.push(value);
-        value.date = value.start_ts;
-        value.formatted_date = moment(value.start_ts * 1000).format('YYYY-MM-DD HH:mm');
+        value.date = value.startTs;
+        value.formattedDate = moment(value.startTs * 1000).format('YYYY-MM-DD HH:mm');
 
-        if (value.end_ts) {
+        if (value.endTs) {
           // moved 인 경우 삭제된 내용은 화면에 표시하지 않음
           let isMoved: boolean = false;
           result.tags.forEach((v, i) => {
-            if (v.name == value.name && v.start_ts == value.end_ts) {
+            if (v.name == value.name && v.startTs == value.endTs) {
               isMoved = true;
               return;
             }
@@ -148,15 +148,15 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
             let history = new Tag.History();
             history.name = value.name;
             history.isDeleted = true;
-            history.date = value.end_ts;
-            history.formatted_date = moment(value.end_ts * 1000).format('YYYY-MM-DD HH:mm');
+            history.date = value.endTs;
+            history.formattedDate = moment(value.endTs * 1000).format('YYYY-MM-DD HH:mm');
             history.beforeHistory = value;
             this.historyList.push(history);
           }
         }
 
         result.tags.forEach((v, i) => {
-          if (i > index && v.name == value.name && v.end_ts >= value.start_ts){
+          if (i > index && v.name == value.name && v.endTs >= value.startTs){
             value.isMoved = true;
             value.beforeHistory = v;
             return;

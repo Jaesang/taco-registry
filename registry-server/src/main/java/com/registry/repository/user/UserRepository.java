@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, String> {
     User findUserByUsername(@Param("username") String username);
 
-    List<User> findAllByDelYn(@Param("delYn") boolean delYn);
+    List<User> findAllByDelYn(@Param("del_yn") boolean delYn);
 
     List<User> findAllByUsernameContaining(@Param("username") String username);
 }

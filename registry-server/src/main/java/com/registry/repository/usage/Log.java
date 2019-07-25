@@ -39,16 +39,68 @@ public class Log implements Serializable {
 	private LocalDateTime datetime;
 
 	/** kind */
-	@Column(name = "kind", columnDefinition="varchar(10)", nullable=false)
+	@Column(name = "kind", columnDefinition="varchar(40)", nullable=false)
 	private String kind;
 
-	/** object id */
-	@Column(name = "object_id", nullable=false)
-	private Long objectId;
+	/** organization id */
+	@Column(name = "organization_id")
+	private Long organizationId;
 
-	/** type */
-	@Column(name = "type", columnDefinition="varchar(40)", nullable=false)
-	private String type;
+	/** image id */
+	@Column(name = "image_id")
+	private Long imageId;
+
+	/** username */
+	@Column(name = "username", columnDefinition="varchar(40)")
+	private String username;
+
+	/** build id */
+	@Column(name = "build_id", columnDefinition="varchar(255)", nullable=false)
+	private String buildId;
+
+	/** namespace */
+	@Column(name = "namespace", columnDefinition="varchar(255)", nullable=false)
+	private String namespace;
+
+	/** role */
+	@Column(name = "role", columnDefinition="varchar(255)", nullable=false)
+	private String role;
+
+	/** team */
+	@Column(name = "team", columnDefinition="varchar(255)", nullable=false)
+	private String team;
+
+	/** member */
+	@Column(name = "member", columnDefinition="varchar(255)", nullable=false)
+	private String member;
+
+	/** tag */
+	@Column(name = "tag", columnDefinition="varchar(255)", nullable=false)
+	private String tag;
+
+	/** image */
+	@Column(name = "image", columnDefinition="varchar(255)", nullable=false)
+	private String image;
+
+	/** original_image */
+	@Column(name = "original_image", columnDefinition="varchar(255)", nullable=false)
+	private String originalImage;
+
+	/** visibility */
+	@Column(name = "visibility", columnDefinition="varchar(255)", nullable=false)
+	private String visibility;
+
+	/** description */
+	@Column(name = "description", columnDefinition="varchar(255)", nullable=false)
+	private String description;
+
+	/** expiration_date */
+	@Column(name = "expiration_date", columnDefinition="varchar(255)", nullable=false)
+	private String expirationDate;
+
+	/** old_expiration_date */
+	@Column(name = "old_expiration_date", columnDefinition="varchar(255)", nullable=false)
+	private String oldExpirationDate;
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Variables
@@ -96,21 +148,126 @@ public class Log implements Serializable {
 		this.kind = kind;
 	}
 
-	public Long getObjectId() {
-		return objectId;
+	public Long getOrganizationId() {
+		return organizationId;
 	}
 
-	public void setObjectId(Long objectId) {
-		this.objectId = objectId;
+	public void setOrganizationId(Long organizationId) {
+		this.organizationId = organizationId;
 	}
 
-	public String getType() {
-		return type;
+	public Long getImageId() {
+		return imageId;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setImageId(Long imageId) {
+		this.imageId = imageId;
 	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getBuildId() {
+		return buildId;
+	}
+
+	public void setBuildId(String buildId) {
+		this.buildId = buildId;
+	}
+
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getTeam() {
+		return team;
+	}
+
+	public void setTeam(String team) {
+		this.team = team;
+	}
+
+	public String getMember() {
+		return member;
+	}
+
+	public void setMember(String member) {
+		this.member = member;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getOriginalImage() {
+		return originalImage;
+	}
+
+	public void setOriginalImage(String originalImage) {
+		this.originalImage = originalImage;
+	}
+
+	public String getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(String expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+
+	public String getOldExpirationDate() {
+		return oldExpirationDate;
+	}
+
+	public void setOldExpirationDate(String oldExpirationDate) {
+		this.oldExpirationDate = oldExpirationDate;
+	}
+
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Method
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/

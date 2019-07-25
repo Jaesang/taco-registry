@@ -101,7 +101,7 @@ export class LogsComponent extends AbstractComponent implements OnInit {
    */
   public performerClick(item: Logs.Entity) {
     if (item.performer) {
-      this.router.navigate([`app/user/${item.performer.name}/repository`]);
+      this.router.navigate([`app/user/${item.performer.name}/image`]);
     }
   }
 

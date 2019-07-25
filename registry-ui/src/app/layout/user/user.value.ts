@@ -6,22 +6,8 @@ export namespace User {
   export class Entity {
     public username: string;
     public organizations: Array<Organization.Entity>;
-    public logins: Array<Object>;
-    public company: string;
-    public tag_expiration_s: number;
-    public anonymous: boolean;
-    public preferred_namespace: boolean;
-    public family_name: string;
-    public verified: string;
-    public location: string;
-    public is_me: boolean;
-    public invoice_email_address: string;
-    public prompts: Array<Object>;
-    public avatar: Avatar;
-    public invoice_email: boolean;
-    public can_create_repo: boolean;
+    public canCreateRepo: boolean;
     public email: string;
-    public given_name: string;
     public superuser: boolean;
   }
 

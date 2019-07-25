@@ -2,6 +2,7 @@ package com.registry.controller;
 
 import com.registry.constant.CommonConstant;
 import com.registry.constant.Path;
+import com.registry.dto.ImageDto;
 import com.registry.dto.UserDto;
 import com.registry.repository.user.User;
 import com.registry.service.UserService;
@@ -152,6 +153,65 @@ public class UserController {
             @RequestBody Map<String, Object> map
     ) throws Exception{
         return userService.passwordVerify((String) map.get("password"));
+    }
+
+    /**
+     * add starred
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PostMapping(Path.USER_STARRED)
+    @ApiOperation(
+            value = "add starred",
+            notes = "즐겨찾기 등록"
+    )
+    @ResponseBody
+    public Object addStarred(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @RequestBody ImageDto.CREATE image
+    ) throws Exception{
+        userService.updateStarred(image.namespace, image.name, true);
+        return true;
+    }
+
+    /**
+     * delete starred
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @DeleteMapping(Path.USER_STARRED_DETAIL)
+    @ApiOperation(
+            value = "delete starred",
+            notes = "즐겨찾기 삭제"
+    )
+    @ResponseBody
+    public Object deleteStarred(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable("namespace") String namespace,
+            @ApiParam(
+                    name = "imageName",
+                    required = true
+            )
+            @PathVariable("imageName") String imageName
+    ) throws Exception{
+        userService.updateStarred(namespace, imageName, false);
+        return true;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

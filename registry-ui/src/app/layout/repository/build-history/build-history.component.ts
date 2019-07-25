@@ -123,7 +123,7 @@ export class BuildHistoryComponent extends PageComponent implements OnInit, OnDe
 
     this.repositoryService.getBuildHistory(this.orgName, this.repoName).then(result => {
       result.builds.forEach(value => {
-        value.formatted_started = moment(value.started).format('YYYY-MM-DD HH:mm');
+        value.formattedStarted = moment(value.started).format('YYYY-MM-DD HH:mm');
       });
       this.buildHistoryList = result.builds;
 

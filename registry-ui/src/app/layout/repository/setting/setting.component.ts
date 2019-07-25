@@ -161,7 +161,7 @@ export class SettingComponent extends PageComponent implements OnInit {
    * @param member
    */
   public memberClick(member: Member.Entity) {
-    this.router.navigate([`app/user/${member.name}/repository`]);
+    this.router.navigate([`app/user/${member.name}/image`]);
   }
 
   /**
@@ -173,6 +173,11 @@ export class SettingComponent extends PageComponent implements OnInit {
     if (member) {
       this.repositoryService.addMember(this.orgName, this.repoName, member.name, role.value).then(result => {
         Alert.success(CommonConstant.MESSAGE.SUCCESS);
+      }).catch(reason => {
+        let body = JSON.parse(reason._body);
+        Alert.error(body.message);
+
+        this.loaderService.show.next(false);
       });
     } else {
       this.addMember.role = role.value;
@@ -212,7 +217,7 @@ export class SettingComponent extends PageComponent implements OnInit {
         this.repositoryService.deleteRepository(this.orgName, this.repoName).then(result => {
           Alert.success(CommonConstant.MESSAGE.DELETED);
 
-          this.router.navigate([`app/${this.repo.is_organization ? 'organization' : 'user'}/${this.orgName}/repository`]);
+          this.router.navigate([`app/${this.repo.isOrganization ? 'organization' : 'user'}/${this.orgName}/image`]);
 
           this.loaderService.show.next(false);
         });
@@ -226,11 +231,11 @@ export class SettingComponent extends PageComponent implements OnInit {
    * make public/private 클릭
    */
   public changeVisibilityClick() {
-    let title = this.repo.is_public ? 'Private' : 'Public';
+    let title = this.repo.isPublic ? 'Private' : 'Public';
 
     this.confirmPopupService.show(
       `Make ${title}`,
-      this.repo.is_public ? `This Repository is currently public. Are you sure you want to make this image private?` : `This Repository is currently private. Are you sure you want to make this image public?`,
+      this.repo.isPublic ? `This Repository is currently public. Are you sure you want to make this image private?` : `This Repository is currently private. Are you sure you want to make this image public?`,
       null,
       () => {
 
@@ -238,8 +243,8 @@ export class SettingComponent extends PageComponent implements OnInit {
       () => {
         this.loaderService.show.next(true);
 
-        this.repositoryService.changeVisibility(this.orgName, this.repoName, !this.repo.is_public).then(result => {
-          this.repo.is_public = !this.repo.is_public;
+        this.repositoryService.changeVisibility(this.orgName, this.repoName, !this.repo.isPublic).then(result => {
+          this.repo.isPublic = !this.repo.isPublic;
 
           Alert.success(CommonConstant.MESSAGE.SUCCESS);
 
@@ -273,12 +278,7 @@ export class SettingComponent extends PageComponent implements OnInit {
     this.loaderService.show.next(true);
 
     this.repositoryService.getMemberList(this.orgName, this.repoName).then(result => {
-      this.memberList = [];
-
-      for (let key in result.permissions) {
-        let resultData: Member.Entity = result.permissions[key];
-        this.memberList.push(resultData);
-      }
+      this.memberList = result.members;
 
       this.loaderService.show.next(false);
     });

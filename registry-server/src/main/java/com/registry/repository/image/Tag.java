@@ -32,7 +32,7 @@ public class Tag implements Serializable {
 
     /** image */
     @Column(name = "image_key", columnDefinition="varchar(40)", nullable=false)
-    private String image_key;
+    private String imageKey;
 
     /** manifest digest */
     @Column(name = "manifest_digest", columnDefinition="varchar(255)")
@@ -92,12 +92,12 @@ public class Tag implements Serializable {
         this.id = id;
     }
 
-    public String getImage_key() {
-        return image_key;
+    public String getImageKey() {
+        return imageKey;
     }
 
-    public void setImage_key(String image_key) {
-        this.image_key = image_key;
+    public void setImageKey(String imageKey) {
+        this.imageKey = imageKey;
     }
 
     public String getManifestDigest() {
@@ -164,7 +164,7 @@ public class Tag implements Serializable {
         this.image = image;
     }
 
-	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Method
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 	

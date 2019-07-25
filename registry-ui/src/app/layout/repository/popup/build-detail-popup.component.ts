@@ -128,7 +128,7 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
    */
   public downloadLogsClick() {
     // this.buildHistoryService.getBuildLogUrl(this.namespace, this.repoName, this.buildId).then(result => {
-    //   this.fileDownload.nativeElement.href = result.logs_url;
+    //   this.fileDownload.nativeElement.href = result.logsUrl;
     //   this.fileDownload.nativeElement.download = 'fileName';
     //   this.fileDownload.nativeElement.click();
     // });
@@ -265,7 +265,7 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
     this.logNotFound = false;
 
     this.buildHistoryService.getBuildLogList(this.namespace, this.repoName, this.buildId).then(result => {
-      if (result.logs_url) {
+      if (result.logsUrl) {
         this.buildHistoryService.getCompleteBuildLogList(this.buildId).then(result => {
           this.setLogs(result);
         }).catch(reason => {

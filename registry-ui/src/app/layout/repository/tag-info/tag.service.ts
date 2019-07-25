@@ -120,7 +120,7 @@ export class TagService extends AbstractService {
     };
 
     if (manifestDigest) {
-      data['manifest_digest'] = manifestDigest;
+      data['manifestDigest'] = manifestDigest;
     }
 
     return this.post(`${environment.apiUrl}/image/${namespace}/${repository}/tag/${tag}/restore`, data);

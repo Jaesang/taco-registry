@@ -99,7 +99,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
     this.orgName = '';
     this.baseRepo = this.repositoryService.repository;
     this.repo = new Repository.Entity();
-    this.repo.is_public = false;
+    this.repo.isPublic = false;
     this.errorRepoName = false;
     this.dockerFileContent = '';
     this.getLastDockerfile();
@@ -146,7 +146,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
 
     this.dockerFileContent = this.editor.value;
 
-    this.repo.is_organization = this.repo.namespace == this.userService.user.username ? false : true;
+    this.repo.isOrganization = this.repo.namespace == this.userService.user.username ? false : true;
     this.repositoryService.createRepository(this.repo).then(result => {
 
       this.fileService.createFile(this.dockerFileContent).then(result => {
@@ -224,7 +224,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
       });
 
       if (list.length) {
-        let resourceKey = list[0].resource_key;
+        let resourceKey = list[0].resourceKey;
         this.fileService.getFile(resourceKey).then(result => {
           let fileContent = result._body;
           this.editor.setText(fileContent);

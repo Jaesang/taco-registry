@@ -3,17 +3,17 @@ import {CommonResult} from "../../common/value/result-value";
 export namespace Repository {
 
 	export class Entity {
-    public can_admin: boolean;
-    public can_write: boolean;
+    public canAdmin: boolean;
+    public canWrite: boolean;
 	  public description:string;
-    public is_public: boolean;
-    public is_starred: boolean;
+    public isPublic: boolean;
+    public isStarred: boolean;
     public kind: string;
-    public last_modified: string;
+    public lastModified: string;
     public name: string;
     public namespace: string;
     public popularity: number;
-    public is_organization: boolean;
+    public isOrganization: boolean;
     public stats: Stat[] = [];
     public tags: any;
 	}

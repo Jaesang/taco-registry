@@ -54,7 +54,7 @@ public class Build implements Serializable {
 
 	/** trigger */
 	@Column(name = "build_trigger", columnDefinition="varchar(40)")
-	private String trigger;
+	private String buildTrigger;
 
 	/** trigger metadata */
 	@Column(name = "trigger_metadata", columnDefinition="varchar(40)")
@@ -151,12 +151,12 @@ public class Build implements Serializable {
 		this.archiveUrl = archiveUrl;
 	}
 
-	public String getTrigger() {
-		return trigger;
+	public String getBuildTrigger() {
+		return buildTrigger;
 	}
 
-	public void setTrigger(String trigger) {
-		this.trigger = trigger;
+	public void setBuildTrigger(String buildTrigger) {
+		this.buildTrigger = buildTrigger;
 	}
 
 	public String getTriggerMetadata() {
@@ -207,7 +207,7 @@ public class Build implements Serializable {
 		this.image = image;
 	}
 
-	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Method
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 	

@@ -69,7 +69,7 @@ export class RepositoryHeaderComponent extends AbstractComponent implements OnIn
 
   public backClick() {
     let url = '';
-    if (this.repo.is_organization) {
+    if (this.repo.isOrganization) {
       url = `app/organization/${this.repo.namespace}/image`;
     } else {
       url = `app/user/${this.repo.namespace}/image`;
@@ -115,8 +115,8 @@ export class RepositoryHeaderComponent extends AbstractComponent implements OnIn
    * @param item
    */
   public starChange(repo: Repository.Entity) {
-    repo.is_starred = !repo.is_starred;
-    if (repo.is_starred) {
+    repo.isStarred = !repo.isStarred;
+    if (repo.isStarred) {
       this.repositoryService.starredRepository(repo.namespace, repo.name).then(result => {
 
       });

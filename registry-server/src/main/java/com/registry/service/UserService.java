@@ -1,12 +1,15 @@
 package com.registry.service;
 
 import com.registry.constant.CommonConstant;
+import com.registry.exception.AccessDeniedException;
 import com.registry.repository.common.CodeEntity;
 import com.registry.repository.common.CodeRepository;
+import com.registry.repository.image.Image;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.user.*;
 import com.registry.util.SecurityUtil;
 import com.registry.value.common.Result;
+import netscape.security.ForbiddenTargetException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,6 +45,9 @@ public class UserService extends AbstractService {
     /** user org Repo */
     @Autowired
     private UserOrganizationRepository _userOrgRepo;
+
+    @Autowired
+    private ImageService _imageService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -237,6 +243,21 @@ public class UserService extends AbstractService {
             return !exist;
         }).collect(Collectors.toList());
         return results;
+    }
+
+    /**
+     * 즐겨찾기 등록 / 삭제
+     * @param namespace
+     * @param imageName
+     * @throws Exception
+     */
+    public void updateStarred(String namespace, String imageName, boolean starred) throws Exception {
+
+        Image image = _imageService.getImage(namespace, imageName);
+        Role role = _roleRepo.findOneByUserUsernameAndImageId(SecurityUtil.getUser(), image.getId());
+        role.setIsStarred(starred);
+
+        _roleRepo.save(role);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

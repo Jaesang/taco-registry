@@ -56,6 +56,15 @@ public class Path {
     // (POST, PUT) 유저 저장
     public static final String USER				            = API + "/user" ;
 
+    // starred
+    // (POST) add starred
+    // (DELETE) delete starred
+    public static final String USER_STARRED 	            = API + "/user/starred" ;
+
+    // starred
+    // (DELETE) delete starred
+    public static final String USER_STARRED_DETAIL          = API + "/user/starred/{namespace}/{imageName}" ;
+
     // 유저목록
     // (GET) 유저목록 조회
     // (POST) 유저 등록
@@ -93,7 +102,7 @@ public class Path {
 
     // member 상세
     // (GET) 등록
-    public static final String ORG_MEMBER_DETAIL            = API + "/organization/{name}/members";
+    public static final String ORG_MEMBER_DETAIL            = API + "/organization/{name}/members/{username}";
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Image
@@ -109,7 +118,17 @@ public class Path {
     public static final String IMAGE_DETAIL                 = API + "/image/{namespace}/{name}";
 
     // build 목록
-    public static final String IMAGE_DETAIL_BUILD           = IMAGE_DETAIL + "/build";
+    public static final String IMAGE_BUILD                  = IMAGE_DETAIL + "/build";
+
+    // build 목록
+    public static final String IMAGE_MEMBER                 = IMAGE_DETAIL + "/permissions/user/";
+
+    // build 목록
+    public static final String IMAGE_MEMBER_DETAIL          = IMAGE_DETAIL + "/permissions/user/{username}";
+
+    // 공개여부 변경
+    // (POST) 변경
+    public static final String IMAGE_VISIBILITY             = IMAGE_DETAIL + "/changevisibility";
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Search

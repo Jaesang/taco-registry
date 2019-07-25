@@ -61,7 +61,7 @@ export class TeamDetailComponent extends PageComponent implements OnInit {
   }
 
   public memberClick(member: Member.Entity) {
-    this.router.navigate([`app/user/${member.name}/repository`]);
+    this.router.navigate([`app/user/${member.name}/image`]);
   }
 
   /**
