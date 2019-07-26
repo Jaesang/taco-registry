@@ -1,13 +1,12 @@
 package com.registry.service;
 
-import com.registry.dto.OrganizationDto;
+import com.registry.constant.LogConstant;
 import com.registry.exception.AccessDeniedException;
 import com.registry.exception.BadRequestException;
-import com.registry.repository.common.CodeEntity;
-import com.registry.repository.common.CodeRepository;
 import com.registry.repository.image.Image;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.organization.OrganizationRepository;
+import com.registry.repository.usage.Log;
 import com.registry.repository.usage.LogRepository;
 import com.registry.repository.user.*;
 import com.registry.util.SecurityUtil;
@@ -191,6 +190,14 @@ public class OrganizationService extends AbstractService {
             });
 
             _roleRepo.saveAll(addMembers);
+
+            // 로그 등록
+            User performer = _userService.getUser(SecurityUtil.getUser());
+            Log log = new Log(LogConstant.ORG_ADD_MEMBER);
+            log.setOrganizationId(org.getId());
+            log.setMember(username);
+            log.setPerformer(performer);
+            _logRepo.save(log);
         }
     }
 
@@ -231,6 +238,14 @@ public class OrganizationService extends AbstractService {
         });
 
         _roleRepo.deleteAll(deleteMembers);
+
+        // 로그 등록
+        User performer = _userService.getUser(SecurityUtil.getUser());
+        Log log = new Log(LogConstant.ORG_REMOVE_MEMBER);
+        log.setPerformer(performer);
+        log.setOrganizationId(org.getId());
+        log.setMember(username);
+        _logRepo.save(log);
     }
 
     /**

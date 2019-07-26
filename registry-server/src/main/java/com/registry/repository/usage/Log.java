@@ -1,10 +1,13 @@
 package com.registry.repository.usage;
 
+import com.registry.repository.user.User;
+import com.registry.util.SecurityUtil;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author boozer
@@ -38,6 +41,11 @@ public class Log implements Serializable {
 	@Type(type = "org.hibernate.type.LocalDateTimeType")
 	private LocalDateTime datetime;
 
+	/** 생성자 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "performer")
+	protected User performer;
+
 	/** kind */
 	@Column(name = "kind", columnDefinition="varchar(40)", nullable=false)
 	private String kind;
@@ -55,51 +63,55 @@ public class Log implements Serializable {
 	private String username;
 
 	/** build id */
-	@Column(name = "build_id", columnDefinition="varchar(255)", nullable=false)
+	@Column(name = "build_id", columnDefinition="varchar(255)")
 	private String buildId;
 
 	/** namespace */
-	@Column(name = "namespace", columnDefinition="varchar(255)", nullable=false)
+	@Column(name = "namespace", columnDefinition="varchar(255)")
 	private String namespace;
 
+	/** image */
+	@Column(name = "image", columnDefinition="varchar(255)")
+	private String image;
+
 	/** role */
-	@Column(name = "role", columnDefinition="varchar(255)", nullable=false)
+	@Column(name = "role", columnDefinition="varchar(255)")
 	private String role;
 
 	/** team */
-	@Column(name = "team", columnDefinition="varchar(255)", nullable=false)
+	@Column(name = "team", columnDefinition="varchar(255)")
 	private String team;
 
 	/** member */
-	@Column(name = "member", columnDefinition="varchar(255)", nullable=false)
+	@Column(name = "member", columnDefinition="varchar(255)")
 	private String member;
 
 	/** tag */
-	@Column(name = "tag", columnDefinition="varchar(255)", nullable=false)
+	@Column(name = "tag", columnDefinition="varchar(255)")
 	private String tag;
 
 	/** image */
-	@Column(name = "image", columnDefinition="varchar(255)", nullable=false)
-	private String image;
+	@Column(name = "docker_image_id", columnDefinition="varchar(255)")
+	private String dockerImageId;
 
 	/** original_image */
-	@Column(name = "original_image", columnDefinition="varchar(255)", nullable=false)
-	private String originalImage;
+	@Column(name = "original_docker_image", columnDefinition="varchar(255)")
+	private String originalDockerImageId;
 
 	/** visibility */
-	@Column(name = "visibility", columnDefinition="varchar(255)", nullable=false)
+	@Column(name = "visibility", columnDefinition="varchar(255)")
 	private String visibility;
 
 	/** description */
-	@Column(name = "description", columnDefinition="varchar(255)", nullable=false)
+	@Column(name = "description", columnDefinition="varchar(255)")
 	private String description;
 
 	/** expiration_date */
-	@Column(name = "expiration_date", columnDefinition="varchar(255)", nullable=false)
+	@Column(name = "expiration_date", columnDefinition="varchar(255)")
 	private String expirationDate;
 
 	/** old_expiration_date */
-	@Column(name = "old_expiration_date", columnDefinition="varchar(255)", nullable=false)
+	@Column(name = "old_expiration_date", columnDefinition="varchar(255)")
 	private String oldExpirationDate;
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -111,6 +123,12 @@ public class Log implements Serializable {
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
 	public Log() { }
+
+	public Log(String kind) {
+		this.setIp(SecurityUtil.getIP());
+		this.setKind(kind);
+		this.setDatetime(LocalDateTime.now());
+	}
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Getter & Setter Method ( DI Method )
@@ -132,12 +150,29 @@ public class Log implements Serializable {
 		this.ip = ip;
 	}
 
-	public LocalDateTime getDatetime() {
-		return datetime;
+	public String getDatetime() {
+
+		if( null != this.datetime ) {
+
+			DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			return this.datetime.format(fm);
+		}
+		else {
+
+			return null;
+		}
 	}
 
 	public void setDatetime(LocalDateTime datetime) {
 		this.datetime = datetime;
+	}
+
+	public User getPerformer() {
+		return performer;
+	}
+
+	public void setPerformer(User performer) {
+		this.performer = performer;
 	}
 
 	public String getKind() {
@@ -188,6 +223,14 @@ public class Log implements Serializable {
 		this.namespace = namespace;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public String getRole() {
 		return role;
 	}
@@ -220,20 +263,20 @@ public class Log implements Serializable {
 		this.tag = tag;
 	}
 
-	public String getImage() {
-		return image;
+	public String getDockerImageId() {
+		return dockerImageId;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setDockerImageId(String dockerImageId) {
+		this.dockerImageId = dockerImageId;
 	}
 
-	public String getOriginalImage() {
-		return originalImage;
+	public String getOriginalDockerImageId() {
+		return originalDockerImageId;
 	}
 
-	public void setOriginalImage(String originalImage) {
-		this.originalImage = originalImage;
+	public void setOriginalDockerImageId(String originalDockerImageId) {
+		this.originalDockerImageId = originalDockerImageId;
 	}
 
 	public String getVisibility() {

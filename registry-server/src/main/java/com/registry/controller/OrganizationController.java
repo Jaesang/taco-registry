@@ -1,6 +1,7 @@
 package com.registry.controller;
 
 import com.registry.constant.Path;
+import com.registry.dto.LogDto;
 import com.registry.dto.OrganizationDto;
 import com.registry.dto.UserDto;
 import com.registry.exception.BadRequestException;
@@ -8,6 +9,7 @@ import com.registry.repository.organization.Organization;
 import com.registry.repository.user.User;
 import com.registry.repository.user.UserOrganization;
 import com.registry.service.OrganizationService;
+import com.registry.service.UsageLogService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
@@ -36,6 +38,9 @@ public class OrganizationController {
 
     @Autowired
     private OrganizationService organizationService;
+
+    @Autowired
+    private UsageLogService usageLogService;
 
     @Autowired
     private MapperFacade mapper;
@@ -254,6 +259,46 @@ public class OrganizationController {
         organizationService.deleteMember(username, name);
 
         return true;
+    }
+
+    /**
+     * Org logs
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping(Path.ORG_LOGS)
+    @ApiOperation(
+            value = "get logs",
+            notes = "Org logs"
+    )
+    public Object getLogs(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "organization",
+                    required = true
+            )
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "starttime",
+                    required = true
+            )
+            @RequestParam("starttime") String starttime,
+            @ApiParam(
+                    name = "endtime",
+                    required = true
+            )
+            @RequestParam("endtime") String endtime
+    ) throws Exception{
+        JSONObject result = new JSONObject();
+
+        result.put("logs", mapper.mapAsList(usageLogService.getOrganizationLogs(name, starttime, endtime), LogDto.VIEW.class));
+        return result;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

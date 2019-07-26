@@ -65,6 +65,10 @@ public class Path {
     // (DELETE) delete starred
     public static final String USER_STARRED_DETAIL          = API + "/user/starred/{namespace}/{imageName}" ;
 
+    // logs
+    // (GET) log 목록
+    public static final String USER_LOGS                    = USER + "/logs";
+
     // 유저목록
     // (GET) 유저목록 조회
     // (POST) 유저 등록
@@ -98,11 +102,15 @@ public class Path {
 
     // member
     // (GET) 목록
-    public static final String ORG_MEMBER                   = API + "/organization/{name}/members";
+    public static final String ORG_MEMBER                   = ORG_DETAIL + "/members";
 
     // member 상세
-    // (GET) 등록
-    public static final String ORG_MEMBER_DETAIL            = API + "/organization/{name}/members/{username}";
+    // (POST) 등록
+    public static final String ORG_MEMBER_DETAIL            = ORG_MEMBER + "/{username}";
+
+    // logs
+    // (GET) log 목록
+    public static final String ORG_LOGS                     = ORG_DETAIL + "/logs";
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Image
@@ -129,6 +137,10 @@ public class Path {
     // 공개여부 변경
     // (POST) 변경
     public static final String IMAGE_VISIBILITY             = IMAGE_DETAIL + "/changevisibility";
+
+    // logs
+    // (GET) log 목록
+    public static final String IMAGE_LOGS                   = IMAGE_DETAIL + "/logs";
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Search

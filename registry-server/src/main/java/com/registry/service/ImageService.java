@@ -1,5 +1,6 @@
 package com.registry.service;
 
+import com.registry.constant.LogConstant;
 import com.registry.exception.AccessDeniedException;
 import com.registry.exception.BadRequestException;
 import com.registry.repository.image.BuildRepository;
@@ -8,6 +9,7 @@ import com.registry.repository.image.ImageRepository;
 import com.registry.repository.image.TagRepository;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.organization.OrganizationRepository;
+import com.registry.repository.usage.Log;
 import com.registry.repository.usage.LogRepository;
 import com.registry.repository.user.Role;
 import com.registry.repository.user.RoleRepository;
@@ -106,41 +108,51 @@ public class ImageService extends AbstractService {
 
         Pattern p = Pattern.compile("^[a-z0-9_-]+$");
         Matcher m = p.matcher(image.getName());
-        if (m.find()) {
-            //todo builder에 image 생성 요청
-
-            User user = _userService.getUser(SecurityUtil.getUser());
-
-            image.setCreatedBy(user);
-            image.setUpdatedBy(user);
-            _imageRepo.save(image);
-
-            List<Role> members = new ArrayList<>();
-            Role role = new Role();
-            role.setImage(image);
-            role.setUser(user);
-            role.setName("ADMIN");
-            role.setIsStarred(false);
-            members.add(role);
-
-            if (image.getIsOrganization()) {
-                Organization org = _organizationService.getOrg(image.getNamespace());
-                org.getUserOrg().stream().forEach(value -> {
-                    if (!value.getUser().getUsername().equals(user.getUsername())) {
-                        Role r = new Role();
-                        r.setImage(image);
-                        r.setUser(user);
-                        r.setName("ADMIN");
-                        r.setIsStarred(false);
-                        members.add(r);
-                    }
-                });
-            }
-
-            _roleRepo.saveAll(members);
-        } else {
+        if (!m.find()) {
             throw new BadRequestException("Image names must match [a-z0-9_-]+");
         }
+        //todo builder에 image 생성 요청
+
+        User user = _userService.getUser(SecurityUtil.getUser());
+
+        image.setCreatedBy(user);
+        image.setUpdatedBy(user);
+        _imageRepo.save(image);
+
+        List<Role> members = new ArrayList<>();
+        Role role = new Role();
+        role.setImage(image);
+        role.setUser(user);
+        role.setName("ADMIN");
+        role.setIsStarred(false);
+        members.add(role);
+
+        if (image.getIsOrganization()) {
+            Organization org = _organizationService.getOrg(image.getNamespace());
+            org.getUserOrg().stream().forEach(value -> {
+                if (!value.getUser().getUsername().equals(user.getUsername())) {
+                    Role r = new Role();
+                    r.setImage(image);
+                    r.setUser(user);
+                    r.setName("ADMIN");
+                    r.setIsStarred(false);
+                    members.add(r);
+                }
+            });
+        }
+
+        _roleRepo.saveAll(members);
+
+        // 로그 등록
+        Organization org = _organizationService.getOrg(image.getNamespace());
+        User performer = _userService.getUser(SecurityUtil.getUser());
+        Log log = new Log(LogConstant.CREATE_IMAGE);
+        log.setPerformer(performer);
+        log.setOrganizationId(org.getId());
+        log.setImageId(image.getId());
+        log.setNamespace(image.getNamespace());
+        log.setImage(image.getName());
+        _logRepo.save(log);
     }
 
     /**
@@ -167,6 +179,15 @@ public class ImageService extends AbstractService {
         // image 삭제
         _imageRepo.delete(image);
 
+        // 로그 등록
+        Organization org = _organizationService.getOrg(image.getNamespace());
+        User performer = _userService.getUser(SecurityUtil.getUser());
+        Log log = new Log(LogConstant.DELETE_IMAGE);
+        log.setPerformer(performer);
+        log.setOrganizationId(org.getId());
+        log.setImageId(image.getId());
+        log.setImage(image.getName());
+        _logRepo.save(log);
     }
 
     /**
@@ -238,6 +259,7 @@ public class ImageService extends AbstractService {
      * @param roleName
      * @throws Exception
      */
+    @Transactional
     public void updateRole(String username, String namespace, String name, String roleName) throws Exception {
         // 권한 체크
         this.checkAuth(namespace, name);
@@ -263,6 +285,19 @@ public class ImageService extends AbstractService {
 
             _roleRepo.save(role);
         }
+
+        // 로그 등록
+        Organization org = _organizationService.getOrg(image.getNamespace());
+        User performer = _userService.getUser(SecurityUtil.getUser());
+        Log log = new Log(LogConstant.CHANGE_IMAGE_PERMISSION);
+        log.setPerformer(performer);
+        log.setOrganizationId(org.getId());
+        log.setImageId(image.getId());
+        log.setNamespace(image.getNamespace());
+        log.setImage(image.getName());
+        log.setRole(roleName.toUpperCase());
+        log.setUsername(username);
+        _logRepo.save(log);
     }
 
     /**
@@ -272,6 +307,7 @@ public class ImageService extends AbstractService {
      * @param name
      * @throws Exception
      */
+    @Transactional
     public void deleteRole(String username, String namespace, String name) throws Exception {
         // 권한 체크
         this.checkAuth(namespace, name);
@@ -285,6 +321,18 @@ public class ImageService extends AbstractService {
         Role role = _roleRepo.findOneByUserUsernameAndImageId(username, image.getId());
 
         _roleRepo.delete(role);
+
+        // 로그 등록
+        Organization org = _organizationService.getOrg(image.getNamespace());
+        User performer = _userService.getUser(SecurityUtil.getUser());
+        Log log = new Log(LogConstant.DELETE_IMAGE_PERMISSION);
+        log.setPerformer(performer);
+        log.setOrganizationId(org.getId());
+        log.setImageId(image.getId());
+        log.setNamespace(image.getNamespace());
+        log.setImage(image.getName());
+        log.setUsername(username);
+        _logRepo.save(log);
     }
 
     /**
@@ -293,6 +341,7 @@ public class ImageService extends AbstractService {
      * @param name
      * @param visibility
      */
+    @Transactional
     public Image updateVisibility(String namespace, String name, boolean visibility) {
         // 권한 체크
         this.checkAuth(namespace, name);
@@ -301,6 +350,18 @@ public class ImageService extends AbstractService {
         image.setIsPublic(visibility);
 
         _imageRepo.save(image);
+
+        // 로그 등록
+        Organization org = _organizationService.getOrg(image.getNamespace());
+        User performer = _userService.getUser(SecurityUtil.getUser());
+        Log log = new Log(LogConstant.CHANGE_IMAGE_VISIBILITY);
+        log.setPerformer(performer);
+        log.setOrganizationId(org.getId());
+        log.setImageId(image.getId());
+        log.setNamespace(image.getNamespace());
+        log.setImage(image.getName());
+        log.setVisibility(visibility ? "public" : "private");
+        _logRepo.save(log);
 
         return image;
     }

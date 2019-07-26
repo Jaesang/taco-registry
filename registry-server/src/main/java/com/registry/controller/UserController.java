@@ -3,13 +3,17 @@ package com.registry.controller;
 import com.registry.constant.CommonConstant;
 import com.registry.constant.Path;
 import com.registry.dto.ImageDto;
+import com.registry.dto.LogDto;
 import com.registry.dto.UserDto;
 import com.registry.repository.user.User;
+import com.registry.service.UsageLogService;
 import com.registry.service.UserService;
+import com.registry.util.SecurityUtil;
 import com.registry.value.common.Result;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UsageLogService usageLogService;
 
     @Autowired
     private MapperFacade mapper;
@@ -212,6 +219,41 @@ public class UserController {
     ) throws Exception{
         userService.updateStarred(namespace, imageName, false);
         return true;
+    }
+
+    /**
+     * Image logs
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping(Path.USER_LOGS)
+    @ApiOperation(
+            value = "get logs",
+            notes = "Image logs"
+    )
+    public Object getLogs(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "starttime",
+                    required = true
+            )
+            @RequestParam("starttime") String starttime,
+            @ApiParam(
+                    name = "endtime",
+                    required = true
+            )
+            @RequestParam("endtime") String endtime
+    ) throws Exception{
+        JSONObject result = new JSONObject();
+
+        result.put("logs", mapper.mapAsList(usageLogService.getUserLogs(SecurityUtil.getUser(), starttime, endtime), LogDto.VIEW.class));
+        return result;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

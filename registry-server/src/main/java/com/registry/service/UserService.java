@@ -1,11 +1,14 @@
 package com.registry.service;
 
 import com.registry.constant.CommonConstant;
+import com.registry.constant.LogConstant;
 import com.registry.exception.AccessDeniedException;
 import com.registry.repository.common.CodeEntity;
 import com.registry.repository.common.CodeRepository;
 import com.registry.repository.image.Image;
 import com.registry.repository.organization.Organization;
+import com.registry.repository.usage.Log;
+import com.registry.repository.usage.LogRepository;
 import com.registry.repository.user.*;
 import com.registry.util.SecurityUtil;
 import com.registry.value.common.Result;
@@ -45,6 +48,10 @@ public class UserService extends AbstractService {
     /** user org Repo */
     @Autowired
     private UserOrganizationRepository _userOrgRepo;
+
+    /** usage log Repo */
+    @Autowired
+    private LogRepository _logRepo;
 
     @Autowired
     private ImageService _imageService;
@@ -197,7 +204,16 @@ public class UserService extends AbstractService {
                 }
             }
 
-            if(user.getPassword() != null) preUser.setPassword(user.getPassword());
+            if(user.getPassword() != null) {
+                preUser.setPassword(user.getPassword());
+
+                // 로그 등록
+                User performer = this.getUser(SecurityUtil.getUser());
+                Log log = new Log(LogConstant.ACCOUNT_CHANGE_PASSWORD);
+                log.setPerformer(performer);
+                log.setMember(SecurityUtil.getUser());
+                _logRepo.save(log);
+            }
             if(user.getName() != null) preUser.setName(user.getName());
             if(user.getEmail() != null) preUser.setEmail(user.getEmail());
             if(user.getEnabled() != null) preUser.setEnabled(user.getEnabled());

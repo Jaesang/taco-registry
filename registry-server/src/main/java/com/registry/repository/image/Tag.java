@@ -31,8 +31,8 @@ public class Tag implements Serializable {
 	private Long id;
 
     /** image */
-    @Column(name = "image_key", columnDefinition="varchar(40)", nullable=false)
-    private String imageKey;
+    @Column(name = "docker_image_id", columnDefinition="varchar(40)", nullable=false)
+    private String dockerImageId;
 
     /** manifest digest */
     @Column(name = "manifest_digest", columnDefinition="varchar(255)")
@@ -92,12 +92,12 @@ public class Tag implements Serializable {
         this.id = id;
     }
 
-    public String getImageKey() {
-        return imageKey;
+    public String getDockerImageId() {
+        return dockerImageId;
     }
 
-    public void setImageKey(String imageKey) {
-        this.imageKey = imageKey;
+    public void setDockerImageId(String dockerImageId) {
+        this.dockerImageId = dockerImageId;
     }
 
     public String getManifestDigest() {
