@@ -7,7 +7,6 @@ import com.registry.repository.usage.LogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -69,7 +68,7 @@ public class UsageLogService extends AbstractService {
     public List<Log> getUserLogs(String username, String startTime, String endTime) {
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
-        return _logRepo.findAllByUsernameAndDatetimeAfterAndDatetimeBefore(username, start, end);
+        return _logRepo.getLogsByUsername(username, start, end);
     }
 
     /**
@@ -81,7 +80,7 @@ public class UsageLogService extends AbstractService {
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         Organization org = _organizationService.getOrg(namespace);
-        return _logRepo.findAllByOrganizationIdAndDatetimeAfterAndDatetimeBefore(org.getId(), start, end);
+        return _logRepo.getLogsByOrganizationId(org.getId(), start, end);
     }
 
     /**
@@ -94,7 +93,7 @@ public class UsageLogService extends AbstractService {
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         Image image = _imageService.getImage(namespace, imageName);
-        return _logRepo.findAllByImageIdAndDatetimeAfterAndDatetimeBefore(image.getId(), start, end);
+        return _logRepo.getLogsByImageId(image.getId(), start, end);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

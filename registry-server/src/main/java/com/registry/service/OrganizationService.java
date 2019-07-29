@@ -3,7 +3,6 @@ package com.registry.service;
 import com.registry.constant.LogConstant;
 import com.registry.exception.AccessDeniedException;
 import com.registry.exception.BadRequestException;
-import com.registry.repository.image.Image;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.organization.OrganizationRepository;
 import com.registry.repository.usage.Log;
@@ -81,7 +80,7 @@ public class OrganizationService extends AbstractService {
             throw new BadRequestException("Be at least 2 characters in length and max 40 characters in length");
         }
 
-        Organization preOrg = _orgRepo.findOneByName(org.getName());
+        Organization preOrg = _orgRepo.getOrganization(org.getName());
         if (preOrg != null) {
             throw new BadRequestException("Already exists");
         }
@@ -108,39 +107,35 @@ public class OrganizationService extends AbstractService {
         }
     }
 
+    /**
+     * organization 삭제
+     * @param name
+     */
     @Transactional
     public void deleteOrg(String name) {
         // 권한 체크
         checkAuth(name);
 
-        Organization org = _orgRepo.findOneByName(name);
+        Organization org = _orgRepo.getOrganization(name);
+        org.setDelYn(true);
 
-        // image 삭제
-        List<Image> images = _imageService.getImages(name);
-        images.stream().forEach(value -> {
-            _imageService.deleteImage(name, value.getName());
-        });
+        User user = new User();
+        user.setUsername(SecurityUtil.getUser());
+        org.setUpdatedBy(user);
 
-        // user org rel 삭제
-        _userOrgRepo.deleteAll(_userOrgRepo.findAllByOrganizationId(org.getId()));
-
-        // usage log 삭제
-        _logRepo.deleteAll(_logRepo.findAllByOrganizationId(org.getId()));
-
-        // organization 삭제
-        _orgRepo.delete(org);
+        _orgRepo.save(org);
     }
 
     public Organization getOrg(String name) {
         logger.info("getOrg name : {}", name);
 
-        return _orgRepo.findOneByName(name);
+        return _orgRepo.getOrganization(name);
     }
 
     public List<Organization> getOrgsByContainName(String name) {
         logger.info("getOrgsByContainName name : {}", name);
 
-        return _orgRepo.findAllByNameContaining(name);
+        return _orgRepo.getOrganizationsByNameContaining(name);
     }
 
     public List<UserOrganization> getMembers(String orgName) {
@@ -148,7 +143,7 @@ public class OrganizationService extends AbstractService {
 
         Organization org = getOrg(orgName);
 
-        return _userOrgRepo.findAllByOrganizationId(org.getId());
+        return _userOrgRepo.getUserOrgs(org.getId());
     }
 
     /**
@@ -165,9 +160,9 @@ public class OrganizationService extends AbstractService {
         this.checkAuth(namespace);
 
         User user = _userService.getUserInfo(username);
-        Organization org = _orgRepo.findOneByName(namespace);
+        Organization org = _orgRepo.getOrganization(namespace);
 
-        if (_userOrgRepo.findOneByOrganizationIdAndUserUsername(org.getId(), user.getUsername()) == null) {
+        if (_userOrgRepo.getUserOrg(org.getId(), user.getUsername()) == null) {
             UserOrganization userOrg = new UserOrganization();
             userOrg.setUser(user);
             userOrg.setOrganization(org);
@@ -216,9 +211,9 @@ public class OrganizationService extends AbstractService {
         this.checkAuth(namespace);
 
         User user = _userService.getUserInfo(username);
-        Organization org = _orgRepo.findOneByName(namespace);
+        Organization org = _orgRepo.getOrganization(namespace);
 
-        UserOrganization userOrg = _userOrgRepo.findOneByOrganizationIdAndUserUsername(org.getId(), user.getUsername());
+        UserOrganization userOrg = _userOrgRepo.getUserOrg(org.getId(), user.getUsername());
         if (userOrg != null) {
             if (org.getCreatedBy().getUsername() != user.getUsername()) {
                 _userOrgRepo.delete(userOrg);
@@ -254,11 +249,11 @@ public class OrganizationService extends AbstractService {
      * @return
      */
     public boolean checkAuth(String namespace) {
-        Organization org = _orgRepo.findOneByName(namespace);
-        _userOrgRepo.findOneByOrganizationIdAndUserUsername(org.getId(), SecurityUtil.getUser());
+        Organization org = _orgRepo.getOrganization(namespace);
+        UserOrganization userOrg = _userOrgRepo.getUserOrg(org.getId(), SecurityUtil.getUser());
         User user = _userService.getUser(SecurityUtil.getUser());
 
-        if (!user.getSuperuser() && _userOrgRepo == null) {
+        if (!user.getSuperuser() && userOrg == null) {
             throw new AccessDeniedException("Has not permission");
         }
 

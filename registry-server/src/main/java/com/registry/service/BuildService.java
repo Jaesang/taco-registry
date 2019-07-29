@@ -3,7 +3,6 @@ package com.registry.service;
 import com.registry.repository.image.Build;
 import com.registry.repository.image.BuildRepository;
 import com.registry.repository.image.Image;
-import com.registry.repository.image.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -61,7 +60,7 @@ public class BuildService extends AbstractService {
         Image image = _imageService.getImage(namespace, name);
 
         Pageable pageable = PageRequest.of(0, limit);
-        return _buildRepository.findAllByImageId(image.getId(), pageable);
+        return _buildRepository.getBuilds(image.getId(), pageable);
     }
 
     public void createBuild(Build build, MultipartFile file) throws Exception {

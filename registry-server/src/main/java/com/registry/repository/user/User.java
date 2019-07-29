@@ -2,6 +2,7 @@ package com.registry.repository.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.registry.repository.AbstractEntity;
 import com.registry.repository.organization.Organization;
 
 import javax.persistence.*;
@@ -13,9 +14,9 @@ import java.util.List;
  * @author boozer
  */
 @Entity
-@Table(name = "cm_user")
+@Table(name = "users")
 @org.hibernate.annotations.DynamicUpdate
-public class User implements Serializable {
+public class User extends AbstractEntity {
 	
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Private Variables

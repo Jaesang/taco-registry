@@ -8,7 +8,6 @@ import com.registry.repository.image.Image;
 import com.registry.repository.image.ImageRepository;
 import com.registry.repository.image.TagRepository;
 import com.registry.repository.organization.Organization;
-import com.registry.repository.organization.OrganizationRepository;
 import com.registry.repository.usage.Log;
 import com.registry.repository.usage.LogRepository;
 import com.registry.repository.user.Role;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Created by boozer on 2019. 7. 15
@@ -99,7 +97,7 @@ public class ImageService extends AbstractService {
             throw new BadRequestException("Be max 40 characters in length");
         }
 
-        Image preImage = _imageRepo.findOneByNamespaceAndName(image.getNamespace(), image.getName());
+        Image preImage = _imageRepo.getImage(image.getNamespace(), image.getName());
         if (preImage != null) {
             throw new BadRequestException("Already exists");
         }
@@ -115,8 +113,6 @@ public class ImageService extends AbstractService {
 
         User user = _userService.getUser(SecurityUtil.getUser());
 
-        image.setCreatedBy(user);
-        image.setUpdatedBy(user);
         _imageRepo.save(image);
 
         List<Role> members = new ArrayList<>();
@@ -145,10 +141,13 @@ public class ImageService extends AbstractService {
 
         // 로그 등록
         Organization org = _organizationService.getOrg(image.getNamespace());
-        User performer = _userService.getUser(SecurityUtil.getUser());
         Log log = new Log(LogConstant.CREATE_IMAGE);
-        log.setPerformer(performer);
-        log.setOrganizationId(org.getId());
+        log.setPerformer(user);
+        if (image.getIsOrganization()) {
+            log.setOrganizationId(org.getId());
+        } else {
+            log.setUsername(SecurityUtil.getUser());
+        }
         log.setImageId(image.getId());
         log.setNamespace(image.getNamespace());
         log.setImage(image.getName());
@@ -164,20 +163,11 @@ public class ImageService extends AbstractService {
     public void deleteImage(String namespace, String name) {
         checkAuth(namespace, name);
 
-        // user role 삭제
-        Image image = _imageRepo.findOneByNamespaceAndName(namespace, name);
-        _roleRepo.deleteAll(_roleRepo.findAllByImageId(image.getId()));
-
-        // build 삭제
-        _buildRepo.deleteAll(_buildRepo.findAllByImageId(image.getId()));
-
-        // tag 삭제
-        _tagRepo.deleteAll(_tagRepo.findAllByImageId(image.getId()));
-
-        // usage log 삭제
-        _logRepo.deleteAll(_logRepo.findAllByImageId(image.getId()));
         // image 삭제
-        _imageRepo.delete(image);
+        Image image = _imageRepo.getImage(namespace, name);
+        image.setDelYn(true);
+
+        _imageRepo.save(image);
 
         // 로그 등록
         Organization org = _organizationService.getOrg(image.getNamespace());
@@ -200,7 +190,7 @@ public class ImageService extends AbstractService {
         logger.info("getImage namespace : {}", namespace);
         logger.info("getImage name : {}", name);
 
-        return _imageRepo.findOneByNamespaceAndName(namespace, name);
+        return _imageRepo.getImage(namespace, name);
     }
 
     /**
@@ -211,7 +201,7 @@ public class ImageService extends AbstractService {
     public List<Image> getImages(String namespace) {
         logger.info("getImages namespace : {}", namespace);
 
-        return _imageRepo.findAllByNamespace(namespace);
+        return _imageRepo.getImages(namespace);
     }
 
     /**
@@ -224,7 +214,7 @@ public class ImageService extends AbstractService {
         logger.info("getImagesByContainName name : {}", name);
         logger.info("getImagesByContainName pageable : {}", pageable);
 
-        return _imageRepo.findAllByNameContainingOrderByCreatedDateDesc(name, pageable);
+        return _imageRepo.getImagesByNameContaining(name, pageable);
     }
 
     /**
@@ -235,7 +225,7 @@ public class ImageService extends AbstractService {
     public List<Image> getImagesByContainName(String name) {
         logger.info("getImagesByContainName name : {}", name);
 
-        return _imageRepo.findAllByNameContaining(name);
+        return _imageRepo.getImagesByNameContaining(name);
     }
 
     /**
@@ -246,7 +236,7 @@ public class ImageService extends AbstractService {
     public List<Role> getMembers(String namespace, String name) {
         logger.info("getMembers name : {}", name);
 
-        Image image = _imageRepo.findOneByNamespaceAndName(namespace, name);
+        Image image = _imageRepo.getImage(namespace, name);
 
         return image.getRole();
     }
@@ -264,13 +254,13 @@ public class ImageService extends AbstractService {
         // 권한 체크
         this.checkAuth(namespace, name);
 
-        Image image = _imageRepo.findOneByNamespaceAndName(namespace, name);
+        Image image = _imageRepo.getImage(namespace, name);
 
         if (image.getCreatedBy().getUsername().equals(username)) {
             throw new BadRequestException("Namespace owner must always be admin.");
         }
 
-        Role preRole = _roleRepo.findOneByUserUsernameAndImageId(username, image.getId());
+        Role preRole = _roleRepo.getRole(username, image.getId());
 
         if (preRole != null) {
             preRole.setName(roleName.toUpperCase());
@@ -312,13 +302,13 @@ public class ImageService extends AbstractService {
         // 권한 체크
         this.checkAuth(namespace, name);
 
-        Image image = _imageRepo.findOneByNamespaceAndName(namespace, name);
+        Image image = _imageRepo.getImage(namespace, name);
 
         if (image.getCreatedBy().getUsername().equals(username)) {
             throw new BadRequestException("Namespace owner must always be admin.");
         }
 
-        Role role = _roleRepo.findOneByUserUsernameAndImageId(username, image.getId());
+        Role role = _roleRepo.getRole(username, image.getId());
 
         _roleRepo.delete(role);
 
@@ -346,7 +336,7 @@ public class ImageService extends AbstractService {
         // 권한 체크
         this.checkAuth(namespace, name);
 
-        Image image = _imageRepo.findOneByNamespaceAndName(namespace, name);
+        Image image = _imageRepo.getImage(namespace, name);
         image.setIsPublic(visibility);
 
         _imageRepo.save(image);
@@ -381,8 +371,8 @@ public class ImageService extends AbstractService {
      * @return
      */
     private boolean checkAuth(String namespace, String name) {
-        Image image = _imageRepo.findOneByNamespaceAndName(namespace, name);
-        Role role = _roleRepo.findOneByUserUsernameAndImageId(SecurityUtil.getUser(), image.getId());
+        Image image = _imageRepo.getImage(namespace, name);
+        Role role = _roleRepo.getRole(SecurityUtil.getUser(), image.getId());
         User user = _userService.getUser(SecurityUtil.getUser());
 
         if (!user.getSuperuser() && !"ADMIN".equals(role.getName()) && !"WRITE".equals(role.getName())) {

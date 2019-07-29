@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         " SELECT    username, " +
                                 "           password, " +
                                 "           enabled " +
-                                " FROM      cm_user " +
+                                " FROM      users " +
                                 " WHERE     username = ? " +
                                 " AND       enabled = true " +
                                 " AND       del_yn = false"
@@ -71,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 " THEN 'ADMIN' " +
                                 " ELSE 'USER' " +
                                 " END AS role" +
-                                " FROM      cm_user " +
+                                " FROM      users " +
                                 " WHERE     username = ? "
                 );
     }

@@ -45,6 +45,10 @@ public class Image extends AbstractEntity {
 	@Column(name = "is_public", nullable=false)
 	private boolean isPublic;
 
+	/** 삭제여부 */
+	@Column(name = "del_yn", nullable=false)
+	private boolean delYn;
+
 	/** 설명 */
 	@Column(name = "description", columnDefinition="varchar(255)")
 	private String description;
@@ -128,6 +132,14 @@ public class Image extends AbstractEntity {
 
 	public void setIsPublic(boolean aPublic) {
 		isPublic = aPublic;
+	}
+
+	public boolean getDelYn() {
+		return delYn;
+	}
+
+	public void setDelYn(boolean delYn) {
+		this.delYn = delYn;
 	}
 
 	public String getDescription() {

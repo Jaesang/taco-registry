@@ -119,7 +119,7 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
       Alert.success(CommonConstant.MESSAGE.CANCELD);
     }).catch(reason => {
       let body = JSON.parse(reason._body);
-      Alert.error(body.detail);
+      Alert.error(body.message);
     });
   }
 

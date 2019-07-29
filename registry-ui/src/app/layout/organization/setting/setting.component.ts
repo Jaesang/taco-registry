@@ -79,7 +79,7 @@ export class SettingComponent extends PageComponent implements OnInit {
           this.loaderService.show.next(false);
         }).catch(reason => {
           let body = JSON.parse(reason._body);
-          Alert.error(body.detail);
+          Alert.error(body.message);
         });
       },
       'Cancel',

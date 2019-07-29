@@ -43,6 +43,10 @@ public class Organization extends AbstractEntity {
 	@Column(name = "public", nullable=false)
 	private boolean isPublic;
 
+	/** 삭제여부 */
+	@Column(name = "del_yn", nullable=false)
+	private boolean delYn;
+
 	/** UserOrg 목록 */
 	@JsonIgnore
 	@OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -92,6 +96,14 @@ public class Organization extends AbstractEntity {
 
 	public void setIsPublic(boolean aPublic) {
 		isPublic = aPublic;
+	}
+
+	public boolean getDelYn() {
+		return delYn;
+	}
+
+	public void setDelYn(boolean delYn) {
+		this.delYn = delYn;
 	}
 
 	public List<UserOrganization> getUserOrg() {

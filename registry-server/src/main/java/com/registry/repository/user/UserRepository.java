@@ -1,15 +1,27 @@
 package com.registry.repository.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 
 public interface UserRepository extends JpaRepository<User, String> {
-    User findUserByUsername(@Param("username") String username);
+    @Query("select user from User user " +
+            "where user.username = :username " +
+            "and user.delYn = false " +
+            "and user.enabled = true")
+    User getUser(@Param("username") String username);
 
-    List<User> findAllByDelYn(@Param("del_yn") boolean delYn);
+    @Query("select user from User user " +
+            "where user.delYn = false")
+    List<User> getUsers();
 
-    List<User> findAllByUsernameContaining(@Param("username") String username);
+    @Query("select user from User user  " +
+            "where user.username like concat('%', :username, '%') " +
+            "and user.delYn = false " +
+            "and user.enabled = true")
+    List<User> getUserByUsernameContaining(@Param("username") String username);
+
 }

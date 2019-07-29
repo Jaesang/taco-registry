@@ -3,6 +3,7 @@ package com.registry.repository;
 import com.registry.repository.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.registry.util.SecurityUtil;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -70,11 +71,20 @@ public abstract class AbstractEntity implements Serializable {
 	public void prePersist() {
 		this.createdDate = LocalDateTime.now();
 		this.updatedDate = this.createdDate;
+
+		User user = new User();
+		user.setUsername(SecurityUtil.getUser());
+		this.setCreatedBy(user);
+		this.setUpdatedBy(user);
 	}
 
 	@PreUpdate
 	public void preUpdate() {
 		this.updatedDate = LocalDateTime.now();
+
+		User user = new User();
+		user.setUsername(SecurityUtil.getUser());
+		this.setUpdatedBy(user);
 	}
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

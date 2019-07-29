@@ -163,7 +163,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
       });
     }).catch(reason => {
       let body = JSON.parse(reason._body);
-      Alert.error(body.detail);
+      Alert.error(body.message);
     });
   }
 

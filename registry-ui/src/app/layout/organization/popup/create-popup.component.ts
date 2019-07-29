@@ -62,7 +62,7 @@ export class CreatePopupComponent extends AbstractComponent implements OnInit, O
       Alert.success(CommonConstant.MESSAGE.SUCCESS);
     }).catch(reason => {
       let body = JSON.parse(reason._body);
-      this.errorMsg = body.detail;
+      this.errorMsg = body.message;
     });
   }
 

@@ -1,9 +1,6 @@
 package com.registry.service;
 
-import com.registry.constant.CommonConstant;
 import com.registry.constant.LogConstant;
-import com.registry.exception.AccessDeniedException;
-import com.registry.repository.common.CodeEntity;
 import com.registry.repository.common.CodeRepository;
 import com.registry.repository.image.Image;
 import com.registry.repository.organization.Organization;
@@ -12,12 +9,10 @@ import com.registry.repository.usage.LogRepository;
 import com.registry.repository.user.*;
 import com.registry.util.SecurityUtil;
 import com.registry.value.common.Result;
-import netscape.security.ForbiddenTargetException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -106,7 +101,7 @@ public class UserService extends AbstractService {
         logger.info("getUserInfo username : {}", username);
 
         // 사용자정보 조회
-        User user = _userRepo.findUserByUsername(username);
+        User user = _userRepo.getUser(username);
 
         setOrgs(user);
 
@@ -114,7 +109,7 @@ public class UserService extends AbstractService {
     }
 
     public List<User> getUsers() {
-        return _userRepo.findAllByDelYn(false);
+        return _userRepo.getUsers();
     }
 
     public User getUser(String username) {
@@ -126,7 +121,7 @@ public class UserService extends AbstractService {
     public List<User> getUsersByContainUsername(String username) {
         logger.info("getUsersByContainUsername username : {}", username);
 
-        return _userRepo.findAllByUsernameContaining(username);
+        return _userRepo.getUserByUsernameContaining(username);
     }
 
     /**
@@ -152,7 +147,7 @@ public class UserService extends AbstractService {
     public void deleteUser(String username) throws Exception {
         logger.info("deleteUser username : {}", username);
 
-        User user = _userRepo.findUserByUsername(username);
+        User user = _userRepo.getUser(username);
         user.setDelYn(true);
 
         saveUser(user, null, false);
@@ -186,12 +181,14 @@ public class UserService extends AbstractService {
             if (rolename.equals("ADMIN")) {
                 user.setSuperuser(true);
             }
+            user.setCreatedBy(user);
+            user.setUpdatedBy(user);
 
             user =  _userRepo.save(user);
         }else{
             User preUser;
             if (user.getUsername() != null) {
-                preUser = _userRepo.findUserByUsername(user.getUsername());
+                preUser = _userRepo.getUser(user.getUsername());
             } else {
                 preUser = _userRepo.findById(SecurityUtil.getUser()).orElse(null);
             }
@@ -217,6 +214,9 @@ public class UserService extends AbstractService {
             if(user.getName() != null) preUser.setName(user.getName());
             if(user.getEmail() != null) preUser.setEmail(user.getEmail());
             if(user.getEnabled() != null) preUser.setEnabled(user.getEnabled());
+
+            preUser.setUpdatedBy(user);
+
             _userRepo.save(preUser);
 
             user = preUser;
@@ -250,7 +250,7 @@ public class UserService extends AbstractService {
         logger.info("findMembers username : {}", username);
         logger.info("findMembers namespace : {}", namespace);
 
-        List<User> users = _userRepo.findAllByUsernameContaining(username);
+        List<User> users = _userRepo.getUserByUsernameContaining(username);
         List<User> results = users.stream().filter(value -> {
             boolean exist = value.getUserOrg().stream().anyMatch(v -> {
                return namespace.equals(v.getOrganization().getName());
@@ -270,7 +270,7 @@ public class UserService extends AbstractService {
     public void updateStarred(String namespace, String imageName, boolean starred) throws Exception {
 
         Image image = _imageService.getImage(namespace, imageName);
-        Role role = _roleRepo.findOneByUserUsernameAndImageId(SecurityUtil.getUser(), image.getId());
+        Role role = _roleRepo.getRole(SecurityUtil.getUser(), image.getId());
         role.setIsStarred(starred);
 
         _roleRepo.save(role);

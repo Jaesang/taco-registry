@@ -10,7 +10,7 @@ create table oauth_approvals (userId VARCHAR(256),clientId VARCHAR(256),scope VA
 -- create table ClientDetails (appId VARCHAR(256) PRIMARY KEY,resourceIds VARCHAR(256),appSecret VARCHAR(256),scope VARCHAR(256),grantTypes VARCHAR(256),redirectUrl VARCHAR(256),authorities VARCHAR(256),access_token_validity INTEGER,refresh_token_validity INTEGER,additionalInformation VARCHAR(4096),autoApproveScopes VARCHAR(256));
 
 -- user & role
-INSERT INTO cm_user ( email, enabled, del_yn, name, password, username, super_user ) values ( 'admin@sktelecom.com', true, false, '관리자', '$2a$10$IDw2a0sOsi8Zp6myDhAbYOKT1uDr11XYuVoi6ltOi85WME.lL7M9O', 'admin', true );
+INSERT INTO users ( email, enabled, del_yn, name, password, username, super_user ) values ( 'admin@sktelecom.com', true, false, 'admin', '$2a$10$IDw2a0sOsi8Zp6myDhAbYOKT1uDr11XYuVoi6ltOi85WME.lL7M9O', 'admin', true );
 INSERT INTO common_code (group_code, code, code_name, comment, enabled) VALUES ('ROLE', 'A', 'ADMIN', 'ROLE 타입', true);
 INSERT INTO common_code (group_code, code, code_name, comment, enabled) VALUES ('ROLE', 'U', 'USER', 'ROLE 타입', true);
 

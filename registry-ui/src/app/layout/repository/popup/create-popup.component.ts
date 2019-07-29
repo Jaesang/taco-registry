@@ -160,7 +160,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
       }
     }).catch(reason => {
       let body = JSON.parse(reason._body);
-      Alert.error(body.detail);
+      Alert.error(body.message);
     });
   }
 

@@ -256,7 +256,7 @@ export abstract class AbstractService {
 		switch (error.status) {
 			case 500: {
 
-        this.router.navigate([ '/error/500' ]);
+        this.router.navigate([ 'app/error/500' ]);
 
 				break;
 			}
@@ -287,7 +287,7 @@ export abstract class AbstractService {
 				break;
 			}
 			case 403: {
-        // this.router.navigate([ '/error/403' ]);
+        this.router.navigate([ 'app/error/403' ]);
 
 				break;
 			}
@@ -295,7 +295,7 @@ export abstract class AbstractService {
 
 				console.log(`[${this[ '__proto__' ].constructor.name}] > (SERVER_ERROR|INVALID_REQUEST|UNAUTORIZED|FORBIDDEN) ELSE ERROR`);
 
-        this.router.navigate([ '/error/500' ]);
+        this.router.navigate([ 'app/error/500' ]);
 
 				break;
 			}
