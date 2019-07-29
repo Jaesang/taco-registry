@@ -2,6 +2,10 @@ package com.registry.dto;
 
 import io.swagger.annotations.ApiModel;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 /**
  * Image dto
  */
@@ -29,6 +33,12 @@ public class ImageDto {
         public Boolean canWrite;
         public Boolean isOrganization;
         public Boolean isStarred;
+        public List<STAT> stats;
+    }
+
+    public static class STAT {
+        public LocalDate date;
+        public Long count;
     }
 
     @ApiModel("Image.MEMBER")

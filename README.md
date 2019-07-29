@@ -2,7 +2,7 @@
 
 ##1. Language Setting
 ### postgresql
-    $ psql postgres;
+    $ psql postgres
     postgres$ create database registry encoding 'utf-8';
     CREATE DATABASE
     postgres$ create user registry password 'registry1234$$';
@@ -11,7 +11,7 @@
     GRANT
 
 ##2. IDE Setting (IntelliJ)
-    menu > Project Structure.. > Project SDK > 1.8 (java version) 선택
+    menu > File > Project Structure.. > Project SDK > 1.8 (java version) 선택
     Maven Projects > Add Maven Project > pom.xml 선택
     
 ##3. Run Configuration

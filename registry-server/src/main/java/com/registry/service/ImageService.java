@@ -1,6 +1,7 @@
 package com.registry.service;
 
 import com.registry.constant.LogConstant;
+import com.registry.dto.ImageDto;
 import com.registry.exception.AccessDeniedException;
 import com.registry.exception.BadRequestException;
 import com.registry.repository.image.BuildRepository;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -346,7 +348,11 @@ public class ImageService extends AbstractService {
         User performer = _userService.getUser(SecurityUtil.getUser());
         Log log = new Log(LogConstant.CHANGE_IMAGE_VISIBILITY);
         log.setPerformer(performer);
-        log.setOrganizationId(org.getId());
+        if (image.getIsOrganization()) {
+            log.setOrganizationId(org.getId());
+        } else {
+            log.setUsername(namespace);
+        }
         log.setImageId(image.getId());
         log.setNamespace(image.getNamespace());
         log.setImage(image.getName());
@@ -354,6 +360,16 @@ public class ImageService extends AbstractService {
         _logRepo.save(log);
 
         return image;
+    }
+
+    public List<ImageDto.STAT> getStats(String namespace, String name) {
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = LocalDate.of(now.getYear(), now.getMonthValue() - 2, 1);
+        LocalDate endDate = now.withDayOfMonth(now.lengthOfMonth());
+
+        Image image = _imageRepo.getImage(namespace, name);
+
+        return _logRepo.getStats(image.getId(), startDate, endDate);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

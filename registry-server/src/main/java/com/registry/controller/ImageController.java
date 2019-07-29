@@ -161,10 +161,17 @@ public class ImageController {
                     name = "name",
                     required = true
             )
-            @PathVariable("name") String name
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "includeStats"
+            )
+            @RequestParam(value = "includeStats", required = false) boolean includeStats
     ) throws Exception{
         Image image = imageService.getImage(namespace, name);
         ImageDto.VIEW imageDto = mapper.map(image, ImageDto.VIEW.class);
+        if (includeStats) {
+            imageDto.stats = imageService.getStats(namespace, name);
+        }
         return imageDto;
     }
 
@@ -193,13 +200,6 @@ public class ImageController {
             @RequestParam("namespace") String namespace
     ) throws Exception{
         JSONObject result = new JSONObject();
-//        MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-//        mapperFactory.classMap(Image.class, ImageDto.VIEW.class)
-//                .field("publicYn", "is_public")
-//                .field("isOrganization", "is_organization")
-//                .byDefault()
-//                .register();
-//        MapperFacade mapper = mapperFactory.getMapperFacade();
         result.put("images", mapper.mapAsList(imageService.getImages(namespace), ImageDto.VIEW.class));
         return result;
     }
