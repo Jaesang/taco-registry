@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface LogRepository extends JpaRepository<Log, Long>{
     @Query("select log from Log log " +
@@ -40,9 +40,9 @@ public interface LogRepository extends JpaRepository<Log, Long>{
             "and log.datetime between :startTime and :endTime")
     List<Log> getLogsByUsername(@Param("username") String username, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
-    @Query("select count(log.id) as count, function('to_char', log.datetime,'YYYY-MM-DD') as datetime from Log log " +
+    @Query("select new map (count(log.id) as count, function('to_char', log.datetime,'YYYY-MM-DD') as date) from Log log " +
             "where log.imageId = :imageId " +
             "and log.datetime between :startDate and :endDate " +
             "group by function('to_char', log.datetime,'YYYY-MM-DD') ")
-    List<ImageDto.STAT> getStats(@Param("imageId") Long imageId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    List<Map<String, Object>> getStats(@Param("imageId") Long imageId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

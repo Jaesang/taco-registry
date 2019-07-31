@@ -37,7 +37,7 @@ public class ImageDto {
     }
 
     public static class STAT {
-        public LocalDate date;
+        public String date;
         public Long count;
     }
 

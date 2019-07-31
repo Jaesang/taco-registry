@@ -1,23 +1,15 @@
 package com.registry.controller;
 
-import com.registry.constant.CommonConstant;
 import com.registry.constant.Path;
 import com.registry.dto.ImageDto;
 import com.registry.dto.LogDto;
-import com.registry.dto.OrganizationDto;
-import com.registry.dto.UserDto;
 import com.registry.repository.image.Image;
-import com.registry.repository.organization.Organization;
 import com.registry.repository.user.Role;
-import com.registry.repository.user.User;
 import com.registry.service.ImageService;
 import com.registry.service.UsageLogService;
-import com.registry.value.common.Result;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by boozer on 2019. 7. 15
@@ -170,7 +161,8 @@ public class ImageController {
         Image image = imageService.getImage(namespace, name);
         ImageDto.VIEW imageDto = mapper.map(image, ImageDto.VIEW.class);
         if (includeStats) {
-            imageDto.stats = imageService.getStats(namespace, name);
+            List<Map<String, Object>> list = imageService.getStats(namespace, name);
+            imageDto.stats = mapper.mapAsList(list, ImageDto.STAT.class);
         }
         return imageDto;
     }

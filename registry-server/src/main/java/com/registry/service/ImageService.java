@@ -15,6 +15,7 @@ import com.registry.repository.user.Role;
 import com.registry.repository.user.RoleRepository;
 import com.registry.repository.user.User;
 import com.registry.util.SecurityUtil;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -362,14 +368,44 @@ public class ImageService extends AbstractService {
         return image;
     }
 
-    public List<ImageDto.STAT> getStats(String namespace, String name) {
+    public List<Map<String, Object>> getStats(String namespace, String name) {
         LocalDate now = LocalDate.now();
         LocalDate startDate = LocalDate.of(now.getYear(), now.getMonthValue() - 2, 1);
         LocalDate endDate = now.withDayOfMonth(now.lengthOfMonth());
 
         Image image = _imageRepo.getImage(namespace, name);
 
-        return _logRepo.getStats(image.getId(), startDate, endDate);
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<Map<String, Object>> stats = _logRepo.getStats(image.getId(), LocalDateTime.of(startDate, LocalTime.MIN), LocalDateTime.of(endDate, LocalTime.MAX));
+
+        if (stats.size() > 0) {
+            DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            String formattedCurrentDate = startDate.format(fm);
+            String formattedEndDate = endDate.format(fm);
+
+            int index = 0;
+            while (!formattedCurrentDate.equals(formattedEndDate)) {
+                LocalDate currentDate = startDate.plusDays(index);
+
+                Map<String, Object> stat = new HashedMap();
+                stat.put("date", formattedCurrentDate);
+                String curr = formattedCurrentDate;
+                Map<String, Object> obj = stats.stream().filter(value -> curr.equals(value.get("date"))).findFirst().orElse(null);
+                if (obj != null) {
+                    stat.put("count", obj.get("count"));
+                } else {
+                    stat.put("count", 0l);
+                }
+
+                result.add(stat);
+
+                formattedCurrentDate = currentDate.format(fm);
+                index++;
+            }
+        }
+
+        return result;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
