@@ -1,7 +1,6 @@
 package com.registry.repository.usage;
 
 import com.registry.repository.user.User;
-import com.registry.util.SecurityUtil;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -123,12 +122,6 @@ public class Log implements Serializable {
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
 	public Log() { }
-
-	public Log(String kind) {
-		this.setIp(SecurityUtil.getIP());
-		this.setKind(kind);
-		this.setDatetime(LocalDateTime.now());
-	}
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Getter & Setter Method ( DI Method )

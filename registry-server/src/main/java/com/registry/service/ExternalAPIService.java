@@ -1,13 +1,10 @@
 package com.registry.service;
 
-import com.registry.repository.image.Build;
-import com.registry.repository.image.BuildRepository;
-import com.registry.repository.image.Image;
+import com.registry.exception.UnknownServerException;
+import com.registry.repository.common.CodeEntity;
+import com.registry.repository.common.CodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,22 +12,11 @@ import java.util.List;
  * Created by boozer on 2019. 7. 15
  */
 @Service
-public class BuildService extends AbstractService {
+public class ExternalAPIService extends AbstractService {
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-
-    /** Build Repo */
-    @Autowired
-    private BuildRepository buildRepository;
-
-    /** Image Service */
-    @Autowired
-    private ImageService imageService;
-
-    @Autowired
-    private FileService fileService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -52,19 +38,15 @@ public class BuildService extends AbstractService {
     | Public Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-    public List<Build> getImages(String namespace, String name, int limit) {
-        logger.info("getImages namespace : {}", namespace);
-        logger.info("getImages name : {}", name);
-        logger.info("getImages limit : {}", limit);
+    /**
+     * 빌더와 싱크
+     */
+    public void syncWithBuilder() {
+        boolean result = true;
 
-        Image image = imageService.getImage(namespace, name);
-
-        Pageable pageable = PageRequest.of(0, limit);
-        return buildRepository.getBuilds(image.getId(), pageable);
-    }
-
-    public void createBuild(Build build, MultipartFile file) throws Exception {
-        fileService.uploadFile(file);
+        if (!result) {
+            throw new UnknownServerException("sync fail");
+        }
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

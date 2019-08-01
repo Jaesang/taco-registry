@@ -19,7 +19,7 @@ public class CommonService extends AbstractService {
 
     /** Common Repo */
     @Autowired
-    private CodeRepository _codeRepo;
+    private CodeRepository codeRepo;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -47,7 +47,7 @@ public class CommonService extends AbstractService {
     public List<CodeEntity> getCodeList(String groupCode) {
         logger.info("get code list : {}", groupCode);
 
-        List<CodeEntity> codeList = _codeRepo.findByGroupCodeAndEnabled(groupCode, true);
+        List<CodeEntity> codeList = codeRepo.findByGroupCodeAndEnabled(groupCode, true);
         return codeList;
     }
 

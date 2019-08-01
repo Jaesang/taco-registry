@@ -6,7 +6,6 @@ import com.registry.exception.BadRequestException;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.organization.OrganizationRepository;
 import com.registry.repository.usage.Log;
-import com.registry.repository.usage.LogRepository;
 import com.registry.repository.user.*;
 import com.registry.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,23 +30,26 @@ public class OrganizationService extends AbstractService {
 
     /** Org Repo */
     @Autowired
-    private OrganizationRepository _orgRepo;
+    private OrganizationRepository orgRepo;
 
     /** Org Repo */
     @Autowired
-    private UserOrganizationRepository _userOrgRepo;
+    private UserOrganizationRepository userOrgRepo;
 
     @Autowired
-    private UserService _userService;
+    private UserService userService;
 
     @Autowired
-    private ImageService _imageService;
+    private ImageService imageService;
 
     @Autowired
-    private RoleRepository _roleRepo;
+    private RoleRepository roleRepo;
 
     @Autowired
-    private LogRepository _logRepo;
+    private UsageLogService logService;
+
+    @Autowired
+    private ExternalAPIService externalService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -80,12 +82,13 @@ public class OrganizationService extends AbstractService {
             throw new BadRequestException("Be at least 2 characters in length and max 40 characters in length");
         }
 
-        Organization preOrg = _orgRepo.getOrganization(org.getName());
+        // sync with builder
+        externalService.syncWithBuilder();
+
+        Organization preOrg = orgRepo.getOrganization(org.getName());
         if (preOrg != null) {
             throw new BadRequestException("Already exists");
         }
-
-        //todo builder에서 org 존재 체크
 
         Pattern p = Pattern.compile("^[a-z0-9_-]+$");
         Matcher m = p.matcher(org.getName());
@@ -95,13 +98,13 @@ public class OrganizationService extends AbstractService {
 
             org.setCreatedBy(user);
             org.setUpdatedBy(user);
-            _orgRepo.save(org);
+            orgRepo.save(org);
 
 
             UserOrganization userOrganization = new UserOrganization();
             userOrganization.setUser(user);
             userOrganization.setOrganization(org);
-            _userOrgRepo.save(userOrganization);
+            userOrgRepo.save(userOrganization);
         } else {
             throw new BadRequestException("Oraganization names must match [a-z0-9_-]+");
         }
@@ -116,34 +119,49 @@ public class OrganizationService extends AbstractService {
         // 권한 체크
         checkAuth(name);
 
-        Organization org = _orgRepo.getOrganization(name);
+        Organization org = orgRepo.getOrganization(name);
         org.setDelYn(true);
 
         User user = new User();
         user.setUsername(SecurityUtil.getUser());
         org.setUpdatedBy(user);
 
-        _orgRepo.save(org);
+        orgRepo.save(org);
     }
 
+    /**
+     * organization 상세 조회
+     * @param name
+     * @return
+     */
     public Organization getOrg(String name) {
         logger.info("getOrg name : {}", name);
 
-        return _orgRepo.getOrganization(name);
+        return orgRepo.getOrganization(name);
     }
 
+    /**
+     * organization 검색
+     * @param name
+     * @return
+     */
     public List<Organization> getOrgsByContainName(String name) {
         logger.info("getOrgsByContainName name : {}", name);
 
-        return _orgRepo.getOrganizationsByNameContaining(name);
+        return orgRepo.getOrganizationsByNameContaining(name);
     }
 
+    /**
+     * member 조회
+     * @param orgName
+     * @return
+     */
     public List<UserOrganization> getMembers(String orgName) {
         logger.info("getMembers userorgNamename : {}", orgName);
 
         Organization org = getOrg(orgName);
 
-        return _userOrgRepo.getUserOrgs(org.getId());
+        return userOrgRepo.getUserOrgs(org.getId());
     }
 
     /**
@@ -159,19 +177,19 @@ public class OrganizationService extends AbstractService {
         // 권한 체크
         this.checkAuth(namespace);
 
-        User user = _userService.getUserInfo(username);
-        Organization org = _orgRepo.getOrganization(namespace);
+        User user = userService.getUserInfo(username);
+        Organization org = orgRepo.getOrganization(namespace);
 
-        if (_userOrgRepo.getUserOrg(org.getId(), user.getUsername()) == null) {
+        if (userOrgRepo.getUserOrg(org.getId(), user.getUsername()) == null) {
             UserOrganization userOrg = new UserOrganization();
             userOrg.setUser(user);
             userOrg.setOrganization(org);
 
-            _userOrgRepo.save(userOrg);
+            userOrgRepo.save(userOrg);
 
             // user role에 멤버 추가
             List<Role> addMembers = new ArrayList<>();
-            _imageService.getImages(namespace).forEach(value -> {
+            imageService.getImages(namespace).forEach(value -> {
                 List<Role> roles = value.getRole().stream().filter(v -> v.getUser().getUsername().equals(username)).collect(Collectors.toList());
                 if (roles.size() == 0) {
                     Role role = new Role();
@@ -184,15 +202,14 @@ public class OrganizationService extends AbstractService {
                 }
             });
 
-            _roleRepo.saveAll(addMembers);
+            roleRepo.saveAll(addMembers);
 
             // 로그 등록
-            User performer = _userService.getUser(SecurityUtil.getUser());
-            Log log = new Log(LogConstant.ORG_ADD_MEMBER);
+            Log log = new Log();
             log.setOrganizationId(org.getId());
             log.setMember(username);
-            log.setPerformer(performer);
-            _logRepo.save(log);
+            log.setKind(LogConstant.ORG_ADD_MEMBER);
+            logService.create(log);
         }
     }
 
@@ -210,13 +227,13 @@ public class OrganizationService extends AbstractService {
         // 권한 체크
         this.checkAuth(namespace);
 
-        User user = _userService.getUserInfo(username);
-        Organization org = _orgRepo.getOrganization(namespace);
+        User user = userService.getUserInfo(username);
+        Organization org = orgRepo.getOrganization(namespace);
 
-        UserOrganization userOrg = _userOrgRepo.getUserOrg(org.getId(), user.getUsername());
+        UserOrganization userOrg = userOrgRepo.getUserOrg(org.getId(), user.getUsername());
         if (userOrg != null) {
             if (org.getCreatedBy().getUsername() != user.getUsername()) {
-                _userOrgRepo.delete(userOrg);
+                userOrgRepo.delete(userOrg);
             } else {
                 throw new BadRequestException("Cannot remove creator.");
             }
@@ -224,7 +241,7 @@ public class OrganizationService extends AbstractService {
 
         // user role에 연결되어 있는 멤버 삭제
         List<Role> deleteMembers = new ArrayList<>();
-        _imageService.getImages(namespace).forEach(value -> {
+        imageService.getImages(namespace).forEach(value -> {
             value.getRole().stream().forEach(v -> {
                 if (username.equals(v.getUser().getUsername())) {
                     deleteMembers.add(v);
@@ -232,15 +249,14 @@ public class OrganizationService extends AbstractService {
             });
         });
 
-        _roleRepo.deleteAll(deleteMembers);
+        roleRepo.deleteAll(deleteMembers);
 
         // 로그 등록
-        User performer = _userService.getUser(SecurityUtil.getUser());
-        Log log = new Log(LogConstant.ORG_REMOVE_MEMBER);
-        log.setPerformer(performer);
+        Log log = new Log();
+        log.setKind(LogConstant.ORG_REMOVE_MEMBER);
         log.setOrganizationId(org.getId());
         log.setMember(username);
-        _logRepo.save(log);
+        logService.create(log);
     }
 
     /**
@@ -249,9 +265,9 @@ public class OrganizationService extends AbstractService {
      * @return
      */
     public boolean checkAuth(String namespace) {
-        Organization org = _orgRepo.getOrganization(namespace);
-        UserOrganization userOrg = _userOrgRepo.getUserOrg(org.getId(), SecurityUtil.getUser());
-        User user = _userService.getUser(SecurityUtil.getUser());
+        Organization org = orgRepo.getOrganization(namespace);
+        UserOrganization userOrg = userOrgRepo.getUserOrg(org.getId(), SecurityUtil.getUser());
+        User user = userService.getUser(SecurityUtil.getUser());
 
         if (!user.getSuperuser() && userOrg == null) {
             throw new AccessDeniedException("Has not permission");

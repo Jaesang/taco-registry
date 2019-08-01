@@ -1,11 +1,9 @@
 package com.registry.service;
 
 import com.registry.constant.LogConstant;
-import com.registry.repository.common.CodeRepository;
 import com.registry.repository.image.Image;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.usage.Log;
-import com.registry.repository.usage.LogRepository;
 import com.registry.repository.user.*;
 import com.registry.util.SecurityUtil;
 import com.registry.value.common.Result;
@@ -30,15 +28,11 @@ public class UserService extends AbstractService {
 
     /** 유저 Repo */
     @Autowired
-    private UserRepository _userRepo;
+    private UserRepository userRepo;
 
     /** 유저 롤 Repo */
     @Autowired
-    private RoleRepository _roleRepo;
-
-    /** 공통 코드 Repo */
-    @Autowired
-    private CodeRepository _codeRepo;
+    private RoleRepository roleRepo;
 
     /** user org Repo */
     @Autowired
@@ -46,10 +40,10 @@ public class UserService extends AbstractService {
 
     /** usage log Repo */
     @Autowired
-    private LogRepository _logRepo;
+    private UsageLogService logService;
 
     @Autowired
-    private ImageService _imageService;
+    private ImageService imageService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -82,7 +76,7 @@ public class UserService extends AbstractService {
         Result result = new Result();
 
         // 사용자정보 조회
-        User user = _userRepo.findById(SecurityUtil.getUser()).orElse(null);
+        User user = userRepo.findById(SecurityUtil.getUser()).orElse(null);
 
         setOrgs(user);
 
@@ -101,7 +95,7 @@ public class UserService extends AbstractService {
         logger.info("getUserInfo username : {}", username);
 
         // 사용자정보 조회
-        User user = _userRepo.getUser(username);
+        User user = userRepo.getUser(username);
 
         setOrgs(user);
 
@@ -109,34 +103,24 @@ public class UserService extends AbstractService {
     }
 
     public List<User> getUsers() {
-        return _userRepo.getUsers();
+        return userRepo.getUsers();
     }
 
     public User getUser(String username) {
         logger.info("getUser username : {}", username);
 
-        return _userRepo.findById(username).orElse(null);
-    }
-
-    public List<User> getUsersByContainUsername(String username) {
-        logger.info("getUsersByContainUsername username : {}", username);
-
-        return _userRepo.getUserByUsernameContaining(username);
+        return userRepo.findById(username).orElse(null);
     }
 
     /**
-     * Organizations 목록 삽입
-     * @param user
+     * 유저 검색
+     * @param username
+     * @return
      */
-    public void setOrgs(User user) {
-        logger.info("setOrgs user : {}", user);
+    public List<User> getUsersByContainUsername(String username) {
+        logger.info("getUsersByContainUsername username : {}", username);
 
-        List<UserOrganization> userOrgs = user.getUserOrg();
-        List<Organization> orgs = userOrgs.stream().map(value -> {
-           return value.getOrganization();
-        }).collect(Collectors.toList());
-
-        user.setOrganizations(orgs);
+        return userRepo.getUserByUsernameContaining(username);
     }
 
     /**
@@ -147,14 +131,14 @@ public class UserService extends AbstractService {
     public void deleteUser(String username) throws Exception {
         logger.info("deleteUser username : {}", username);
 
-        User user = _userRepo.getUser(username);
+        User user = userRepo.getUser(username);
         user.setDelYn(true);
 
         saveUser(user, null, false);
     }
 
     /**
-     *  유저 저장
+     * 유저 저장
      */
     @Transactional
     public User saveUser(User user, String rolename, boolean isCreate) throws Exception {
@@ -184,13 +168,13 @@ public class UserService extends AbstractService {
             user.setCreatedBy(user);
             user.setUpdatedBy(user);
 
-            user =  _userRepo.save(user);
+            user =  userRepo.save(user);
         }else{
             User preUser;
             if (user.getUsername() != null) {
-                preUser = _userRepo.getUser(user.getUsername());
+                preUser = userRepo.getUser(user.getUsername());
             } else {
-                preUser = _userRepo.findById(SecurityUtil.getUser()).orElse(null);
+                preUser = userRepo.findById(SecurityUtil.getUser()).orElse(null);
             }
 
             if (rolename != null) {
@@ -205,11 +189,10 @@ public class UserService extends AbstractService {
                 preUser.setPassword(user.getPassword());
 
                 // 로그 등록
-                User performer = this.getUser(SecurityUtil.getUser());
-                Log log = new Log(LogConstant.ACCOUNT_CHANGE_PASSWORD);
-                log.setPerformer(performer);
+                Log log = new Log();
+                log.setKind(LogConstant.ACCOUNT_CHANGE_PASSWORD);
                 log.setMember(SecurityUtil.getUser());
-                _logRepo.save(log);
+                logService.create(log);
             }
             if(user.getName() != null) preUser.setName(user.getName());
             if(user.getEmail() != null) preUser.setEmail(user.getEmail());
@@ -217,7 +200,7 @@ public class UserService extends AbstractService {
 
             preUser.setUpdatedBy(user);
 
-            _userRepo.save(preUser);
+            userRepo.save(preUser);
 
             user = preUser;
         }
@@ -246,11 +229,18 @@ public class UserService extends AbstractService {
         return bCryptPasswordEncoder.matches(password, p);
     }
 
+    /**
+     * 추가 가능한 member 목록 조회
+     * @param username
+     * @param namespace
+     * @return
+     * @throws Exception
+     */
     public List<User> findMembers(String username, String namespace) throws Exception {
         logger.info("findMembers username : {}", username);
         logger.info("findMembers namespace : {}", namespace);
 
-        List<User> users = _userRepo.getUserByUsernameContaining(username);
+        List<User> users = userRepo.getUserByUsernameContaining(username);
         List<User> results = users.stream().filter(value -> {
             boolean exist = value.getUserOrg().stream().anyMatch(v -> {
                return namespace.equals(v.getOrganization().getName());
@@ -269,11 +259,11 @@ public class UserService extends AbstractService {
      */
     public void updateStarred(String namespace, String imageName, boolean starred) throws Exception {
 
-        Image image = _imageService.getImage(namespace, imageName);
-        Role role = _roleRepo.getRole(SecurityUtil.getUser(), image.getId());
+        Image image = imageService.getImage(namespace, imageName);
+        Role role = roleRepo.getRole(SecurityUtil.getUser(), image.getId());
         role.setIsStarred(starred);
 
-        _roleRepo.save(role);
+        roleRepo.save(role);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -283,6 +273,21 @@ public class UserService extends AbstractService {
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+
+    /**
+     * Organizations 목록 삽입
+     * @param user
+     */
+    private void setOrgs(User user) {
+        logger.info("setOrgs user : {}", user);
+
+        List<UserOrganization> userOrgs = user.getUserOrg();
+        List<Organization> orgs = userOrgs.stream().map(value -> {
+            return value.getOrganization();
+        }).collect(Collectors.toList());
+
+        user.setOrganizations(orgs);
+    }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Inner Class

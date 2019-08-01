@@ -4,6 +4,8 @@ import com.registry.repository.image.Image;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.usage.Log;
 import com.registry.repository.usage.LogRepository;
+import com.registry.util.CommonUtil;
+import com.registry.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +25,16 @@ public class UsageLogService extends AbstractService {
 
     /** Org Repo */
     @Autowired
-    private LogRepository _logRepo;
+    private LogRepository logRepo;
 
     @Autowired
-    private OrganizationService _organizationService;
+    private OrganizationService organizationService;
 
     @Autowired
-    private ImageService _imageService;
+    private ImageService imageService;
+
+    @Autowired
+    private UserService userService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -57,7 +62,11 @@ public class UsageLogService extends AbstractService {
     public void create(Log log) {
         logger.info("create log: {}", log);
 
-        _logRepo.save(log);
+        log.setPerformer(userService.getUser(SecurityUtil.getUser()));
+        log.setIp(CommonUtil.getIP());
+        log.setDatetime(LocalDateTime.now());
+
+        logRepo.save(log);
     }
 
     /**
@@ -68,7 +77,7 @@ public class UsageLogService extends AbstractService {
     public List<Log> getUserLogs(String username, String startTime, String endTime) {
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
-        return _logRepo.getLogsByUsername(username, start, end);
+        return logRepo.getLogsByUsername(username, start, end);
     }
 
     /**
@@ -79,8 +88,8 @@ public class UsageLogService extends AbstractService {
     public List<Log> getOrganizationLogs(String namespace, String startTime, String endTime) {
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
-        Organization org = _organizationService.getOrg(namespace);
-        return _logRepo.getLogsByOrganizationId(org.getId(), start, end);
+        Organization org = organizationService.getOrg(namespace);
+        return logRepo.getLogsByOrganizationId(org.getId(), start, end);
     }
 
     /**
@@ -92,8 +101,8 @@ public class UsageLogService extends AbstractService {
     public List<Log> getImageLogs(String namespace, String imageName, String startTime, String endTime) {
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
-        Image image = _imageService.getImage(namespace, imageName);
-        return _logRepo.getLogsByImageId(image.getId(), start, end);
+        Image image = imageService.getImage(namespace, imageName);
+        return logRepo.getLogsByImageId(image.getId(), start, end);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
