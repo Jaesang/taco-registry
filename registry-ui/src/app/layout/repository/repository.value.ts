@@ -1,5 +1,5 @@
 import {Tag} from "./tag-info/tag.value";
-import {CommonResult} from "../../common/value/result-value";
+import {CommonResult, Page} from "../../common/value/result-value";
 export namespace Repository {
 
 	export class Entity {
@@ -23,7 +23,7 @@ export namespace Repository {
 	  public date: string;
   }
 
-	export class Result {
-    public images: Entity[] = [];
+	export class Result extends Page {
+    public content: Entity[] = [];
   }
 }

@@ -3,6 +3,7 @@ import {PageComponent} from "../../../common/component/page.component";
 import * as moment from "moment";
 import {Logs} from "../../organization/usage-log/logs.value";
 import {UsageLogService} from "../../organization/usage-log/usage-log.service";
+import {Page} from "../../../common/value/result-value";
 
 @Component({
   selector: 'usage-log',
@@ -17,6 +18,8 @@ export class UsageLogComponent extends PageComponent implements OnInit {
   private endDate: string;
 
   public logList: Logs.Entity[] = [];
+
+  public pageable: Page = new Page();
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
@@ -46,11 +49,13 @@ export class UsageLogComponent extends PageComponent implements OnInit {
    * 로그 조회
    * @param nextPage
    */
-  public getLogList(nextPage: string = null) {
-    this.usageLogService.getRepoLogList(this.orgName, this.repoName, this.startDate, this.endDate, nextPage).then(result => {
-      this.logList = this.logList.concat(result.logs);
-      if (result.nextPage) {
-        this.getLogList(result.nextPage);
+  public getLogList() {
+    this.usageLogService.getRepoLogList(this.orgName, this.repoName, this.startDate, this.endDate, this.pageable.number).then(result => {
+      this.logList = this.logList.concat(result.content);
+      this.pageable = result;
+      if (!result.last) {
+        this.pageable.number = this.pageable.number + 1;
+        this.getLogList();
       } else {
         this.loaderService.show.next(false);
       }

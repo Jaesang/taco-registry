@@ -54,7 +54,7 @@
         </ul>
       </td>
       <td>
-        <span class="txt-date" [class.type-private]="!item.isPublic">{{ item.lastModified ? (item.lastModified * 1000 | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}</span>
+        <span class="txt-date" [class.type-private]="!item.isPublic">{{ item.lastModified ? (item.lastModified | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}</span>
       </td>
     </tr>
     </tbody>

@@ -5,6 +5,7 @@ import {UsageLogService} from "./usage-log.service";
 import * as moment from "moment";
 import {Logs} from "./logs.value";
 import {Main} from "../../main/main.value";
+import {Page} from "../../../common/value/result-value";
 
 @Component({
   selector: 'usage-log',
@@ -21,6 +22,8 @@ export class UsageLogComponent extends PageComponent implements OnInit {
   public logList: Logs.Entity[] = [];
 
   public MainType: typeof Main.Type = Main.Type;
+
+  public pageable: Page = new Page();
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
@@ -53,13 +56,13 @@ export class UsageLogComponent extends PageComponent implements OnInit {
    * 로그 조회
    * @param nextPage
    */
-  public getLogList(nextPage: string = null) {
+  public getLogList() {
     if (this.logType == Main.Type.organization) {
-      this.usageLogService.getOrgLogList(this.orgName, this.startDate, this.endDate, nextPage).then(result => {
+      this.usageLogService.getOrgLogList(this.orgName, this.startDate, this.endDate, this.pageable.number).then(result => {
         this.setLogList(result);
       });
     } else {
-      this.usageLogService.getUserLogList(this.startDate, this.endDate, nextPage).then(result => {
+      this.usageLogService.getUserLogList(this.startDate, this.endDate, this.pageable.number).then(result => {
         this.setLogList(result);
       });
     }
@@ -85,9 +88,11 @@ export class UsageLogComponent extends PageComponent implements OnInit {
    * @param result
    */
   private setLogList(result: Logs.Result) {
-    this.logList = this.logList.concat(result.logs);
-    if (result.nextPage) {
-      this.getLogList(result.nextPage);
+    this.pageable = result;
+    this.logList = this.logList.concat(result.content);
+    if (!result.last) {
+      this.pageable.number = this.pageable.number + 1;
+      this.getLogList();
     } else {
       this.loaderService.show.next(false);
     }

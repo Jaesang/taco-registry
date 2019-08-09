@@ -9,6 +9,8 @@ import com.registry.repository.usage.Log;
 import com.registry.repository.user.*;
 import com.registry.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -156,12 +158,12 @@ public class OrganizationService extends AbstractService {
      * @param orgName
      * @return
      */
-    public List<UserOrganization> getMembers(String orgName) {
+    public Page<UserOrganization> getMembers(String orgName, Pageable pageable) {
         logger.info("getMembers userorgNamename : {}", orgName);
 
         Organization org = getOrg(orgName);
 
-        return userOrgRepo.getUserOrgs(org.getId());
+        return userOrgRepo.getUserOrgs(org.getId(), pageable);
     }
 
     /**

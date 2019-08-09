@@ -24,6 +24,9 @@ export class Page {
   public start_index: number;
   public first: boolean;
   public last: boolean;
+  public totalElements: number;
+  public totalPages: number;
+  public sort: Sort = new Sort();
 
 }
 

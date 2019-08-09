@@ -1,11 +1,14 @@
 package com.registry.repository.image;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author boozer
@@ -52,14 +55,27 @@ public class Tag implements Serializable {
     private LocalDateTime expiration;
 
     /** start ts */
-    @Column(name = "start_ts")
+    @Column(name = "start_time")
     @Type(type = "org.hibernate.type.LocalDateTimeType")
-    private LocalDateTime startTs;
+    private LocalDateTime startTime;
 
     /** end ts */
-    @Column(name = "end_ts")
+    @Column(name = "end_time")
     @Type(type = "org.hibernate.type.LocalDateTimeType")
-    private LocalDateTime endTs;
+    private LocalDateTime endTime;
+
+    /** last modified ts */
+    @Column(name = "last_modified")
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
+    private LocalDateTime lastModified;
+
+    @JsonProperty
+    @Transient
+    private Long startTs;
+
+    @JsonProperty
+    @Transient
+    private Long endTs;
 
     /** build id */
     @Column(name = "build_id")
@@ -124,28 +140,36 @@ public class Tag implements Serializable {
         this.size = size;
     }
 
-    public LocalDateTime getExpiration() {
-        return expiration;
+    public String getExpiration() {
+        if( null != this.expiration ) {
+
+            DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return this.expiration.format(fm);
+        }
+        else {
+
+            return null;
+        }
     }
 
     public void setExpiration(LocalDateTime expiration) {
         this.expiration = expiration;
     }
 
-    public LocalDateTime getStartTs() {
-        return startTs;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setStartTs(LocalDateTime startTs) {
-        this.startTs = startTs;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTs() {
-        return endTs;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
-    public void setEndTs(LocalDateTime endTs) {
-        this.endTs = endTs;
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public Long getBuildId() {
@@ -164,7 +188,39 @@ public class Tag implements Serializable {
         this.image = image;
     }
 
-/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    public String getLastModified() {
+        if( null != this.lastModified ) {
+
+            DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return this.lastModified.format(fm);
+        }
+        else {
+
+            return null;
+        }
+    }
+
+    public void setLastModified(LocalDateTime lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Long getStartTs() {
+        this.startTs = 0l;
+        if (this.startTime != null) {
+            this.startTs = Timestamp.valueOf(this.startTime).getTime();
+        }
+        return this.startTs;
+    }
+
+    public Long getEndTs() {
+        this.endTs = 0l;
+        if (this.endTime != null) {
+            this.endTs = Timestamp.valueOf(this.endTime).getTime();
+        }
+        return this.endTs;
+    }
+
+    /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Method
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 	

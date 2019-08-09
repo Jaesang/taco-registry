@@ -7,6 +7,7 @@ import com.registry.repository.user.Role;
 import com.registry.util.SecurityUtil;
 
 import javax.persistence.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +75,10 @@ public class Image extends AbstractEntity {
 	/** tag 목록 */
 	@JsonIgnore
 	@OneToMany(mappedBy = "image", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	private List<Tag> tagHistories = new ArrayList<Tag>();
+
+	@JsonProperty
+	@Transient
 	private List<Tag> tags = new ArrayList<Tag>();
 
 	@JsonProperty
@@ -87,6 +92,10 @@ public class Image extends AbstractEntity {
 	@JsonProperty
 	@Transient
 	private Boolean isStarred;
+
+	@JsonProperty
+	@Transient
+	private String lastModified;
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Variables
@@ -182,6 +191,14 @@ public class Image extends AbstractEntity {
 		this.builds = builds;
 	}
 
+	public List<Tag> getTagHistories() {
+		return tagHistories;
+	}
+
+	public void setTagHistories(List<Tag> tags) {
+		this.tagHistories = tags;
+	}
+
 	public List<Tag> getTags() {
 		return tags;
 	}
@@ -228,6 +245,18 @@ public class Image extends AbstractEntity {
 		}
 
 		return isStarred;
+	}
+
+	public String getLastModified() {
+		if( null != updatedDate ) {
+
+			DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			return updatedDate.format(fm);
+		}
+		else {
+
+			return null;
+		}
 	}
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

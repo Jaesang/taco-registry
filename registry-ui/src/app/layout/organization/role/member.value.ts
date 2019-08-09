@@ -1,5 +1,6 @@
 import {Main} from "../../main/main.value";
 import {Avatar} from "../../../common/value/avatar.value";
+import {Page} from "../../../common/value/result-value";
 
 export namespace Member {
 
@@ -13,9 +14,9 @@ export namespace Member {
     public role: string;
   }
 
-  export class MemberList {
+  export class MemberList extends Page {
 	  public canEdit: boolean;
-	  public members: Entity[];
+	  public content: Entity[];
 	  public name: string;
   }
 
@@ -23,7 +24,7 @@ export namespace Member {
 	  public content: Entity[];
   }
 
-  export class Permissions {
-	  public members: Entity[];
+  export class Permissions extends Page {
+	  public content: Entity[];
   }
 }

@@ -1,4 +1,5 @@
 import {Main} from "../../main/main.value";
+import {Page} from "../../../common/value/result-value";
 export namespace Logs {
 
   /**
@@ -47,9 +48,9 @@ export namespace Logs {
     public oldExpirationDate: number;
 	}
 
-	export class Result {
+	export class Result extends Page {
     public endTime: string;
-    public logs: Array<Entity>;
+    public content: Array<Entity>;
     public nextPage: string;
     public startTime: string;
   }

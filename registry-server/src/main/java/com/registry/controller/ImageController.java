@@ -3,9 +3,14 @@ package com.registry.controller;
 import com.registry.constant.Path;
 import com.registry.dto.ImageDto;
 import com.registry.dto.LogDto;
+import com.registry.dto.SearchDto;
+import com.registry.dto.TagDto;
 import com.registry.repository.image.Image;
+import com.registry.repository.image.Tag;
+import com.registry.repository.usage.Log;
 import com.registry.repository.user.Role;
 import com.registry.service.ImageService;
+import com.registry.service.TagService;
 import com.registry.service.UsageLogService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -14,12 +19,19 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by boozer on 2019. 7. 15
@@ -38,6 +50,9 @@ public class ImageController {
 
     @Autowired
     private UsageLogService usageLogService;
+
+    @Autowired
+    private TagService tagService;
 
     @Autowired
     private MapperFacade mapper;
@@ -88,6 +103,46 @@ public class ImageController {
     ) throws Exception{
         Image i = mapper.map(image, Image.class);
         imageService.create(i);
+
+        return true;
+    }
+
+    /**
+     * Image 수정
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PutMapping(Path.IMAGE_DETAIL)
+    @ApiOperation(
+            value = "update image",
+            notes = "Image 수정"
+    )
+    public Object updateImage(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable String namespace,
+            @ApiParam(
+                    name = "name",
+                    required = true
+            )
+            @PathVariable String name,
+            @ApiParam(
+                    name = "image",
+                    required = true
+            )
+            @RequestBody ImageDto.CREATE image
+    ) throws Exception{
+        Image i = mapper.map(image, Image.class);
+        imageService.update(i);
 
         return true;
     }
@@ -159,6 +214,7 @@ public class ImageController {
             @RequestParam(value = "includeStats", required = false) boolean includeStats
     ) throws Exception{
         Image image = imageService.getImage(namespace, name);
+        image.setTags(tagService.getTags(namespace, name));
         ImageDto.VIEW imageDto = mapper.map(image, ImageDto.VIEW.class);
         if (includeStats) {
             List<Map<String, Object>> list = imageService.getStats(namespace, name);
@@ -189,11 +245,24 @@ public class ImageController {
                     name = "namespace",
                     required = true
             )
-            @RequestParam("namespace") String namespace
+            @RequestParam("namespace") String namespace,
+            @ApiParam(
+                    defaultValue=" ",
+                    value ="Pageable"
+            )
+            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws Exception{
-        JSONObject result = new JSONObject();
-        result.put("images", mapper.mapAsList(imageService.getImages(namespace), ImageDto.VIEW.class));
-        return result;
+        Page<Image> result = imageService.getImages(namespace, pageable);
+        // 형 변환
+        List<ImageDto.VIEW> collect = result.getContent()
+                .stream()
+                .map(value -> {
+                    ImageDto.VIEW item = mapper.map(value, ImageDto.VIEW.class);
+                    item.popularity = imageService.getPopularityCount(namespace, value.getName());
+                    return item;
+                }).collect(Collectors.toList());
+
+        return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
 
     /**
@@ -223,22 +292,26 @@ public class ImageController {
                     name = "name",
                     required = true
             )
-            @PathVariable("name") String name
+            @PathVariable("name") String name,
+            @ApiParam(
+                    defaultValue=" ",
+                    value ="Pageable"
+            )
+            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws Exception{
-        JSONObject result = new JSONObject();
+        Page<Role> result = imageService.getMembers(namespace, name, pageable);
 
-        List<Role> roles = imageService.getMembers(namespace, name);
-        List<ImageDto.MEMBER> members = new ArrayList<>();
-        roles.stream().forEach(value -> {
-            ImageDto.MEMBER member = new ImageDto.MEMBER();
-            member.name = value.getUser().getUsername();
-            member.role = value.getName().toLowerCase();
-            members.add(member);
-        });
+        // 형 변환
+        List<ImageDto.MEMBER> collect = result.getContent()
+                .stream()
+                .map(value -> {
+                    ImageDto.MEMBER item = new ImageDto.MEMBER();
+                    item.name = value.getUser().getUsername();
+                    item.role = value.getName().toLowerCase();
+                    return item;
+                }).collect(Collectors.toList());
 
-        result.put("members", members);
-
-        return result;
+        return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
 
     /**
@@ -390,11 +463,67 @@ public class ImageController {
                     name = "endtime",
                     required = true
             )
-            @RequestParam("endtime") String endtime
+            @RequestParam("endtime") String endtime,
+            @ApiParam(
+                    defaultValue=" ",
+                    value ="Pageable"
+            )
+            @PageableDefault(sort = {"datetime"}, direction = Sort.Direction.DESC) Pageable pageable
+    ) throws Exception{
+        Page<Log> result = usageLogService.getImageLogs(namespace, name, starttime, endtime, pageable);
+
+        // 형 변환
+        List<LogDto.VIEW> collect = result.getContent()
+                .stream()
+                .map(value -> {
+                    LogDto.VIEW item = mapper.map(value, LogDto.VIEW.class);
+                    return item;
+                }).collect(Collectors.toList());
+
+        return new PageImpl<>(collect, pageable, result.getTotalElements());
+    }
+
+    /**
+     * Image security
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping(Path.IMAGE_SECURITY)
+    @ApiOperation(
+            value = "get security",
+            notes = "Image security"
+    )
+    public Object getSecurities(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable("namespace") String namespace,
+            @ApiParam(
+                    name = "name",
+                    required = true
+            )
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "image id",
+                    required = true
+            )
+            @PathVariable("imageId") String imageId,
+            @ApiParam(
+                    name = "vulnerabilities"
+            )
+            @RequestParam(value = "vulnerabilities", required = false) Boolean vulnerabilities
     ) throws Exception{
         JSONObject result = new JSONObject();
 
-        result.put("logs", mapper.mapAsList(usageLogService.getImageLogs(namespace, name, starttime, endtime), LogDto.VIEW.class));
+        result.put("status", "queued");
         return result;
     }
 

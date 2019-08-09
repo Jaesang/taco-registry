@@ -168,9 +168,7 @@ public class SearchController {
                     SearchDto.VIEW item = mapper.map(value, SearchDto.VIEW.class);
                     item.kind = "image";
                     item.stars = value.getRole().stream().filter(v -> v.getIsStarred()).count();
-
-                    Timestamp timestamp = Timestamp.valueOf(value.getUpdatedDate());
-                    item.lastModified = timestamp.getTime() / 1000;
+                    item.popularity = imageService.getPopularityCount(value.getNamespace(), value.getName());
 
                     SearchDto.VIEW namespace = new SearchDto.VIEW();
                     namespace.name = value.getNamespace();

@@ -187,7 +187,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
    */
   public scanClick(tag: Tag.Entity) {
     this.currentSelectedTag = tag;
-    this.selectedImageId = tag.image_id;
+    this.selectedImageId = tag.dockerImageId;
     this.showTagSecurityPopup = true;
   }
 
@@ -218,7 +218,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
    */
   public imageClick(tag: Tag.Entity) {
     this.currentSelectedTag = tag;
-    this.selectedImageId = tag.image_id;
+    this.selectedImageId = tag.dockerImageId;
     this.showTagLayerPopup = true;
   }
 
@@ -292,7 +292,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
     this.currentSelectedTag = tag;
     this.showCreateTagPopup = true;
     this.createTag = new Tag.Entity();
-    this.createTag.image_id = tag.image_id;
+    this.createTag.dockerImageId = tag.dockerImageId;
     this.createErrorMsg = '';
   }
 
@@ -464,10 +464,10 @@ export class TagInfoComponent extends PageComponent implements OnInit {
 
       this.loaderService.show.next(false);
 
-      // image_id 로 중복 제거
-      var imageList = _.uniqBy(this.tagList, 'image_id');
+      // dockerImageId 로 중복 제거
+      var imageList = _.uniqBy(this.tagList, 'dockerImageId');
       imageList.forEach(value => {
-        this.getSecurityData(value.image_id);
+        this.getSecurityData(value.dockerImageId);
       });
     });
   }

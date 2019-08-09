@@ -13,6 +13,9 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -78,17 +81,16 @@ public class SuperUserController {
                     value ="토큰",
                     required = true
             )
-            @RequestHeader(name = "Authorization") String authorization
-//            @RequestParam String keyword,
-//            @RequestParam String role,
-//            @RequestParam int page,
-//            @RequestParam int size,
-//            @RequestParam String sortProperty,
-//            @RequestParam String sortDirection
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    defaultValue=" ",
+                    value ="Pageable"
+            )
+            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws Exception{
         JSONObject result = new JSONObject();
 
-        List<User> userList = userService.getUsers();
+        List<User> userList = userService.getUsers(pageable);
         userList = userList == null ? new ArrayList<>() : userList;
         result.put("users", mapper.mapAsList(userList, UserDto.VIEW.class));
 

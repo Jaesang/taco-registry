@@ -45,8 +45,8 @@ export class TagService extends AbstractService {
    * @param imageId
    * @returns {Promise<any>}
    */
-  public getSecurity(namespace: string, repository: string, imageId: string): Promise<Tag.Security> {
-    return this.get(`${environment.apiUrl}/image/${namespace}/${repository}/image/${imageId}/security?vulnerabilities=true`);
+  public getSecurity(namespace: string, repository: string, dockerImageId: string): Promise<Tag.Security> {
+    return this.get(`${environment.apiUrl}/image/${namespace}/${repository}/image/${dockerImageId}/security?vulnerabilities=true`);
   }
 
   /**
@@ -58,7 +58,7 @@ export class TagService extends AbstractService {
    */
   public createTag(namespace: string, repository: string, tag: Tag.Entity): Promise<any> {
     let data = {
-      image: tag.image_id
+      image: tag.dockerImageId
     };
 
     return this.put(`${environment.apiUrl}/image/${namespace}/${repository}/tag/${tag.name}`, data);
@@ -93,8 +93,8 @@ export class TagService extends AbstractService {
    * @param imageId
    * @returns {Promise<any>}
    */
-  public getImageDetail(namespace: string, repository: string, imageId: string): Promise<Image.Layer> {
-    return this.get(`${environment.apiUrl}/image/${namespace}/${repository}/image/${imageId}`);
+  public getImageDetail(namespace: string, repository: string, dockerImageId: string): Promise<Image.Layer> {
+    return this.get(`${environment.apiUrl}/image/${namespace}/${repository}/image/${dockerImageId}`);
   }
 
   /**
@@ -114,9 +114,9 @@ export class TagService extends AbstractService {
    * @param tag
    * @returns {Promise<any>}
    */
-  public restoreImage(namespace: string, repository: string, tag: string, imageId: string, manifestDigest: string = null): Promise<any> {
+  public restoreImage(namespace: string, repository: string, tag: string, dockerImageId: string, manifestDigest: string = null): Promise<any> {
     let data = {
-      image: imageId
+      image: dockerImageId
     };
 
     if (manifestDigest) {

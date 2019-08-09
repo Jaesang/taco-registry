@@ -49,10 +49,10 @@ export class LogsService {
         desc = `Change description for repository <em>${log.namespace}</em>/<em>${log.image}</em>`;
         break;
       case Logs.Kind.change_image_permission:
-        desc = `Change permission for user <em>${log.user}</em> in repository <em>${log.namespace}</em>/<em>${log.image}</em> to <em>${log.role}</em>`;
+        desc = `Change permission for user <em>${log.member}</em> in repository <em>${log.namespace}</em>/<em>${log.image}</em> to <em>${log.role}</em>`;
         break;
       case Logs.Kind.delete_image_permission:
-        desc = `Remove permission for user <em>${log.user}</em> from repository <em>${log.namespace}</em>/<em>${log.image}</em>`
+        desc = `Remove permission for user <em>${log.member}</em> from repository <em>${log.namespace}</em>/<em>${log.image}</em>`
         break;
 
       case Logs.Kind.push_image:

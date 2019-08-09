@@ -8,6 +8,7 @@ import com.registry.repository.user.*;
 import com.registry.util.SecurityUtil;
 import com.registry.value.common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -102,8 +103,8 @@ public class UserService extends AbstractService {
         return user;
     }
 
-    public List<User> getUsers() {
-        return userRepo.getUsers();
+    public List<User> getUsers(Pageable pageable) {
+        return userRepo.getUsers(pageable);
     }
 
     public User getUser(String username) {

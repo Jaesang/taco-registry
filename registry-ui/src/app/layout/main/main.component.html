@@ -23,7 +23,7 @@
             </span>
 
             <span class="txt-date">
-              Last Modified : {{ item.lastModified ? (item.lastModified * 1000 | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}
+              Last Modified : {{ item.lastModified ? (item.lastModified | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}
             </span>
             <span class="info-repository">
               <span class="txt-starred">{{ item.stars }}</span>

@@ -35,12 +35,12 @@ export class SettingComponent extends PageComponent implements OnInit {
 
     // member list 조회
     this.teamService.getTeamMemberList(this.org.name, 'owners').then(result => {
-      this.memberCount = result.members.length;
+      this.memberCount = result.content.length;
     });
 
     // repository list 조회
     this.repositoryService.getRepositoryList(this.org.name).then(result => {
-      this.repoCount = result.images.length;
+      this.repoCount = result.totalElements;
     });
   }
 

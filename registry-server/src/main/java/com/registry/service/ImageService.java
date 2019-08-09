@@ -94,7 +94,7 @@ public class ImageService extends AbstractService {
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     /**
-     * organization 등록
+     * image 등록
      */
     @Transactional
     public void create(Image image) throws Exception {
@@ -142,7 +142,7 @@ public class ImageService extends AbstractService {
                 if (!value.getUser().getUsername().equals(user.getUsername())) {
                     Role r = new Role();
                     r.setImage(image);
-                    r.setUser(user);
+                    r.setUser(value.getUser());
                     r.setName("ADMIN");
                     r.setIsStarred(false);
                     members.add(r);
@@ -164,6 +164,40 @@ public class ImageService extends AbstractService {
         log.setImageId(image.getId());
         log.setNamespace(image.getNamespace());
         log.setImage(image.getName());
+        logService.create(log);
+    }
+
+    /**
+     * image 수정
+     */
+    @Transactional
+    public void update(Image image) throws Exception {
+        logger.info("update : {}", image);
+
+        // 권한 체크
+        checkAuth(image.getNamespace(), image.getName());
+
+        Image preImage = imageRepo.getImage(image.getNamespace(), image.getName());
+        if (preImage == null) {
+            throw new BadRequestException("No image");
+        }
+
+        preImage.setDescription(image.getDescription());
+
+        imageRepo.save(preImage);
+
+        // 로그 등록
+        Organization org = organizationService.getOrg(preImage.getNamespace());
+        Log log = new Log();
+        log.setKind(LogConstant.SET_IMAGE_DESCRIPTION);
+        if (preImage.getIsOrganization()) {
+            log.setOrganizationId(org.getId());
+        } else {
+            log.setUsername(SecurityUtil.getUser());
+        }
+        log.setImageId(preImage.getId());
+        log.setNamespace(preImage.getNamespace());
+        log.setImage(preImage.getName());
         logService.create(log);
     }
 
@@ -212,7 +246,7 @@ public class ImageService extends AbstractService {
     }
 
     /**
-     * image 목록 조회
+     * image 목록 전체 조회
      * @param namespace
      * @return
      */
@@ -220,6 +254,18 @@ public class ImageService extends AbstractService {
         logger.info("getImages namespace : {}", namespace);
 
         return imageRepo.getImages(namespace);
+    }
+
+    /**
+     * image 목록 조회
+     * @param namespace
+     * @return
+     */
+    public Page<Image> getImages(String namespace, Pageable pageable) {
+        logger.info("getImages namespace : {}", namespace);
+        logger.info("getImages pageable : {}", pageable);
+
+        return imageRepo.getImages(namespace, pageable);
     }
 
     /**
@@ -257,6 +303,19 @@ public class ImageService extends AbstractService {
         Image image = imageRepo.getImage(namespace, name);
 
         return image.getRole();
+    }
+
+    /**
+     * image member 목록 조회
+     * @param name
+     * @return
+     */
+    public Page<Role> getMembers(String namespace, String name, Pageable pageable) {
+        logger.info("getMembers name : {}", name);
+
+        Image image = imageRepo.getImage(namespace, name);
+
+        return roleRepo.getRoles(image.getId(), pageable);
     }
 
     /**
@@ -307,7 +366,7 @@ public class ImageService extends AbstractService {
         log.setNamespace(image.getNamespace());
         log.setImage(image.getName());
         log.setRole(roleName.toUpperCase());
-        log.setUsername(username);
+        log.setMember(username);
         logService.create(log);
     }
 
@@ -345,7 +404,7 @@ public class ImageService extends AbstractService {
         log.setImageId(image.getId());
         log.setNamespace(image.getNamespace());
         log.setImage(image.getName());
-        log.setUsername(username);
+        log.setMember(username);
         logService.create(log);
     }
 
@@ -395,7 +454,7 @@ public class ImageService extends AbstractService {
         LocalDate now = LocalDate.now();
         LocalDate startDate = LocalDate.of(now.getYear(), now.getMonthValue() - 2, 1);
         LocalDate createdDate = image.getCreatedDate().toLocalDate();
-        if (startDate.compareTo(createdDate) == -1) {
+        if (startDate.compareTo(createdDate) < 0) {
             // 생성일이 3개월이 안될 경우
 
             startDate = createdDate;
@@ -435,6 +494,18 @@ public class ImageService extends AbstractService {
         }
 
         return result;
+    }
+
+    /**
+     * 총 log 개수 조회
+     * @param namespace
+     * @param name
+     * @return
+     */
+    public Long getPopularityCount(String namespace, String name) {
+        Image image = imageRepo.getImage(namespace, name);
+
+        return logRepo.getStatsCount(image.getId());
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

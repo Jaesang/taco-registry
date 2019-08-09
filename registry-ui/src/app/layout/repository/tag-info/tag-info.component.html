@@ -69,7 +69,7 @@
           <span class="txt-date">{{ item.formattedLastModified }}</span>
         </td>
         <td>
-          <span class="txt-scan type-success" *ngIf="getSecurity(item.image_id).fixableCount == 0 && getSecurity(item.image_id).vulnerabilityHighCount == 0" (click)="scanClick(item)">
+          <span class="txt-scan type-success" *ngIf="getSecurity(item.dockerImageId).fixableCount == 0 && getSecurity(item.dockerImageId).vulnerabilityHighCount == 0" (click)="scanClick(item)">
             Passed
             <!-- Tooltip -->
             <div class="component-tooltip">
@@ -80,12 +80,12 @@
             <!-- //Tooltip -->
           </span>
 
-          <span class="txt-scan type-scan" *ngIf="getSecurity(item.image_id).fixableCount != 0 || getSecurity(item.image_id).vulnerabilityHighCount != 0" (click)="scanClick(item)">
-            <em>{{ getSecurity(item.image_id).vulnerabilityHighCount }} High</em> · {{ getSecurity(item.image_id).fixableCount }} Fixable
+          <span class="txt-scan type-scan" *ngIf="getSecurity(item.dockerImageId).fixableCount != 0 || getSecurity(item.dockerImageId).vulnerabilityHighCount != 0" (click)="scanClick(item)">
+            <em>{{ getSecurity(item.dockerImageId).vulnerabilityHighCount }} High</em> · {{ getSecurity(item.dockerImageId).fixableCount }} Fixable
             <!-- Tooltip -->
             <div class="component-tooltip">
               <div class="box-tooltip">
-                This tag has {{ getSecurity(item.image_id).fixableCount }} vulnerabilities across {{ getSecurity(item.image_id).fixablePackageCount }} packages
+                This tag has {{ getSecurity(item.dockerImageId).fixableCount }} vulnerabilities across {{ getSecurity(item.dockerImageId).fixablePackageCount }} packages
               </div>
             </div>
             <!-- //Tooltip -->
@@ -202,7 +202,7 @@
 
       <div class="popup-area">
         <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showCreateTagPopup = false"></a>
-        <h1 class="txt-title">Add Tag to Image {{ currentSelectedTag.image_id.substr(0, 12) }}</h1>
+        <h1 class="txt-title">Add Tag to Image {{ currentSelectedTag.dockerImageId.substr(0, 12) }}</h1>
 
         <!-- Popup Add Tag -->
         <div class="popup-add-tag">

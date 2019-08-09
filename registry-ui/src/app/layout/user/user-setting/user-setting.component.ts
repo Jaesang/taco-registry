@@ -38,7 +38,7 @@ export class UserSettingComponent extends PageComponent implements OnInit {
 
     // repository list 조회
     this.repositoryService.getRepositoryList(this.user.username).then(result => {
-      this.repoCount = result.images.length;
+      this.repoCount = result.totalElements;
     });
   }
 

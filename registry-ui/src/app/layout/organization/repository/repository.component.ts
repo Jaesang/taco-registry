@@ -65,7 +65,7 @@ export class RepositoryComponent extends PageComponent implements OnInit {
     this.isSearching = true;
 
     this.repositoryService.getRepositoryList(orgName).then(result => {
-      this.repositoryList = result.images;
+      this.repositoryList = result.content;
 
       this.isSearching = false;
 

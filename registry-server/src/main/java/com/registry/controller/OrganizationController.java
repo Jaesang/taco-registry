@@ -6,6 +6,7 @@ import com.registry.dto.OrganizationDto;
 import com.registry.dto.UserDto;
 import com.registry.exception.BadRequestException;
 import com.registry.repository.organization.Organization;
+import com.registry.repository.usage.Log;
 import com.registry.repository.user.User;
 import com.registry.repository.user.UserOrganization;
 import com.registry.service.OrganizationService;
@@ -17,12 +18,18 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by boozer on 2019. 7. 15
@@ -155,7 +162,7 @@ public class OrganizationController {
     }
 
     /**
-     * Org 조회
+     * Org member 조회
      * @return
      * @throws Exception
      */
@@ -176,21 +183,27 @@ public class OrganizationController {
                     name = "organization",
                     required = true
             )
-            @PathVariable("name") String name
+            @PathVariable("name") String name,
+            @ApiParam(
+                    defaultValue=" ",
+                    value ="Pageable"
+            )
+            @PageableDefault(direction = Sort.Direction.DESC) Pageable pageable
     ) throws Exception{
-        JSONObject result = new JSONObject();
+        Page<UserOrganization> result = organizationService.getMembers(name, pageable);
 
-        List<UserOrganization> users = organizationService.getMembers(name);
-        List<OrganizationDto.MEMBER> members = new ArrayList<>();
-        users.stream().forEach(value -> {
-            OrganizationDto.MEMBER member = new OrganizationDto.MEMBER();
-            member.name = value.getUser().getUsername();
-            member.kind = "organization";
-            member.role = "ADMIN";
-            members.add(member);
-        });
-        result.put("members", members);
-        return result;
+        // 형 변환
+        List<OrganizationDto.MEMBER> collect = result.getContent()
+                .stream()
+                .map(value -> {
+                    OrganizationDto.MEMBER member = new OrganizationDto.MEMBER();
+                    member.name = value.getUser().getUsername();
+                    member.kind = "organization";
+                    member.role = "ADMIN";
+                    return member;
+                }).collect(Collectors.toList());
+
+        return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
 
     /**
@@ -293,12 +306,24 @@ public class OrganizationController {
                     name = "endtime",
                     required = true
             )
-            @RequestParam("endtime") String endtime
+            @RequestParam("endtime") String endtime,
+            @ApiParam(
+                    defaultValue=" ",
+                    value ="Pageable"
+            )
+            @PageableDefault(sort = {"datetime"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws Exception{
-        JSONObject result = new JSONObject();
+        Page<Log> result = usageLogService.getOrganizationLogs(name, starttime, endtime, pageable);
 
-        result.put("logs", mapper.mapAsList(usageLogService.getOrganizationLogs(name, starttime, endtime), LogDto.VIEW.class));
-        return result;
+        // 형 변환
+        List<LogDto.VIEW> collect = result.getContent()
+                .stream()
+                .map(value -> {
+                    LogDto.VIEW item = mapper.map(value, LogDto.VIEW.class);
+                    return item;
+                }).collect(Collectors.toList());
+
+        return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

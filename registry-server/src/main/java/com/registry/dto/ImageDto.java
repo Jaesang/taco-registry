@@ -1,5 +1,6 @@
 package com.registry.dto;
 
+import com.registry.repository.image.Tag;
 import io.swagger.annotations.ApiModel;
 
 import java.time.LocalDate;
@@ -28,11 +29,15 @@ public class ImageDto {
     public static class VIEW {
         public String name;
         public String namespace;
+        public String lastModified;
+        public String description;
         public Boolean isPublic;
         public Boolean canAdmin;
         public Boolean canWrite;
         public Boolean isOrganization;
         public Boolean isStarred;
+        public Long popularity;
+        public List<TagDto.VIEW> tags;
         public List<STAT> stats;
     }
 

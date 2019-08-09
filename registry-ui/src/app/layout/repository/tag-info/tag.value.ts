@@ -1,8 +1,9 @@
 import {Image} from "./image.value";
+import {Page} from "../../../common/value/result-value";
 export namespace Tag {
 
 	export class Entity {
-    public image_id: string;
+    public dockerImageId: string;
     public lastModified: string;
     public manifestDigest: string;
     public name: string;
@@ -111,10 +112,8 @@ export namespace Tag {
     Unknown = <any>0
   }
 
-  export class HistoryResult {
-    public hasAdditional: boolean;
-    public page: number;
-    public tags: History[];
+  export class HistoryResult extends Page {
+    public content: History[];
   }
 
 }

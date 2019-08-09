@@ -1,37 +1,43 @@
 package com.registry.controller;
 
 import com.registry.constant.Path;
-import com.registry.dto.BuildDto;
-import com.registry.repository.image.Build;
-import com.registry.service.BuildService;
+import com.registry.dto.TagDto;
+import com.registry.repository.image.Tag;
+import com.registry.service.TagService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by boozer on 2019. 7. 15
  */
 @RestController
-public class BuildController {
+public class TagController {
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-    protected static final Logger logger = LoggerFactory.getLogger(BuildController.class);
+    protected static final Logger logger = LoggerFactory.getLogger(TagController.class);
 
     @Autowired
-    private BuildService buildService;
+    private TagService tagService;
 
     @Autowired
     private MapperFacade mapper;
@@ -57,17 +63,17 @@ public class BuildController {
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     /**d
-     * Build 목록 조회
+     * Tag history 목록 조회
      * @return
      * @throws Exception
      */
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @GetMapping(Path.IMAGE_BUILD)
+    @GetMapping(Path.IMAGE_TAG)
     @ApiOperation(
-            value = "get build list",
-            notes = "Build 목록 조회"
+            value = "get tag history list",
+            notes = "Tag history 목록 조회"
     )
-    public Object getOrg(
+    public Object getTagHistories(
             @ApiParam(
                     defaultValue="bearer ",
                     value ="토큰",
@@ -85,62 +91,21 @@ public class BuildController {
             )
             @PathVariable("name") String name,
             @ApiParam(
-                    name = "limit"
+                    defaultValue=" ",
+                    value ="Pageable"
             )
-            @RequestParam("limit") int limit
+            @PageableDefault(sort = {"startTime"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws Exception{
-        JSONObject result = new JSONObject();
+        Page<Tag> result = tagService.getTagHistory(namespace, name, pageable);
+        // 형 변환
+        List<TagDto.VIEW> collect = result.getContent()
+                .stream()
+                .map(value -> {
+                    TagDto.VIEW item = mapper.map(value, TagDto.VIEW.class);
+                    return item;
+                }).collect(Collectors.toList());
 
-        List<Build> buildList = buildService.getImages(namespace, name, limit);
-        buildList = buildList == null ? new ArrayList<>() : buildList;
-        result.put("builds", mapper.mapAsList(buildList, BuildDto.class));
-
-        return result;
-    }
-
-    /**
-     * Build
-     * @return
-     * @throws Exception
-     */
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @PostMapping(Path.IMAGE_BUILD)
-    @ApiOperation(
-            value = "create build",
-            notes = "Build"
-    )
-    public Object createBuild(
-            @ApiParam(
-                    defaultValue="bearer ",
-                    value ="토큰",
-                    required = true
-            )
-            @RequestHeader(name = "Authorization") String authorization,
-            @ApiParam(
-                    name = "namespace",
-                    required = true
-            )
-            @PathVariable("namespace") String namespace,
-            @ApiParam(
-                    name = "name",
-                    required = true
-            )
-            @PathVariable("name") String name,
-            @ApiParam(
-                    name = "file"
-            )
-            @RequestParam("file") MultipartFile file
-    ) throws Exception{
-        String fileName = "aaa";
-        buildService.createBuild(new Build(), file);
-
-//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-//                .path("/downloadFile/")
-//                .path(fileName)
-//                .toUriString();
-
-//        return new FileUploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
-        return null;
+        return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

@@ -7,6 +7,8 @@ import com.registry.repository.usage.LogRepository;
 import com.registry.util.CommonUtil;
 import com.registry.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -74,10 +76,10 @@ public class UsageLogService extends AbstractService {
      * @param username
      * @return
      */
-    public List<Log> getUserLogs(String username, String startTime, String endTime) {
+    public Page<Log> getUserLogs(String username, String startTime, String endTime, Pageable pageable) {
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
-        return logRepo.getLogsByUsername(username, start, end);
+        return logRepo.getLogsByUsername(username, start, end, pageable);
     }
 
     /**
@@ -85,11 +87,11 @@ public class UsageLogService extends AbstractService {
      * @param namespace
      * @return
      */
-    public List<Log> getOrganizationLogs(String namespace, String startTime, String endTime) {
+    public Page<Log> getOrganizationLogs(String namespace, String startTime, String endTime, Pageable pageable) {
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         Organization org = organizationService.getOrg(namespace);
-        return logRepo.getLogsByOrganizationId(org.getId(), start, end);
+        return logRepo.getLogsByOrganizationId(org.getId(), start, end, pageable);
     }
 
     /**
@@ -98,11 +100,11 @@ public class UsageLogService extends AbstractService {
      * @param imageName
      * @return
      */
-    public List<Log> getImageLogs(String namespace, String imageName, String startTime, String endTime) {
+    public Page<Log> getImageLogs(String namespace, String imageName, String startTime, String endTime, Pageable pageable) {
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         Image image = imageService.getImage(namespace, imageName);
-        return logRepo.getLogsByImageId(image.getId(), start, end);
+        return logRepo.getLogsByImageId(image.getId(), start, end, pageable);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

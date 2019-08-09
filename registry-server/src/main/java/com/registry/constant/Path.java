@@ -125,8 +125,14 @@ public class Path {
     // (GET) 상세
     public static final String IMAGE_DETAIL                 = API + "/image/{namespace}/{name}";
 
+    // image security
+    public static final String IMAGE_SECURITY               = API + "/image/{namespace}/{name}/image/{imageId}/security";
+
     // build 목록
-    public static final String IMAGE_BUILD                  = IMAGE_DETAIL + "/build";
+    public static final String IMAGE_BUILD                  = IMAGE_DETAIL + "/build/";
+
+    // tag 목록
+    public static final String IMAGE_TAG                    = IMAGE_DETAIL + "/tag/";
 
     // build 목록
     public static final String IMAGE_MEMBER                 = IMAGE_DETAIL + "/permissions/user/";

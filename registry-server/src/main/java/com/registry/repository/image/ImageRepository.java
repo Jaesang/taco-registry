@@ -25,6 +25,11 @@ public interface ImageRepository extends JpaRepository<Image, Long>{
     List<Image> getImages(@Param("namespace") String namespace);
 
     @Query("select image from Image image " +
+            "where image.namespace = :namespace " +
+            "and image.delYn = false")
+    Page<Image> getImages(@Param("namespace") String namespace, Pageable pageable);
+
+    @Query("select image from Image image " +
             "where image.name like concat('%', :name, '%') " +
             "and image.delYn = false " +
             "order by image.createdDate desc")
