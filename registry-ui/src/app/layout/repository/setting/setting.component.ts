@@ -197,6 +197,11 @@ export class SettingComponent extends PageComponent implements OnInit {
       Alert.success(CommonConstant.MESSAGE.DELETED);
 
       this.loaderService.show.next(false);
+    }).catch(reason => {
+      let body = JSON.parse(reason._body);
+      Alert.error(body.message);
+
+      this.loaderService.show.next(false);
     });
   }
 

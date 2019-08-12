@@ -8,6 +8,10 @@ import io.swagger.annotations.ApiModel;
 public class BuildDto {
     @ApiModel("Build.CREATE")
     public static class CREATE {
+        public String dockerfile;
+        public String gitPath;
+        public String gitUsername;
+        public String gitPassword;
     }
 
     @ApiModel("Build.EDIT")
@@ -16,11 +20,13 @@ public class BuildDto {
 
     @ApiModel("Build.VIEW")
     public static class VIEW {
+        public String id;
         public String displayName;
         public String status;
         public String error;
         public String subdirectory;
         public String started;
+        public String manualUser;
         public String archiveUrl;
         public String trigger;
         public String triggerMetadata;
@@ -28,6 +34,8 @@ public class BuildDto {
         public String phase;
         public String resourceKey;
         public String dockerfilePath;
+        public String dockerfile;
+        public String[] tags = {"latest"};
     }
 
 }

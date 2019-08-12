@@ -58,6 +58,11 @@ export namespace Build {
     public id: string;
     public dockerfilePath: string;
 
+    public dockerfile: string;
+    public gitPath: string;
+    public gitUsername: string;
+    public gitPassword: string;
+
     public formattedStarted: string;
 	}
 

@@ -1,9 +1,12 @@
 package com.registry.repository.image;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.registry.repository.AbstractEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author boozer
@@ -11,7 +14,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "build")
 @org.hibernate.annotations.DynamicUpdate
-public class Build implements Serializable {
+public class Build extends AbstractEntity {
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Private Variables
@@ -29,7 +32,7 @@ public class Build implements Serializable {
 	private Long id;
 
 	/** 이름 */
-  	@Column(name = "display_name", columnDefinition="varchar(40)", nullable=false)
+  	@Column(name = "display_name", columnDefinition="varchar(40)")
   	private String displayName;
 
 	/** 네임스페이스 */
@@ -43,10 +46,6 @@ public class Build implements Serializable {
 	/** sub directory */
 	@Column(name = "subdirectory", columnDefinition="varchar(40)")
 	private String subdirectory;
-
-	/** start time */
-	@Column(name = "started", columnDefinition="varchar(40)")
-	private String started;
 
 	/** archive url */
 	@Column(name = "archive_url", columnDefinition="varchar(40)")
@@ -76,10 +75,34 @@ public class Build implements Serializable {
 	@Column(name = "dockerfile_path", columnDefinition="varchar(40)")
 	private String dockerfilePath;
 
+	/** dockerfile */
+	@Column(name = "dockerfile", columnDefinition="text")
+	private String dockerfile;
+
+	/** git url */
+	@Column(name = "git_path", columnDefinition="varchar(255)")
+	private String gitPath;
+
+	/** git username */
+	@Column(name = "git_username", columnDefinition="varchar(255)")
+	private String gitUsername;
+
+	/** git password */
+	@Column(name = "git_password", columnDefinition="varchar(255)")
+	private String gitPassword;
+
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="image_id", nullable = false)
 	private Image image;
+
+	@JsonProperty
+	@Transient
+	private String started;
+
+	@JsonProperty
+	@Transient
+	private String manualUser;
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Variables
@@ -133,14 +156,6 @@ public class Build implements Serializable {
 
 	public void setSubdirectory(String subdirectory) {
 		this.subdirectory = subdirectory;
-	}
-
-	public String getStarted() {
-		return started;
-	}
-
-	public void setStarted(String started) {
-		this.started = started;
 	}
 
 	public String getArchiveUrl() {
@@ -199,12 +214,60 @@ public class Build implements Serializable {
 		this.dockerfilePath = dockerfilePath;
 	}
 
+	public String getDockerfile() {
+		return dockerfile;
+	}
+
+	public void setDockerfile(String dockerfile) {
+		this.dockerfile = dockerfile;
+	}
+
+	public String getGitPath() {
+		return gitPath;
+	}
+
+	public void setGitPath(String gitPath) {
+		this.gitPath = gitPath;
+	}
+
+	public String getGitUsername() {
+		return gitUsername;
+	}
+
+	public void setGitUsername(String gitUsername) {
+		this.gitUsername = gitUsername;
+	}
+
+	public String getGitPassword() {
+		return gitPassword;
+	}
+
+	public void setGitPassword(String gitPassword) {
+		this.gitPassword = gitPassword;
+	}
+
 	public Image getImage() {
 		return image;
 	}
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public String getStarted() {
+		if( null != createdDate ) {
+
+			DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			return createdDate.format(fm);
+		}
+		else {
+
+			return null;
+		}
+	}
+
+	public String getManualUser() {
+		return createdBy.getUsername();
 	}
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

@@ -91,9 +91,9 @@ public class BuildController {
     ) throws Exception{
         JSONObject result = new JSONObject();
 
-        List<Build> buildList = buildService.getImages(namespace, name, limit);
+        List<Build> buildList = buildService.getBuilds(namespace, name, limit);
         buildList = buildList == null ? new ArrayList<>() : buildList;
-        result.put("builds", mapper.mapAsList(buildList, BuildDto.class));
+        result.put("builds", mapper.mapAsList(buildList, BuildDto.VIEW.class));
 
         return result;
     }
@@ -126,13 +126,16 @@ public class BuildController {
                     required = true
             )
             @PathVariable("name") String name,
+//            @ApiParam(
+//                    name = "file"
+//            )
+//            @RequestParam("file") MultipartFile file,
             @ApiParam(
-                    name = "file"
+                    name = "build"
             )
-            @RequestParam("file") MultipartFile file
+            @RequestBody BuildDto.CREATE buildDto
     ) throws Exception{
-        String fileName = "aaa";
-        buildService.createBuild(new Build(), file);
+        return buildService.createBuild(namespace, name, buildDto);
 
 //        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
 //                .path("/downloadFile/")
@@ -140,7 +143,6 @@ public class BuildController {
 //                .toUriString();
 
 //        return new FileUploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
-        return null;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

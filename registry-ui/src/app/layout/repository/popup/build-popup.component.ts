@@ -11,6 +11,7 @@ import {RepositoryService} from "../repository.service";
 import {OrganizationService} from "../../organization/organization.service";
 import {CommonConstant} from "../../../common/constant/common-constant";
 import {Alert} from "../../../common/utils/alert-util";
+import {Build} from "../build-history/build-history.value";
 
 @Component({
   selector: '[build-popup]',
@@ -85,14 +86,15 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
     this.orgName = this.repositoryService.repository.namespace;
     this.repoName = this.repositoryService.repository.name;
 
-    this.fileService.createFile(this.dockerFileContent).then(result => {
-      this.buildService.build(this.orgName, this.repoName, result.file_id).then(result => {
-        this.buildService.newBuild.next(result);
+    let build: Build.Entity = new Build.Entity();
+    build.dockerfile = this.dockerFileContent;
 
-        this.close();
+    this.buildService.build(this.orgName, this.repoName, build).then(result => {
+      this.buildService.newBuild.next(result);
 
-        Alert.success(CommonConstant.MESSAGE.SUCCESS);
-      });
+      this.close();
+
+      Alert.success(CommonConstant.MESSAGE.SUCCESS);
     }).catch(reason => {
       let body = JSON.parse(reason._body);
       Alert.error(body.message);

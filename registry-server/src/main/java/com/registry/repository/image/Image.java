@@ -240,7 +240,9 @@ public class Image extends AbstractEntity {
 		this.isStarred = false;
 		if (role != null && role.size() > 0) {
 			role.stream().forEach(value -> {
-				this.isStarred = value.getIsStarred();
+				if (SecurityUtil.getUser().equals(value.getUser().getUsername())) {
+					this.isStarred = value.getIsStarred();
+				}
 			});
 		}
 

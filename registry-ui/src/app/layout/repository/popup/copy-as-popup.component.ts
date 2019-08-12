@@ -215,7 +215,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
     this.repositoryService.getBuildHistory(this.baseRepo.namespace, this.baseRepo.name).then(result => {
       // complete 된 것 중에
       let list = result.builds.filter(value => {
-        return value.phase == Build.Phase.complete;
+        return value.phase == Build.Phase.complete && value.dockerfile;
       });
 
       // 최근 순 정렬
@@ -224,13 +224,9 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
       });
 
       if (list.length) {
-        let resourceKey = list[0].resourceKey;
-        this.fileService.getFile(resourceKey).then(result => {
-          let fileContent = result._body;
-          this.editor.setText(fileContent);
-
-          this.loaderService.show.next(false);
-        });
+        let dockerfile = list[0].dockerfile;
+        this.editor.setText(dockerfile ? atob(dockerfile) : "");
+        this.loaderService.show.next(false);
       } else {
         this.loaderService.show.next(false);
       }
