@@ -1,12 +1,14 @@
 package com.registry.repository.usage;
 
 import com.registry.repository.user.User;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 /**
  * @author boozer
@@ -28,8 +30,8 @@ public class Log implements Serializable {
 
 	/** ID (AutoIncrement) */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private UUID id;
 
 	/** ip */
   	@Column(name = "ip", columnDefinition="varchar(40)", nullable=false)
@@ -51,11 +53,11 @@ public class Log implements Serializable {
 
 	/** organization id */
 	@Column(name = "organization_id")
-	private Long organizationId;
+	private UUID organizationId;
 
 	/** image id */
 	@Column(name = "image_id")
-	private Long imageId;
+	private UUID imageId;
 
 	/** username */
 	@Column(name = "username", columnDefinition="varchar(40)")
@@ -127,11 +129,11 @@ public class Log implements Serializable {
 	| Getter & Setter Method ( DI Method )
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
@@ -176,19 +178,19 @@ public class Log implements Serializable {
 		this.kind = kind;
 	}
 
-	public Long getOrganizationId() {
+	public UUID getOrganizationId() {
 		return organizationId;
 	}
 
-	public void setOrganizationId(Long organizationId) {
+	public void setOrganizationId(UUID organizationId) {
 		this.organizationId = organizationId;
 	}
 
-	public Long getImageId() {
+	public UUID getImageId() {
 		return imageId;
 	}
 
-	public void setImageId(Long imageId) {
+	public void setImageId(UUID imageId) {
 		this.imageId = imageId;
 	}
 

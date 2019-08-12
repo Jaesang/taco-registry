@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface ImageRepository extends JpaRepository<Image, Long>{
+public interface ImageRepository extends JpaRepository<Image, UUID>{
     @Query("select image from Image image " +
             "where image.namespace = :namespace " +
             "and image.name = :name " +
@@ -17,7 +18,7 @@ public interface ImageRepository extends JpaRepository<Image, Long>{
 
     @Query("select image from Image image " +
             "where image.id = :id ")
-    Image getImage(@Param("id") Long id);
+    Image getImage(@Param("id") UUID id);
 
     @Query("select image from Image image " +
             "where image.namespace = :namespace " +

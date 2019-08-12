@@ -2,6 +2,7 @@ package com.registry.repository.image;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 /**
  * @author boozer
@@ -30,8 +32,8 @@ public class Tag implements Serializable {
 
 	/** 유저 ID (AutoIncrement) */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+	private UUID id;
 
     /** image */
     @Column(name = "docker_image_id", columnDefinition="varchar(40)", nullable=false)
@@ -79,7 +81,7 @@ public class Tag implements Serializable {
 
     /** build id */
     @Column(name = "build_id")
-    private Long buildId;
+    private UUID buildId;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -100,11 +102,11 @@ public class Tag implements Serializable {
 	| Getter & Setter Method ( DI Method )
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -172,11 +174,11 @@ public class Tag implements Serializable {
         this.endTime = endTime;
     }
 
-    public Long getBuildId() {
+    public UUID getBuildId() {
         return buildId;
     }
 
-    public void setBuildId(Long buildId) {
+    public void setBuildId(UUID buildId) {
         this.buildId = buildId;
     }
 

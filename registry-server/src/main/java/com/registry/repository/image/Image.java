@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.registry.repository.AbstractEntity;
 import com.registry.repository.user.Role;
 import com.registry.util.SecurityUtil;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author boozer
@@ -31,8 +33,8 @@ public class Image extends AbstractEntity {
 
 	/** 유저 ID (AutoIncrement) */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private UUID id;
 
 	/** 이름 */
   	@Column(name = "name", columnDefinition="varchar(40)", nullable=false)
@@ -111,11 +113,11 @@ public class Image extends AbstractEntity {
 	| Getter & Setter Method ( DI Method )
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

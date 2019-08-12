@@ -10,15 +10,16 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-public interface LogRepository extends JpaRepository<Log, Long>{
+public interface LogRepository extends JpaRepository<Log, UUID>{
     @Query("select log from Log log " +
             "where log.imageId = :imageId")
-    List<Log> getLogsByImageId(@Param("imageId") Long imageId);
+    List<Log> getLogsByImageId(@Param("imageId") UUID imageId);
 
     @Query("select log from Log log " +
             "where log.organizationId = :organizationId")
-    List<Log> getLogsByOrganizationId(@Param("organizationId") Long organizationId);
+    List<Log> getLogsByOrganizationId(@Param("organizationId") UUID organizationId);
 
     @Query("select log from Log log " +
             "where log.username = :username")
@@ -28,13 +29,13 @@ public interface LogRepository extends JpaRepository<Log, Long>{
             "where log.imageId is not null " +
             "and log.imageId = :imageId " +
             "and log.datetime between :startTime and :endTime")
-    Page<Log> getLogsByImageId(@Param("imageId") Long imageId, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime, Pageable pageable);
+    Page<Log> getLogsByImageId(@Param("imageId") UUID imageId, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime, Pageable pageable);
 
     @Query("select log from Log log " +
             "where log.organizationId is not null " +
             "and log.organizationId = :organizationId " +
             "and log.datetime between :startTime and :endTime")
-    Page<Log> getLogsByOrganizationId(@Param("organizationId") Long organizationId, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime, Pageable pageable);
+    Page<Log> getLogsByOrganizationId(@Param("organizationId") UUID organizationId, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime, Pageable pageable);
 
     @Query("select log from Log log " +
             "where log.username is not null " +
@@ -46,9 +47,9 @@ public interface LogRepository extends JpaRepository<Log, Long>{
             "where log.imageId = :imageId " +
             "and log.datetime between :startDate and :endDate " +
             "group by function('to_char', log.datetime,'YYYY-MM-DD') ")
-    List<Map<String, Object>> getStats(@Param("imageId") Long imageId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    List<Map<String, Object>> getStats(@Param("imageId") UUID imageId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     @Query("select count(log.id) from Log log " +
             "where log.imageId = :imageId")
-    Long getStatsCount(@Param("imageId") Long imageId);
+    Long getStatsCount(@Param("imageId") UUID imageId);
 }

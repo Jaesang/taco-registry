@@ -5,11 +5,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface OrganizationRepository extends JpaRepository<Organization, Long>{
+public interface OrganizationRepository extends JpaRepository<Organization, UUID>{
     @Query("select org from Organization org " +
             "where org.id = :id ")
-    Organization getOrganization(@Param("id") Long id);
+    Organization getOrganization(@Param("id") UUID id);
 
     @Query("select org from Organization org " +
             "where org.name = :name " +

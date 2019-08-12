@@ -1,5 +1,6 @@
 package com.registry.service;
 
+import com.registry.constant.Const;
 import com.registry.dto.BuildDto;
 import com.registry.repository.image.Build;
 import com.registry.repository.image.BuildRepository;
@@ -7,6 +8,7 @@ import com.registry.repository.image.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -69,7 +71,7 @@ public class BuildService extends AbstractService {
 
         Image image = imageService.getImage(namespace, name);
 
-        Pageable pageable = PageRequest.of(0, limit);
+        Pageable pageable = PageRequest.of(0, limit, new Sort(Sort.Direction.DESC, "createdDate"));
         return buildRepo.getBuilds(image.getId(), pageable);
     }
 
@@ -86,6 +88,7 @@ public class BuildService extends AbstractService {
 
         Image image = imageService.getImage(namespace, name);
         build.setImage(image);
+        build.setPhase(Const.Build.PHASE.WAITING);
 
         byte[] targetBytes;
         byte[] encodedBytes;
@@ -95,10 +98,6 @@ public class BuildService extends AbstractService {
             targetBytes = buildDto.dockerfile.getBytes();
             encodedBytes = encoder.encode(targetBytes);
             build.setDockerfile(new String(encodedBytes));
-
-            Base64.Decoder decoder = Base64.getDecoder();
-            String a = new String(decoder.decode(build.getDockerfile().getBytes()));
-            System.out.print(a);
         } else if (buildDto.gitPassword != null) {
             targetBytes = buildDto.gitPassword.getBytes();
             encodedBytes = encoder.encode(targetBytes);

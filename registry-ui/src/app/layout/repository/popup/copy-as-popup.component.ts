@@ -149,17 +149,16 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
     this.repo.isOrganization = this.repo.namespace == this.userService.user.username ? false : true;
     this.repositoryService.createRepository(this.repo).then(result => {
 
-      this.fileService.createFile(this.dockerFileContent).then(result => {
-        this.buildService.build(this.repo.namespace, this.repo.name, result.file_id).then(result => {
-          this.close();
-          this.router.navigate([`app/image/${this.repo.namespace}/${this.repo.name}/build`]);
+      let build: Build.Entity = new Build.Entity();
+      build.dockerfile = this.dockerFileContent;
 
-          this.loaderService.show.next(false);
+      this.buildService.build(this.repo.namespace, this.repo.name, build).then(result => {
+        this.close();
+        this.router.navigate([`app/image/${this.repo.namespace}/${this.repo.name}/build`]);
 
-          Alert.success(CommonConstant.MESSAGE.SUCCESS);
-        });
-      }).catch(reason => {
+        this.loaderService.show.next(false);
 
+        Alert.success(CommonConstant.MESSAGE.SUCCESS);
       });
     }).catch(reason => {
       let body = JSON.parse(reason._body);

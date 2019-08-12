@@ -7,18 +7,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
 
-public interface UserOrganizationRepository extends JpaRepository<UserOrganization, Long> {
+public interface UserOrganizationRepository extends JpaRepository<UserOrganization, UUID> {
     @Query("select userOrg from UserOrganization userOrg " +
             "join userOrg.organization org " +
             "where org.id = :organizationId")
-    Page<UserOrganization> getUserOrgs(@Param("organizationId") Long organizationId, Pageable pageable);
+    Page<UserOrganization> getUserOrgs(@Param("organizationId") UUID organizationId, Pageable pageable);
 
     @Query("select userOrg from UserOrganization userOrg " +
             "join userOrg.user user " +
             "join userOrg.organization org " +
             "where org.id = :organizationId " +
             "and user.username = :username")
-    UserOrganization getUserOrg(@Param("organizationId") Long organizationId, @Param("username") String username);
+    UserOrganization getUserOrg(@Param("organizationId") UUID organizationId, @Param("username") String username);
 }

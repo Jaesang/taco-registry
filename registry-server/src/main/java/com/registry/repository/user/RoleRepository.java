@@ -7,22 +7,23 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface RoleRepository extends JpaRepository<Role, Long>{
+public interface RoleRepository extends JpaRepository<Role, UUID>{
     @Query("select role from Role role " +
             "join role.user user " +
             "join role.image image " +
             "where user.username = :username " +
             "and image.id = :imageId")
-    Role getRole(@Param("username") String username, @Param("imageId") Long imageId);
+    Role getRole(@Param("username") String username, @Param("imageId") UUID imageId);
 
     @Query("select role from Role role " +
             "join role.image image " +
             "where image.id = :imageId")
-    List<Role> getRoles(@Param("imageId") Long imageId);
+    List<Role> getRoles(@Param("imageId") UUID imageId);
 
     @Query("select role from Role role " +
             "join role.image image " +
             "where image.id = :imageId")
-    Page<Role> getRoles(@Param("imageId") Long imageId, Pageable pageable);
+    Page<Role> getRoles(@Param("imageId") UUID imageId, Pageable pageable);
 }

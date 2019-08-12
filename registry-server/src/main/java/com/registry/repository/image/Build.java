@@ -3,10 +3,12 @@ package com.registry.repository.image;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.registry.repository.AbstractEntity;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 /**
  * @author boozer
@@ -28,8 +30,8 @@ public class Build extends AbstractEntity {
 
 	/** 유저 ID (AutoIncrement) */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private UUID id;
 
 	/** 이름 */
   	@Column(name = "display_name", columnDefinition="varchar(40)")
@@ -63,7 +65,10 @@ public class Build extends AbstractEntity {
 	@Column(name = "context", columnDefinition="varchar(40)")
 	private String context;
 
-	/** phase */
+	/**
+	 * phase
+	 * complete, error, cancelled, waiting, pulling, pushing, building
+	 */
 	@Column(name = "phase", columnDefinition="varchar(40)")
 	private String phase;
 
@@ -118,11 +123,11 @@ public class Build extends AbstractEntity {
 	| Getter & Setter Method ( DI Method )
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

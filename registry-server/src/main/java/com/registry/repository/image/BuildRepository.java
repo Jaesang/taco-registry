@@ -6,15 +6,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface BuildRepository extends JpaRepository<Build, Long>{
+public interface BuildRepository extends JpaRepository<Build, UUID>{
     @Query("select build from Build build " +
             "join build.image image " +
             "where image.id = :imageId")
-    List<Build> getBuilds(@Param("imageId") Long imageId, Pageable pageable);
+    List<Build> getBuilds(@Param("imageId") UUID imageId, Pageable pageable);
 
     @Query("select build from Build build " +
             "join build.image image " +
             "where image.id = :imageId")
-    List<Build> getBuilds(@Param("imageId") Long imageId);
+    List<Build> getBuilds(@Param("imageId") UUID imageId);
 }

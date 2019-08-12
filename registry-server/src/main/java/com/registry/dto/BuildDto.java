@@ -2,6 +2,8 @@ package com.registry.dto;
 
 import io.swagger.annotations.ApiModel;
 
+import java.util.UUID;
+
 /**
  * Build dto
  */
@@ -20,7 +22,7 @@ public class BuildDto {
 
     @ApiModel("Build.VIEW")
     public static class VIEW {
-        public String id;
+        public UUID id;
         public String displayName;
         public String status;
         public String error;

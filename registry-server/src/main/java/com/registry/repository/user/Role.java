@@ -4,6 +4,7 @@ package com.registry.repository.user;
 import com.registry.repository.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.registry.repository.image.Image;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,6 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author boozer
@@ -31,8 +33,8 @@ public class Role extends AbstractEntity {
 	
 	/** ID (AutoIncrement) */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private UUID id;
 
 	/**
 	 * Role 이름
@@ -68,11 +70,11 @@ public class Role extends AbstractEntity {
 	| Getter & Setter Method ( DI Method )
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

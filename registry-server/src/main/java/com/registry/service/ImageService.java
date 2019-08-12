@@ -1,5 +1,6 @@
 package com.registry.service;
 
+import com.registry.constant.Const;
 import com.registry.constant.LogConstant;
 import com.registry.exception.AccessDeniedException;
 import com.registry.exception.BadRequestException;
@@ -155,7 +156,7 @@ public class ImageService extends AbstractService {
         // 로그 등록
         Organization org = organizationService.getOrg(image.getNamespace());
         Log log = new Log();
-        log.setKind(LogConstant.CREATE_IMAGE);
+        log.setKind(Const.Log.CREATE_IMAGE);
         if (image.getIsOrganization()) {
             log.setOrganizationId(org.getId());
         } else {
@@ -189,7 +190,7 @@ public class ImageService extends AbstractService {
         // 로그 등록
         Organization org = organizationService.getOrg(preImage.getNamespace());
         Log log = new Log();
-        log.setKind(LogConstant.SET_IMAGE_DESCRIPTION);
+        log.setKind(Const.Log.SET_IMAGE_DESCRIPTION);
         if (preImage.getIsOrganization()) {
             log.setOrganizationId(org.getId());
         } else {
@@ -221,7 +222,7 @@ public class ImageService extends AbstractService {
         // 로그 등록
         Organization org = organizationService.getOrg(image.getNamespace());
         Log log = new Log();
-        log.setKind(LogConstant.DELETE_IMAGE);
+        log.setKind(Const.Log.DELETE_IMAGE);
         if (image.getIsOrganization()) {
             log.setOrganizationId(org.getId());
         } else {
@@ -356,7 +357,7 @@ public class ImageService extends AbstractService {
         // 로그 등록
         Organization org = organizationService.getOrg(image.getNamespace());
         Log log = new Log();
-        log.setKind(LogConstant.CHANGE_IMAGE_PERMISSION);
+        log.setKind(Const.Log.CHANGE_IMAGE_PERMISSION);
         if (image.getIsOrganization()) {
             log.setOrganizationId(org.getId());
         } else {
@@ -395,7 +396,7 @@ public class ImageService extends AbstractService {
         // 로그 등록
         Organization org = organizationService.getOrg(image.getNamespace());
         Log log = new Log();
-        log.setKind(LogConstant.DELETE_IMAGE_PERMISSION);
+        log.setKind(Const.Log.DELETE_IMAGE_PERMISSION);
         if (image.getIsOrganization()) {
             log.setOrganizationId(org.getId());
         } else {
@@ -427,7 +428,7 @@ public class ImageService extends AbstractService {
         // 로그 등록
         Organization org = organizationService.getOrg(image.getNamespace());
         Log log = new Log();
-        log.setKind(LogConstant.CHANGE_IMAGE_VISIBILITY);
+        log.setKind(Const.Log.CHANGE_IMAGE_VISIBILITY);
         if (image.getIsOrganization()) {
             log.setOrganizationId(org.getId());
         } else {

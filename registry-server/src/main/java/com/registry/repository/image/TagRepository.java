@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface TagRepository extends JpaRepository<Tag, Long>{
+public interface TagRepository extends JpaRepository<Tag, UUID>{
 //    @Query("select tag from Tag tag " +
 //            "join tag.image image " +
 //            "where image.id = :imageId " +
@@ -21,10 +22,10 @@ public interface TagRepository extends JpaRepository<Tag, Long>{
     @Query(value = "select * from tag t " +
             "where image_id = :imageId " +
             "and (t.start_time, t.name) in (select max(start_time) start_time, name from tag where image_id = :imageId group by name)", nativeQuery = true)
-    List<Tag> getTags(@Param("imageId") Long imageId);
+    List<Tag> getTags(@Param("imageId") UUID imageId);
 
     @Query("select tag from Tag tag " +
             "join tag.image image " +
             "where image.id = :imageId")
-    Page<Tag> getTags(@Param("imageId") Long imageId, Pageable pageable);
+    Page<Tag> getTags(@Param("imageId") UUID imageId, Pageable pageable);
 }

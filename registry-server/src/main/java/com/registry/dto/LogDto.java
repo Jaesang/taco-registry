@@ -2,6 +2,8 @@ package com.registry.dto;
 
 import io.swagger.annotations.ApiModel;
 
+import java.util.UUID;
+
 /**
  * Log dto
  */
@@ -12,8 +14,8 @@ public class LogDto {
         public String datetime;
         public UserDto.VIEW performer;
         public String kind;
-        public Long organizationId;
-        public Long imageId;
+        public UUID organizationId;
+        public UUID imageId;
         public String username;
         public String buildId;
         public String namespace;
