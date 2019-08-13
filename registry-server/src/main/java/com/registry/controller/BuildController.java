@@ -67,7 +67,7 @@ public class BuildController {
             value = "get build list",
             notes = "Build 목록 조회"
     )
-    public Object getOrg(
+    public Object getBuilds(
             @ApiParam(
                     defaultValue="bearer ",
                     value ="토큰",
@@ -143,6 +143,80 @@ public class BuildController {
 //                .toUriString();
 
 //        return new FileUploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+    }
+
+    /**d
+     * Build 상세 조회
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping(Path.IMAGE_BUILD_DETAIL)
+    @ApiOperation(
+            value = "get build detail",
+            notes = "Build 상세 조회"
+    )
+    public Object getBuild(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable("namespace") String namespace,
+            @ApiParam(
+                    name = "name",
+                    required = true
+            )
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "buildId",
+                    required = true
+            )
+            @PathVariable("buildId") String buildId
+    ) throws Exception{
+        return buildService.getBuild(namespace, name, buildId);
+    }
+
+    /**d
+     * Build log 조회
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping(Path.BUILD_LOGS)
+    @ApiOperation(
+            value = "get build logs",
+            notes = "Build log 조회"
+    )
+    public Object getBuildLogs(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable("namespace") String namespace,
+            @ApiParam(
+                    name = "name",
+                    required = true
+            )
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "buildId",
+                    required = true
+            )
+            @PathVariable("buildId") String buildId
+    ) throws Exception{
+        return buildService.getBuildLogs(namespace, name, buildId);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

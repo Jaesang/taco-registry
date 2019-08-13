@@ -16,8 +16,15 @@ public class Const {
             public static final String PUSHING = "pushing";
             public static final String BUILDING = "building";
         }
+
+        public static class LOG_TYPE {
+            public static final String PHASE = "phase";
+            public static final String COMMAND = "command";
+            public static final String ERROR = "error";
+        }
     }
-    public static class Log {
+
+    public static class UsageLog {
 
         public static final String CREATE_IMAGE = "create_image";
 

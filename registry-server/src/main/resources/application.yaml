@@ -67,6 +67,20 @@ spring:
         hbm2ddl:
           import_files: /sql/init.sql
 
+  # Redis
+  redis:
+    host: localhost
+    port: 6379
+    password:
+
+# Ribbon
+builder:
+  ribbon:
+    eureka:
+      enabled: false
+    NIWSServerListClassName: com.registry.config.RibbonServerList
+    ServerListRefreshInterval: 15000
+
 # Config
 config:
   file:

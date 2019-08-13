@@ -131,6 +131,12 @@ public class Path {
     // build 목록
     public static final String IMAGE_BUILD                  = IMAGE_DETAIL + "/build/";
 
+    // build 상세
+    public static final String IMAGE_BUILD_DETAIL           = IMAGE_BUILD + "{buildId}";
+
+    // build 상세
+    public static final String BUILD_LOGS                   = IMAGE_BUILD_DETAIL + "/logs";
+
     // tag 목록
     public static final String IMAGE_TAG                    = IMAGE_DETAIL + "/tag/";
 

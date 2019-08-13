@@ -1,7 +1,6 @@
 package com.registry.service;
 
 import com.registry.constant.Const;
-import com.registry.constant.LogConstant;
 import com.registry.exception.AccessDeniedException;
 import com.registry.exception.BadRequestException;
 import com.registry.repository.organization.Organization;
@@ -211,7 +210,7 @@ public class OrganizationService extends AbstractService {
             Log log = new Log();
             log.setOrganizationId(org.getId());
             log.setMember(username);
-            log.setKind(Const.Log.ORG_ADD_MEMBER);
+            log.setKind(Const.UsageLog.ORG_ADD_MEMBER);
             logService.create(log);
         }
     }
@@ -256,7 +255,7 @@ public class OrganizationService extends AbstractService {
 
         // 로그 등록
         Log log = new Log();
-        log.setKind(Const.Log.ORG_REMOVE_MEMBER);
+        log.setKind(Const.UsageLog.ORG_REMOVE_MEMBER);
         log.setOrganizationId(org.getId());
         log.setMember(username);
         logService.create(log);

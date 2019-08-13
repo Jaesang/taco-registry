@@ -1,7 +1,6 @@
 package com.registry.service;
 
 import com.registry.constant.Const;
-import com.registry.constant.LogConstant;
 import com.registry.repository.image.Image;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.usage.Log;
@@ -192,7 +191,7 @@ public class UserService extends AbstractService {
 
                 // 로그 등록
                 Log log = new Log();
-                log.setKind(Const.Log.ACCOUNT_CHANGE_PASSWORD);
+                log.setKind(Const.UsageLog.ACCOUNT_CHANGE_PASSWORD);
                 log.setMember(SecurityUtil.getUser());
                 logService.create(log);
             }

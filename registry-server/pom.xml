@@ -130,6 +130,14 @@
 		</dependency>
 		<!-- //Spring Data Redis -->
 
+		<!-- Ribbon -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+			<version>2.1.2.RELEASE</version>
+		</dependency>
+		<!-- Ribbon -->
+
 		<!-- mapper -->
 		<dependency>
 			<groupId>net.rakugakibox.spring.boot</groupId>
