@@ -93,7 +93,7 @@
                       <strong class="txt-desc">{{ item.command }}</strong>
                     </div>
                     <div class="log-detail" *ngFor="let child of item.children">
-                      <span class="txt-date">{{ child.data.datetime | dateTimeFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
+                      <span class="txt-date">{{ child.datetime | dateTimeFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
                       <span class="txt-desc">{{ child.message }}</span>
                     </div>
                   </li>

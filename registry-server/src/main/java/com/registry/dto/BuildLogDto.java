@@ -11,13 +11,9 @@ public class BuildLogDto {
 
     @ApiModel("Build.VIEW")
     public static class VIEW {
-        public DATA data;
+        public String datetime;
         public String message;
         public String type;
-    }
-
-    public static class DATA {
-        public String datetime;
     }
 
 }

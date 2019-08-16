@@ -28,4 +28,10 @@ public interface TagRepository extends JpaRepository<Tag, UUID>{
             "join tag.image image " +
             "where image.id = :imageId")
     Page<Tag> getTags(@Param("imageId") UUID imageId, Pageable pageable);
+
+    @Query("select tag from Tag tag " +
+            "join tag.image image " +
+            "where image.id = :imageId " +
+            "and tag.dockerImageId = :dockerImageId")
+    List<Tag> getTagByDockerImageId(@Param("imageId") UUID imageId, @Param("dockerImageId") String dockerImageId);
 }

@@ -25,6 +25,8 @@
 
   <logger name="org.apache.ignite" level="info"/>
 
+  <logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="warn"/>
+
   <logger name="com.registry" level="debug"/>
 
   <root level="warn">

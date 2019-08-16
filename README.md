@@ -2,7 +2,8 @@
 
 ##1. Language Setting
 ### postgresql
-    $ psql postgres
+    $ docker run --name postgres -e POSTGRES_USER=exntu -e POSTGRES_PASSWORD=exntu123! -d -p 5432:5432 postgres
+    $ psql -U exntu -d exntu
     postgres$ create database registry encoding 'utf-8';
     CREATE DATABASE
     postgres$ create user registry password 'registry1234$$';

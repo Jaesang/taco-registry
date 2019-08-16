@@ -70,6 +70,7 @@ export namespace Build {
     public data: any;
     public message: string;
     public type: LogType;
+    public datetime: string;
 
     public children: Log[];
     public command: string;

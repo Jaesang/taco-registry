@@ -3,14 +3,13 @@ package com.registry.service;
 import com.registry.constant.Const;
 import com.registry.dto.BuildDto;
 import com.registry.dto.BuildLogDto;
-import com.registry.repository.image.Build;
-import com.registry.repository.image.BuildRepository;
-import com.registry.repository.image.Image;
+import com.registry.repository.image.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -33,9 +32,17 @@ public class BuildService extends AbstractService {
     @Autowired
     private BuildRepository buildRepo;
 
+    /** Build Log Repo */
+    @Autowired
+    private BuildLogRepository buildLogRepo;
+
     /** Image Service */
     @Autowired
     private ImageService imageService;
+
+    /** Tag Service */
+    @Autowired
+    private TagService tagService;
 
     @Autowired
     private FileService fileService;
@@ -99,6 +106,7 @@ public class BuildService extends AbstractService {
      * @param buildDto
      * @throws Exception
      */
+    @Transactional
     public Build createBuild(String namespace, String name, BuildDto.CREATE buildDto) throws Exception {
 
         Build build = new Build();
@@ -123,30 +131,48 @@ public class BuildService extends AbstractService {
             build.setGitPassword(new String(encodedBytes));
         }
 
-        buildRepo.save(build);
+        build = buildRepo.save(build);
+
+        //todo bulder 에서 추가 정보 업데이트
+        Tag tag = new Tag();
+        tag.setImage(image);
+        tag.setBuildId(build.getId());
+        tag.setName("latest");
+        tag.setDockerImageId(UUID.randomUUID().toString());
+        tag.setManifestDigest("sha256:12dqwkldjqwiodj12390");
+        tagService.createTag(tag);
 
         return build;
     }
 
     /**
-     * build log 조회
+     * build 취소
      * @param namespace
      * @param name
-     * @param id
+     * @param buildId
+     */
+    public void cancelBuild(String namespace, String name, String buildId) {
+        Build build = getBuild(namespace, name, buildId);
+
+        if (Const.Build.PHASE.WAITING.equals(build.getPhase()) || Const.Build.PHASE.PULLING.equals(build.getPhase()) || Const.Build.PHASE.BUILDING.equals(build.getPhase())) {
+            //todo builder에 build 취소 요청
+
+            build.setPhase(Const.Build.PHASE.CANCELLED);
+            buildRepo.save(build);
+        }
+    }
+
+    /**
+     * build log 조회
+     * @param buildId
      * @return
      */
-    public List<BuildLogDto.VIEW> getBuildLogs(String namespace, String name, String id) {
-        logger.info("getBuildLogs namespace : {}", namespace);
-        logger.info("getBuildLogs name : {}", name);
-        logger.info("getBuildLogs id : {}", id);
+    public List<BuildLog> getBuildLogs(String buildId) {
+        logger.info("getBuildLogs buildId : {}", buildId);
 
-        UUID uuid = UUID.fromString(id);
-        Build build = buildRepo.findById(uuid).orElse(null);
+        UUID uuid = UUID.fromString(buildId);
 
-        //todo builder 에서 log 조회
-
-        List<BuildLogDto.VIEW> logs = new ArrayList<>();
-        return logs;
+        return buildLogRepo.getBuildLogsByBuildId(uuid);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

@@ -20,6 +20,10 @@
     <appender-ref ref="STDOUT" />
   </logger>
 
+  <logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="ERROR">
+    <appender-ref ref="STDOUT" />
+  </logger>
+
   <logger name="com.registry" level="ERROR">
     <appender-ref ref="STDOUT" />
   </logger>

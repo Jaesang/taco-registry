@@ -132,7 +132,7 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
       result.content.forEach((value, index) => {
         this.historyList.push(value);
         value.date = value.startTs;
-        value.formattedDate = moment(value.startTs * 1000).format('YYYY-MM-DD HH:mm');
+        value.formattedDate = moment(value.startTs).format('YYYY-MM-DD HH:mm');
 
         if (value.endTs) {
           // moved 인 경우 삭제된 내용은 화면에 표시하지 않음
@@ -149,7 +149,7 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
             history.name = value.name;
             history.isDeleted = true;
             history.date = value.endTs;
-            history.formattedDate = moment(value.endTs * 1000).format('YYYY-MM-DD HH:mm');
+            history.formattedDate = moment(value.endTs).format('YYYY-MM-DD HH:mm');
             history.beforeHistory = value;
             this.historyList.push(history);
           }

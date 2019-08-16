@@ -135,6 +135,7 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
 
     this.fileDownload.nativeElement.href = `${environment.host}/logarchive/${this.buildId}`;
     this.fileDownload.nativeElement.download = this.buildId;
+    this.fileDownload.nativeElement.type = 'application/json';
     this.fileDownload.nativeElement.click();
   }
 
@@ -233,7 +234,7 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
     } else if (item.type == Build.LogType.error) {
       message = item.message;
     } else {
-      message = moment(item.data.datetime).format('YYYY-MM-DD HH:mm');
+      message = moment(item.datetime).format('YYYY-MM-DD HH:mm');
     }
 
     return message;

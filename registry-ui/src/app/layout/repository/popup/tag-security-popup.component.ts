@@ -95,7 +95,7 @@ export class TagSecurityPopupComponent extends AbstractComponent implements OnIn
         this.tagService.setCommand(result);
         this.layerList.push(result);
 
-        result.history.reverse();
+        // result.history.reverse();
         result.history.forEach(value => {
           this.tagService.setCommand(value);
           this.layerList.push(value);

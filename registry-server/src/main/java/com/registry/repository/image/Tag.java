@@ -2,6 +2,7 @@ package com.registry.repository.image;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.registry.repository.AbstractEntity;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "tag")
 @org.hibernate.annotations.DynamicUpdate
-public class Tag implements Serializable {
+public class Tag extends AbstractEntity {
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Private Variables
@@ -66,11 +67,6 @@ public class Tag implements Serializable {
     @Type(type = "org.hibernate.type.LocalDateTimeType")
     private LocalDateTime endTime;
 
-    /** last modified ts */
-    @Column(name = "last_modified")
-    @Type(type = "org.hibernate.type.LocalDateTimeType")
-    private LocalDateTime lastModified;
-
     @JsonProperty
     @Transient
     private Long startTs;
@@ -87,6 +83,10 @@ public class Tag implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="image_id", nullable = false)
 	private Image image;
+
+    @JsonProperty
+    @Transient
+    private String lastModified;
 
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Public Variables
@@ -190,22 +190,6 @@ public class Tag implements Serializable {
         this.image = image;
     }
 
-    public String getLastModified() {
-        if( null != this.lastModified ) {
-
-            DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            return this.lastModified.format(fm);
-        }
-        else {
-
-            return null;
-        }
-    }
-
-    public void setLastModified(LocalDateTime lastModified) {
-        this.lastModified = lastModified;
-    }
-
     public Long getStartTs() {
         this.startTs = 0l;
         if (this.startTime != null) {
@@ -220,6 +204,18 @@ public class Tag implements Serializable {
             this.endTs = Timestamp.valueOf(this.endTime).getTime();
         }
         return this.endTs;
+    }
+
+    public String getLastModified() {
+        if( null != updatedDate ) {
+
+            DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return updatedDate.format(fm);
+        }
+        else {
+
+            return null;
+        }
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

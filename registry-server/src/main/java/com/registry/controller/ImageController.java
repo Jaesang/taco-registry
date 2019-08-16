@@ -9,6 +9,7 @@ import com.registry.repository.image.Image;
 import com.registry.repository.image.Tag;
 import com.registry.repository.usage.Log;
 import com.registry.repository.user.Role;
+import com.registry.service.ExternalAPIService;
 import com.registry.service.ImageService;
 import com.registry.service.TagService;
 import com.registry.service.UsageLogService;
@@ -53,6 +54,9 @@ public class ImageController {
 
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private ExternalAPIService externalAPIService;
 
     @Autowired
     private MapperFacade mapper;
@@ -484,7 +488,44 @@ public class ImageController {
     }
 
     /**
-     * Image security
+     * Docker Image detail
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping(Path.DOCKER_IMAGE)
+    @ApiOperation(
+            value = "get docker image detail",
+            notes = "Docker image detail"
+    )
+    public Object getDockerImage(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable("namespace") String namespace,
+            @ApiParam(
+                    name = "name",
+                    required = true
+            )
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "docker image id",
+                    required = true
+            )
+            @PathVariable("dockerImageId") String dockerImageId
+    ) throws Exception{
+        return externalAPIService.getDockerImage(namespace, name, dockerImageId);
+    }
+
+    /**
+     * Docker Image security
      * @return
      * @throws Exception
      */
@@ -512,19 +553,16 @@ public class ImageController {
             )
             @PathVariable("name") String name,
             @ApiParam(
-                    name = "image id",
+                    name = "docker image id",
                     required = true
             )
-            @PathVariable("imageId") String imageId,
+            @PathVariable("dockerImageId") String dockerImageId,
             @ApiParam(
                     name = "vulnerabilities"
             )
             @RequestParam(value = "vulnerabilities", required = false) Boolean vulnerabilities
     ) throws Exception{
-        JSONObject result = new JSONObject();
-
-        result.put("status", "queued");
-        return result;
+        return externalAPIService.getSecurity(namespace, name, dockerImageId);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

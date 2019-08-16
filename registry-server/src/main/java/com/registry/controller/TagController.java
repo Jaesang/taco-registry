@@ -16,10 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -106,6 +103,47 @@ public class TagController {
                 }).collect(Collectors.toList());
 
         return new PageImpl<>(collect, pageable, result.getTotalElements());
+    }
+
+    /**d
+     * Tag 생성
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PutMapping(Path.IMAGE_TAG_DETAIL)
+    @ApiOperation(
+            value = "create tag",
+            notes = "Tag 생성"
+    )
+    public Object createTag(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable("namespace") String namespace,
+            @ApiParam(
+                    name = "name",
+                    required = true
+            )
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "tagName",
+                    required = true
+            )
+            @PathVariable("tagName") String tagName,
+            @RequestBody TagDto.CREATE tag
+    ) throws Exception{
+
+        tagService.copyTag(namespace, name, tagName, tag.dockerImageId);
+
+        return true;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

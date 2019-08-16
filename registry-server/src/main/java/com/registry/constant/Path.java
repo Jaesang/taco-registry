@@ -125,8 +125,11 @@ public class Path {
     // (GET) 상세
     public static final String IMAGE_DETAIL                 = API + "/image/{namespace}/{name}";
 
+    // docker image detail
+    public static final String DOCKER_IMAGE                 = IMAGE_DETAIL + "/image/{dockerImageId}";
+
     // image security
-    public static final String IMAGE_SECURITY               = API + "/image/{namespace}/{name}/image/{imageId}/security";
+    public static final String IMAGE_SECURITY               = IMAGE_DETAIL + "/image/{dockerImageId}/security";
 
     // build 목록
     public static final String IMAGE_BUILD                  = IMAGE_DETAIL + "/build/";
@@ -134,11 +137,17 @@ public class Path {
     // build 상세
     public static final String IMAGE_BUILD_DETAIL           = IMAGE_BUILD + "{buildId}";
 
-    // build 상세
+    // build log
     public static final String BUILD_LOGS                   = IMAGE_BUILD_DETAIL + "/logs";
+
+    // build log file
+    public static final String BUILD_LOGS_FILE              = "/logarchive/{buildId}";
 
     // tag 목록
     public static final String IMAGE_TAG                    = IMAGE_DETAIL + "/tag/";
+
+    // tag 상세
+    public static final String IMAGE_TAG_DETAIL             = IMAGE_TAG + "{tagName}";
 
     // build 목록
     public static final String IMAGE_MEMBER                 = IMAGE_DETAIL + "/permissions/user/";

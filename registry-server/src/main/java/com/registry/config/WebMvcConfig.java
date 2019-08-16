@@ -1,29 +1,17 @@
 package com.registry.config;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import javax.persistence.EntityManagerFactory;
-import javax.servlet.Filter;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by LEE on 2017. 1. 3..
@@ -106,29 +94,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         stringConverter.setSupportedMediaTypes(
                 Arrays.asList(MediaType.TEXT_PLAIN, MediaType.TEXT_HTML, MediaType.APPLICATION_JSON));
         return stringConverter;
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        Jackson2ObjectMapperFactoryBean bean = new Jackson2ObjectMapperFactoryBean();
-        bean.setIndentOutput(true);
-        bean.setFailOnUnknownProperties(false);
-        bean.setSimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        bean.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
-        bean.afterPropertiesSet();
-        ObjectMapper objectMapper = bean.getObject();
-        objectMapper.registerModule(new JodaModule());
-        objectMapper.registerModule(new Hibernate5Module());
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        return objectMapper;
-    }
-
-    @Bean
-    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setObjectMapper(objectMapper());
-        return converter;
     }
 
 //    @Override

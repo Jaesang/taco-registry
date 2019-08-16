@@ -76,7 +76,7 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
       this.setCommand(result);
       this.layerList.push(result);
 
-      result.history.reverse();
+      // result.history.reverse();
       result.history.forEach(value => {
         this.setCommand(value);
         this.layerList.push(value);

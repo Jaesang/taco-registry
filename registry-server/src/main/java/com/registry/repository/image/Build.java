@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -100,6 +102,11 @@ public class Build extends AbstractEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="image_id", nullable = false)
 	private Image image;
+
+	/** logs 목록 */
+	@JsonIgnore
+	@OneToMany(mappedBy = "pk.build", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	private List<BuildLog> buildLogs = new ArrayList<BuildLog>();
 
 	@JsonProperty
 	@Transient
@@ -257,6 +264,14 @@ public class Build extends AbstractEntity {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public List<BuildLog> getBuildLogs() {
+		return buildLogs;
+	}
+
+	public void setBuildLogs(List<BuildLog> buildLogs) {
+		this.buildLogs = buildLogs;
 	}
 
 	public String getStarted() {
