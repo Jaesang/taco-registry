@@ -10,11 +10,12 @@ import java.time.LocalDateTime;
 public class TagDto {
     @ApiModel("Tag.CREATE")
     public static class CREATE {
-        public String dockerImageId;
     }
 
     @ApiModel("Tag.EDIT")
     public static class EDIT {
+        public String dockerImageId;
+        public Long expiration;
     }
 
     @ApiModel("Tag.VIEW")

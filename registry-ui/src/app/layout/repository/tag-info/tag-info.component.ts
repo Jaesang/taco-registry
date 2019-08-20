@@ -377,7 +377,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
     let count = 0;
     this.currentSelectedTagList.forEach(value => {
       let tag = new Tag.Entity();
-      tag.expiration = this.selectedExpirationType ? Math.round(this.expirationDate.selectedDates[0].getTime() / 1000) : null;
+      tag.expiration = this.selectedExpirationType ? Math.round(this.expirationDate.selectedDates[0].getTime()) : null;
       tag.name = value.name;
 
       this.tagService.updateTag(this.orgName, this.repoName, tag).then(result => {

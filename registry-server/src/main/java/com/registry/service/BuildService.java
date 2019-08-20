@@ -4,6 +4,9 @@ import com.registry.constant.Const;
 import com.registry.dto.BuildDto;
 import com.registry.dto.BuildLogDto;
 import com.registry.repository.image.*;
+import com.registry.repository.organization.Organization;
+import com.registry.repository.usage.Log;
+import com.registry.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +46,14 @@ public class BuildService extends AbstractService {
     /** Tag Service */
     @Autowired
     private TagService tagService;
+
+    /** Org Service */
+    @Autowired
+    private OrganizationService organizationService;
+
+    /** Log Service */
+    @Autowired
+    private UsageLogService logService;
 
     @Autowired
     private FileService fileService;
@@ -141,6 +152,20 @@ public class BuildService extends AbstractService {
         tag.setDockerImageId(UUID.randomUUID().toString());
         tag.setManifestDigest("sha256:12dqwkldjqwiodj12390");
         tagService.createTag(tag);
+
+        // 로그 등록
+        Organization org = organizationService.getOrg(image.getNamespace());
+        Log log = new Log();
+        log.setKind(Const.UsageLog.BUILD_DOCKERFILE);
+        if (image.getIsOrganization()) {
+            log.setOrganizationId(org.getId());
+        } else {
+            log.setUsername(SecurityUtil.getUser());
+        }
+        log.setImageId(image.getId());
+        log.setNamespace(image.getNamespace());
+        log.setImage(image.getName());
+        logService.create(log);
 
         return build;
     }

@@ -68,17 +68,17 @@ export class LogsService {
         break;
 
       case Logs.Kind.create_tag:
-        desc = `Tag <em>${log.tag}</em> created in repository <em>${log.namespace}</em>/<em>${log.image}</em> on image <em>${this.substr(log.image)}</em> by user <em>${log.user}</em>`;
+        desc = `Tag <em>${log.tag}</em> created in repository <em>${log.namespace}</em>/<em>${log.image}</em> on image <em>${this.substr(log.dockerImageId)}</em> by user <em>${log.member}</em>`;
         break;
 
       case Logs.Kind.delete_tag:
-        desc = `Tag <em>${log.tag}</em> deleted in repository <em>${log.namespace}</em>/<em>${log.image}</em> by user <em>${log.user}</em>`;
+        desc = `Tag <em>${log.tag}</em> deleted in repository <em>${log.namespace}</em>/<em>${log.image}</em> by user <em>${log.member}</em>`;
         break;
 
       case Logs.Kind.change_tag_expiration:
-        desc = `Tag <em>${log.tag}</em> set to expire on <em>${moment(log.expirationDate * 1000).format('YYYY-MM-DD HH:mm')}</em>`;
+        desc = `Tag <em>${log.tag}</em> set to expire on <em>${moment(log.expirationDate).format('YYYY-MM-DD HH:mm')}</em>`;
         if (log.oldExpirationDate) {
-          desc += ` (previously <em>${moment(log.oldExpirationDate * 1000).format('YYYY-MM-DD HH:mm')}</em>)`;
+          desc += ` (previously <em>${moment(log.oldExpirationDate).format('YYYY-MM-DD HH:mm')}</em>)`;
         }
         break;
 

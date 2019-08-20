@@ -58,7 +58,7 @@ export class TagService extends AbstractService {
    */
   public createTag(namespace: string, repository: string, tag: Tag.Entity): Promise<any> {
     let data = {
-      image: tag.dockerImageId
+      dockerImageId: tag.dockerImageId
     };
 
     return this.put(`${environment.apiUrl}/image/${namespace}/${repository}/tag/${tag.name}`, data);
@@ -116,7 +116,7 @@ export class TagService extends AbstractService {
    */
   public restoreImage(namespace: string, repository: string, tag: string, dockerImageId: string, manifestDigest: string = null): Promise<any> {
     let data = {
-      image: dockerImageId
+      dockerImageId: dockerImageId
     };
 
     if (manifestDigest) {

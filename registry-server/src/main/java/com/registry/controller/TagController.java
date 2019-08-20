@@ -105,18 +105,18 @@ public class TagController {
         return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
 
-    /**d
-     * Tag 생성
+    /**
+     * Tag 수정 (복사, 변경)
      * @return
      * @throws Exception
      */
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @PutMapping(Path.IMAGE_TAG_DETAIL)
     @ApiOperation(
-            value = "create tag",
-            notes = "Tag 생성"
+            value = "update tag",
+            notes = "Tag 수정"
     )
-    public Object createTag(
+    public Object updateTag(
             @ApiParam(
                     defaultValue="bearer ",
                     value ="토큰",
@@ -138,10 +138,56 @@ public class TagController {
                     required = true
             )
             @PathVariable("tagName") String tagName,
-            @RequestBody TagDto.CREATE tag
+            @RequestBody TagDto.EDIT tag
     ) throws Exception{
 
-        tagService.copyTag(namespace, name, tagName, tag.dockerImageId);
+        if (tag.dockerImageId != null) {
+            // 태그 복사
+            tagService.copyTag(namespace, name, tagName, tag.dockerImageId);
+        } else {
+            // expiration 변
+            tagService.updateExpiration(namespace, name, tagName, tag.expiration != null ? tag.expiration : 0);
+        }
+
+        return true;
+    }
+
+    /**
+     * Tag 삭제
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @DeleteMapping(Path.IMAGE_TAG_DETAIL)
+    @ApiOperation(
+            value = "delete tag",
+            notes = "Tag 삭제"
+    )
+    public Object deleteTag(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable("namespace") String namespace,
+            @ApiParam(
+                    name = "name",
+                    required = true
+            )
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "tagName",
+                    required = true
+            )
+            @PathVariable("tagName") String tagName
+    ) throws Exception{
+
+        tagService.deleteTag(namespace, name, tagName);
 
         return true;
     }
