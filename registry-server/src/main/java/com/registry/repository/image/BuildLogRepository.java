@@ -11,7 +11,7 @@ public interface BuildLogRepository extends JpaRepository<BuildLog, BuildLogPK>{
     @Query("select log from BuildLog log " +
             "join log.pk.build build " +
             "where build.id = :buildId " +
-            "order by log.seq")
+            "order by log.pk.seq asc")
     List<BuildLog> getBuildLogsByBuildId(@Param("buildId") UUID buildId);
 
 //    @Query("delete from BuildLod log " +

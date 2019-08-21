@@ -64,8 +64,8 @@ public class Log implements Serializable {
 	private String username;
 
 	/** build id */
-	@Column(name = "build_id", columnDefinition="varchar(255)")
-	private String buildId;
+	@Column(name = "build_id")
+	private UUID buildId;
 
 	/** namespace */
 	@Column(name = "namespace", columnDefinition="varchar(255)")
@@ -202,11 +202,11 @@ public class Log implements Serializable {
 		this.username = username;
 	}
 
-	public String getBuildId() {
+	public UUID getBuildId() {
 		return buildId;
 	}
 
-	public void setBuildId(String buildId) {
+	public void setBuildId(UUID buildId) {
 		this.buildId = buildId;
 	}
 

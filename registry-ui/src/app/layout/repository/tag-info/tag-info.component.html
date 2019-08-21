@@ -103,7 +103,7 @@
           <!--</span>-->
         </td>
         <td>
-          <span class="txt-size">{{ item.size | fileSize }}</span>
+          <span class="txt-size">{{ item.size }}</span>
         </td>
         <td>
           <a href="javascript:;" class="txt-expires" (click)="changeExpirationPopupClick(item)">{{ item.expiration ? item.formattedExpiration : 'Never' }}</a>
@@ -120,7 +120,7 @@
               </div>
               <!-- //Tooltip -->
             </em>
-            <a href="javascript:;" class="link-image" (click)="imageClick(item)">{{ item.manifestDigest.split(':')[1].substr(0, 12) }}</a>
+            <a href="javascript:;" class="link-image" (click)="imageClick(item)">{{ item.manifestDigest ? item.manifestDigest.split(':')[1].substr(0, 12) : '' }}</a>
           </div>
         </td>
         <td>

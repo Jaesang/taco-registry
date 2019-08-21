@@ -17,7 +17,7 @@ public class LogDto {
         public UUID organizationId;
         public UUID imageId;
         public String username;
-        public String buildId;
+        public UUID buildId;
         public String namespace;
         public String image;
         public String role;

@@ -14,8 +14,9 @@ public class BuildLogPK implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    /** seq */
+    @Column(name = "seq")
+    private Long seq;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,18 +25,18 @@ public class BuildLogPK implements Serializable {
 
     public BuildLogPK(){}
 
-    public BuildLogPK(UUID id, Build build) {
+    public BuildLogPK(Long seq, Build build) {
         super();
-        this.id = id;
+        this.seq = seq;
         this.build = build;
     }
 
-    public UUID getId() {
-        return id;
+    public Long getSeq() {
+        return seq;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setSeq(Long seq) {
+        this.seq = seq;
     }
 
     public Build getBuild() {

@@ -7,7 +7,7 @@ export namespace Tag {
     public lastModified: string;
     public manifestDigest: string;
     public name: string;
-    public size: number;
+    public size: string;
     public expiration: any;
 
     public formattedLastModified: string;

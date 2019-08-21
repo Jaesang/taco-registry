@@ -166,7 +166,9 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
     } else if (item.message == Build.LogPhase.complete.toString()) {
       className += ' type-complete';
     } else {
-      if (index == 0) {
+      if (item.message == null) {
+        className = 'build-time';
+      } else if (index == 0) {
         className += ' type-1st';
       } else if (index == 1) {
         className += ' type-2nd';
@@ -178,8 +180,6 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
         className += ' type-5th';
       } else if (index == 5) {
         className += ' type-6th';
-      } else {
-        className = 'build-time';
       }
     }
 
@@ -306,6 +306,11 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
           middleStart = true;
         } else {
           this.buildLogListTop.push(value);
+          if (value.type == Build.LogType.phase && value.message == Build.LogPhase.building.toString()) {
+            let log: Build.Log = new Build.Log();
+            log.datetime = value.datetime;
+            this.buildLogListTop.push(log);
+          }
         }
       }
 

@@ -144,13 +144,11 @@ public class BuildService extends AbstractService {
 
         build = buildRepo.save(build);
 
-        //todo bulder 에서 추가 정보 업데이트
         Tag tag = new Tag();
         tag.setImage(image);
         tag.setBuildId(build.getId());
         tag.setName("latest");
         tag.setDockerImageId(UUID.randomUUID().toString());
-        tag.setManifestDigest("sha256:12dqwkldjqwiodj12390");
         tagService.createTag(tag);
 
         // 로그 등록

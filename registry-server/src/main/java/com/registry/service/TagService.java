@@ -106,6 +106,14 @@ public class TagService extends AbstractService {
     public void createTag(Tag tag) {
         logger.info("createTag tag : {}", tag);
 
+        Tag preTag = tagRepo.getTagByTagName(tag.getImage().getId(), tag.getName());
+        if (preTag != null) {
+            // 같은 이름의 태그는 삭제
+            preTag.setEndTime(LocalDateTime.now());
+            preTag.setExpiration(LocalDateTime.now());
+            tagRepo.save(preTag);
+        }
+
         tag.setStartTime(LocalDateTime.now());
         tagRepo.save(tag);
 
@@ -124,6 +132,7 @@ public class TagService extends AbstractService {
         log.setTag(tag.getName());
         log.setDockerImageId(tag.getDockerImageId());
         log.setMember(SecurityUtil.getUser());
+        log.setBuildId(tag.getBuildId());
         logService.create(log);
     }
 
@@ -251,8 +260,6 @@ public class TagService extends AbstractService {
         tag.setBuildId(preTag.getBuildId());
         tag.setDockerImageId(preTag.getDockerImageId());
         tag.setSize(preTag.getSize());
-        //todo builder 에서 가져온 digest 입력
-        tag.setManifestDigest(preTag.getManifestDigest());
 
         createTag(tag);
     }

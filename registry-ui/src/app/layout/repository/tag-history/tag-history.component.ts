@@ -156,7 +156,7 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
         }
 
         result.content.forEach((v, i) => {
-          if (i > index && v.name == value.name && v.endTs >= value.startTs){
+          if (v.name == value.name && v.endTs >= value.startTs){
             value.isMoved = true;
             value.beforeHistory = v;
             return;

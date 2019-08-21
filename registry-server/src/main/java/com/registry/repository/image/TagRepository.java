@@ -46,6 +46,6 @@ public interface TagRepository extends JpaRepository<Tag, UUID>{
             "join tag.image image " +
             "where image.id = :imageId " +
             "and tag.name = :tagName " +
-            "and (tag.endTime = null or tag.endTime > current_date())")
+            "and (tag.endTime = null or tag.endTime > now())")
     Tag getTagByTagName(@Param("imageId") UUID imageId, @Param("tagName") String tagName);
 }

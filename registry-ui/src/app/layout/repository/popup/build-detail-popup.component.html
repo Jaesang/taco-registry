@@ -64,7 +64,7 @@
               <div class="button-block" *ngIf="!logNotFound">
                 <button type="button" class="btn-log type-download" (click)="downloadLogsClick()">Download Logs</button>
                 <button type="button" class="btn-log type-copy" (click)="copyLogsClick()">Copy Logs</button>
-                <button type="button" class="btn-log" *ngIf="build.phase == BuildPhase.waiting || build.phase == BuildPhase.pulling || build.phase == BuildPhase.building" (click)="cancelBuildClick()">Cancel Build</button>
+                <!--<button type="button" class="btn-log" *ngIf="build.phase == BuildPhase.waiting || build.phase == BuildPhase.pulling || build.phase == BuildPhase.building" (click)="cancelBuildClick()">Cancel Build</button>-->
               </div>
               <!-- //우측 버튼 -->
 

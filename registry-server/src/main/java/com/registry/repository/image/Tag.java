@@ -49,8 +49,8 @@ public class Tag extends AbstractEntity {
     private String name;
 
     /** size */
-    @Column(name = "size")
-    private Long size;
+    @Column(name = "size", columnDefinition="varchar(40)")
+    private String size;
 
     /** expiration */
     @Column(name = "expiration")
@@ -134,11 +134,11 @@ public class Tag extends AbstractEntity {
         this.name = name;
     }
 
-    public Long getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(Long size) {
+    public void setSize(String size) {
         this.size = size;
     }
 

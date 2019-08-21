@@ -25,7 +25,7 @@ public class TagDto {
         public String manifestDigest;
         public String name;
         public Boolean reversion;
-        public Long size;
+        public String size;
         public String expiration;
         public Long startTs;
         public Long endTs;
