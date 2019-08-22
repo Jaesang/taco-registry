@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Layer Popup -->
+	<div class="layout-popup">
+		<div class="layer-popup">
+			<div class="section-popup">
+				
+				<div class="popup-area">
+					<a href="javascript:;" class="btn-close" aria-label="Popup Close"></a>
+					<h1 class="txt-title">Create New Organization</h1>
+					
+					<!-- Popup 새로운 조직생성 -->
+					<div class="popup-create-organization">
+						<table class="form-create">
+							<colgroup>
+								<col width="150" />
+								<col width="*" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th class="align-top">
+										<label class="txt-label">Organization Name</label>
+									</th>
+									<td>
+										<div class="component-input is-error">
+											<div class="input-area">
+												<input type="text" class="input-text">
+												<a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+											</div>
+											<span class="txt-error">Error Message.</span>
+										</div>
+										<p class="txt-desc">
+											Must be alphanumeric, all lowercase, at least 2 characters long and at most 255 characters long.
+										</p>
+									</td>
+								</tr>
+								<tr>
+									<th class="align-top">
+										<label class="txt-label">Organization E-mail</label>
+									</th>
+									<td>
+										<div class="component-input">
+											<div class="input-area">
+												<input type="text" class="input-text">
+												<a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+											</div>
+											<span class="txt-error">Error Message.</span>
+										</div>
+										<p class="txt-desc">
+											This address must be different from your account's emai.
+										</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- //Popup 새로운 조직생성 -->
+					
+					<!-- Button -->
+					<div class="button-block">
+						<button type="button" class="btn-basic type-small">Cancel</button>
+						<button type="button" class="btn-action type-small">Create Team</button>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- //Layer Popup -->
+
+</body>
+</html>

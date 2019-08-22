@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Wrap -->
+	<div class="taco-wrap">
+		<!-- Header -->
+		<div class="layout-header">
+			
+		</div>
+		<!-- //Header -->
+		
+		<!-- LNB -->
+		<div class="layout-lnb">
+			<div class="section-lnb">
+				<div class="lnb-area">
+					<ul class="list-lnb">
+						<li>
+							<a href="javascript:;" class="link-repository-info" aria-selected="false">
+								<span class="lnb-tooltip">Repositories Info</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-tag" aria-selected="false">
+								<span class="lnb-tooltip">Repositories Tags</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-history" aria-selected="false">
+								<span class="lnb-tooltip">Tag History</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-build" aria-selected="true">
+								<span class="lnb-tooltip">Repository Build History</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-log" aria-selected="false">
+								<span class="lnb-tooltip">Usage Logs</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-setting" aria-selected="false">
+								<span class="lnb-tooltip">Repository Settings</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- //LNB -->
+		
+		<!-- Content -->
+		<div class="layout-content">
+			
+			<!-- Repository Build History -->
+			<div class="page-build-history">
+				<h2 class="section-sub-title">
+					<div class="title-area">
+						<div class="title-block">
+							<a href="javascript:;" class="btn-back" aria-label="Back"></a>
+							<span class="txt-title">
+								<em>RepositoryName/Name</em>
+							</span>
+							<div class="favorite-private">
+								<div class="component-starred">
+									<input type="checkbox" class="input-checkbox" id="starred01" checked>
+									<label for="starred01" class="txt-label"></label>
+								</div>
+								<span class="type-private"></span>
+							</div>
+							
+							<div class="buttons">
+								<button type="button" class="btn-sub-action type-box">Set New Build</button>
+								<button type="button" class="btn-action type-box">Add Files</button>
+							</div>
+						</div>
+					</div>
+				</h2>
+				
+				<!-- Title, Filter -->
+				<div class="section-title">
+					<h2 class="txt-title">Repository Build History</h2>
+					<!-- Filter -->
+					<div class="filter-area">
+						<!-- Pagination -->
+						<div class="component-pagination">
+						<span class="txt-total">
+							<em>1</em> of 23
+						</span>
+							<button type="button" class="btn-prev"></button>
+							<button type="button" class="btn-next"></button>
+						</div>
+						<!-- //Pagination -->
+						
+						<!-- Button -->
+						<div class="button-block">
+							<button type="button" class="btn-sub-action type-small">Start New Build</button>
+						</div>
+						<!-- //Button -->
+					</div>
+					<!-- //Filter -->
+				</div>
+				<!-- //Title, Filter -->
+				
+				<!-- Build History -->
+				<div class="component-table">
+					<table class="table-build">
+						<colgroup>
+							<col width="60" />
+							<col width="*" />
+							<col width="170" />
+							<col width="200" />
+							<col width="220" />
+						</colgroup>
+						<thead>
+						<tr>
+							<th></th>
+							<th>
+								<a href="javascript:;" class="btn-sort type-asc">Build ID</a>
+							</th>
+							<th>
+								<a href="javascript:;" class="btn-sort">Triggered By</a>
+							</th>
+							<th>
+								<a href="javascript:;" class="btn-sort">Date Started</a>
+							</th>
+							<th>
+								<a href="javascript:;" class="btn-sort">Tags</a>
+							</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td class="align-center">
+								<div class="component-loading">
+									<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+								</div>
+							</td>
+							<td>
+								<a href="javascript:;" class="link-item">2ac0997c</a>
+							</td>
+							<td>
+								<span class="txt-user">
+									Tester123
+								</span>
+							</td>
+							<td>
+								<span class="txt-date">2018-12-22 12:22</span>
+							</td>
+							<td>
+								<span class="txt-tag">Latest</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="align-center">
+								<span class="build-success"></span>
+							</td>
+							<td>
+								<a href="javascript:;" class="link-item">2ac0997c</a>
+							</td>
+							<td>
+								<span class="txt-user">
+									Tester123
+								</span>
+							</td>
+							<td>
+								<span class="txt-date">2018-12-22 12:22</span>
+							</td>
+							<td>
+								<span class="txt-tag">Latest</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="align-center">
+								<span class="build-fail"></span>
+							</td>
+							<td>
+								<a href="javascript:;" class="link-item">2ac0997c</a>
+							</td>
+							<td>
+								<span class="txt-user">
+									Tester123
+								</span>
+							</td>
+							<td>
+								<span class="txt-date">2018-12-22 12:22</span>
+							</td>
+							<td>
+								<span class="txt-tag">Latest</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="align-center">
+								<span class="build-cancel"></span>
+							</td>
+							<td>
+								<a href="javascript:;" class="link-item">2ac0997c</a>
+							</td>
+							<td>
+								<span class="txt-user">
+									Tester123
+								</span>
+							</td>
+							<td>
+								<span class="txt-date">2018-12-22 12:22</span>
+							</td>
+							<td>
+								<span class="txt-tag">Latest</span>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- //Build History -->
+			</div>
+			<!-- //Repository Build History -->
+			
+		</div>
+		<!-- //Content -->
+		
+		<!-- Footer -->
+		<div class="layout-footer">
+			Copyright &copy; 2018 TACO Registry All Rights Reserved.
+		</div>
+		<!-- //Footer -->
+	</div>
+	<!-- //Wrap -->
+
+</body>
+</html>

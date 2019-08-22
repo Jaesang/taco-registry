@@ -1,0 +1,334 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Wrap -->
+	<div class="taco-wrap">
+		<!-- Header -->
+		<div class="layout-header">
+			
+		</div>
+		<!-- //Header -->
+		
+		<!-- LNB -->
+		<div class="layout-lnb">
+			<div class="section-lnb">
+				<div class="lnb-area">
+					<ul class="list-lnb">
+						<li>
+							<a href="javascript:;" class="link-repository-info" aria-selected="false">
+								<span class="lnb-tooltip">Repositories Info</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-tag" aria-selected="false">
+								<span class="lnb-tooltip">Repositories Tags</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-history" aria-selected="false">
+								<span class="lnb-tooltip">Tag History</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-build" aria-selected="false">
+								<span class="lnb-tooltip">Repository Build History</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-log" aria-selected="false">
+								<span class="lnb-tooltip">Usage Logs</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-setting" aria-selected="true">
+								<span class="lnb-tooltip">Repository Settings</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- //LNB -->
+		
+		<!-- Content -->
+		<div class="layout-content">
+			
+			<!-- Repository Settings -->
+			<div class="page-repository-setting">
+				<h2 class="section-sub-title">
+					<div class="title-area">
+						<div class="title-block">
+							<a href="javascript:;" class="btn-back" aria-label="Back"></a>
+							<span class="txt-title">
+								<em>RepositoryName/Name</em>
+							</span>
+							<div class="favorite-private">
+								<div class="component-starred">
+									<input type="checkbox" class="input-checkbox" id="starred01" checked>
+									<label for="starred01" class="txt-label"></label>
+								</div>
+								<span class="type-private"></span>
+							</div>
+							
+							<div class="buttons">
+								<button type="button" class="btn-sub-action type-box">Set New Build</button>
+								<button type="button" class="btn-action type-box">Add Files</button>
+							</div>
+						</div>
+					</div>
+				</h2>
+				
+				<!-- Title -->
+				<div class="section-title">
+					<h2 class="txt-title">Repository Settings</h2>
+				</div>
+				<!-- //Title -->
+				
+				<!-- Members -->
+				<div class="section-member">
+					<div class="title-area">
+						<h3 class="txt-title">Members</h3>
+						<!-- Filter -->
+						<div class="filter-area">
+							<!-- Search -->
+							<div class="component-search type-member">
+								<input type="text" class="input-search" placeholder="Add a Registered User or E-mail Address">
+								<span class="icon-search"></span>
+								<a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+								<!-- 자동완성 레이어 -->
+								<div class="layer-autocomplete" aria-expanded="false">
+									<ul class="list-result">
+										<li>
+											<a href="javascript:;" class="item-result type-user">
+												<strong class="txt-category">USER</strong>
+												<em class="txt-result"><span>ese</span>zin</em>
+											</a>
+										</li>
+										<li>
+											<a href="javascript:;" class="item-result type-user">
+												<strong class="txt-category">USER</strong>
+												<em class="txt-result"><span>ese</span>zin</em>
+											</a>
+										</li>
+										<li>
+											<a href="javascript:;" class="item-result type-user">
+												<strong class="txt-category">USER</strong>
+												<em class="txt-result"><span>ese</span>zin</em>
+											</a>
+										</li>
+									</ul>
+								</div>
+								<!-- //자동완성 레이어 -->
+							</div>
+							<!-- //Search -->
+							
+							<!-- Selectbox -->
+							<div class="component-selectbox type-role">
+								<span class="txt-label type-write">Write</span>
+								<!-- Layer Option -->
+								<div class="layer-option" aria-expanded="false">
+									<ul class="list-option">
+										<li>
+											<div class="component-radio">
+												<input type="radio" class="input-radio" id="option01">
+												<label for="option01" class="txt-label type-read">
+													<span class="txt-option">Read</span>
+													<span class="txt-desc">Can view and pull from the repository</span>
+												</label>
+											</div>
+										</li>
+										<li>
+											<div class="component-radio">
+												<input type="radio" class="input-radio" id="option02">
+												<label for="option02" class="txt-label type-write">
+													<span class="txt-option">Write</span>
+													<span class="txt-desc">Can view and pull and push to the repository</span>
+												</label>
+											</div>
+										</li>
+										<li>
+											<div class="component-radio">
+												<input type="radio" class="input-radio" id="option03">
+												<label for="option03" class="txt-label type-admin">
+													<span class="txt-option">Admin</span>
+													<span class="txt-desc">Full admin access, pull and push on the repository</span>
+												</label>
+											</div>
+										</li>
+									</ul>
+								</div>
+								<!-- //Layer Option -->
+							</div>
+							<!-- //Selectbox -->
+							
+							<!-- Button -->
+							<div class="button-block">
+								<button type="button" class="btn-sub-action type-small">Add Member</button>
+							</div>
+							<!-- //Button -->
+						</div>
+						<!-- //Filter -->
+					</div>
+					
+					<!-- Members Table -->
+					<div class="component-table">
+						<table class="table-role">
+							<colgroup>
+								<col width="*" />
+								<col width="300" />
+							</colgroup>
+							<thead>
+							<tr>
+								<th>
+									<a href="javascript:;" class="btn-sort type-desc">Username</a>
+								</th>
+								<th>
+									<a href="javascript:;" class="btn-sort">Permission</a>
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>
+									<a href="javascript:;" class="txt-team">Owners</a>
+								</td>
+								<td>
+									<div class="role-area">
+										<!-- Selectbox -->
+										<div class="component-selectbox type-role">
+											<span class="txt-label type-write">Write</span>
+											<!-- Layer Option -->
+											<div class="layer-option" aria-expanded="false">
+												<ul class="list-option">
+													<li>
+														<div class="component-radio">
+															<input type="radio" class="input-radio" id="option01">
+															<label for="option01" class="txt-label type-read">
+																<span class="txt-option">Read</span>
+																<span class="txt-desc">Can view and pull from the repository</span>
+															</label>
+														</div>
+													</li>
+													<li>
+														<div class="component-radio">
+															<input type="radio" class="input-radio" id="option02">
+															<label for="option02" class="txt-label type-write">
+																<span class="txt-option">Write</span>
+																<span class="txt-desc">Can view and pull and push to the repository</span>
+															</label>
+														</div>
+													</li>
+													<li>
+														<div class="component-radio">
+															<input type="radio" class="input-radio" id="option03">
+															<label for="option03" class="txt-label type-admin">
+																<span class="txt-option">Admin</span>
+																<span class="txt-desc">Full admin access, pull and push on the repository</span>
+															</label>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<!-- //Layer Option -->
+										</div>
+										<!-- //Selectbox -->
+										<button type="button" class="btn-delete" aria-label="삭제"></button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="javascript:;" class="txt-team">Team A</a>
+								</td>
+								<td>
+									<div class="role-area">
+										<!-- Selectbox -->
+										<div class="component-selectbox type-role">
+											<span class="txt-label type-admin">Admin</span>
+											<!-- Layer Option -->
+											<div class="layer-option" aria-expanded="true">
+												<ul class="list-option">
+													<li>
+														<div class="component-radio">
+															<input type="radio" class="input-radio" id="option01">
+															<label for="option01" class="txt-label type-read">
+																<span class="txt-option">Read</span>
+																<span class="txt-desc">Can view and pull from the repository</span>
+															</label>
+														</div>
+													</li>
+													<li>
+														<div class="component-radio">
+															<input type="radio" class="input-radio" id="option02">
+															<label for="option02" class="txt-label type-write">
+																<span class="txt-option">Write</span>
+																<span class="txt-desc">Can view and pull and push to the repository</span>
+															</label>
+														</div>
+													</li>
+													<li>
+														<div class="component-radio">
+															<input type="radio" class="input-radio" id="option03">
+															<label for="option03" class="txt-label type-admin">
+																<span class="txt-option">Admin</span>
+																<span class="txt-desc">Full admin access, pull and push on the repository</span>
+															</label>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<!-- //Layer Option -->
+										</div>
+										<!-- //Selectbox -->
+										<button type="button" class="btn-delete" aria-label="삭제"></button>
+									</div>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- //Members Table -->
+				</div>
+				<!-- //Members -->
+				
+				<!-- Repository Visibility -->
+				<div class="section-visibility">
+					<h3 class="txt-title">Repository Visibility</h3>
+					<div class="make-public">
+						<button type="button" class="btn-sub">Make Public</button>
+						<p class="txt-desc">
+							This Repository is currently <span>private</span>. Only users on the permissions list may view and interact with it.
+						</p>
+					</div>
+				</div>
+				<!-- //Repository Visibility -->
+				
+				<!-- Button -->
+				<div class="section-button">
+					<button type="button" class="btn-sub-action">Delete Repository</button>
+				</div>
+				<!-- //Button -->
+			</div>
+			<!-- //Repository Settings -->
+			
+		</div>
+		<!-- //Content -->
+		
+		<!-- Footer -->
+		<div class="layout-footer">
+			Copyright &copy; 2018 TACO Registry All Rights Reserved.
+		</div>
+		<!-- //Footer -->
+	</div>
+	<!-- //Wrap -->
+
+</body>
+</html>

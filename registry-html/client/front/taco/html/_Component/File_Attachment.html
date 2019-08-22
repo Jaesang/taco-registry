@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Wrap -->
+	<div class="taco-wrap">
+		
+		<div class="component-file">
+			<div class="file-attachment">
+				<input type="file" class="input-file">
+				<div class="form-attachment">
+					<div class="input-area">
+						<input type="text" class="input-text" readonly>
+					</div>
+					<div class="button-area">
+						<button type="button" class="btn-sub">Select Docker File</button>
+					</div>
+				</div>
+			</div>
+			<!-- Description -->
+			<div class="file-description">
+				<p class="txt-desc">Please select a Dockerfile or an archive (.tar .gz or .zip) containging a Dockerfile at the root directory.</p>
+				
+				<!-- Success -->
+				<p class="txt-desc type-success">Dockerfile found and valid</p>
+				<!-- //Success -->
+				
+				<!-- Error -->
+				<p class="txt-desc type-error">File chosen is not valid Dockerfile</p>
+			</div>
+			<!-- //Description -->
+		</div>
+		
+		<br><br>
+		
+		<!-- File -->
+		<div class="component-file">
+			<input type="file" class="input-file">
+			<span class="txt-label">Select Docker File</span>
+		</div>
+		<!-- //File -->
+		
+		<br><br>
+		
+		<!-- Profile -->
+		<div class="component-profile">
+			<input type="file" class="input-file">
+			<span class="bg-img" style="background-image:url(../../images/img_default_profile.png);"></span>
+			<span class="txt-edit">Edit</span>
+		</div>
+		<!-- //Profile -->
+		
+	</div>
+	<!-- //Wrap -->
+
+</body>
+</html>

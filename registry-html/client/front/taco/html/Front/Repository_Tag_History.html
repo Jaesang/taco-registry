@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Wrap -->
+	<div class="taco-wrap">
+		<!-- Header -->
+		<div class="layout-header">
+			
+		</div>
+		<!-- //Header -->
+		
+		<!-- LNB -->
+		<div class="layout-lnb">
+			<div class="section-lnb">
+				<div class="lnb-area">
+					<ul class="list-lnb">
+						<li>
+							<a href="javascript:;" class="link-repository-info" aria-selected="false">
+								<span class="lnb-tooltip">Repositories Info</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-tag" aria-selected="true">
+								<span class="lnb-tooltip">Repositories Tags</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-history" aria-selected="false">
+								<span class="lnb-tooltip">Tag History</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-build" aria-selected="false">
+								<span class="lnb-tooltip">Repository Build History</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-log" aria-selected="false">
+								<span class="lnb-tooltip">Usage Logs</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-setting" aria-selected="false">
+								<span class="lnb-tooltip">Repository Settings</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- //LNB -->
+		
+		<!-- Content -->
+		<div class="layout-content">
+			
+			<!-- Repository Tag -->
+			<div class="page-repository-tag">
+				<h2 class="section-sub-title">
+					<div class="title-area">
+						<div class="title-block">
+							<a href="javascript:;" class="btn-back" aria-label="Back"></a>
+							<span class="txt-title">
+								<em>RepositoryName/Name</em>
+							</span>
+							<div class="favorite-private">
+								<div class="component-starred">
+									<input type="checkbox" class="input-checkbox" id="starred01" checked>
+									<label for="starred01" class="txt-label"></label>
+								</div>
+								<span class="type-private"></span>
+							</div>
+							
+							<div class="buttons">
+								<button type="button" class="btn-sub-action type-box">Set New Build</button>
+								<button type="button" class="btn-action type-box">Copy As</button>
+							</div>
+						</div>
+					</div>
+				</h2>
+				
+				<!-- Title, Filter -->
+				<div class="section-title">
+					<h2 class="txt-title">Tag History</h2>
+					<!-- Filter -->
+					<div class="filter-area">
+						<div class="component-search type-filter">
+							<input type="text" class="input-search" placeholder="Search for Tags">
+							<span class="icon-search"></span>
+							<a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+						</div>
+					</div>
+					<!-- //Filter -->
+				</div>
+				<!-- //Title, Filter -->
+				
+				<!-- Tags -->
+				<div class="component-table">
+					<table class="table-tag-history">
+						<colgroup>
+							<col width="*" />
+							<col width="160" />
+							<col width="360" />
+						</colgroup>
+						<thead>
+						<tr>
+							<th>Tag Change</th>
+							<th>
+								<a href="javascript:;" class="btn-sort type-asc">Date</a>
+							</th>
+							<th>Revert</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<div class="change-area">
+										<span class="ver-block">Latest</span>
+										was moved pointing to
+										<span class="txt-sha">SHA256</span>
+										<a href="javascript:;" class="link-id">5c93d0a06697</a>
+									</div>
+								</td>
+								<td>
+									<span class="txt-date">2018-12-22 12:22</span>
+								</td>
+								<td>
+									<a href="javascript:;" class="link-revert">
+										<span class="txt-revert">Restore</span>
+										<span class="ver-block">1.0.0</span>
+										<span class="txt-revert">to</span>
+										<span class="txt-sha">SHA256</span>
+										<span class="txt-id">5c93d0a06697</span>
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="change-area">
+										<span class="ver-block">Latest</span>
+										was moved to was moved to
+										<span class="txt-sha">SHA256</span>
+										<a href="javascript:;" class="link-id">5c93d0a06697</a>
+										from
+										<span class="txt-sha">SHA256</span>
+										<a href="javascript:;" class="link-id">5c93d0a06697</a>
+									</div>
+								</td>
+								<td>
+									<span class="txt-date">2018-12-22 12:22</span>
+								</td>
+								<td>
+									<a href="javascript:;" class="link-revert">
+										<span class="txt-revert">Restore</span>
+										<span class="ver-block">1.0.0</span>
+										<span class="txt-revert">to</span>
+										<span class="txt-sha">SHA256</span>
+										<span class="txt-id">5c93d0a06697</span>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- //Tags -->
+			</div>
+			<!-- //Repository Tag -->
+		</div>
+		<!-- //Content -->
+		
+		<!-- Footer -->
+		<div class="layout-footer">
+			Copyright &copy; 2018 TACO Registry All Rights Reserved.
+		</div>
+		<!-- //Footer -->
+	</div>
+	<!-- //Wrap -->
+
+</body>
+</html>

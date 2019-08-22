@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<!--script type="text/javascript">
+		$(document).scroll(function(){
+			var $target = $('.layout-header');
+			var $scrollTop = $(this).scrollTop();
+			
+			if($scrollTop > 60) {
+				$target.addClass('is-scroll');
+			} else {
+				$target.removeClass('is-scroll');
+			}
+		});
+	</script-->
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Main Wrap -->
+	<div class="taco-wrap">
+		<!--
+			Header
+		-->
+		<div class="layout-header">
+			<h1 class="logo-header"><a href="javascript:;" aria-label="TACO Registry"></a></h1>
+			
+			<!-- 우측 상단 -->
+			<div class="section-info">
+				<!-- My Organization -->
+				<div class="organization-area">
+					<div class="organization-block">
+						<span class="txt-label">
+							My Organization
+						</span>
+						<!-- Layer -->
+						<div class="layer-organization">
+							<a href="javascript:;" class="btn-create">Create New Organization</a>
+							<ul class="list-org">
+								<li><a href="javascript:;" class="link-item">Organization Name 01</a></li>
+								<li><a href="javascript:;" class="link-item">Organization Name 02</a></li>
+								<li><a href="javascript:;" class="link-item">Organization Name 03</a></li>
+								<li><a href="javascript:;" class="link-item">Organization Name 04</a></li>
+							</ul>
+						</div>
+						<!-- //Layer -->
+					</div>
+				</div>
+				<!-- //My Organization -->
+				
+				<!-- My Profile -->
+				<div class="profile-area">
+					<div class="profile-block">
+						<span class="txt-label">
+							Tester
+						</span>
+						<!-- Layer -->
+						<div class="layer-profile">
+							<a href="javascript:;" class="link-my">My Repository</a>
+							<a href="javascript:;" class="link-setting">Account Settings</a>
+							<a href="javascript:;" class="link-logout">Sign Out</a>
+						</div>
+						<!-- //Layer -->
+					</div>
+				</div>
+				<!-- //My Profile -->
+				
+				<a href="javascript:;" class="btn-admin" aria-label="Administration"></a>
+			</div>
+			<!-- //우측 상단 -->
+			<!-- 검색 -->
+			<div class="component-search">
+				<input type="text" class="input-search" placeholder="Search for Repository Name">
+				<span class="icon-search"></span>
+				<a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+				<!-- 자동완성 레이어 -->
+				<div class="layer-autocomplete" aria-expanded="false">
+					<ul class="list-result">
+						<li>
+							<a href="javascript:;" class="item-result type-user">
+								<strong class="txt-category">USER</strong>
+								<em class="txt-result"><span>ese</span>zin</em>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="item-result type-org">
+								<strong class="txt-category">ORG</strong>
+								<em class="txt-result"><span>ese</span>zin</em>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="item-result type-repository">
+								<strong class="txt-category">REPO</strong>
+								<em class="txt-result"><span>ese</span>zin</em>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<!-- //자동완성 레이어 -->
+			</div>
+			<!-- //검색 -->
+		</div>
+		<!-- //Header -->
+		
+		<!-- Content -->
+		<div class="layout-content">
+			
+			<!-- Page : Main -->
+			<div class="page-main">
+				<!-- Title, Filter -->
+				<div class="section-title">
+					<h2 class="txt-title">Repositories</h2>
+					<!-- Filter -->
+					<div class="filter-area">
+						<!-- Pagination -->
+						<div class="component-pagination">
+							<button type="button" class="btn-prev" disabled></button>
+							<button type="button" class="btn-next"></button>
+						</div>
+						<!-- //Pagination -->
+					</div>
+					<!-- //Filter -->
+				</div>
+				<!-- //Title, Filter -->
+				
+				<!-- Repository List -->
+				<div class="section-list">
+					<ol class="list-repository">
+						<li>
+							<div class="box-main-card">
+								<a href="javascript:;" class="link-card">
+									<span class="card-repository">
+										<span class="txt-repository">Username/repositoryname</span>
+										<span class="txt-desc">Description Description</span>
+									</span>
+									
+									<span class="txt-date">
+										Last Modified : (Empty Repository)
+									</span>
+									<span class="info-repository">
+										<span class="txt-starred">134</span>
+										<!--
+											[D]
+											1개 : type-1st
+											2개 : type-2nd
+											3개 : type-3rd
+											4개 : type-4th
+											5개 이상 : type-max
+										-->
+										<ul class="component-activity type-4th">
+											<li class="bar"></li>
+											<li class="bar"></li>
+											<li class="bar"></li>
+											<li class="bar"></li>
+										</ul>
+									</span>
+								</a>
+							</div>
+						</li>
+						<li>
+							<div class="box-main-card type-private">
+								<a href="javascript:;" class="link-card">
+									<span class="card-repository">
+										<span class="txt-repository">Username/repositoryname</span>
+										<span class="txt-desc">-</span>
+									</span>
+									
+									<span class="txt-date">
+										Last Modified : 2019-01-19 23:02
+									</span>
+									<span class="info-repository">
+										<span class="txt-starred">134</span>
+										<!--
+											1개 : type-1st
+											2개 : type-2nd
+											3개 : type-3rd
+											4개 : type-4th
+											5개 이상 : type-max
+										-->
+										<ul class="component-activity type-max">
+											<li class="bar"></li>
+											<li class="bar"></li>
+											<li class="bar"></li>
+											<li class="bar"></li>
+										</ul>
+									</span>
+								</a>
+							</div>
+						</li>
+					</ol>
+					
+					<div class="pagination-area">
+						<!-- Pagination -->
+						<div class="component-pagination">
+							<button type="button" class="btn-prev" disabled></button>
+							<button type="button" class="btn-next"></button>
+						</div>
+						<!-- //Pagination -->
+					</div>
+				</div>
+				<!-- //Repository List -->
+			</div>
+			<!-- //Page : Main -->
+			
+		</div>
+		<!-- //Content -->
+		
+		<!-- Footer -->
+		<div class="layout-footer">
+			Copyright &copy; 2018 TACO Registry All Rights Reserved.
+		</div>
+		<!-- //Footer -->
+	</div>
+	<!-- //Main Wrap -->
+
+</body>
+</html>

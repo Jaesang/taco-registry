@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Layer Popup -->
+	<div class="layout-popup">
+		<div class="layer-popup">
+			<div class="section-popup">
+				
+				<div class="popup-area type-large">
+					<a href="javascript:;" class="btn-close" aria-label="Popup Close"></a>
+					<h1 class="txt-title">Security Scan : 0fe92f486012</h1>
+					
+					<!-- Popup Security Scan -->
+					<div class="popup-security-scan">
+						<!-- Tab -->
+						<ul class="component-tab">
+							<li aria-selected="true"><a href="javascript:;" class="link-tab">Image Vulnerabilities</a></li>
+							<li aria-selected="false"><a href="javascript:;" class="link-tab">Packages</a></li>
+						</ul>
+						<!-- //Tab -->
+						
+						<!-- Tab Content -->
+						<div class="tab-content">
+							<!-- Graph -->
+							<div class="section-graph">
+								<div class="graph-area">
+									<!-- 그래프 영역 -->
+									<div class="graph-block"></div>
+									<!-- //그래프 영역 -->
+								</div>
+								
+								<div class="description-area">
+									<span class="txt-title">
+										TACO Security Scanner has detected <strong>109</strong> vulnerabilities.
+									</span>
+									<p class="txt-desc">
+										Patches are available for <strong>8</strong> vulnerabilities.
+									</p>
+									<ul class="list-legend">
+										<li>
+											<em style="background-color:#f8523f;"></em>
+											<span class="txt-legend">
+												<strong>2</strong>
+												High-level vulnerabilities.
+											</span>
+										</li>
+										<li>
+											<em style="background-color:#fd7e14;"></em>
+											<span class="txt-legend">
+												<strong>2</strong>
+												Medium-level vulnerabilities.
+											</span>
+										</li>
+										<li>
+											<em style="background-color:#fcc419;"></em>
+											<span class="txt-legend">
+												<strong>2</strong>
+												Low-level vulnerabilities.
+											</span>
+										</li>
+										<li>
+											<em style="background-color:#b7b9c2;"></em>
+											<span class="txt-legend">
+												<strong>2</strong>
+												Negligible-level vulnerabilities.
+											</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<!-- //Graph -->
+							
+							<!-- Filter -->
+							<div class="section-filter">
+								<div class="filter-area">
+									<div class="component-checkbox">
+										<input type="checkbox" class="input-checkbox" id="checkbox1">
+										<label class="txt-label" for="checkbox1">Show Fixable</label>
+									</div>
+									<div class="component-search type-filter">
+										<input type="text" class="input-search" placeholder="Search for Packages">
+										<span class="icon-search"></span>
+										<a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+									</div>
+								</div>
+							</div>
+							<!-- //Filter -->
+							
+							<!-- List -->
+							<div class="component-table">
+								<table class="table-security">
+									<colgroup>
+										<col width="*" />
+										<col width="130" />
+										<col width="100" />
+										<col width="120" />
+										<col width="160" />
+										<col width="240" />
+									</colgroup>
+									<thead>
+									<tr>
+										<th>
+											<a href="javascript:;" class="btn-sort type-asc">CVE</a>
+										</th>
+										<th>
+											<a href="javascript:;" class="btn-sort type-asc">Severity</a>
+										</th>
+										<th>
+											<a href="javascript:;" class="btn-sort type-asc">Package</a>
+										</th>
+										<th>
+											<a href="javascript:;" class="btn-sort type-asc">Current Version</a>
+										</th>
+										<th>
+											<a href="javascript:;" class="btn-sort type-asc">Fixed in version</a>
+										</th>
+										<th>
+											<a href="javascript:;" class="btn-sort type-asc">Introduced in layer</a>
+										</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr aria-expanded="true">
+											<td>
+												<div class="link-area">
+													<a href="javascript:;" class="link-blank"></a>
+													<a href="javascript:;" class="link-table">RHSA-2019:0049</a>
+												</div>
+											</td>
+											<td>
+												<div class="severity-area">
+													<span class="txt-status">
+														<em style="background-color:#f8523f;"></em>
+														<span style="color:#f8523f;">High</span>
+													</span>
+												</div>
+											</td>
+											<td>
+												<span class="txt-package">apt</span>
+											</td>
+											<td>
+												<span class="txt-ver">1.0.1ubuntu2.18</span>
+											</td>
+											<td>
+												<span class="txt-fixed">1.0.1ubuntu2.18</span>
+											</td>
+											<td>
+												<div class="introduce-area">
+													<span class="txt-type is-basic">CMD</span>
+													<span class="txt-desc">file:c860cba1b1cd5ee3b965d7ee8dee07308d…</span>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="6">
+												<dl class="description-area">
+													<dt>Description</dt>
+													<dd>
+														The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: Out-of-bounds heap write in systemd-networkd dhcpv6 option handling (CVE-2018-15688) * systemd: stack overflow when calling syslog from a command with long cmdline (CVE-2018-16864) * systemd: stack overflow when receiving many journald entries (CVE-2018-16865) For more details about the security issue(s), including the impact, a CVSS score, and other related information, refer to the CVE page(s) listed in the References section. Red Hat would like to thank Ubuntu Security Team for reporting CVE-2018-15688 and Qualys Research Labs for reporting CVE-2018-16864 and CVE-2018-16865. Upstream acknowledges Felix Wilhelm (Google) as the original reporter of CVE-2018-15688.
+													</dd>
+												</dl>
+											</td>
+										</tr>
+									</tbody>
+									<tbody>
+										<tr aria-expanded="false">
+											<td>
+												<div class="link-area">
+													<a href="javascript:;" class="link-blank"></a>
+													<a href="javascript:;" class="link-table">RHSA-2019:0049</a>
+												</div>
+											</td>
+											<td>
+												<div class="severity-area">
+													<span class="txt-status">
+														<em style="background-color:#fd7e14;"></em>
+														<span style="color:#fd7e14;">Medium</span>
+													</span>
+												</div>
+											</td>
+											<td>
+												<span class="txt-package">apt</span>
+											</td>
+											<td>
+												<span class="txt-ver">1.0.1ubuntu2.18</span>
+											</td>
+											<td>
+												<span class="txt-none">(N/A)</span>
+											</td>
+											<td>
+												<div class="introduce-area">
+													<span class="txt-type is-basic">CMD</span>
+													<span class="txt-desc">file:c860cba1b1cd5ee3b965d7ee8dee07308d…</span>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="6">
+												<dl class="description-area">
+													<dt>Description</dt>
+													<dd>
+														The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: Out-of-bounds heap write in systemd-networkd dhcpv6 option handling (CVE-2018-15688) * systemd: stack overflow when calling syslog from a command with long cmdline (CVE-2018-16864) * systemd: stack overflow when receiving many journald entries (CVE-2018-16865) For more details about the security issue(s), including the impact, a CVSS score, and other related information, refer to the CVE page(s) listed in the References section. Red Hat would like to thank Ubuntu Security Team for reporting CVE-2018-15688 and Qualys Research Labs for reporting CVE-2018-16864 and CVE-2018-16865. Upstream acknowledges Felix Wilhelm (Google) as the original reporter of CVE-2018-15688.
+													</dd>
+												</dl>
+											</td>
+										</tr>
+									</tbody>
+									<tbody>
+										<tr aria-expanded="false">
+											<td>
+												<div class="link-area">
+													<a href="javascript:;" class="link-blank"></a>
+													<a href="javascript:;" class="link-table">RHSA-2019:0049</a>
+												</div>
+											</td>
+											<td>
+												<div class="severity-area">
+													<span class="txt-status">
+														<em style="background-color:#fcc419;"></em>
+														<span style="color:#fcc419;">Low</span>
+													</span>
+												</div>
+											</td>
+											<td>
+												<span class="txt-package">apt</span>
+											</td>
+											<td>
+												<span class="txt-ver">1.0.1ubuntu2.18</span>
+											</td>
+											<td>
+												<span class="txt-none">(N/A)</span>
+											</td>
+											<td>
+												<div class="introduce-area">
+													<span class="txt-type is-basic">CMD</span>
+													<span class="txt-desc">file:c860cba1b1cd5ee3b965d7ee8dee07308d…</span>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="6">
+												<dl class="description-area">
+													<dt>Description</dt>
+													<dd>
+														The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: Out-of-bounds heap write in systemd-networkd dhcpv6 option handling (CVE-2018-15688) * systemd: stack overflow when calling syslog from a command with long cmdline (CVE-2018-16864) * systemd: stack overflow when receiving many journald entries (CVE-2018-16865) For more details about the security issue(s), including the impact, a CVSS score, and other related information, refer to the CVE page(s) listed in the References section. Red Hat would like to thank Ubuntu Security Team for reporting CVE-2018-15688 and Qualys Research Labs for reporting CVE-2018-16864 and CVE-2018-16865. Upstream acknowledges Felix Wilhelm (Google) as the original reporter of CVE-2018-15688.
+													</dd>
+												</dl>
+											</td>
+										</tr>
+									</tbody>
+									<tbody>
+										<tr aria-expanded="false">
+											<td>
+												<div class="link-area">
+													<a href="javascript:;" class="link-blank"></a>
+													<a href="javascript:;" class="link-table">RHSA-2019:0049</a>
+												</div>
+											</td>
+											<td>
+												<div class="severity-area">
+													<span class="txt-status">
+														<em style="background-color:#b7b9c2;"></em>
+														<span style="color:#b7b9c2;">Negligible</span>
+													</span>
+												</div>
+											</td>
+											<td>
+												<span class="txt-package">apt</span>
+											</td>
+											<td>
+												<span class="txt-ver">1.0.1ubuntu2.18</span>
+											</td>
+											<td>
+												<span class="txt-none">(N/A)</span>
+											</td>
+											<td>
+												<div class="introduce-area">
+													<span class="txt-type is-basic">CMD</span>
+													<span class="txt-desc">file:c860cba1b1cd5ee3b965d7ee8dee07308d…</span>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="6">
+												<dl class="description-area">
+													<dt>Description</dt>
+													<dd>
+														The systemd packages contain systemd, a system and service manager for Linux, compatible with the SysV and LSB init scripts. It provides aggressive parallelism capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, and keeps track of processes using Linux cgroups. In addition, it supports snapshotting and restoring of the system state, maintains mount and automount points, and implements an elaborate transactional dependency-based service control logic. It can also work as a drop-in replacement for sysvinit. Security Fix(es): * systemd: Out-of-bounds heap write in systemd-networkd dhcpv6 option handling (CVE-2018-15688) * systemd: stack overflow when calling syslog from a command with long cmdline (CVE-2018-16864) * systemd: stack overflow when receiving many journald entries (CVE-2018-16865) For more details about the security issue(s), including the impact, a CVSS score, and other related information, refer to the CVE page(s) listed in the References section. Red Hat would like to thank Ubuntu Security Team for reporting CVE-2018-15688 and Qualys Research Labs for reporting CVE-2018-16864 and CVE-2018-16865. Upstream acknowledges Felix Wilhelm (Google) as the original reporter of CVE-2018-15688.
+													</dd>
+												</dl>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- //List -->
+						</div>
+						<!-- //Tab Content -->
+					</div>
+					<!-- //Popup Security Scan -->
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- //Layer Popup -->
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Layer Popup -->
+	<div class="layout-popup">
+		<div class="layer-popup">
+			<div class="section-popup">
+				
+				<div class="popup-area type-large">
+					<a href="javascript:;" class="btn-close" aria-label="Popup Close"></a>
+					<h1 class="txt-title">Build ID : 2ac0997c</h1>
+					
+					<!-- Popup Build -->
+					<div class="popup-build-log">
+						<div class="section-build-detail">
+							<!-- Build Info -->
+							<div class="build-area">
+								<div class="status-block">
+									<!-- Loading -->
+									<div class="txt-status">
+										<div class="component-loading">
+											<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+										</div>
+										<span>Waiting for available build worker</span>
+									</div>
+									<!-- //Loading -->
+									
+									<!-- Success -->
+									<div class="txt-status type-success" style="display:none;">
+										<span>Dockerfile build completed and pushed!</span>
+									</div>
+									<!-- //Success -->
+									
+									<!-- Fail -->
+									<div class="txt-status type-fail" style="display:none;">
+										<span>Dockerfile build completed and pushed!</span>
+									</div>
+									<!-- //Fail -->
+									
+									<!-- Cancel -->
+									<div class="txt-status type-cancel" style="display:none;">
+										<span>Waiting for available build worker</span>
+									</div>
+									<!-- //Cancel -->
+								</div>
+								<div class="info-block">
+									<span class="txt-user">devLeejun</span>
+									<span class="txt-time">Build started 15 minutes ago</span>
+								</div>
+							</div>
+							<!-- //Build Info -->
+							
+							<!-- Build Log -->
+							<div class="log-area">
+								<!-- 우측 버튼 -->
+								<div class="button-block">
+									<button type="button" class="btn-log type-download">Download Logs</button>
+									<button type="button" class="btn-log type-copy">Copy Logs</button>
+								</div>
+								<!-- //우측 버튼 -->
+								
+								<!-- Loading Message -->
+								<div class="txt-build-loading" style="display:none;">Waiting for build to start...</div>
+								<!-- //Loading Message -->
+								
+								<!-- Cancel Message -->
+								<div class="txt-build-cancel" style="display:none;">
+									Failed to load builds logs. Please reload and try again. If this problem persists, please check for JavaScript or networking issues and contact support.
+								</div>
+								<!-- //Cancel Message -->
+								
+								<!-- 단계별 Log -->
+								<div class="build-step type-1st">Preparing build node</div>
+								<div class="build-step type-2nd">Unpacking build package</div>
+								<div class="build-step type-3rd">Pulling base image</div>
+								<div class="build-step type-4th">Looking up cached images</div>
+								<div class="build-step type-5th">Priming cache for build</div>
+								<div class="build-step type-6th">Building image from Dockerfile</div>
+								<div class="build-time">2019.1.14 AM 6:43:34</div>
+								<!-- //단계별 Log -->
+								
+								<!-- Log 상세 -->
+								<ul class="build-log">
+									<li>
+										<div class="log-type is-from" aria-expanded="true">
+											<strong class="txt-type">FROM</strong>
+											<strong class="txt-desc">ubuntu:14.04</strong>
+										</div>
+										<div class="log-detail">
+											<span class="txt-date">2019.1.14 AM 6:43:34</span>
+											<span class="txt-desc">---> 7e4b16ae8b23</span>
+										</div>
+										<div class="log-detail is-error">
+											<span class="txt-date">2019.1.14 AM 6:43:34</span>
+											<span class="txt-desc">Error: Nothing to do</span>
+										</div>
+									</li>
+									<li>
+										<div class="log-type is-run" aria-expanded="false">
+											<strong class="txt-type">RUN</strong>
+											<strong class="txt-desc">apt-get install -y nginx</strong>
+										</div>
+										<div class="log-detail">
+											<span class="txt-date">2019.1.14 AM 6:43:34</span>
+											<span class="txt-desc">---> 7e4b16ae8b23</span>
+										</div>
+									</li>
+									<li>
+										<div class="log-type is-work" aria-expanded="false">
+											<strong class="txt-type">WORKDIR</strong>
+											<strong class="txt-desc">80</strong>
+										</div>
+										<div class="log-detail">
+											<span class="txt-date">2019.1.14 AM 6:43:34</span>
+											<span class="txt-desc">---> 7e4b16ae8b23</span>
+										</div>
+									</li>
+									<li>
+										<div class="log-type is-basic" aria-expanded="false">
+											<strong class="txt-type">CMD</strong>
+											<strong class="txt-desc">["nginx"]</strong>
+										</div>
+										<div class="log-detail">
+											<span class="txt-date">2019.1.14 AM 6:43:34</span>
+											<span class="txt-desc">---> 7e4b16ae8b23</span>
+										</div>
+									</li>
+									<li>
+										<div class="log-type is-basic" aria-expanded="false">
+											<strong class="txt-type">EXPOSE</strong>
+											<strong class="txt-desc">4200</strong>
+										</div>
+										<div class="log-detail">
+											<span class="txt-date">2019.1.14 AM 6:43:34</span>
+											<span class="txt-desc">---> 7e4b16ae8b23</span>
+										</div>
+									</li>
+									<li>
+										<div class="log-type is-info" aria-expanded="false">
+											<strong class="txt-type">LABEL</strong>
+											<strong class="txt-desc">tag test1</strong>
+										</div>
+										<div class="log-detail">
+											<span class="txt-date">2019.1.14 AM 6:43:34</span>
+											<span class="txt-desc">---> 7e4b16ae8b23</span>
+										</div>
+									</li>
+									<li>
+										<div class="log-type is-info" aria-expanded="false">
+											<strong class="txt-type">MAINTAINER</strong>
+											<strong class="txt-desc">starlkj</strong>
+										</div>
+										<div class="log-detail">
+											<span class="txt-date">2019.1.14 AM 6:43:34</span>
+											<span class="txt-desc">---> 7e4b16ae8b23</span>
+										</div>
+									</li>
+								</ul>
+								<!-- //Log 상세 -->
+								
+								<!-- 완료 -->
+								<div class="build-step type-pushing">Pushing image built from Dockerfile</div>
+								<div class="build-step type-complete">Dockerfile build completed and pushed</div>
+								<!-- //완료 -->
+								
+								<!-- Build Error -->
+								<div class="build-step type-error">Dockerfile build failed</div>
+								<div class="build-error">Could not find or parse Dockerfile : unknown instruction : TAG</div>
+								<!-- //Build Error -->
+							</div>
+							<!-- //Build Log -->
+						</div>
+					</div>
+					<!-- //Popup Build -->
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- //Layer Popup -->
+
+</body>
+</html>

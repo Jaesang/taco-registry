@@ -3,7 +3,7 @@ module.exports = function(target) {
   return {
       files: [{
           src: 'client/sass/'+target+'/style.scss',
-          dest: 'client/dist/'+target+'/css/'+target+'.css'
+          dest: 'client/front/'+target+'/css/'+target+'.css'
       }],
       options: {
           outputStyle: 'compressed',

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Layer Popup -->
+	<div class="layout-popup">
+		<div class="layer-popup">
+			<div class="section-popup">
+				
+				<div class="popup-area">
+					<a href="javascript:;" class="btn-close" aria-label="Popup Close"></a>
+					<h1 class="txt-title">Change Expiration</h1>
+					
+					<!-- Popup 신규팀 생성 -->
+					<div class="popup-create-team">
+						<table class="form-create">
+							<colgroup>
+								<col width="150" />
+								<col width="*" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>
+										<label class="txt-label">Tags that will be updated</label>
+									</th>
+									<td>
+										<span class="txt-content">Latest</span>
+										<span class="txt-content">1.0.0</span>
+									</td>
+								</tr>
+								<tr>
+									<th class="align-top">
+										<label class="txt-label">Team Role</label>
+									</th>
+									<td>
+										<ul class="list-role">
+											<li>
+												<div class="component-radio">
+													<input type="radio" id="radio1" class="input-radio">
+													<label for="radio1" class="label">
+														<span class="icon-radio"></span>
+														<span class="txt-label">
+															Never
+															<em>The tag(s) will not expire.</em>
+														</span>
+													</label>
+												</div>
+											</li>
+											<li>
+												<div class="component-radio">
+													<input type="radio" id="radio2" class="input-radio">
+													<label for="radio2" class="label">
+														<span class="icon-radio"></span>
+														<span class="txt-label">
+															Expiration
+															<em>Can only enter dates after today.</em>
+														</span>
+													</label>
+												</div>
+												<!-- Date picker -->
+												<div class="component-datepicker">
+													<input type="text" class="input-date" placeholder="YYYY-MM-DD HH-MM" readonly>
+												</div>
+												<!-- //Date picker -->
+											</li>
+										</ul>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- //Popup 신규팀 생성 -->
+					
+					<!-- Button -->
+					<div class="button-block">
+						<button type="button" class="btn-basic type-small">Cancel</button>
+						<button type="button" class="btn-action type-small">Change Expiration</button>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- //Layer Popup -->
+
+</body>
+</html>

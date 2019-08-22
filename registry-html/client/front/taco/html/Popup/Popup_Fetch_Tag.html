@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Layer Popup -->
+	<div class="layout-popup">
+		<div class="layer-popup">
+			<div class="section-popup">
+				
+				<div class="popup-area">
+					<a href="javascript:;" class="btn-close" aria-label="Popup Close"></a>
+					<h1 class="txt-title">Fetch Tag : latest</h1>
+					
+					<!-- Popup Fetch Tag -->
+					<div class="popup-fetch-tag">
+						<table class="form-create">
+							<colgroup>
+								<col width="150" />
+								<col width="*" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th class="align-top">
+										<label class="txt-label">Select Image Format</label>
+									</th>
+									<td>
+										<!-- Selectbox -->
+										<div class="component-selectbox">
+											<span class="txt-label">Docker Pull (by Tag)</span>
+											<!-- Layer Option -->
+											<div class="layer-option" aria-expanded="false">
+												<ul class="list-option">
+													<li>
+														<div class="component-radio">
+															<input type="radio" class="input-radio" id="radio1">
+															<label class="txt-label" for="radio1">radio</label>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<!-- //Layer Option -->
+										</div>
+										<!-- //Selectbox -->
+									</td>
+								</tr>
+								<tr>
+									<th class="align-top">
+										<label class="txt-label">Command</label>
+									</th>
+									<td>
+										<div class="box-command">
+											docker pull 192.168.30.147/username/newrepository1:latest
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- //Popup Fetch Tag -->
+					
+					<!-- Button -->
+					<div class="button-block">
+						<button type="button" class="btn-basic type-small">Close</button>
+						<button type="button" class="btn-action type-small">Copy Command</button>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- //Layer Popup -->
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Layer Popup -->
+	<div class="layout-popup">
+		<div class="layer-popup">
+			<div class="section-popup">
+				
+				<div class="popup-area">
+					<a href="javascript:;" class="btn-close" aria-label="Popup Close"></a>
+					<h1 class="txt-title">Start Repository Build</h1>
+					
+					<!-- Popup Start Repository Build -->
+					<div class="popup-repository-build">
+						<div class="component-file">
+							<div class="file-attachment">
+								<input type="file" class="input-file">
+								<div class="form-attachment">
+									<div class="input-area">
+										<input type="text" class="input-text" readonly>
+									</div>
+									<div class="button-area">
+										<button type="button" class="btn-sub">Select Docker File</button>
+									</div>
+								</div>
+							</div>
+							<!-- Description -->
+							<div class="file-description">
+								<p class="txt-desc">Please select a Dockerfile or an archive (.tar .gz or .zip) containging a Dockerfile at the root directory.</p>
+								
+								<!-- Success -->
+								<p class="txt-desc type-success">Dockerfile found and valid</p>
+								<!-- //Success -->
+								
+								<!-- Error -->
+								<p class="txt-desc type-error">File chosen is not valid Dockerfile</p>
+							</div>
+							<!-- //Description -->
+						</div>
+					</div>
+					<!-- //Popup Start Repository Build -->
+					
+					<!-- Button -->
+					<div class="button-block">
+						<button type="button" class="btn-basic type-small">Cancel</button>
+						<!-- [D] Success 인 경우 disabled 속성 제거 -->
+						<button type="button" class="btn-action type-small" disabled>Start Build</button>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- //Layer Popup -->
+
+</body>
+</html>

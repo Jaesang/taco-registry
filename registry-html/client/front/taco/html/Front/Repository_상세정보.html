@@ -1,0 +1,259 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Wrap -->
+	<div class="taco-wrap">
+		<!-- Header -->
+		<div class="layout-header">
+			
+		</div>
+		<!-- //Header -->
+		
+		<!-- LNB -->
+		<div class="layout-lnb">
+			<div class="section-lnb">
+				<div class="lnb-area">
+					<ul class="list-lnb">
+						<li>
+							<a href="javascript:;" class="link-repository-info" aria-selected="true">
+								<span class="lnb-tooltip">Repositories Info</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-tag" aria-selected="false">
+								<span class="lnb-tooltip">Repositories Tags</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-history" aria-selected="false">
+								<span class="lnb-tooltip">Tag History</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-build" aria-selected="false">
+								<span class="lnb-tooltip">Repository Build History</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-log" aria-selected="false">
+								<span class="lnb-tooltip">Usage Logs</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-setting" aria-selected="false">
+								<span class="lnb-tooltip">Repository Settings</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- //LNB -->
+		
+		<!-- Content -->
+		<div class="layout-content">
+			
+			<!-- Repository 상세정보 -->
+			<div class="page-repositories-info">
+				<h2 class="section-sub-title">
+					<div class="title-area">
+						<div class="title-block">
+							<a href="javascript:;" class="btn-back" aria-label="Back"></a>
+							<span class="txt-title">
+								<em>RepositoryNameRepositoryNameRepositoryName/RepositoryNameRepositoryNameRepositoryName</em>
+							</span>
+							<div class="favorite-private">
+								<div class="component-starred">
+									<input type="checkbox" class="input-checkbox" id="starred01" checked>
+									<label for="starred01" class="txt-label"></label>
+								</div>
+								<span class="type-private"></span>
+							</div>
+							
+							<div class="buttons">
+								<button type="button" class="btn-sub-action type-box">Set New Build</button>
+								<button type="button" class="btn-action type-box">Add Files</button>
+							</div>
+						</div>
+					</div>
+				</h2>
+				
+				<!-- 상세 -->
+				<div class="section-detail">
+					<!-- 왼쪽 영역 -->
+					<div class="left-info">
+						<h3 class="txt-title">Repository Description</h3>
+						<div class="detail-area">
+							<div class="component-textarea">
+								<textarea class="textarea" placeholder="Team Description"></textarea>
+							</div>
+							<div class="button-block">
+								<button type="button" class="btn-sub">Save</button>
+							</div>
+						</div>
+						
+						<h3 class="txt-title">Docker Pull Command</h3>
+						<div class="detail-area">
+							<div class="component-input type-copy">
+								<div class="input-area">
+									<input type="text" class="input-text" value="Docker pull username/repositoryname" readonly>
+									<a href="javascript:;" class="btn-copy" aria-label="Copy"></a>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Recent Build -->
+						<h3 class="txt-title">
+							Recent Build
+							<a href="javascript:;" class="link-text">View More</a>
+						</h3>
+						<div class="detail-area">
+							<div class="component-table">
+								<table class="table-build">
+									<colgroup>
+										<col width="60" />
+										<col width="*" />
+										<col width="140" />
+										<col width="170" />
+									</colgroup>
+									<thead>
+									<tr>
+										<th></th>
+										<th>
+											<a href="javascript:;" class="btn-sort type-asc">Build ID</a>
+										</th>
+										<th>
+											<a href="javascript:;" class="btn-sort">Triggered By</a>
+										</th>
+										<th>
+											<a href="javascript:;" class="btn-sort">Date Started</a>
+										</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td class="align-center">
+											<span class="build-success"></span>
+										</td>
+										<td>
+											<a href="javascript:;" class="link-item">2ac0997c</a>
+										</td>
+										<td>
+										<span class="txt-user">
+											Tester123
+										</span>
+										</td>
+										<td>
+											<span class="txt-date">2018-12-22 12:22</span>
+										</td>
+									</tr>
+									<tr>
+										<td class="align-center">
+											<span class="build-fail"></span>
+										</td>
+										<td>
+											<a href="javascript:;" class="link-item">2ac0997c</a>
+										</td>
+										<td>
+										<span class="txt-user">
+											Tester123
+										</span>
+										</td>
+										<td>
+											<span class="txt-date">2018-12-22 12:22</span>
+										</td>
+									</tr>
+									<tr>
+										<td class="align-center">
+											<span class="build-cancel"></span>
+										</td>
+										<td>
+											<a href="javascript:;" class="link-item">2ac0997c</a>
+										</td>
+										<td>
+										<span class="txt-user">
+											Tester123
+										</span>
+										</td>
+										<td>
+											<span class="txt-date">2018-12-22 12:22</span>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- //Recent Build -->
+					</div>
+					<!-- //왼쪽 영역 -->
+					
+					<!-- 오른쪽 영역 -->
+					<div class="right-info">
+						<h3 class="txt-title">Recent Activity</h3>
+						<div class="detail-area">
+							<table class="table-activity">
+								<colgroup>
+									<col width="" />
+									<col width="" />
+									<col width="" />
+									<col width="" />
+								</colgroup>
+								<thead>
+									<tr>
+										<th></th>
+										<th>November</th>
+										<th>December</th>
+										<th>January</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th>1</th>
+										<td>0</td>
+										<td>1,234</td>
+										<td>999</td>
+									</tr>
+									<tr>
+										<th>2</th>
+										<td>0</td>
+										<td>1,234</td>
+										<td>999</td>
+									</tr>
+									<tr>
+										<th>3</th>
+										<td class="is-nothing"></td>
+										<td>1,234</td>
+										<td class="is-nothing"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- //오른쪽 영역 -->
+					
+				</div>
+				<!-- //상세 -->
+			</div>
+			<!-- //Repository 상세정보 -->
+			
+		</div>
+		<!-- //Content -->
+		
+		<!-- Footer -->
+		<div class="layout-footer">
+			Copyright &copy; 2018 TACO Registry All Rights Reserved.
+		</div>
+		<!-- //Footer -->
+	</div>
+	<!-- //Wrap -->
+
+</body>
+</html>

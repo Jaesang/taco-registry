@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Layer Popup -->
+	<div class="layout-popup">
+		<div class="layer-popup">
+			<div class="section-popup">
+				
+				<div class="popup-area type-large">
+					<a href="javascript:;" class="btn-close" aria-label="Popup Close"></a>
+					<h1 class="txt-title">Image Layers : 0fe92f486012</h1>
+					
+					<!-- Popup Image Layers -->
+					<div class="popup-image-layers">
+						<div class="section-image">
+							<ul class="list-image">
+								<li>
+									<span class="txt-image">d6d13f48df63</span>
+									<span class="image-line"><em></em></span>
+									<span class="txt-type is-basic">CMD</span>
+									<span class="txt-desc">["nginx"]</span>
+								</li>
+								<li>
+									<span class="txt-image">d6d13f48df63</span>
+									<span class="image-line"><em></em></span>
+									<span class="txt-type is-info">LABEL</span>
+									<span class="txt-desc">80</span>
+								</li>
+								<li>
+									<span class="txt-image">ead835b6495a</span>
+									<span class="image-line"><em></em></span>
+									<span class="txt-type is-work">WORKDIR</span>
+									<span class="txt-desc">apt-get install -y nginx</span>
+								</li>
+								<li>
+									<span class="txt-image">ead835b6495a</span>
+									<span class="image-line"><em></em></span>
+									<span class="txt-type is-from">FROM</span>
+									<span class="txt-desc">apt-get install -y nginx</span>
+								</li>
+								<li>
+									<span class="txt-image">ead835b6495a</span>
+									<span class="image-line"><em></em></span>
+									<span class="txt-type is-run">RUN</span>
+									<span class="txt-desc">
+										set -xe && echo '#!/bin/sh' > /usr/sbin/policy-rc.d && echo 'exit 101' >> /usr/sbin/policy-rc.d && chmod +x /usr/sbin/policy-rc.d && dpkg-divert --local --rename --add /sbin/initctl && cp -a /usr/sbin/policy-rc.d /sbin/initctl && sed -i 's/^exit.*/exit 0/' /sbin/initctl && echo 'force-unsafe-io' > /etc/dpkg/dpkg.cfg.d/docker-apt-speedup && echo 'DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };' > /etc/apt/apt.conf.d/docker-clean && echo 'APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };' >> /etc/apt/apt.conf.d/docker-clean && echo 'Dir::Cache::pkgcache ""; Dir::Cache::srcpkgcache "";' >> /etc/apt/apt.conf.d/docker-clean && echo 'Acquire::Languages "none";' > /etc/apt/apt.conf.d/docker-no-languages && echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /etc/apt/apt.conf.d/docker-gzip-indexes && echo 'Apt::AutoRemove::SuggestsImportant "false";' > /etc/apt/apt.conf.d/docker-autoremove-suggests
+
+									</span>
+								</li>
+								<li>
+									<span class="txt-image">ead835b6495a</span>
+									<span class="image-line"><em></em></span>
+									<span class="txt-type is-run">RUN</span>
+									<span class="txt-desc">file:13f0f6484071addf07e8399246be51c3a1d9e26ccd7e6d19d75797f37387dc12 in /</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- //Popup Image Layers -->
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- //Layer Popup -->
+
+</body>
+</html>

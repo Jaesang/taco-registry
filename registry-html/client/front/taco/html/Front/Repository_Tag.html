@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Wrap -->
+	<div class="taco-wrap">
+		<!-- Header -->
+		<div class="layout-header">
+			
+		</div>
+		<!-- //Header -->
+		
+		<!-- LNB -->
+		<div class="layout-lnb">
+			<div class="section-lnb">
+				<div class="lnb-area">
+					<ul class="list-lnb">
+						<li>
+							<a href="javascript:;" class="link-repository-info" aria-selected="false">
+								<span class="lnb-tooltip">Repositories Info</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-tag" aria-selected="true">
+								<span class="lnb-tooltip">Repositories Tags</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-history" aria-selected="false">
+								<span class="lnb-tooltip">Tag History</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-repository-build" aria-selected="false">
+								<span class="lnb-tooltip">Repository Build History</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-log" aria-selected="false">
+								<span class="lnb-tooltip">Usage Logs</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;" class="link-setting" aria-selected="false">
+								<span class="lnb-tooltip">Repository Settings</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- //LNB -->
+		
+		<!-- Content -->
+		<div class="layout-content">
+			
+			<!-- Repository Tag -->
+			<div class="page-repository-tag">
+				<h2 class="section-sub-title">
+					<div class="title-area">
+						<div class="title-block">
+							<a href="javascript:;" class="btn-back" aria-label="Back"></a>
+							<span class="txt-title">
+								<em>RepositoryName/Name</em>
+							</span>
+							<div class="favorite-private">
+								<div class="component-starred">
+									<input type="checkbox" class="input-checkbox" id="starred01" checked>
+									<label for="starred01" class="txt-label"></label>
+								</div>
+								<span class="type-private"></span>
+							</div>
+							
+							<div class="buttons">
+								<button type="button" class="btn-sub-action type-box">Set New Build</button>
+								<button type="button" class="btn-action type-box">Add Files</button>
+							</div>
+						</div>
+					</div>
+				</h2>
+				
+				<!-- Title, Filter -->
+				<div class="section-title">
+					<h2 class="txt-title">Repositories Tags</h2>
+					<!-- Filter -->
+					<div class="filter-area">
+						<div class="component-search type-filter">
+							<input type="text" class="input-search" placeholder="Search for Tags">
+							<span class="icon-search"></span>
+							<a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+						</div>
+					</div>
+					<!-- //Filter -->
+				</div>
+				<!-- //Title, Filter -->
+				
+				<!-- Tags -->
+				<div class="component-table">
+					<table class="table-tags">
+						<colgroup>
+							<col width="170" />
+							<col width="140" />
+							<col width="*" />
+							<col width="100" />
+							<col width="150" />
+							<col width="160" />
+							<col width="90" />
+						</colgroup>
+						<thead>
+						<tr>
+							<th>
+								<div class="component-checkbox">
+									<input type="checkbox" class="input-checkbox" id="checkbox1">
+									<label class="txt-label" for="checkbox1">Tags</label>
+								</div>
+							</th>
+							<th>
+								<a href="javascript:;" class="btn-sort type-asc">Last Modified</a>
+							</th>
+							<th>
+								Sicurity Scan
+							</th>
+							<th>
+								Size
+							</th>
+							<th>
+								Expires
+							</th>
+							<th>
+								Image
+							</th>
+							<th></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr aria-selected="true">
+							<td>
+								<div class="component-checkbox">
+									<input type="checkbox" class="input-checkbox" id="checkbox2" checked>
+									<label class="txt-label" for="checkbox2">Latest</label>
+								</div>
+							</td>
+							<td>
+								<span class="txt-date">2018-12-22 12:22</span>
+							</td>
+							<td>
+								<span class="txt-scan type-success">
+									Passed
+									<!-- Tooltip -->
+									<div class="component-tooltip">
+										<div class="box-tooltip">
+											Passed Tooltip Description
+										</div>
+									</div>
+									<!-- //Tooltip -->
+								</span>
+							</td>
+							<td>
+								<span class="txt-size">85.1 MB</span>
+							</td>
+							<td>
+								<a href="javascript:;" class="txt-expires">yyyy-mm-dd hh:mm</a>
+							</td>
+							<td>
+								<div class="image-area">
+									<em class="txt-image">SHA256</em>
+									<a href="javascript:;" class="link-image">5c93d0a06697</a>
+								</div>
+							</td>
+							<td>
+								<div class="buttons">
+									<a href="javascript:;" class="btn-download" aria-label="Download"></a>
+									<a href="javascript:;" class="btn-setting" aria-label="Setting"></a>
+								</div>
+							</td>
+						</tr>
+						<tr aria-selected="false">
+							<td>
+								<div class="component-checkbox">
+									<input type="checkbox" class="input-checkbox" id="checkbox2">
+									<label class="txt-label" for="checkbox2">Latest</label>
+								</div>
+							</td>
+							<td>
+								<span class="txt-date">2018-12-22 12:22</span>
+							</td>
+							<td>
+								<span class="txt-scan type-fail">
+									Could not load
+									<!-- Tooltip -->
+									<div class="component-tooltip">
+										<div class="box-tooltip">
+											The vulnerabilities for this tag could not be retrieved at the present time, try again later
+										</div>
+									</div>
+									<!-- //Tooltip -->
+								</span>
+							</td>
+							<td>
+								<span class="txt-size">85.1 MB</span>
+							</td>
+							<td>
+								<a href="javascript:;" class="txt-expires">yyyy-mm-dd hh:mm</a>
+							</td>
+							<td>
+								<div class="image-area">
+									<em class="txt-image">
+										SHA256
+										<!-- Tooltip -->
+										<div class="component-tooltip">
+											<div class="box-tooltip">
+												The content-addressable SHA256 hash of this tag
+											</div>
+										</div>
+										<!-- //Tooltip -->
+									</em>
+									<a href="javascript:;" class="link-image">5c93d0a06697</a>
+								</div>
+							</td>
+							<td>
+								<div class="buttons">
+									<a href="javascript:;" class="btn-download" aria-label="Download"></a>
+									<a href="javascript:;" class="btn-setting" aria-label="Setting"></a>
+								</div>
+							</td>
+						</tr>
+						<tr aria-selected="false">
+							<td>
+								<div class="component-checkbox">
+									<input type="checkbox" class="input-checkbox" id="checkbox2">
+									<label class="txt-label" for="checkbox2">Latest</label>
+								</div>
+							</td>
+							<td>
+								<span class="txt-date">2018-12-22 12:22</span>
+							</td>
+							<td>
+								<span class="txt-scan type-scan">
+									<em>2 High</em> · 8 Fixable
+									<!-- Tooltip -->
+									<div class="component-tooltip">
+										<div class="box-tooltip">
+											This tag has 5 vulnerabilities across 3 packages
+										</div>
+									</div>
+									<!-- //Tooltip -->
+								</span>
+							</td>
+							<td>
+								<span class="txt-size">85.1 MB</span>
+							</td>
+							<td>
+								<a href="javascript:;" class="txt-expires">yyyy-mm-dd hh:mm</a>
+							</td>
+							<td>
+								<div class="image-area">
+									<em class="txt-image">
+										SHA256
+										<!-- Tooltip -->
+										<div class="component-tooltip">
+											<div class="box-tooltip">
+												The content-addressable SHA256 hash of this tag
+											</div>
+										</div>
+										<!-- //Tooltip -->
+									</em>
+									<a href="javascript:;" class="link-image">5c93d0a06697</a>
+								</div>
+							</td>
+							<td>
+								<div class="buttons">
+									<a href="javascript:;" class="btn-download" aria-label="Download"></a>
+									<a href="javascript:;" class="btn-setting" aria-label="Setting"></a>
+									
+									<!-- Layer Setting -->
+									<div class="layer-setting" aria-expanded="true">
+										<a href="javascript:;" class="link-item type-add">Add New Tag</a>
+										<a href="javascript:;" class="link-item type-delete">Delete Tag</a>
+										<a href="javascript:;" class="link-item type-change">Change Expiration</a>
+									</div>
+									<!-- //Layer Setting -->
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- //Tags -->
+				
+				<!-- Button -->
+				<div class="section-button">
+					<button type="button" class="btn-sub-action">Delete Tag</button>
+					<button type="button" class="btn-sub-action">Change Expiration</button>
+				</div>
+				<!-- //Button -->
+			</div>
+			<!-- //Repository Tag -->
+		</div>
+		<!-- //Content -->
+		
+		<!-- Footer -->
+		<div class="layout-footer">
+			Copyright &copy; 2018 TACO Registry All Rights Reserved.
+		</div>
+		<!-- //Footer -->
+	</div>
+	<!-- //Wrap -->
+
+</body>
+</html>

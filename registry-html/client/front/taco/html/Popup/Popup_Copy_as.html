@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="../../css/taco.css"/>
+	<title>TACO Registry</title>
+</head>
+
+<body>
+
+	<!-- Layer Popup -->
+	<div class="layout-popup">
+		<div class="layer-popup">
+			<div class="section-popup">
+				
+				<div class="popup-area type-large">
+					<a href="javascript:;" class="btn-close" aria-label="Popup Close"></a>
+					<h1 class="txt-title">Copy As</h1>
+					
+					<!-- Popup Add Files -->
+					<div class="popup-create-repository">
+						<!-- Form Create -->
+						<div class="section-create">
+							<table class="form-create">
+								<colgroup>
+									<col width="150" />
+									<col width="*" />
+								</colgroup>
+								<tbody>
+								<tr>
+									<th>
+										<label class="txt-label">Base Image</label>
+									</th>
+									<td>
+										<div class="component-input">
+											<div class="input-area">
+												<input type="text" class="input-text" value="username/newrepository01" readonly>
+												<a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>
+										<label class="txt-label">Edit Image</label>
+									</th>
+									<td>
+										<div class="editor-area">
+											
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>
+										<label class="txt-label">Image Space</label>
+									</th>
+									<td>
+										<!-- Selectbox -->
+										<div class="component-selectbox">
+											<span class="txt-label">Select</span>
+											<!-- Layer Option -->
+											<div class="layer-option" aria-expanded="false">
+												<ul class="list-option">
+													<li class="type-line">
+														<div class="component-radio">
+															<input type="radio" class="input-radio" id="radio1">
+															<label class="txt-label" for="radio1">Username</label>
+														</div>
+													</li>
+													<li>
+														<div class="component-radio">
+															<input type="radio" class="input-radio" id="radio2">
+															<label class="txt-label" for="radio2">Organization</label>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<!-- //Layer Option -->
+										</div>
+										<!-- //Selectbox -->
+									</td>
+								</tr>
+								<tr>
+									<th>
+										<label class="txt-label">Image Name</label>
+									</th>
+									<td>
+										<div class="component-input">
+											<div class="input-area">
+												<input type="text" class="input-text" placeholder="Image Name">
+												<a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+											</div>
+										</div>
+										<p class="txt-desc">Only alphabetical lower case letters, numbers and -_ +] can be entered as the image name.</p>
+									</td>
+								</tr>
+								<tr>
+									<th>
+										<label class="txt-label">Description</label>
+									</th>
+									<td>
+										<div class="component-input">
+											<div class="input-area">
+												<input type="text" class="input-text" placeholder="Description">
+												<a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>
+										<label class="txt-label">Repository Visibility</label>
+									</th>
+									<td>
+										<ul class="list-radio">
+											<li>
+												<div class="component-radio">
+													<input type="radio" id="radio1" class="input-radio">
+													<label for="radio1" class="label">
+														<span class="icon-radio"></span>
+														<span class="txt-label type-private">
+														Private
+														<em>You choose who can see, pull and push from/to this repository.</em>
+													</span>
+													</label>
+												</div>
+											</li>
+											<li>
+												<div class="component-radio">
+													<input type="radio" id="radio2" class="input-radio">
+													<label for="radio2" class="label">
+														<span class="icon-radio"></span>
+														<span class="txt-label type-public">
+														Public
+														<em>Anyone can see and pull from this repository.</em>
+													</span>
+													</label>
+												</div>
+											</li>
+										</ul>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- //Form Create -->
+					</div>
+					<!-- //Popup Add Files -->
+					
+					<!-- Button -->
+					<div class="button-block">
+						<button type="button" class="btn-basic type-small">Cancel</button>
+						<!-- [D] Success 인 경우 disabled 속성 제거 -->
+						<button type="button" class="btn-action type-small" disabled>Create Public Image</button>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- //Layer Popup -->
+
+</body>
+</html>
