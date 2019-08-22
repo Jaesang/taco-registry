@@ -105,16 +105,17 @@ public class TagService extends AbstractService {
     @Transactional
     public void createTag(Tag tag) {
         logger.info("createTag tag : {}", tag);
+        LocalDateTime now = LocalDateTime.now();
 
         Tag preTag = tagRepo.getTagByTagName(tag.getImage().getId(), tag.getName());
         if (preTag != null) {
             // 같은 이름의 태그는 삭제
-            preTag.setEndTime(LocalDateTime.now());
-            preTag.setExpiration(LocalDateTime.now());
+            preTag.setEndTime(now);
+            preTag.setExpiration(now);
             tagRepo.save(preTag);
         }
 
-        tag.setStartTime(LocalDateTime.now());
+        tag.setStartTime(now);
         tagRepo.save(tag);
 
         // 로그 등록
