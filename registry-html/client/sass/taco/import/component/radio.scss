@@ -1,0 +1,117 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Radio
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-radio {
+        display:inline-block;
+        position:relative;
+
+        > .input-radio {
+            position:absolute;
+            left:0;
+            top:0;
+            width:1px;
+            height:1px;
+            opacity:0;
+        }
+        .label {
+            cursor:pointer;
+
+            &:after {
+                @extend %clear;
+            }
+            .icon-radio {
+                display:block;
+                float:left;
+                position:relative;
+                width:12px;
+                height:12px;
+                margin:0 7px 0 0;
+                border:1px solid #b7b9c2;
+                background-color:#fff;
+
+                @extend %box-sizing;
+                @include radius(50%);
+            }
+            .txt-label {
+                display:block;
+                float:left;
+                font-size:13px;
+                color:#4b515b;
+
+                > em {
+                    display:inline-block;
+                    margin:0 0 0 3px;
+                    font-size:11px;
+                    color:#90969f;
+                }
+            }
+
+            // Icon Type
+            .txt-label {
+                &[class*="type-"]:before {
+                    display:inline-block;
+                    margin:-1px 6px 0 2px;
+                    vertical-align:top;
+                    content:'';
+                }
+
+                &.type-private:before {
+                    @include get-sprite($icon_radio_private);
+                }
+                &.type-public:before {
+                    @include get-sprite($icon_radio_public);
+                }
+                &.type-empty:before {
+                    @include get-sprite($icon_radio_empty);
+                }
+                &.type-docker:before {
+                    @include get-sprite($icon_radio_docker);
+                }
+                &.type-github:before {
+                    @include get-sprite($icon_radio_github);
+                }
+                &.type-bitbucket:before {
+                    @include get-sprite($icon_radio_bitbucket);
+                }
+                &.type-gitlab:before {
+                    @include get-sprite($icon_radio_gitlab);
+                }
+                &.type-custom:before {
+                    @include get-sprite($icon_radio_custom);
+                }
+            }
+        }
+
+        // Checked
+        > .input-radio:checked + .label .icon-radio {
+            border-color:#4b515b;
+
+            &:before {
+                display:block;
+                position:absolute;
+                left:50%;
+                top:50%;
+                width:6px;
+                height:6px;
+                margin:-3px 0 0 -3px;
+                background-color:#4b515b;
+                content:'';
+
+                @include radius(50%);
+            }
+        }
+
+        // Disabled
+        > .input-radio:disabled + .label {
+            cursor:default;
+        }
+        > .input-radio:disabled + .label .icon-radio {
+            border-color:#e7e7ea;
+            background-color:#e7e7ea;
+        }
+    }
+}

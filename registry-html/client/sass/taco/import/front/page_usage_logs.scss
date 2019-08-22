@@ -1,0 +1,49 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Usage Logs
+***************************************************************************************/
+.page-usage-logs {
+    .section-logs {
+        margin:18px 0 0;
+
+        .filter-area {
+            float:none;
+
+            &:after {
+                @extend %clear;
+            }
+            .left-block {
+                float:left;
+                width:270px;
+
+                .component-selectbox {
+                    margin:0;
+                }
+            }
+            .right-block {
+                float:right;
+
+                &:after {
+                    @extend %clear;
+                }
+                .component-datepicker {
+                    float:left;
+                }
+                .component-search {
+                    float:left;
+                    width:280px;
+                    margin:0 0 0 12px;
+                }
+            }
+        }
+
+        .component-table {
+            margin:10px 0 0;
+
+            .table-logs .txt-user {
+                cursor:pointer;
+            }
+        }
+    }
+}

@@ -1,0 +1,214 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Layout : Content > Title
+***************************************************************************************/
+[class*="taco-"] {
+    .section-sub-title {
+        padding:70px 0 27px;
+        border-bottom:1px solid #e7e7ea;
+        font-size:28px;
+        color:#35393f;
+        font-weight:normal;
+
+        &:after {
+            @extend %clear;
+        }
+        &.type-org:before {
+            margin:-1px 13px 0 0;
+            vertical-align:top;
+            content:'';
+
+            @include get-sprite($icon_title_org);
+        }
+        &.type-user:before {
+            margin:-1px 13px 0 0;
+            vertical-align:top;
+            content:'';
+
+            @include get-sprite($icon_title_user);
+        }
+        .btn-back {
+            display:inline-block;
+            margin:-1px 10px 0 0;
+            vertical-align:top;
+
+            @include get-sprite($icon_title_back);
+        }
+
+        > .txt-title {
+            display:inline-block;
+        }
+
+        > .button-area {
+            position:relative;
+            top:3px;
+            float:right;
+            margin:-7px 0 0;
+        }
+
+        .title-area {
+            display:table;
+            float:left;
+            width:100%;
+            min-height:40px;
+
+            .title-block {
+                display:table-cell;
+                position:relative;
+                vertical-align:middle;
+            }
+            .btn-back {
+                margin-top:0;
+                vertical-align:middle;
+            }
+            .txt-title {
+                display:inline-block;
+                max-width:65%;
+                font-size:22px;
+                vertical-align:middle;
+
+                @extend %break;
+            }
+            .favorite-private {
+                display:inline-block;
+                margin:0 0 0 11px;
+                vertical-align:middle;
+
+                &:after {
+                    @extend %clear;
+                }
+                .component-starred {
+                    float:left;
+                }
+                .type-private {
+                    float:left;
+                    margin:6px 0 0 14px;
+
+                    @include get-sprite($icon_private);
+                }
+            }
+        }
+        .buttons {
+            position:absolute;
+            right:0;
+            top:50%;
+            margin:-20px 0 0;
+
+            &:after {
+                @extend %clear;
+            }
+            [class*="btn-"] {
+                float:left;
+            }
+            [class*="btn-"] + [class*="btn-"] {
+                margin-left:8px;
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Layout : Content > Sub Title, Filter
+***************************************************************************************/
+[class*="taco-"] {
+    .section-title {
+        &:after {
+            @extend %clear;
+        }
+        .txt-title {
+            float:left;
+            margin:3px 0 0;
+        }
+
+        // Registration Date
+        .date-area {
+            float:right;
+            margin:5px 0 0;
+            font-size:12px;
+            color:#4b515b;
+        }
+    }
+
+    // Filter
+    [class*="section-"] {
+        .filter-area {
+            float:right;
+
+            &:after {
+                @extend %clear;
+            }
+            div[autocomplete] {
+                float:left;
+            }
+            .component-pagination {
+                float:left;
+            }
+            .component-search,
+            .component-selectbox {
+                float:left;
+                margin:0 0 0 12px;
+            }
+            .component-search {
+                width:280px;
+            }
+            .component-selectbox {
+                width:270px;
+            }
+            .button-block {
+                float:left;
+                margin:0 0 0 12px;
+            }
+            .toggle-block {
+                float:left;
+                margin:0 0 0 12px;
+
+                &:after {
+                    @extend %clear;
+                }
+                .btn-toggle {
+                    position:relative;
+                    float:left;
+
+                    &.type-card {
+                        @include get-sprite($icon_toggle_card);
+
+                        &[aria-selected="true"] {
+                            @include get-sprite($icon_toggle_card_on);
+                        }
+                    }
+                    &.type-table {
+                        margin-left:5px;
+
+                        @include get-sprite($icon_toggle_table);
+
+                        &:before {
+                            display:block;
+                            position:absolute;
+                            left:-3px;
+                            top:50%;
+                            width:1px;
+                            height:16px;
+                            margin:-8px 0 0;
+                            background-color:#d0d1d8;
+                            content:'';
+                        }
+                        &[aria-selected="true"] {
+                            @include get-sprite($icon_toggle_table_on);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    [class*="page-"] {
+        .section-title {
+            margin:70px 0 0;
+
+            .txt-title {
+                font-size:18px;
+            }
+        }
+    }
+}

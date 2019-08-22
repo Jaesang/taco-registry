@@ -1,0 +1,406 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Repository Build History
+***************************************************************************************/
+.page-build-history {
+    .section-title {
+        margin-bottom:16px !important;
+    }
+}
+
+/***************************************************************************************
+   Repository Build 상세
+***************************************************************************************/
+.page-build-history {
+    .section-build-detail {
+        margin:40px 0 0;
+        background-color:#282c35;
+
+        @include box-shadow(0 1px 6px 0 rgba(84, 97, 104, 0.15));
+
+        // 빌드 상단
+        .build-area {
+            height:60px;
+            padding:0 30px;
+            background-color:#fff;
+
+            &:after {
+                @extend %clear;
+            }
+
+            // 성공, 실패, 취소
+            .status-block {
+                float:left;
+
+                .txt-status {
+                    margin:18px 0 0;
+                    font-size:0;
+
+                    > .component-loading {
+                        margin:0 16px 0 0;
+                        vertical-align:top;
+                    }
+                    > span {
+                        display:inline-block;
+                        margin:5px 0 0;
+                        vertical-align:top;
+                        font-size:12px;
+                        color:#4b515b;
+                    }
+                }
+                .txt-status.type-success,
+                .txt-status.type-fail,
+                .txt-status.type-cancel {
+                    &:before {
+                        margin:0 16px 0 0;
+                        vertical-align:top;
+                        content:'';
+                    }
+                }
+                .txt-status.type-success:before {
+                    @include get-sprite($icon_build_success);
+                }
+                .txt-status.type-fail:before {
+                    @include get-sprite($icon_build_fail);
+                }
+                .txt-status.type-cancel:before {
+                    @include get-sprite($icon_build_cancel);
+                }
+            }
+
+            // 사용자, 빌드 시간
+            .info-block {
+                float:right;
+
+                &:after {
+                    @extend %clear;
+                }
+                .txt-user {
+                    display:block;
+                    float:left;
+                    margin:22px 0 0;
+                    font-size:12px;
+                    color:#90969f;
+                }
+                .txt-user:before {
+                    margin:0 4px 0 0;
+                    vertical-align:top;
+                    content:'';
+
+                    @include get-sprite($icon_search_user);
+                }
+                .txt-time {
+                    display:block;
+                    float:left;
+                    margin:22px 0 0 75px;
+                    font-size:12px;
+                    color:#90969f;
+                }
+                .txt-time:before {
+                    margin:0 4px 0 0;
+                    vertical-align:top;
+                    content:'';
+
+                    @include get-sprite($icon_build_time);
+                }
+            }
+        }
+
+        // Log 영역
+        .log-area {
+            position:relative;
+            padding:32px 50px;
+            background-color:#282c35;
+
+            // Button
+            .button-block {
+                position:absolute;
+                right:50px;
+                top:23px;
+                z-index:1;
+
+                &:after {
+                    @extend %clear;
+                }
+                .btn-log {
+                    display:inline-block;
+                    float:left;
+                    height:32px;
+                    padding:0 16px;
+                    line-height:32px;
+                    font-size:11px;
+                    color:#fff;
+
+                    @include radius(2px);
+
+                    &[class*="type-"]:before {
+                        margin:6px 4px 0 0;
+                        vertical-align:top;
+                        content:'';
+                    }
+                    &.type-download:before {
+                        @include get-sprite($icon_btn_download);
+                    }
+                    &.type-copy:before {
+                        @include get-sprite($icon_input_copy);
+                    }
+                    &:hover {
+                        background-color:#4b515b;
+                    }
+                    & + .btn-log {
+                        margin-left:10px;
+                    }
+                }
+            }
+
+            // Build Loading Message
+            .txt-build-loading {
+                font-size:10px;
+                color:#90969f;
+            }
+
+            // Build Cancel Message
+            .txt-build-cancel {
+                padding:0 500px 0 0;
+                font-size:11px;
+                color:#fff;
+                line-height:20px;
+                font-weight:bold;
+            }
+
+            // Build Step
+            .build-step {
+                position:relative;
+                margin:0 0 10px 0;
+                font-size:11px;
+                color:#fff;
+                font-weight:bold;
+
+                &:before {
+                    display:inline-block;
+                    width:8px;
+                    height:8px;
+                    margin:2px 5px 0 0;
+                    background-color:#748ffc;
+                    vertical-align:top;
+                    content:'';
+
+                    @include radius(50%);
+                }
+                &.type-1st:before {
+                    opacity:0.1;
+                }
+                &.type-2nd:before {
+                    opacity:0.2;
+                }
+                &.type-3rd:before {
+                    opacity:0.4;
+                }
+                &.type-4th:before {
+                    opacity:0.6;
+                }
+                &.type-5th:before {
+                    opacity:0.8;
+                }
+                &.type-complete:before {
+                    background-color:#a9e34b;
+                }
+                &.type-error:before {
+                    background-color:#f8523f;
+                }
+                &.type-pushing {
+                    margin-top:30px;
+                }
+            }
+            .build-time {
+                padding:5px 0 0;
+                font-size:10px;
+                color:#90969f;
+            }
+
+            // Build Error
+            .build-error {
+                display:inline-block;
+                height:30px;
+                margin:0 0 0 16px;
+                padding:0 16px;
+                background-color:rgba(248,82,63,0.2);
+                line-height:28px;
+                font-size:12px;
+                color:#f8523f;
+                font-weight:bold;
+
+                @include radius(15px);
+
+                &:before {
+                    margin:7px 6px 0 0;
+                    vertical-align:top;
+                    content:'';
+
+                    @include get-sprite($icon_login_warning);
+                }
+            }
+
+            // Log
+            .build-log {
+                margin:15px 0 0;
+                padding:10px 0 0;
+                border-top:1px solid #4b515b;
+
+                > li {
+                    margin:10px 0 0;
+                }
+                .log-type {
+                    cursor:pointer;
+
+                    &:after {
+                        @extend %clear;
+                    }
+                    .txt-type {
+                        display:block;
+                        position:relative;
+                        float:left;
+                        width:120px;
+                        height:24px;
+                        padding:0 0 0 18px;
+                        line-height:24px;
+                        font-size:12px;
+
+                        @extend %box-sizing;
+
+                        &:before {
+                            display:inline-block;
+                            position:relative;
+                            top:1px;
+                            width:2px;
+                            height:11px;
+                            margin:0 4px 0 0;
+                            content:'';
+                        }
+                        &:after {
+                            position:absolute;
+                            left:0;
+                            top:50%;
+                            margin:-4px 0 0;
+                            content:'';
+
+                            @include get-sprite($arrow_build);
+                            @include rotate(-90);
+                        }
+                    }
+                    .txt-desc {
+                        display:block;
+                        float:left;
+                        width:85%;
+                        padding:4px 0 0;
+                        line-height:1.4em;
+                        font-size:12px;
+                        color:#fff;
+
+                        @extend %break;
+                    }
+
+                    // From
+                    &.is-from {
+                        .txt-type,
+                        .txt-desc {
+                            color:#61c0dc;
+                        }
+                        .txt-type:before {
+                            background-color:#61c0dc;
+                        }
+                    }
+
+                    // Run
+                    &.is-run {
+                        .txt-type {
+                            color:#a9e34b;
+                        }
+                        .txt-type:before {
+                            background-color:#a9e34b;
+                        }
+                    }
+
+                    // Workdir
+                    &.is-work {
+                        .txt-type {
+                            color:#fab005;
+                        }
+                        .txt-type:before {
+                            background-color:#fab005;
+                        }
+                    }
+
+                    // Info
+                    &.is-info {
+                        .txt-type {
+                            color:#90969f;
+                        }
+                        .txt-type:before {
+                            background-color:#90969f;
+                        }
+                    }
+
+                    // Basic
+                    &.is-basic {
+                        .txt-type {
+                            color:#748ffc;
+                        }
+                        .txt-type:before {
+                            background-color:#748ffc;
+                        }
+                    }
+
+                    // Expanded
+                    &[aria-expanded="true"] + .log-detail,
+                    &[aria-expanded="true"] ~ .log-detail {
+                        display:block;
+                    }
+                    &[aria-expanded="true"] .txt-type:after {
+                        @include rotate(0);
+                    }
+                }
+
+                .log-detail {
+                    display:none;
+                    margin:5px 0 0;
+                    padding:2px 16px;
+
+                    &:after {
+                        @extend %clear;
+                    }
+                    &:hover {
+                        background-color:#252525;
+                    }
+                    & + .log-detail {
+                        margin:2px 0 0;
+                    }
+                    .txt-date {
+                        display:block;
+                        float:left;
+                        line-height:1.4em;
+                        font-size:10px;
+                        color:#90969f;
+                    }
+                    .txt-desc {
+                        display:block;
+                        float:left;
+                        width:80%;
+                        margin:0 0 0 10px;
+                        line-height:1.4em;
+                        font-size:10px;
+                        color:#fff;
+
+                        @extend %break;
+                    }
+
+                    // Error
+                    &.is-error .txt-desc {
+                        color:#f8523f;
+                    }
+                }
+            }
+        }
+    }
+}

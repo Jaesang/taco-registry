@@ -1,0 +1,1132 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Popup 새로운 조직생성
+***************************************************************************************/
+.popup-create-organization {
+    .form-create {
+        width:570px;
+
+        tbody tr:last-child {
+            th,td {
+                padding-bottom:0;
+            }
+        }
+
+        .align-top {
+            vertical-align:top;
+
+            .txt-label {
+                display:block;
+                margin:10px 0 0;
+            }
+
+            & + td {
+                vertical-align:top;
+            }
+        }
+        .txt-desc {
+            margin:6px 0 0;
+            padding:0 0 0 7px;
+            line-height:14px;
+            font-size:11px;
+            color:#90969f;
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup 신규팀 생성
+***************************************************************************************/
+.popup-create-team {
+    .form-create {
+        width:570px;
+
+        tbody tr:last-child {
+            th,td {
+                padding-bottom:0;
+            }
+        }
+
+        .align-top {
+            vertical-align:top;
+
+            .txt-label {
+                display:block;
+            }
+
+            & + td {
+                vertical-align:top;
+            }
+        }
+        .list-role {
+            > li + li {
+                margin:10px 0 0;
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup 비밀번호 변경
+***************************************************************************************/
+.popup-change-password {
+    .form-password {
+        width:570px;
+
+        tbody th {
+            padding-right:10px;
+            text-align:left;
+            font-weight:normal;
+            font-size:11px;
+            color:#4b515b;
+        }
+        tbody td {
+            .component-input + .component-input {
+                margin:6px 0 0;
+            }
+        }
+        tbody th,
+        tbody td {
+            padding-bottom:30px;
+        }
+        tbody tr:last-child {
+            th,td {
+                padding-bottom:0;
+            }
+        }
+
+        .align-top {
+            vertical-align:top;
+
+            .txt-label {
+                display:block;
+                margin:10px 0 0;
+            }
+
+            & + td {
+                vertical-align:top;
+            }
+        }
+        .txt-desc {
+            margin:6px 0 0;
+            padding:0 0 0 7px;
+            line-height:14px;
+            font-size:11px;
+            color:#90969f;
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup User Registration
+***************************************************************************************/
+.popup-user-registration {
+    .form-registration {
+        width:570px;
+
+        tbody th {
+            padding-right:10px;
+            text-align:left;
+            font-weight:normal;
+            font-size:11px;
+            color:#4b515b;
+        }
+        tbody td {
+            font-size:13px;
+            color:#35393f;
+        }
+        tbody th,
+        tbody td {
+            padding-bottom:30px;
+        }
+        tbody tr:last-child {
+            th,td {
+                padding-bottom:0;
+            }
+        }
+
+        .align-top {
+            vertical-align:top;
+
+            .txt-label {
+                display:block;
+                margin:10px 0 0;
+            }
+
+            & + td {
+                vertical-align:top;
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup Start Repository Build
+***************************************************************************************/
+.popup-repository-build {
+    width:550px;
+}
+
+/***************************************************************************************
+   Popup Create New Repository
+***************************************************************************************/
+.popup-create-repository {
+    width:1068px;
+}
+
+/***************************************************************************************
+   Popup Add Files
+***************************************************************************************/
+.popup-add-files {
+    width:1068px;
+}
+
+/***************************************************************************************
+   Popup Delete Organization
+***************************************************************************************/
+.popup-delete-organization {
+    width:570px;
+}
+
+/***************************************************************************************
+   Popup Delete Account
+***************************************************************************************/
+.popup-delete-account {
+    width:570px;
+}
+
+/***************************************************************************************
+   Popup Delete Repository
+***************************************************************************************/
+.popup-delete-repository {
+    width:570px;
+
+    .txt-confirm {
+        display:block;
+        font-size:13px;
+        color:#4b515b;
+    }
+    .txt-desc {
+        margin:30px 0 0;
+        font-size:12px;
+        color:#f8523f;
+        font-weight:bold;
+
+        &:before {
+            margin:-1px 6px 0 0;
+            vertical-align:top;
+            content:'';
+
+            @include get-sprite($icon_login_warning);
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup Delete User
+***************************************************************************************/
+.popup-user-admin {
+    width:570px;
+
+    .txt-confirm {
+        display:block;
+        font-size:13px;
+        color:#4b515b;
+    }
+    .txt-desc {
+        margin:30px 0 0;
+        font-size:12px;
+        color:#f8523f;
+        font-weight:bold;
+
+        &:before {
+            margin:-1px 6px 0 0;
+            vertical-align:top;
+            content:'';
+
+            @include get-sprite($icon_login_warning);
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup Restore Tag
+***************************************************************************************/
+.popup-restore-tag {
+    width:570px;
+
+    .txt-confirm {
+        display:block;
+        min-height:24px;
+        line-height:24px;
+        font-size:13px;
+        color:#4b515b;
+
+        .txt-ver {
+            display:inline-block;
+            position:relative;
+            top:-1px;
+            height:24px;
+            padding:0 6px;
+            background-color:#ffe3e3;
+            line-height:24px;
+            vertical-align:top;
+            font-size:15px;
+            color:#35393f;
+
+            @include radius(2px);
+        }
+        .txt-sha {
+            display:inline-block;
+            height:17px;
+            padding:0 1px;
+            background-color:#e7e7ea;
+            line-height:17px;
+            font-size:11px;
+            color:#4b515b;
+        }
+        .txt-id {
+            font-size:11px;
+        }
+    }
+    .txt-desc {
+        margin:30px 0 0;
+        font-size:12px;
+        color:#f8523f;
+        font-weight:bold;
+
+        &:before {
+            margin:-1px 6px 0 0;
+            vertical-align:top;
+            content:'';
+
+            @include get-sprite($icon_login_warning);
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup Build Log
+***************************************************************************************/
+.popup-build-log {
+    width:1068px;
+    margin:-40px 0 0;
+
+    .section-build-detail {
+        background-color:#282c35;
+
+        // 빌드 상단
+        .build-area {
+            height:60px;
+            padding:0 10px;
+            background-color:#fff;
+
+            &:after {
+                @extend %clear;
+            }
+
+            // 성공, 실패, 취소
+            .status-block {
+                float:left;
+
+                .txt-status {
+                    margin:18px 0 0;
+                    font-size:0;
+
+                    > .component-loading {
+                        margin:0 16px 0 0;
+                        vertical-align:top;
+                    }
+                    > span {
+                        display:inline-block;
+                        margin:5px 0 0;
+                        vertical-align:top;
+                        font-size:12px;
+                        color:#4b515b;
+                    }
+                }
+                .txt-status.type-success,
+                .txt-status.type-fail,
+                .txt-status.type-cancel {
+                    &:before {
+                        margin:0 16px 0 0;
+                        vertical-align:top;
+                        content:'';
+                    }
+                }
+                .txt-status.type-success:before {
+                    @include get-sprite($icon_build_success);
+                }
+                .txt-status.type-fail:before {
+                    @include get-sprite($icon_build_fail);
+                }
+                .txt-status.type-cancel:before {
+                    @include get-sprite($icon_build_cancel);
+                }
+            }
+
+            // 사용자, 빌드 시간
+            .info-block {
+                float:right;
+
+                &:after {
+                    @extend %clear;
+                }
+                .txt-user {
+                    display:block;
+                    float:left;
+                    margin:22px 0 0;
+                    font-size:12px;
+                    color:#90969f;
+                }
+                .txt-user:before {
+                    margin:0 4px 0 0;
+                    vertical-align:top;
+                    content:'';
+
+                    @include get-sprite($icon_search_user);
+                }
+                .txt-time {
+                    display:block;
+                    float:left;
+                    margin:22px 0 0 75px;
+                    font-size:12px;
+                    color:#90969f;
+                }
+                .txt-time:before {
+                    margin:0 4px 0 0;
+                    vertical-align:top;
+                    content:'';
+
+                    @include get-sprite($icon_build_time);
+                }
+            }
+        }
+
+        // Log 영역
+        .log-area {
+            overflow-y:auto;
+            overflow-x:hidden;
+            position:relative;
+            height:610px;
+            padding:32px 50px;
+            background-color:#282c35;
+
+            @extend %box-sizing;
+
+            // Button
+            .button-block {
+                position:absolute;
+                right:50px;
+                top:23px;
+                z-index:1;
+
+                &:after {
+                    @extend %clear;
+                }
+                .btn-log {
+                    display:inline-block;
+                    float:left;
+                    height:32px;
+                    padding:0 16px;
+                    line-height:32px;
+                    font-size:11px;
+                    color:#fff;
+
+                    @include radius(2px);
+
+                    &[class*="type-"]:before {
+                        margin:6px 4px 0 0;
+                        vertical-align:top;
+                        content:'';
+                    }
+                    &.type-download:before {
+                        @include get-sprite($icon_btn_download);
+                    }
+                    &.type-copy:before {
+                        @include get-sprite($icon_input_copy);
+                    }
+                    &:hover {
+                        background-color:#4b515b;
+                    }
+                    & + .btn-log {
+                        margin-left:10px;
+                    }
+                }
+            }
+
+            // Build Loading Message
+            .txt-build-loading {
+                font-size:10px;
+                color:#90969f;
+            }
+
+            // Build Cancel Message
+            .txt-build-cancel {
+                padding:0 500px 0 0;
+                font-size:11px;
+                color:#fff;
+                line-height:20px;
+                font-weight:bold;
+            }
+
+            // Build Step
+            .build-step {
+                position:relative;
+                margin:0 0 10px 0;
+                font-size:11px;
+                color:#fff;
+                font-weight:bold;
+
+                &:before {
+                    display:inline-block;
+                    width:8px;
+                    height:8px;
+                    margin:2px 5px 0 0;
+                    background-color:#748ffc;
+                    vertical-align:top;
+                    content:'';
+
+                    @include radius(50%);
+                }
+                &.type-1st:before {
+                    opacity:0.1;
+                }
+                &.type-2nd:before {
+                    opacity:0.2;
+                }
+                &.type-3rd:before {
+                    opacity:0.4;
+                }
+                &.type-4th:before {
+                    opacity:0.6;
+                }
+                &.type-5th:before {
+                    opacity:0.8;
+                }
+                &.type-complete:before {
+                    background-color:#a9e34b;
+                }
+                &.type-error:before {
+                    background-color:#f8523f;
+                }
+            }
+            .build-time {
+                padding:5px 0 0;
+                font-size:10px;
+                color:#90969f;
+            }
+
+            // Build Error
+            .build-error {
+                display:inline-block;
+                height:30px;
+                margin:0 0 0 16px;
+                padding:0 16px;
+                background-color:rgba(248,82,63,0.2);
+                line-height:28px;
+                font-size:12px;
+                color:#f8523f;
+                font-weight:bold;
+
+                @include radius(15px);
+
+                &:before {
+                    margin:7px 6px 0 0;
+                    vertical-align:top;
+                    content:'';
+
+                    @include get-sprite($icon_login_warning);
+                }
+            }
+
+            // Log
+            .build-log {
+                margin:15px 0 30px;
+                padding:10px 0 0;
+                border-top:1px solid #4b515b;
+
+                > li {
+                    margin:10px 0 0;
+                }
+                .log-type {
+                    cursor:pointer;
+
+                    &:after {
+                        @extend %clear;
+                    }
+                    .txt-type {
+                        display:block;
+                        position:relative;
+                        float:left;
+                        width:120px;
+                        height:24px;
+                        padding:0 0 0 18px;
+                        line-height:24px;
+                        font-size:12px;
+
+                        @extend %box-sizing;
+
+                        &:before {
+                            display:inline-block;
+                            position:relative;
+                            top:1px;
+                            width:2px;
+                            height:11px;
+                            margin:0 4px 0 0;
+                            content:'';
+                        }
+                        &:after {
+                            position:absolute;
+                            left:0;
+                            top:50%;
+                            margin:-4px 0 0;
+                            content:'';
+
+                            @include get-sprite($arrow_build);
+                            @include rotate(-90);
+                        }
+                    }
+                    .txt-desc {
+                        display:block;
+                        float:left;
+                        width:85%;
+                        padding:4px 0 0;
+                        line-height:1.4em;
+                        font-size:12px;
+                        color:#fff;
+
+                        @extend %break;
+                    }
+
+                    // From
+                    &.is-from {
+                        .txt-type,
+                        .txt-desc {
+                            color:#61c0dc;
+                        }
+                        .txt-type:before {
+                            background-color:#61c0dc;
+                        }
+                    }
+
+                    // Run
+                    &.is-run {
+                        .txt-type {
+                            color:#a9e34b;
+                        }
+                        .txt-type:before {
+                            background-color:#a9e34b;
+                        }
+                    }
+
+                    // Workdir
+                    &.is-work {
+                        .txt-type {
+                            color:#fab005;
+                        }
+                        .txt-type:before {
+                            background-color:#fab005;
+                        }
+                    }
+
+                    // Info
+                    &.is-info {
+                        .txt-type {
+                            color:#90969f;
+                        }
+                        .txt-type:before {
+                            background-color:#90969f;
+                        }
+                    }
+
+                    // Basic
+                    &.is-basic {
+                        .txt-type {
+                            color:#748ffc;
+                        }
+                        .txt-type:before {
+                            background-color:#748ffc;
+                        }
+                    }
+
+                    // Expanded
+                    &[aria-expanded="true"] + .log-detail,
+                    &[aria-expanded="true"] ~ .log-detail {
+                        display:block;
+                    }
+                    &[aria-expanded="true"] .txt-type:after {
+                        @include rotate(0);
+                    }
+                }
+
+                .log-detail {
+                    display:none;
+                    margin:5px 0 0;
+                    padding:2px 16px;
+
+                    &:after {
+                        @extend %clear;
+                    }
+                    &:hover {
+                        background-color:#252525;
+                    }
+                    & + .log-detail {
+                        margin:2px 0 0;
+                    }
+                    .txt-date {
+                        display:block;
+                        float:left;
+                        line-height:1.4em;
+                        font-size:10px;
+                        color:#90969f;
+                    }
+                    .txt-desc {
+                        display:block;
+                        float:left;
+                        width:80%;
+                        margin:0 0 0 10px;
+                        line-height:1.4em;
+                        font-size:10px;
+                        color:#fff;
+
+                        @extend %break;
+                    }
+
+                    // Error
+                    &.is-error .txt-desc {
+                        color:#f8523f;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup Image Layers
+***************************************************************************************/
+.popup-image-layers {
+    width:1068px;
+    margin:-40px 0 0;
+
+    .section-image {
+        overflow:auto;
+        height:575px;
+        padding:42px 52px 26px;
+        background-color:#282c35;
+
+        @extend %box-sizing;
+
+        .list-image {
+            > li {
+                position:relative;
+
+                &:before {
+                    display:block;
+                    position:absolute;
+                    left:132px;
+                    top:0;
+                    width:1px;
+                    height:100%;
+                    background-color:#fff;
+                    content:'';
+                }
+                &:after {
+                    @extend %clear;
+                }
+                &:first-child {
+                    .image-line:before {
+                        display:block;
+                    }
+                }
+                &:last-child {
+                    .image-line:after {
+                        display:block;
+                    }
+                }
+            }
+            .txt-image {
+                display:block;
+                float:left;
+                width:129px;
+                padding:0 19px 0 0;
+                line-height:24px;
+                font-size:11px;
+                color:#b7b9c2;
+                text-align:right;
+
+                @extend %box-sizing;
+            }
+            .image-line {
+                position:relative;
+                z-index:2;
+                float:left;
+                height:24px;
+
+                &:before,
+                &:after {
+                    display:none;
+                    position:absolute;
+                    left:3px;
+                    z-index:1;
+                    width:1px;
+                    height:50%;
+                    background-color:#282c35;
+                    content:'';
+                }
+                &:before {
+                    top:0;
+                }
+                &:after {
+                    bottom:0;
+                }
+                > em {
+                    display:block;
+                    position:relative;
+                    z-index:2;
+                    width:7px;
+                    height:7px;
+                    margin:8px 0 0;
+                    border:1px solid #fff;
+                    background-color:#282c35;
+
+                    @extend %box-sizing;
+                    @include radius(50%);
+                }
+            }
+            .txt-type {
+                display:block;
+                float:left;
+                width:120px;
+                height:24px;
+                padding:0 20px 0 0;
+                line-height:24px;
+                font-size:12px;
+                text-align:right;
+                font-weight:bold;
+
+                @extend %box-sizing;
+
+                &:after {
+                    display:inline-block;
+                    width:2px;
+                    height:11px;
+                    margin:7px 0 0 6px;
+                    vertical-align:top;
+                    content:'';
+                }
+
+                // From
+                &.is-from {
+                    color:#61c0dc;
+
+                    &:after {
+                        background-color:#61c0dc;
+                    }
+                }
+
+                // Run
+                &.is-run {
+                    color:#a9e34b;
+
+                    &:after {
+                        background-color:#a9e34b;
+                    }
+                }
+
+                // Add
+                &.is-add {
+                    color:#40c057;
+
+                    &:after {
+                        background-color:#40c057;
+                    }
+                }
+
+                // Workdir
+                &.is-work {
+                    color:#fab005;
+
+                    &:after {
+                        background-color:#fab005;
+                    }
+                }
+
+                // Info
+                &.is-info {
+                    color:#90969f;
+
+                    &:after {
+                        background-color:#90969f;
+                    }
+                }
+
+                // Basic
+                &.is-basic {
+                    color:#748ffc;
+
+                    &:after {
+                        background-color:#748ffc;
+                    }
+                }
+            }
+            .txt-desc {
+                display:block;
+                float:left;
+                width:690px;
+                line-height:24px;
+                font-size:12px;
+                color:#fff;
+
+                @extend %break;
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup Security Scan
+***************************************************************************************/
+.popup-security-scan {
+    width:1068px;
+    margin:-41px 0 0;
+    background-color:#fff;
+
+    // Graph
+    .section-graph {
+        padding:34px 30px 43px;
+        border-bottom:1px solid #e7e7ea;
+
+        &:after {
+            @extend %clear;
+        }
+        .graph-area {
+            position:relative;
+            float:left;
+            width:176px;
+            height:176px;
+
+            &.type-package:before {
+                @include get-sprite($icon_graph_package);
+            }
+            &:before {
+                position:absolute;
+                left:50%;
+                top:50%;
+                margin:-35px 0 0 -35px;
+                content:'';
+
+                @include get-sprite($icon_graph_bug);
+            }
+            .graph-block {
+                height:100%;
+            }
+        }
+        .description-area {
+            float:left;
+            width:750px;
+            margin:0 0 0 46px;
+
+            .txt-title {
+                display:block;
+                line-height:32px;
+                font-size:24px;
+                color:#35393f;
+            }
+            .txt-desc {
+                margin:3px 0 0;
+                line-height:18px;
+                font-size:14px;
+                color:#35393f;
+            }
+            .list-legend {
+                margin:20px 0 0;
+
+                > li + li {
+                    margin:10px 0 0;
+                }
+                > li > em {
+                    display:inline-block;
+                    width:8px;
+                    height:8px;
+                    margin:2px 7px 0 0;
+                    vertical-align:top;
+
+                    @include radius(50%);
+                }
+                .txt-legend {
+                    display:inline-block;
+                    font-size:11px;
+                    color:#35393f;
+                    vertical-align:top;
+                }
+            }
+        }
+    }
+
+    // Filter
+    .section-filter {
+        margin:16px 0;
+
+        &:after {
+            @extend %clear;
+        }
+        .filter-area {
+            float:right;
+
+            .component-checkbox {
+                float:left;
+                margin:8px 20px 0 0;
+
+                .txt-label {
+                    font-size:13px;
+                    color:#4b515b;
+                }
+            }
+            .component-search {
+                float:left;
+                width:260px;
+            }
+        }
+    }
+
+    // List
+    .component-table {
+        border-bottom:1px solid #dce3e4;
+
+        @include box-shadow(none);
+    }
+}
+
+/***************************************************************************************
+   Popup Add Tag
+***************************************************************************************/
+.popup-add-tag {
+    .form-create {
+        width:570px;
+
+        tbody tr:last-child {
+            th,td {
+                padding-bottom:0;
+            }
+        }
+
+        .align-top {
+            vertical-align:top;
+
+            .txt-label {
+                display:block;
+                margin:10px 0 0;
+            }
+
+            & + td {
+                vertical-align:top;
+            }
+        }
+        .txt-desc {
+            margin:6px 0 0;
+            padding:0 0 0 7px;
+            line-height:14px;
+            font-size:11px;
+            color:#90969f;
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup Fetch Tag
+***************************************************************************************/
+.popup-fetch-tag {
+    .form-create {
+        width:570px;
+
+        tbody tr:last-child {
+            th,td {
+                padding-bottom:0;
+            }
+        }
+
+        .align-top {
+            vertical-align:top;
+
+            .txt-label {
+                display:block;
+                margin:10px 0 0;
+            }
+
+            & + td {
+                vertical-align:top;
+            }
+        }
+        .component-selectbox {
+            width:270px !important;
+        }
+        .box-command {
+            padding:6px 15px;
+            background-color:#4b515b;
+            line-height:24px;
+            font-size:12px;
+            color:#fff;
+            font-weight:bold;
+
+            @extend %break;
+            @include box-shadow(rgba(84, 97, 104, 0.15));
+        }
+    }
+}
+
+/***************************************************************************************
+   Popup Tag Manifest
+***************************************************************************************/
+.popup-tag-manifest {
+    width:570px;
+}
+
+/***************************************************************************************
+   Popup Delete Tag
+***************************************************************************************/
+.popup-delete-tag {
+    width:570px;
+
+    .txt-confirm {
+        font-size:13px;
+        color:#4b515b;
+    }
+    .txt-desc {
+        margin:30px 0 0;
+        font-size:12px;
+        color:#f8523f;
+        font-weight:bold;
+
+        &:before {
+            margin:-1px 6px 0 0;
+            vertical-align:top;
+            content:'';
+
+            @include get-sprite($icon_login_warning);
+        }
+    }
+
+    .tag-block {
+        margin:15px 0 0;
+        font-size:0;
+
+        .txt-tag {
+            display:inline-block;
+            height:24px;
+            padding:0 8px;
+            background-color:#e7e7ea;
+            line-height:24px;
+            font-size:13px;
+            color:#35393f;
+            vertical-align:top;
+
+            @include radius(2px);
+        }
+        .txt-tag + .txt-tag {
+            margin:0 0 0 8px;
+        }
+    }
+}

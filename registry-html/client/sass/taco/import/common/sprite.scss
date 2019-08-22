@@ -1,0 +1,143 @@
+	%sprite-image {
+	display: inline-block;
+	background-image: url(../images/taco.png);
+	background-repeat: no-repeat;
+	}
+
+    @mixin sprite-width($sprite) {
+    width: nth($sprite, 5);
+    }
+
+    @mixin sprite-height($sprite) {
+    height: nth($sprite, 6);
+    }
+
+    @mixin sprite-position($sprite) {
+    $sprite-offset-x: nth($sprite, 3);
+    $sprite-offset-y: nth($sprite, 4);
+    background-position: $sprite-offset-x  $sprite-offset-y;
+    }
+
+    @mixin sprite-image($sprite) {
+    $sprite-image: nth($sprite, 9);
+    background-image: url(#{$sprite-image});
+    }
+
+    @mixin get-sprite($sprite) {
+	@extend %sprite-image;
+    @include sprite-position($sprite);
+    @include sprite-width($sprite);
+    @include sprite-height($sprite);
+    }
+
+    $arrow_build: 437px 323px -437px -323px 10px 10px 470px 372px '../images/taco.png';
+    $arrow_header: 218px 191px -218px -191px 7px 4px 470px 372px '../images/taco.png';
+    $arrow_link: 381px 323px -381px -323px 10px 10px 470px 372px '../images/taco.png';
+    $arrow_lnb_tooltip: 464px 204px -464px -204px 6px 10px 470px 372px '../images/taco.png';
+    $arrow_selectbox: 229px 191px -229px -191px 7px 4px 470px 372px '../images/taco.png';
+    $arrow_selectbox_sub: 409px 323px -409px -323px 10px 10px 470px 372px '../images/taco.png';
+    $arrow_tooltip: 204px 191px -204px -191px 10px 6px 470px 372px '../images/taco.png';
+    $icon_admin: 224px 204px -224px -204px 32px 32px 470px 372px '../images/taco.png';
+    $icon_btn_add: 460px 271px -460px -271px 10px 10px 470px 372px '../images/taco.png';
+    $icon_btn_back: 395px 323px -395px -323px 10px 10px 470px 372px '../images/taco.png';
+    $icon_btn_download: 366px 242px -366px -242px 20px 20px 470px 372px '../images/taco.png';
+    $icon_build_cancel: 72px 242px -72px -242px 24px 24px 470px 372px '../images/taco.png';
+    $icon_build_fail: 441px 82px -441px -82px 24px 24px 470px 372px '../images/taco.png';
+    $icon_build_success: 128px 242px -128px -242px 24px 24px 470px 372px '../images/taco.png';
+    $icon_build_time: 18px 339px -18px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_card_profile: 180px 339px -180px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_check_star: 100px 242px -100px -242px 24px 24px 470px 372px '../images/taco.png';
+    $icon_check_star_hover: 156px 242px -156px -242px 24px 24px 470px 372px '../images/taco.png';
+    $icon_check_star_on: 184px 242px -184px -242px 24px 24px 470px 372px '../images/taco.png';
+    $icon_checkbox: 442px 289px -442px -289px 12px 12px 470px 372px '../images/taco.png';
+    $icon_checkbox_on: 458px 289px -458px -289px 12px 12px 470px 372px '../images/taco.png';
+    $icon_close_error: 321px 323px -321px -323px 11px 11px 470px 372px '../images/taco.png';
+    $icon_close_info: 336px 323px -336px -323px 11px 11px 470px 372px '../images/taco.png';
+    $icon_close_popup_large: 186px 204px -186px -204px 34px 34px 470px 372px '../images/taco.png';
+    $icon_close_success: 351px 323px -351px -323px 11px 11px 470px 372px '../images/taco.png';
+    $icon_close_warning: 366px 323px -366px -323px 11px 11px 470px 372px '../images/taco.png';
+    $icon_graph_bug: 278px 117px -278px -117px 70px 70px 470px 372px '../images/taco.png';
+    $icon_graph_package: 204px 117px -204px -117px 70px 70px 470px 372px '../images/taco.png';
+    $icon_header_org: 0px 339px 0px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_header_profile: 216px 339px -216px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_input_clear: 198px 339px -198px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_input_clear_hover: 144px 339px -144px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_input_copy: 390px 242px -390px -242px 20px 20px 470px 372px '../images/taco.png';
+    $icon_link: 432px 305px -432px -305px 14px 14px 470px 372px '../images/taco.png';
+    $icon_link_hover: 108px 339px -108px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_lnb_build: 408px 271px -408px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_build_on: 0px 305px 0px -305px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_history: 34px 305px -34px -305px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_history_on: 68px 305px -68px -305px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_info: 102px 305px -102px -305px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_info_on: 136px 305px -136px -305px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_log: 170px 305px -170px -305px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_log_on: 204px 305px -204px -305px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_member: 238px 305px -238px -305px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_member_on: 272px 305px -272px -305px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_repository: 374px 271px -374px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_repository_on: 340px 271px -340px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_setting: 306px 271px -306px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_setting_on: 272px 271px -272px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_tag: 238px 271px -238px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_tag_on: 204px 271px -204px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_lnb_user_management_on: 170px 271px -170px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_login_pw: 457px 47px -457px -47px 13px 16px 470px 372px '../images/taco.png';
+    $icon_login_user: 0px 357px 0px -357px 13px 15px 470px 372px '../images/taco.png';
+    $icon_login_warning: 162px 339px -162px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_nodata_org: 352px 117px -352px -117px 68px 63px 470px 372px '../images/taco.png';
+    $icon_nodata_search: 0px 204px 0px -204px 68px 63px 470px 372px '../images/taco.png';
+    $icon_org_add: 306px 339px -306px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_page_next: 68px 271px -68px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_page_next_disabled: 407px 82px -407px -82px 30px 30px 470px 372px '../images/taco.png';
+    $icon_page_next_hover: 0px 271px 0px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_page_prev: 430px 204px -430px -204px 30px 30px 470px 372px '../images/taco.png';
+    $icon_page_prev_disabled: 396px 204px -396px -204px 30px 30px 470px 372px '../images/taco.png';
+    $icon_page_prev_hover: 362px 204px -362px -204px 30px 30px 470px 372px '../images/taco.png';
+    $icon_popup_close: 424px 161px -424px -161px 19px 19px 470px 372px '../images/taco.png';
+    $icon_private: 432px 242px -432px -242px 14px 14px 470px 372px '../images/taco.png';
+    $icon_profile_logout: 450px 242px -450px -242px 14px 14px 470px 372px '../images/taco.png';
+    $icon_profile_my: 442px 271px -442px -271px 14px 14px 470px 372px '../images/taco.png';
+    $icon_profile_setting: 306px 305px -306px -305px 14px 14px 470px 372px '../images/taco.png';
+    $icon_radio_bitbucket: 324px 305px -324px -305px 14px 14px 470px 372px '../images/taco.png';
+    $icon_radio_custom: 342px 305px -342px -305px 14px 14px 470px 372px '../images/taco.png';
+    $icon_radio_docker: 360px 305px -360px -305px 14px 14px 470px 372px '../images/taco.png';
+    $icon_radio_empty: 378px 305px -378px -305px 14px 14px 470px 372px '../images/taco.png';
+    $icon_radio_github: 396px 305px -396px -305px 14px 14px 470px 372px '../images/taco.png';
+    $icon_radio_gitlab: 414px 305px -414px -305px 14px 14px 470px 372px '../images/taco.png';
+    $icon_radio_private: 414px 242px -414px -242px 14px 14px 470px 372px '../images/taco.png';
+    $icon_radio_public: 450px 305px -450px -305px 14px 14px 470px 372px '../images/taco.png';
+    $icon_repository_default: 424px 117px -424px -117px 40px 40px 470px 372px '../images/taco.png';
+    $icon_search: 306px 323px -306px -323px 11px 11px 470px 372px '../images/taco.png';
+    $icon_search_on: 457px 67px -457px -67px 11px 11px 470px 372px '../images/taco.png';
+    $icon_search_org: 54px 339px -54px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_search_repository: 72px 339px -72px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_search_user: 90px 339px -90px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_securityscan: 212px 242px -212px -242px 24px 24px 470px 372px '../images/taco.png';
+    $icon_starred: 126px 339px -126px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_table_add: 294px 204px -294px -204px 30px 30px 470px 372px '../images/taco.png';
+    $icon_table_delete: 260px 204px -260px -204px 30px 30px 470px 372px '../images/taco.png';
+    $icon_table_desc: 464px 218px -464px -218px 5px 8px 470px 372px '../images/taco.png';
+    $icon_table_download: 342px 242px -342px -242px 20px 20px 470px 372px '../images/taco.png';
+    $icon_table_extend: 423px 323px -423px -323px 10px 10px 470px 372px '../images/taco.png';
+    $icon_table_setting: 318px 242px -318px -242px 20px 20px 470px 372px '../images/taco.png';
+    $icon_table_sort_starred: 234px 339px -234px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_tag: 252px 339px -252px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_tag_add: 270px 339px -270px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_tag_change: 288px 339px -288px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_tag_delete: 36px 339px -36px -339px 14px 14px 470px 372px '../images/taco.png';
+    $icon_title_back: 148px 204px -148px -204px 34px 34px 470px 372px '../images/taco.png';
+    $icon_title_org: 110px 204px -110px -204px 34px 34px 470px 372px '../images/taco.png';
+    $icon_title_user: 72px 204px -72px -204px 34px 34px 470px 372px '../images/taco.png';
+    $icon_toast_error: 266px 242px -266px -242px 22px 22px 470px 372px '../images/taco.png';
+    $icon_toast_info: 240px 242px -240px -242px 22px 22px 470px 372px '../images/taco.png';
+    $icon_toast_success: 447px 161px -447px -161px 19px 14px 470px 372px '../images/taco.png';
+    $icon_toast_warning: 292px 242px -292px -242px 22px 20px 470px 372px '../images/taco.png';
+    $icon_toggle_card: 328px 204px -328px -204px 30px 30px 470px 372px '../images/taco.png';
+    $icon_toggle_card_on: 34px 271px -34px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_toggle_table: 136px 271px -136px -271px 30px 30px 470px 372px '../images/taco.png';
+    $icon_toggle_table_on: 102px 271px -102px -271px 30px 30px 470px 372px '../images/taco.png';
+    $logo_error: 0px 0px 0px 0px 200px 200px 470px 372px '../images/taco.png';
+    $logo_login: 204px 0px -204px 0px 266px 43px 470px 372px '../images/taco.png';
+    $logo_main: 204px 47px -204px -47px 249px 31px 470px 372px '../images/taco.png';
+    $logo_sub: 204px 82px -204px -82px 199px 31px 470px 372px '../images/taco.png';

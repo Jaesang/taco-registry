@@ -1,0 +1,198 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Input box
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-input {
+        .input-area {
+            position:relative;
+        }
+        .input-text {
+            width:100%;
+            height:30px;
+            padding:0 15px 0 10px;
+            border:1px solid #e7e7ea;
+            background-color:#fff;
+            line-height:30px;
+            font-size:12px;
+            color:#35393f;
+            font-family:sans-serif;
+
+            @extend %box-sizing;
+            @include placeholder(#b7b9c2);
+            @include radius(2px);
+
+            &:hover,
+            &:focus {
+                border-color:#90969f;
+            }
+            &:focus + .btn-clear {
+                display:block;
+            }
+            &[readonly],
+            &[readonly="readonly"] {
+                border-color:#e7e7ea;
+                background-color:#f6f6f7;
+                color:#90969f;
+
+                &:focus + .btn-clear {
+                    display:none;
+                }
+            }
+        }
+        .btn-clear {
+            display:none;
+            position:absolute;
+            right:8px;
+            top:50%;
+            margin:-7px 0 0;
+
+            @include get-sprite($icon_input_clear);
+
+            &:hover {
+                @include get-sprite($icon_input_clear_hover);
+            }
+        }
+        .txt-error {
+            display:none;
+            margin:6px 0 0;
+            padding:0 0 0 7px;
+            font-size:11px;
+            color:#f8523f;
+        }
+
+        // Error
+        &.is-error {
+            .input-text {
+                border-color:#f8523f;
+            }
+            .txt-error {
+                display:block;
+            }
+        }
+
+        // Copy to Clipboard
+        &.type-copy {
+            @include box-shadow(0 1px 6px 0 rgba(84, 97, 104, 0.15));
+
+            .input-text {
+                padding-right:30px;
+                border:0 none;
+                background-color:#4b515b;
+                color:#fff;
+                font-weight:bold;
+            }
+            .btn-copy {
+                position:absolute;
+                right:5px;
+                top:50%;
+                margin:-10px 0 0;
+
+                @include get-sprite($icon_input_copy);
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Textarea
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-textarea {
+        .textarea {
+            width:100%;
+            height:100%;
+            padding:5px 15px 5px 10px;
+            border:1px solid #e7e7ea;
+            background-color:#fff;
+            font-size:12px;
+            color:#35393f;
+            line-height:1.4em;
+            font-family:arial,sans-serif;
+
+            @extend %box-sizing;
+            @include placeholder(#b7b9c2);
+
+            &:hover,
+            &:focus {
+                border-color:#90969f;
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Date Picker
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-datepicker {
+        &:after {
+            @extend %clear;
+        }
+        .txt-label {
+            display:block;
+            float:left;
+            margin:0 10px 0 0;
+            line-height:30px;
+            font-size:11px;
+            color:#4b515b;
+        }
+        .input-date {
+            float:left;
+            width:200px;
+            height:30px;
+            padding:0 15px;
+            border:1px solid #e7e7ea;
+            line-height:30px;
+            font-size:12px;
+            color:#35393f;
+            cursor:pointer;
+
+            @extend %box-sizing;
+            @include placeholder(#b7b9c2);
+        }
+    }
+}
+
+/***************************************************************************************
+   Add Files
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-form {
+        &:after {
+            @extend %clear;
+        }
+        .component-selectbox {
+            float:left;
+            width:180px;
+        }
+        .component-input {
+            float:left;
+            width:380px;
+            margin:0 0 0 10px;
+        }
+        .btn-form {
+            display:block;
+            float:left;
+            width:30px;
+            height:30px;
+            margin:0 0 0 10px;
+            border:1px solid #e7e7ea;
+
+            @extend %box-sizing;
+            @include radius(2px);
+
+            &.type-delete {
+                @include get-sprite($icon_table_delete);
+            }
+            &.type-add {
+                @include get-sprite($icon_table_add);
+            }
+        }
+    }
+}

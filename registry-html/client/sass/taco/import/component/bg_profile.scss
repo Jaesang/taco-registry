@@ -1,0 +1,39 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   File Attachment
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-user {
+        overflow:hidden;
+        display:inline-block;
+        width:14px;
+        height:14px;
+
+        @include radius(30%);
+
+        .bg-img {
+            display:block;
+            height:100%;
+
+            @extend %bg-cover;
+        }
+    }
+
+    .component-org {
+        overflow:hidden;
+        display:inline-block;
+        width:34px;
+        height:34px;
+
+        @include radius(30%);
+
+        .bg-img {
+            display:block;
+            height:100%;
+
+            @extend %bg-cover;
+        }
+    }
+}

@@ -1,0 +1,74 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Repository Settings
+***************************************************************************************/
+.page-repository-setting {
+    .section-title {
+        margin-bottom:16px !important;
+    }
+
+    .section-member {
+        .title-area {
+            margin:0 0 10px;
+
+            &:after {
+                @extend %clear;
+            }
+        }
+        .txt-title {
+            float:left;
+            height:30px;
+            padding:0 0 0 10px;
+            line-height:30px;
+            font-size:14px;
+            color:#4b515b;
+        }
+        .filter-area {
+            .component-search {
+                width:380px;
+            }
+            .component-selectbox {
+                width:130px;
+            }
+        }
+    }
+
+    .section-visibility {
+        margin:40px 0 0;
+
+        &:after {
+            @extend %clear;
+        }
+        .txt-title {
+            float:left;
+            height:30px;
+            padding:0 0 0 10px;
+            line-height:30px;
+            font-size:14px;
+            color:#4b515b;
+        }
+        .make-public {
+            float:left;
+            margin:0 0 0 10px;
+
+            .txt-desc {
+                margin:5px 0 0;
+                padding:0 0 0 7px;
+                font-size:11px;
+                color:#90969f;
+
+                > span {
+                    color:#35393f;
+                }
+            }
+        }
+    }
+
+    .section-button {
+        margin:27px 0 0;
+        padding:20px 0 0;
+        border-top:1px solid #e7e7ea;
+        text-align:right;
+    }
+}

@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Error
+***************************************************************************************/
+.page-error {
+    .error-area {
+        margin:208px 0 0;
+        text-align:center;
+
+        &:before {
+            opacity:0.1;
+            content:'';
+
+            @include get-sprite($logo_error);
+        }
+
+        .txt-error {
+            display:block;
+            margin:22px 0 0;
+            font-size:32px;
+            color:#252525;
+            font-weight:normal;
+        }
+        .txt-desc {
+            margin:11px 0 28px;
+            font-size:18px;
+            color:#b7b9c2;
+        }
+    }
+}

@@ -1,0 +1,211 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Select Box
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-selectbox {
+        position:relative;
+        height:30px;
+        border:1px solid #e4e3e7;
+        background-color:#fff;
+        line-height:28px;
+
+        @include radius(2px);
+        @extend %box-sizing;
+
+        &:after {
+            position:absolute;
+            right:12px;
+            top:50%;
+            margin:-2px 0 0;
+            content:'';
+
+            @include get-sprite($arrow_selectbox);
+        }
+        &:hover {
+            border-color:#858b95;
+        }
+        > .txt-label {
+            display:block;
+            position:relative;
+            z-index:1;
+            height:100%;
+            padding:0 30px 0 15px;
+            font-size:12px;
+            color:#4b515b;
+            cursor:pointer;
+
+            @extend %ellipsis;
+        }
+
+        .layer-option {
+            display:none;
+            position:absolute;
+            left:0;
+            top:100%;
+            z-index:5;
+            width:100%;
+            margin:2px 0 0;
+            padding:4px 0;
+            background-color:#fff;
+
+            @include radius(4px);
+            @include box-shadow(0 1px 3px 0 rgba(84, 97, 104, 0.3));
+
+            &[aria-expanded="true"] {
+                display:block;
+            }
+            .list-option {
+                overflow-y:auto;
+                max-height:192px;
+
+                > li {
+                    position:relative;
+
+                    &.type-line {
+                        margin:0 0 4px;
+                        padding:0 0 3px;
+
+                        &:after {
+                            display:block;
+                            position:absolute;
+                            left:13px;
+                            right:13px;
+                            bottom:-1px;
+                            height:1px;
+                            background-color:#e7e7ea;
+                            content:'';
+                        }
+                    }
+                }
+
+                // Radio
+                .component-radio {
+                    display:block;
+
+                    > .txt-label {
+                        display:block;
+                        height:30px;
+                        padding:0 15px;
+                        line-height:30px;
+                        font-size:12px;
+                        color:#35393f;
+                        cursor:pointer;
+
+                        &:hover {
+                            background-color:#f6f6f7;
+                        }
+                    }
+                    .input-radio:checked + .txt-label {
+                        color:#29c7ca;
+                    }
+                }
+
+                // Checkbox
+                .component-checkbox {
+                    display:block;
+
+                    > .txt-label {
+                        display:block;
+                        height:30px;
+                        padding:0 15px;
+                        line-height:30px;
+                        font-size:12px;
+                        color:#35393f;
+                        cursor:pointer;
+                    }
+                    > .txt-label:before {
+                        position:relative;
+                        top:1px;
+                        margin:0 6px 0 0;
+                        vertical-align:unset;
+                    }
+                }
+            }
+        }
+
+        // Disabled
+        &.is-disabled {
+            opacity:0.3;
+            cursor:default;
+
+            &:hover {
+                border-color:#e4e3e7;
+            }
+        }
+    }
+
+    // Members > Role
+    .component-selectbox {
+        &.type-role {
+            $type-read : #b7b9c2;
+            $type-write : #a9e34b;
+            $type-admin : #748ffc;
+
+            > .txt-label:before,
+            .layer-option .list-option .component-radio > .txt-label .txt-option:before {
+                display:inline-block;
+                width:8px;
+                height:8px;
+                margin:11px 8px 0 0;
+                vertical-align:top;
+                content:'';
+
+                @include radius(50%);
+            }
+            > .txt-label.type-read:before {
+                background-color:$type-read;
+            }
+            > .txt-label.type-write:before {
+                background-color:$type-write;
+            }
+            > .txt-label.type-admin:before {
+                background-color:$type-admin;
+            }
+
+            .layer-option {
+                width:320px;
+                padding-bottom:8px;
+
+                .list-option > li + li {
+                    margin:5px 0 0;
+                }
+            }
+            .layer-option .list-option .component-radio {
+                padding:5px 0;
+            }
+            .layer-option .list-option .component-radio > .txt-label {
+                height:auto;
+                line-height:100%;
+
+                &:hover {
+                    background-color:transparent;
+                }
+                .txt-option {
+                    height:24px;
+                    line-height:24px;
+                }
+                .txt-option:before {
+                    margin:9px 8px 0 0;
+                }
+                &.type-read .txt-option:before {
+                    background-color:$type-read;
+                }
+                &.type-write .txt-option:before {
+                    background-color:$type-write;
+                }
+                &.type-admin .txt-option:before {
+                    background-color:$type-admin;
+                }
+                .txt-desc {
+                    display:block;
+                    padding:0 0 0 18px;
+                    font-size:11px;
+                    color:#90969f;
+                }
+            }
+        }
+    }
+}

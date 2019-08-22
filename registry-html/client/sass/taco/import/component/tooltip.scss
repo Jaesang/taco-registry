@@ -1,0 +1,38 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Tooltip
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-tooltip {
+        position:absolute;
+        width:100%;
+
+        .box-tooltip {
+            display:inline-block;
+            position:relative;
+            max-width:288px;
+            padding:4px 13px 6px;
+            background-color:rgba(30,36,50,0.9);
+            line-height:1.4em;
+            font-size:12px;
+            color:#fff;
+            font-weight:normal;
+            text-align:center;
+
+            @extend %box-sizing;
+            @include radius(5px);
+
+            &:after {
+                position:absolute;
+                left:50%;
+                bottom:-6px;
+                margin:0 0 0 -5px;
+                content:'';
+
+                @include get-sprite($arrow_tooltip);
+            }
+        }
+    }
+}

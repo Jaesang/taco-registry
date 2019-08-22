@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Activity
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-activity {
+        $activity-color : #2ac7ca;
+        $activity-over-color : #40c057;
+
+        font-size:0;
+
+        > li {
+            display:inline-block;
+            width:3px;
+            height:4px;
+            background-color:#e7e7ea;
+            vertical-align:bottom;
+        }
+        > li:nth-child(2) {
+            height:8px;
+        }
+        > li:nth-child(3) {
+            height:12px;
+        }
+        > li:last-child {
+            height:16px;
+        }
+        > li + li {
+            margin-left:2px;
+        }
+
+        &.type-1st {
+            > li:first-child {
+                background-color:$activity-color;
+            }
+        }
+        &.type-2nd {
+            > li:first-child,
+            > li:nth-child(2) {
+                background-color:$activity-color;
+            }
+        }
+        &.type-3rd {
+            > li:first-child,
+            > li:nth-child(2),
+            > li:nth-child(3) {
+                background-color:$activity-color;
+            }
+        }
+        &.type-4th {
+            > li {
+                background-color:$activity-color;
+            }
+        }
+        &.type-max {
+            > li {
+                background-color:$activity-over-color;
+            }
+        }
+    }
+}

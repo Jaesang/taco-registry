@@ -1,0 +1,111 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Team & Role Settings
+***************************************************************************************/
+.page-team-role {
+    .section-title {
+        margin-bottom:16px !important;
+
+        .filter-area {
+            .component-search {
+                width:380px;
+            }
+            .component-selectbox {
+                width:130px;
+            }
+        }
+    }
+
+    .section-team {
+        margin:40px 0 0;
+
+        .form-description {
+            .txt-label {
+                display:block;
+                padding:0 0 0 10px;
+                font-size:14px;
+                color:#4b515b;
+                font-weight:bold;
+            }
+            .component-textarea {
+                height:90px;
+                margin:14px 0 0;
+            }
+            .button-block {
+                margin:10px 0 0;
+            }
+        }
+
+        .member-area {
+            margin:36px 0 0;
+
+            // 검색
+            .search-block {
+                &:after {
+                    @extend %clear;
+                }
+                .txt-label {
+                    display:block;
+                    float:left;
+                    padding:0 0 0 10px;
+                    font-size:14px;
+                    color:#4b515b;
+                    font-weight:bold;
+                }
+                .component-search {
+                    float:right;
+                    width:340px;
+                }
+            }
+
+            // 결과 목록
+            .result-block {
+                margin:10px 0 0;
+
+                .list-result {
+                    background-color:#fff;
+
+                    @include box-shadow(0 1px 6px 0 rgba(84, 97, 104, 0.15));
+
+                    > li {
+                        position:relative;
+                        height:60px;
+                        padding:20px 30px;
+
+                        @extend %box-sizing;
+                    }
+                    > li + li {
+                        border-top:1px solid #dce3e4;
+                    }
+                    .txt-user {
+                        display:inline-block;
+                        font-size:12px;
+                        color:#4b515b;
+
+                        &:before {
+                            margin:-1px 3px 0 0;
+                            vertical-align:top;
+                            content:'';
+
+                            @include get-sprite($icon_search_user);
+                        }
+                    }
+                    .btn-delete {
+                        position:absolute;
+                        right:25px;
+                        top:50%;
+                        margin:-15px 0 0;
+                        opacity:0.5;
+
+                        @include get-sprite($icon_table_delete);
+
+                        &:hover {
+                            opacity:1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

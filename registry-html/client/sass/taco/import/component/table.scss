@@ -1,0 +1,791 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Common Table
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-table {
+        @include box-shadow(0 1px 6px 0 rgba(84, 97, 104, 0.15));
+
+        [class*="table-"] {
+            thead th {
+                height:36px;
+                padding:0 0 0 20px;
+                background-color:#fafbfc;
+                font-size:11px;
+                color:#aababc;
+                font-weight:normal;
+                text-align:left;
+
+                .btn-sort {
+                    display:inline-block;
+                    color:#aababc;
+
+                    &.type-asc,
+                    &.type-desc {
+                        color:#87abaf;
+                        font-weight:bold;
+                    }
+                    &.type-asc:after,
+                    &.type-desc:after {
+                        margin:2px 0 0 5px;
+                        vertical-align:top;
+                        content:'';
+
+                        @include get-sprite($icon_table_desc);
+                    }
+                    &.type-asc:after {
+                        @include rotate(180);
+                    }
+                    &.type-starred {
+                        &:before {
+                            vertical-align:top;
+                            content:'';
+
+                            @include get-sprite($icon_table_sort_starred);
+                        }
+                        &:after {
+                            margin:3px 0 0 2px;
+                        }
+                    }
+                }
+            }
+            tbody td {
+                height:60px;
+                padding:0 0 0 20px;
+                border-top:1px solid #e7eced;
+                background-color:#fff;
+                line-height:1.1em;
+                font-size:12px;
+                color:#4b515b;
+            }
+
+            .link-item {
+                display:block;
+                font-size:12px;
+                color:#4b515b;
+
+                @extend %ellipsis;
+            }
+            .txt-user,
+            .txt-org {
+                display:block;
+                font-size:12px;
+                color:#90969f;
+
+                @extend %ellipsis;
+
+                &:before {
+                    margin:-1px 3px 0 0;
+                    vertical-align:top;
+                    content:'';
+                }
+            }
+            .txt-user:before {
+                @include get-sprite($icon_search_user);
+            }
+            .txt-org:before {
+                @include get-sprite($icon_search_org);
+            }
+            .txt-date {
+                display:block;
+                position:relative;
+                font-size:12px;
+                color:#90969f;
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Team & Role Table
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-table {
+        .table-role {
+            tbody tr:hover td {
+                background-color:#f7f9fa;
+            }
+            .txt-team {
+                display:block;
+                font-size:14px;
+                color:#35393f;
+
+                @extend %ellipsis;
+            }
+            .role-area {
+                position:relative;
+
+                .component-selectbox {
+                    width:130px;
+                }
+                .btn-delete {
+                    position:absolute;
+                    right:25px;
+                    top:50%;
+                    margin:-15px 0 0;
+                }
+            }
+            .btn-delete {
+                display:inline-block;
+                margin:0 25px 0 0;
+                opacity:0.5;
+
+                @include get-sprite($icon_table_delete);
+
+                &:hover {
+                    opacity:1;
+                }
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Repository Table
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-table {
+        .table-repository {
+            .txt-date {
+                &.type-private:after {
+                    position:absolute;
+                    right:30px;
+                    top:0;
+                    content:'';
+
+                    @include get-sprite($icon_private);
+                }
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Build Table
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-table {
+        .table-build {
+            .build-success {
+                @include get-sprite($icon_build_success);
+            }
+            .build-fail {
+                @include get-sprite($icon_build_fail);
+            }
+            .build-cancel {
+                @include get-sprite($icon_build_cancel);
+            }
+            .txt-tag {
+                display:block;
+                color:#90969f;
+
+                &:before {
+                    margin:0 4px 0 0;
+                    vertical-align:top;
+                    content:'';
+
+                    @include get-sprite($icon_tag);
+                }
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Usage Logs Table
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .table-logs {
+        .txt-desc {
+            display:block;
+            line-height:20px;
+            font-size:14px;
+            color:#4b515b;
+
+            > em {
+                display:inline-block;
+                background-color:#c4f6fa;
+
+                @include radius(2px);
+            }
+        }
+        .txt-ip {
+            display:block;
+            color:#90969f;
+        }
+    }
+}
+
+/***************************************************************************************
+   Recent Activity Table
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .table-activity {
+        thead th,
+        tbody th,
+        tbody td {
+            border:1px solid #e8eced;
+        }
+        thead th {
+            height:35px;
+            background-color:#fafbfc;
+            font-size:11px;
+            color:#aababc;
+            font-weight:normal;
+        }
+        tbody th {
+            padding:0 9px 0 0;
+            background-color:#fafbfc;
+            text-align:right;
+            font-size:11px;
+            color:#90969f;
+        }
+        tbody td {
+            height:20px;
+            padding:0 22px 0 0;
+            background-color:#fff;
+            text-align:right;
+            font-size:11px;
+            color:#4b515b;
+        }
+        .is-nothing {
+            background-color:transparent;
+        }
+    }
+}
+
+/***************************************************************************************
+   Repository Tag
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .table-tags {
+        thead th {
+            .component-checkbox {
+                .txt-label {
+                    font-size:11px;
+                    color:#aababc;
+                    font-weight:normal;
+                }
+            }
+        }
+        tbody td {
+            .component-checkbox {
+                .txt-label {
+                    font-size:14px;
+                }
+            }
+        }
+        tbody tr[aria-selected="true"] td {
+            background-color:#f7f9fa;
+        }
+
+        .component-checkbox {
+            .txt-label:before {
+                position:relative;
+                top:-1px;
+            }
+        }
+
+        .txt-scan {
+            display:inline-block;
+            position:relative;
+            height:24px;
+            line-height:24px;
+            font-weight:bold;
+
+            &:hover {
+                text-decoration:underline;
+                cursor:pointer;
+
+                .component-tooltip {
+                    display:block;
+                }
+            }
+            &:before {
+                vertical-align:top;
+                margin:0 4px 0 0;
+                content:'';
+            }
+            &.type-success {
+                color:#40c057;
+
+                &:before {
+                    @include get-sprite($icon_build_success);
+                }
+            }
+            &.type-fail {
+                color:#f8523f;
+
+                &:before {
+                    @include get-sprite($icon_build_fail);
+                }
+            }
+            &.type-scan {
+                color:#666eb2;
+
+                &:before {
+                    @include get-sprite($icon_securityscan);
+                }
+                > em {
+                    color:#fd7e14;
+                }
+            }
+            .component-tooltip {
+                display:none;
+                left:-100px;
+                bottom:30px;
+
+                .box-tooltip {
+                    width:280px;
+                }
+            }
+        }
+        .txt-size {
+            color:#90969f;
+        }
+        .txt-expires {
+            display:inline-block;
+            color:#666eb2;
+
+            &:hover {
+                text-decoration:underline;
+            }
+        }
+        .image-area {
+            max-width:100%;
+
+            .txt-image {
+                display:block;
+                float:left;
+                position:relative;
+                height:17px;
+                margin:0 6px 0 0;
+                background-color:#e7e7ea;
+                line-height:16px;
+                font-size:11px;
+                color:#90969f;
+                cursor:pointer;
+
+                &:hover {
+                    .component-tooltip {
+                        display:block;
+                    }
+                }
+                .component-tooltip {
+                    display:none;
+                    left:50%;
+                    bottom:30px;
+                    margin-left:-144px;
+
+                    .box-tooltip {
+                        width:288px;
+                    }
+                }
+            }
+            .link-image {
+                display:block;
+                height:17px;
+                line-height:16px;
+                font-size:11px;
+                color:#90969f;
+
+                @extend %ellipsis;
+
+                &:hover {
+                    text-decoration:underline;
+                }
+            }
+        }
+
+        .buttons {
+            position:relative;
+
+            &:after {
+                @extend %clear;
+            }
+            [class*="btn-"] {
+                float:left;
+            }
+            [class*="btn-"] + [class*="btn-"] {
+                margin:0 0 0 10px;
+            }
+            .layer-setting {
+                display:none;
+                position:absolute;
+                right:0;
+                top:100%;
+                z-index:1;
+                width:170px;
+                margin:5px 0 0;
+                padding:4px 0;
+                background-color:#fff;
+
+                @include radius(4px);
+                @include box-shadow(0 1px 3px 0 rgba(84, 97, 104, 0.3));
+
+                &[aria-expanded="true"] {
+                    display:block;
+                }
+                .link-item {
+                    display:block;
+                    height:30px;
+                    padding:0 13px;
+                    line-height:30px;
+                    font-size:12px;
+                    color:#35393f;
+
+                    &:hover {
+                        background-color:#f6f6f7;
+                    }
+                    &:before {
+                        margin:8px 8px 0 0;
+                        vertical-align:top;
+                        content:'';
+                    }
+                    &.type-add:before {
+                        @include get-sprite($icon_tag_add);
+                    }
+                    &.type-delete:before {
+                        @include get-sprite($icon_tag_delete);
+                    }
+                    &.type-change:before {
+                        @include get-sprite($icon_tag_change);
+                    }
+                }
+            }
+        }
+        .btn-download {
+            @include get-sprite($icon_table_download);
+        }
+        .btn-setting {
+            @include get-sprite($icon_table_setting);
+        }
+    }
+}
+
+/***************************************************************************************
+   Security Scan, Package
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .table-security,
+    .table-package {
+        .txt-package {
+            display:block;
+            font-size:14px;
+            color:#35393f;
+
+            @extend %ellipsis;
+        }
+        .txt-ver {
+            display:block;
+            font-size:12px;
+            color:#4b515b;
+
+            @extend %break;
+            @extend %ellipsis;
+        }
+
+        .link-area {
+            display:inline-block;
+            max-width:100%;
+
+            &:after {
+                @extend %clear;
+            }
+            .link-blank {
+                display:block;
+                float:right;
+                margin:0 0 0 4px;
+
+                @include get-sprite($icon_link);
+
+                &:hover {
+                    @include get-sprite($icon_link_hover);
+                }
+            }
+        }
+
+        // Severity, Vulnerability
+        .severity-area,
+        .vulnerability-area {
+            font-size:12px;
+            color:#35393f;
+
+            .txt-status {
+                white-space:nowrap;
+
+                > em {
+                    display:inline-block;
+                    width:8px;
+                    height:8px;
+                    margin:2px 3px 0 0;
+                    vertical-align:top;
+
+                    @include radius(50%);
+                }
+                > span {
+                    display:inline-block;
+                    font-size:12px;
+                    font-weight:bold;
+                    vertical-align:top;
+                }
+            }
+        }
+
+        // Introduce in Layer
+        .introduce-area {
+            max-width:100%;
+
+            .txt-type {
+                display:block;
+                float:left;
+                height:24px;
+                margin:0 9px 0 0;
+                line-height:24px;
+                font-weight:bold;
+
+                &:after {
+                    display:inline-block;
+                    width:2px;
+                    height:11px;
+                    margin:7px 0 0 6px;
+                    vertical-align:top;
+                    content:'';
+                }
+
+                // From
+                &.is-from {
+                    color:#61c0dc;
+
+                    &:after {
+                        background-color:#61c0dc;
+                    }
+                }
+
+                // Run
+                &.is-run {
+                    color:#a9e34b;
+
+                    &:after {
+                        background-color:#a9e34b;
+                    }
+                }
+
+                // Add
+                &.is-add {
+                    color:#40c057;
+
+                    &:after {
+                        background-color:#40c057;
+                    }
+                }
+
+                // Workdir
+                &.is-work {
+                    color:#fab005;
+
+                    &:after {
+                        background-color:#fab005;
+                    }
+                }
+
+                // Info
+                &.is-info {
+                    color:#90969f;
+
+                    &:after {
+                        background-color:#90969f;
+                    }
+                }
+
+                // Basic
+                &.is-basic {
+                    color:#748ffc;
+
+                    &:after {
+                        background-color:#748ffc;
+                    }
+                }
+            }
+            .txt-desc {
+                display:block;
+                height:24px;
+                line-height:24px;
+                font-size:11px;
+                color:#90969f;
+
+                @extend %ellipsis;
+            }
+        }
+    }
+
+    // Security Scan
+    .table-security {
+        tbody > tr[aria-expanded="false"] {
+            & + tr {
+                display:none;
+            }
+        }
+        tbody > tr[aria-expanded="true"] {
+            & + tr td {
+                height:auto;
+                padding:8px 30px 12px 39px;
+                border-top:0 none;
+            }
+            .link-table:before {
+                @include rotate(0);
+            }
+        }
+        .link-table {
+            display:block;
+            font-size:14px;
+            color:#35393f;
+
+            @extend %ellipsis;
+
+            &:before {
+                margin:0 6px 0 0;
+                vertical-align:top;
+                content:'';
+
+                @include rotate(-90);
+                @include get-sprite($icon_table_extend);
+            }
+        }
+        .description-area {
+            font-size:11px;
+            color:#90969f;
+            line-height:18px;
+
+            > dt {
+                font-weight:bold;
+            }
+        }
+        .txt-fixed {
+            display:block;
+            font-size:12px;
+            color:#40c057;
+            font-weight:bold;
+        }
+        .txt-none {
+            display:block;
+            font-size:12px;
+            color:#b7b9c2;
+        }
+    }
+
+    // Security Scan Package
+    .table-package {
+
+        // Remaining After Upgrade
+        .remaining-area {
+            font-size:12px;
+            color:#35393f;
+
+            .txt-status {
+                > span {
+                    display:inline-block;
+                    font-size:12px;
+                    font-weight:bold;
+                }
+            }
+            .txt-none {
+                color:#b7b9c2;
+            }
+        }
+
+        // Upgrade Impact
+        .txt-upgrade {
+            display:block;
+            font-size:12px;
+            color:#b7b9c2;
+        }
+    }
+}
+
+/***************************************************************************************
+   Tag History
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .table-tag-history {
+        tbody td {
+            height:auto !important;
+            padding:17px 0 17px 20px !important;
+        }
+        .change-area {
+            min-height:24px;
+            line-height:24px;
+            font-size:14px;
+            color:#35393f;
+        }
+        .ver-block {
+            display:inline-block;
+            position:relative;
+            top:-1px;
+            height:24px;
+            padding:0 6px;
+            background-color:#ffe3e3;
+            line-height:24px;
+            vertical-align:top;
+            font-size:15px;
+            color:#35393f;
+
+            @include radius(2px);
+        }
+        .txt-sha {
+            display:inline-block;
+            height:17px;
+            padding:0 1px;
+            background-color:#e7e7ea;
+            line-height:17px;
+            font-size:11px;
+            color:#90969f;
+        }
+        .link-id {
+            display:inline-block;
+            position:relative;
+            top:1px;
+            font-size:11px;
+            color:#5984af;
+            vertical-align:top;
+
+            &:hover {
+                color:#4b515b;
+                text-decoration:underline;
+            }
+        }
+        .txt-id {
+            display:inline-block;
+            position:relative;
+            top:1px;
+            font-size:11px;
+            vertical-align:top;
+        }
+
+        .link-revert {
+            display:inline-block;
+            min-height:24px;
+            line-height:24px;
+            font-size:14px;
+            color:#5984af;
+
+            &:hover {
+                .txt-revert,
+                .txt-id {
+                    color:#4b515b;
+                    text-decoration:underline;
+                }
+            }
+        }
+    }
+}

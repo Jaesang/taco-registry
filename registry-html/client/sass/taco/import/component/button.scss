@@ -1,0 +1,161 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Button
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .btn-basic,
+    .btn-action {
+        display:inline-block;
+        min-width:200px;
+        height:36px;
+        padding:0 20px;
+        line-height:34px;
+        text-align:center;
+        font-size:12px;
+
+        @include radius(20px);
+
+        // Small
+        &.type-small {
+            min-width:auto;
+            height:30px;
+            line-height:20px;
+        }
+
+        // Large
+        &.type-large {
+            height:40px;
+            line-height:40px;
+        }
+
+        // Icon
+        &.type-icon {
+            &:before {
+                margin:0 6px 0 0;
+                vertical-align:top;
+                content:'';
+            }
+
+            &.type-create:before {
+                margin-top:12px;
+
+                @include get-sprite($icon_btn_add);
+            }
+            &.type-back:before {
+                margin:5px 0 0;
+
+                @include get-sprite($icon_btn_back);
+            }
+        }
+    }
+
+    // 기본형
+    .btn-basic {
+        border:1px solid #d0d1d8;
+        background-color:#fff;
+        color:#4b515b;
+
+        &:hover {
+            border-color:#90969f;
+        }
+        &:disabled {
+            border-color:#e7e7ea;
+            background-color:#f6f6f7;
+            color:#b7b9c2;
+            cursor:default;
+        }
+    }
+
+    // 강조형
+    .btn-action {
+        background-color:#f8523f;
+        color:#fff;
+        font-weight:bold;
+
+        &:hover {
+            background-color:#ff8471;
+        }
+        &:disabled {
+            background-color:#d0d1d8;
+            cursor:default;
+        }
+        &.type-box {
+            min-width:auto;
+            height:40px;
+            line-height:40px;
+
+            @include radius(3px);
+        }
+    }
+
+    // 서브형
+    .btn-sub {
+        display:inline-block;
+        height:30px;
+        padding:0 15px;
+        border:1px solid #e7e7ea;
+        background-color:#fff;
+        line-height:28px;
+        text-align:center;
+        font-size:12px;
+        color:#35393f;
+
+        @extend %box-sizing;
+        @include radius(2px);
+
+        &:hover {
+            border-color:#90969f;
+        }
+    }
+
+    // 서브 강조형
+    .btn-sub-action {
+        display:inline-block;
+        height:30px;
+        padding:0 20px;
+        background-color:#4b515b;
+        line-height:20px;
+        font-size:12px;
+        color:#fff;
+        font-weight:bold;
+
+        @include radius(15px);
+
+        &:hover {
+            background-color:#6a717d;
+        }
+        &:disabled {
+            background-color:#d0d1d8;
+            cursor:default;
+        }
+
+        &.type-box {
+            height:40px;
+            line-height:40px;
+
+            @include radius(3px);
+        }
+    }
+
+    // 링크형
+    .link-text {
+        display:inline-block;
+        font-size:12px;
+        color:#b7b9c2;
+        text-decoration:underline;
+
+        &:after {
+            margin:3px 0 0;
+            vertical-align:top;
+            content:'';
+
+            @include get-sprite($arrow_link);
+            @include rotate(180);
+        }
+        &:hover {
+            color:#90969f;
+        }
+    }
+}

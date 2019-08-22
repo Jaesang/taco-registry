@@ -1,0 +1,96 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Main Card, Table, Search Nodata
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .nodata-area {
+        padding:100px 0 0;
+        text-align:center;
+
+        &:before {
+            content:'';
+
+            @include get-sprite($icon_nodata_org);
+        }
+        .txt-nodata {
+            display:block;
+            margin:19px 0 0;
+            font-size:24px;
+            color:#b7b9c2;
+            line-height:32px;
+        }
+        .txt-desc {
+            margin:6px 0 0;
+            font-size:13px;
+            color:#b7b9c2;
+            line-height:18px;
+        }
+        .btn-action {
+            margin:47px 0;
+        }
+
+        &.type-search {
+            &:before {
+                @include get-sprite($icon_nodata_search);
+            }
+        }
+
+        &.type-main {
+            &:before {
+                display:none;
+            }
+
+            .txt-desc {
+                margin-bottom:80px;
+            }
+            .link-back {
+                display:inline-block;
+                font-size:12px;
+                color:#b7b9c2;
+                text-decoration:underline;
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Common Nodata
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-nodata {
+        padding:96px 0 0;
+        text-align:center;
+
+        .txt-nodata {
+            display:block;
+            line-height:32px;
+            font-size:24px;
+            color:#b7b9c2;
+        }
+        .txt-desc {
+            margin:6px 0 0;
+            line-height:18px;
+            font-size:13px;
+            color:#b7b9c2;
+        }
+        .btn-action {
+            margin:30px 0 0;
+        }
+        .link-back {
+            display:inline-block;
+            margin:80px 0 0;
+            font-size:12px;
+            color:#b7b9c2;
+            text-decoration:underline;
+        }
+
+        &.type-button {
+            .txt-nodata {
+                font-size:18px;
+            }
+        }
+    }
+}

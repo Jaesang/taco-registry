@@ -1,0 +1,224 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Search
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-search {
+        position:relative;
+        height:36px;
+        background-color:#fff;
+
+        @include radius(2px);
+
+        .input-search {
+            width:100%;
+            height:36px;
+            padding:0 30px;
+            border:0 none;
+            background-color:transparent;
+            line-height:36px;
+            font-size:13px;
+            color:#35393f;
+            font-family:sans-serif;
+
+            @extend %box-sizing;
+            @include placeholder(#b7b9c2);
+
+            &:focus + .icon-search {
+                @include get-sprite($icon_search_on);
+            }
+            &:focus + .icon-search + .btn-clear {
+                display:block;
+            }
+        }
+        .icon-search {
+            position:absolute;
+            left:12px;
+            top:50%;
+            margin:-6px 0 0;
+
+            @include get-sprite($icon_search);
+        }
+        .btn-clear {
+            display:none;
+            position:absolute;
+            right:11px;
+            top:50%;
+            margin:-7px 0 0;
+
+            @include get-sprite($icon_input_clear);
+
+            &:hover {
+                @include get-sprite($icon_input_clear_hover);
+            }
+        }
+
+        // Layer Autocomplete
+        .layer-autocomplete {
+            display:none;
+            position:absolute;
+            left:0;
+            top:100%;
+            z-index:5;
+            width:100%;
+
+            &[aria-expanded="true"] {
+                display:block;
+            }
+            .list-result {
+                overflow-y:auto;
+                max-height:134px;
+                padding:4px 0;
+                border:1px solid #efeff0;
+                background-color:#fff;
+
+                @include box-shadow(0 1px 3px 0 rgba(84,97,104,0.3));
+                @include radius(4px);
+                @extend %box-sizing;
+
+                > li {
+                    &.is-hover .item-result {
+                        background-color:#f6f6f7;
+                    }
+                    .item-result {
+                        display:block;
+                        height:30px;
+                        padding:0 30px;
+                        line-height:30px;
+                        font-size:12px;
+                        color:#35393f;
+
+                        &:after {
+                            @extend %clear;
+                        }
+                    }
+                    .item-result .txt-category {
+                        display:block;
+                        float:left;
+                        min-width:35px;
+                        color:#29c7ca;
+                    }
+                    .item-result .txt-result {
+                        display:block;
+                        float:left;
+
+                        &:before {
+                            margin:8px 4px 0 20px;
+                            vertical-align:top;
+                            content:'';
+                        }
+                        > span {
+                            color:#29c7ca;
+                        }
+                    }
+                    .item-result {
+                        &.type-user .txt-result:before {
+                            @include get-sprite($icon_search_user);
+                        }
+                        &.type-org .txt-result:before {
+                            @include get-sprite($icon_search_org);
+                        }
+                        &.type-repository .txt-result:before {
+                            @include get-sprite($icon_search_repository);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Search Filter Type
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-search.type-filter {
+        height:30px;
+
+        .input-search {
+            height:30px;
+            border:1px solid #e4e3e7;
+            line-height:28px;
+            font-size:12px;
+
+            @include radius(2px);
+
+            &:focus {
+                border-color:#858b95;
+            }
+        }
+        .icon-search {
+            margin-top:-5px;
+        }
+        .btn-clear {
+            right:8px;
+        }
+    }
+}
+
+/***************************************************************************************
+   실시간 검색
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-search.type-member {
+        position:relative;
+        height:30px;
+
+        .input-search {
+            height:30px;
+            padding:0 30px 0 10px;
+            border:1px solid #e4e3e7;
+            line-height:28px;
+            font-size:12px;
+            color:#4b515b;
+
+            @include radius(2px);
+
+            &:focus + .icon-search {
+                display:none;
+            }
+            &:focus + .icon-search + .btn-clear {
+                display:block;
+            }
+        }
+        .icon-search {
+            display:none;
+        }
+        .btn-clear {
+            display:none;
+            position:absolute;
+            right:8px;
+            top:50%;
+            margin:-7px 0 0;
+
+            @include get-sprite($icon_input_clear);
+
+            &:hover {
+                @include get-sprite($icon_input_clear_hover);
+            }
+        }
+
+        // Layer Autocomplete
+        .layer-autocomplete {
+            .list-result {
+                > li {
+                    .item-result {
+                        padding:0 15px;
+                    }
+                    .item-result .txt-category {
+                        display:none;
+                    }
+                    .item-result .txt-result {
+                        &:before {
+                            margin-left:0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

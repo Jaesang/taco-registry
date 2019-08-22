@@ -1,0 +1,543 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Min Size
+***************************************************************************************/
+%min-width {
+    min-width:1440px;
+}
+%min-height {
+    min-height:700px;
+}
+
+/***************************************************************************************
+   Layout
+***************************************************************************************/
+html {
+    height:100%;
+}
+body {
+    height:100%;
+
+    @extend %min-width;
+    @extend %min-height;
+}
+app-root,
+app-layout,
+main {
+    display:block;
+    height:100%;
+}
+[class*="taco-"] {
+    height:100%;
+
+    @extend %box-sizing;
+}
+
+.taco-wrap {
+    border-top:60px solid transparent;
+}
+
+/***************************************************************************************
+   Layout : Header
+***************************************************************************************/
+[class*="taco-"] {
+    .layout-header {
+        position:fixed;
+        left:0;
+        top:0;
+        z-index:25;
+        width:100%;
+        height:60px;
+        background-color:#1e2432;
+
+        @extend %min-width;
+
+        &:after {
+            @extend %clear;
+        }
+        > .logo-header {
+            float:left;
+            margin:14px 0 0 14px;
+
+            > a {
+                @include get-sprite($logo-sub);
+            }
+        }
+
+        .component-search {
+            float:right;
+            width:380px;
+            margin:12px 30px 0 0;
+        }
+        > .section-info {
+            float:right;
+            margin:22px 34px 0 0;
+        }
+    }
+}
+
+/***************************************************************************************
+   Layout : Header > My Organization, Profile
+***************************************************************************************/
+[class*="taco-"] .layout-header {
+    .section-info {
+        &:after {
+            @extend %clear;
+        }
+        .organization-area,
+        .profile-area {
+            position:relative;
+            float:left;
+
+            .organization-block,
+            .profile-block {
+                .txt-label {
+                    display:block;
+                    font-size:12px;
+                    color:#b7b9c2;
+                    font-weight:bold;
+                    cursor:pointer;
+
+                    &:before {
+                        margin:0 3px 0 0;
+                        vertical-align:top;
+                        content:'';
+                    }
+                    &:after {
+                        margin:5px 0 0 6px;
+                        vertical-align:top;
+                        content:'';
+
+                        @include get-sprite($arrow_header);
+                    }
+                }
+                &:hover .txt-label {
+                    color:#fff;
+                }
+            }
+        }
+        .organization-area {
+            .organization-block {
+                &:hover {
+                    .layer-organization {
+                        display:block;
+                    }
+                }
+                .txt-label:before {
+                    @include get-sprite($icon_header_org);
+                }
+            }
+            .layer-organization {
+                display:none;
+                position:absolute;
+                top:100%;
+                right:0;
+                width:230px;
+                margin:13px 0 0;
+                padding:4px 13px;
+                background-color:#fff;
+
+                @include box-shadow(0 1px 3px 0 rgba(84, 97, 104, 0.3));
+                @include radius(4px);
+
+                &:before {
+                    display:block;
+                    position:absolute;
+                    left:0;
+                    top:-13px;
+                    width:100%;
+                    height:13px;
+                    content:'';
+                }
+                .btn-create {
+                    display:block;
+                    height:32px;
+                    line-height:32px;
+                    font-size:12px;
+                    color:#35393f;
+
+                    &:before {
+                        margin:10px 8px 0 0;
+                        vertical-align:top;
+                        content:'';
+
+                        @include get-sprite($icon_org_add);
+                    }
+                }
+                .list-org {
+                    overflow-y:auto;
+                    overflow-x:hidden;
+                    max-height:200px;
+                    margin:4px -13px 0;
+                    padding:4px 0 0;
+                    border-top:1px solid #e7e7ea;
+
+                    .link-item {
+                        display:block;
+                        padding:7px 13px;
+                        line-height:1.4em;
+                        font-size:12px;
+                        color:#35393f;
+
+                        @extend %break;
+
+                        &:hover {
+                            background-color:#f6f6f7;
+                        }
+                    }
+                }
+            }
+        }
+        .profile-area {
+            margin:0 0 0 30px;
+
+            .profile-block {
+                &:hover {
+                    .layer-profile {
+                        display:block;
+                    }
+                }
+                .txt-label:before {
+                    @include get-sprite($icon_header_profile);
+                }
+            }
+            .layer-profile {
+                display:none;
+                position:absolute;
+                top:100%;
+                right:0;
+                width:170px;
+                margin:13px 0 0;
+                padding:4px 0;
+                background-color:#fff;
+
+                @include box-shadow(0 1px 3px 0 rgba(84, 97, 104, 0.3));
+                @include radius(4px);
+
+                &:before {
+                    display:block;
+                    position:absolute;
+                    left:0;
+                    top:-13px;
+                    width:100%;
+                    height:13px;
+                    content:'';
+                }
+                [class*="link-"] {
+                    display:block;
+                    height:30px;
+                    padding:0 13px;
+                    line-height:30px;
+                    font-size:12px;
+                    color:#35393f;
+
+                    &:before {
+                        margin:8px 8px 0 0;
+                        vertical-align:top;
+                        content:'';
+                    }
+                    &:hover {
+                        background-color:#f6f6f7;
+                    }
+                }
+                .link-my:before {
+                    @include get-sprite($icon_profile_my);
+                }
+                .link-setting:before {
+                    @include get-sprite($icon_profile_setting);
+                }
+                .link-logout:before {
+                    @include get-sprite($icon_profile_logout);
+                }
+            }
+        }
+
+        .btn-admin {
+            display:block;
+            position:relative;
+            top:-10px;
+            float:left;
+            margin:0 0 0 20px;
+
+            @include get-sprite($icon_admin);
+        }
+    }
+}
+
+/***************************************************************************************
+   Layout : LNB None
+***************************************************************************************/
+.taco-wrap {
+    &.lnb-none {
+        .layout-lnb {
+            display:none;
+        }
+    }
+}
+
+/***************************************************************************************
+   Layout : LNB
+***************************************************************************************/
+[class*="taco-"] {
+    .layout-lnb {
+        position:fixed;
+        left:0;
+        top:0;
+        bottom:0;
+        z-index:20;
+        width:80px;
+        background-color:#fff;
+
+        @include box-shadow(0 1px 6px 0 rgba(84, 97, 104, 0.15));
+
+        .section-lnb {
+            display:table;
+            width:100%;
+            height:100%;
+        }
+        .lnb-area {
+            display:table-cell;
+            padding-top:60px;
+            vertical-align:middle;
+        }
+        .list-lnb {
+            display:inline-block;
+            width:100%;
+
+            > li + li {
+                margin:18px 0 0;
+            }
+            [class*="link-"] {
+                display:block;
+                position:relative;
+                height:62px;
+                border-right:4px solid transparent;
+
+                &:before {
+                    position:absolute;
+                    left:50%;
+                    top:50%;
+                    margin:-15px 0 0 -15px;
+                    content:'';
+                }
+                &:hover {
+                    .lnb-tooltip {
+                        display:block;
+                    }
+                }
+                &[aria-selected="true"] {
+                    border-color:#29c7ca;
+                }
+                .lnb-tooltip {
+                    display:none;
+                    position:absolute;
+                    left:74px;
+                    top:50%;
+                    margin:-14px 0 0;
+                    padding:0 16px 0 13px;
+                    background-color:rgba(30,36,50,0.9);
+                    line-height:28px;
+                    white-space:nowrap;
+                    font-size:12px;
+                    color:#fff;
+
+                    @include radius(5px);
+
+                    &:before {
+                        position:absolute;
+                        left:-6px;
+                        top:50%;
+                        margin:-5px 0 0;
+                        content:'';
+
+                        @include get-sprite($arrow_lnb_tooltip);
+                    }
+                }
+            }
+
+            // Organization
+            .link-repository {
+                &:before {
+                    @include get-sprite($icon_lnb_repository);
+                }
+                &[aria-selected="true"]:before {
+                    @include get-sprite($icon_lnb_repository_on);
+                }
+            }
+            .link-member {
+                &:before {
+                    @include get-sprite($icon_lnb_member);
+                }
+                &[aria-selected="true"]:before {
+                    @include get-sprite($icon_lnb_member_on);
+                }
+            }
+            .link-log {
+                &:before {
+                    @include get-sprite($icon_lnb_log);
+                }
+                &[aria-selected="true"]:before {
+                    @include get-sprite($icon_lnb_log_on);
+                }
+            }
+            .link-setting {
+                &:before {
+                    @include get-sprite($icon_lnb_setting);
+                }
+                &[aria-selected="true"]:before {
+                    @include get-sprite($icon_lnb_setting_on);
+                }
+            }
+
+            // Repository
+            .link-repository-info {
+                &:before {
+                    @include get-sprite($icon_lnb_info);
+                }
+                &[aria-selected="true"]:before {
+                    @include get-sprite($icon_lnb_info_on);
+                }
+            }
+            .link-repository-tag {
+                &:before {
+                    @include get-sprite($icon_lnb_tag);
+                }
+                &[aria-selected="true"]:before {
+                    @include get-sprite($icon_lnb_tag_on);
+                }
+            }
+            .link-repository-history {
+                &:before {
+                    @include get-sprite($icon_lnb_history);
+                }
+                &[aria-selected="true"]:before {
+                    @include get-sprite($icon_lnb_history_on);
+                }
+            }
+            .link-repository-build {
+                &:before {
+                    @include get-sprite($icon_lnb_build);
+                }
+                &[aria-selected="true"]:before {
+                    @include get-sprite($icon_lnb_build_on);
+                }
+            }
+
+            // Admin
+            .link-user-management {
+                &:before {
+                    @include get-sprite($icon_lnb_user_management_on);
+                }
+                &[aria-selected="true"]:before {
+                    @include get-sprite($icon_lnb_user_management_on);
+                }
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Layout : Content Area
+***************************************************************************************/
+[class*="taco-"] {
+    .layout-content {
+        min-height:100%;
+        margin:-40px 0 0;
+        border-top:40px solid #1e2432;
+        background-color:#f6f6f7;
+
+        @extend %box-sizing;
+
+        [class*="page-"] {
+            padding:0 186px 95px;
+        }
+    }
+}
+
+/***************************************************************************************
+   Layout : Create Repository Fixed Button
+***************************************************************************************/
+[class*="taco-"] {
+    .layout-create {
+        position:fixed;
+        right:70px;
+        bottom:70px;
+        z-index:10;
+
+        .btn-create-repository {
+            display:block;
+            position:relative;
+            width:66px;
+            height:66px;
+            background-color:#f8523f;
+
+            @include radius(50%);
+            @include box-shadow(0 5px 20px 0 rgba(248, 82, 63, 0.2));
+
+            &:before,
+            &:after {
+                display:block;
+                position:absolute;
+                left:50%;
+                top:50%;
+                background-color:#fff;
+                content:'';
+            }
+            &:before {
+                width:24px;
+                height:2px;
+                margin:-1px 0 0 -12px;
+            }
+            &:after {
+                width:2px;
+                height:24px;
+                margin:-12px 0 0 -1px;
+            }
+        }
+    }
+}
+
+/***************************************************************************************
+   Layout : Footer
+***************************************************************************************/
+[class*="taco-"] {
+    .layout-footer {
+        height:40px;
+        background-color:#f6f6f7;
+        text-align:center;
+        font-size:11px;
+        color:#b7b9c2;
+    }
+}
+
+/***************************************************************************************
+   Responsive : LAYOUT
+***************************************************************************************/
+@media screen and (max-width: 1440px) {
+    .taco-wrap {
+        border-color:#1e2432;
+    }
+    .taco-wrap .layout-content {
+        [class*="page-"] {
+            width:1068px;
+            margin:0 auto;
+            padding:0 0 95px;
+        }
+        .page-main {
+            width:1192px;
+        }
+    }
+    .taco-wrap .layout-header {
+        position:absolute;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .taco-wrap .layout-content {
+        [class*="page-"] {
+            width:1548px;
+            padding:0 0 95px 186px;
+        }
+    }
+}

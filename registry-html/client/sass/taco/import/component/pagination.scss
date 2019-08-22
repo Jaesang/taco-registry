@@ -1,0 +1,52 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Pagination
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-pagination {
+        &:after {
+            @extend %clear;
+        }
+        .txt-total {
+            display:inline-block;
+            float:left;
+            margin:9px 12px 0 0;
+            font-size:12px;
+            color:#4b515b;
+
+            > em {
+                font-weight:bold;
+            }
+        }
+        [class*="btn-"] {
+            display:block;
+            float:left;
+        }
+        .btn-prev {
+            @include get-sprite($icon_page_prev);
+
+            &:hover {
+                @include get-sprite($icon_page_prev_hover);
+            }
+            &:disabled {
+                cursor:default;
+
+                @include get-sprite($icon_page_prev_disabled);
+            }
+        }
+        .btn-next {
+            @include get-sprite($icon_page_next);
+
+            &:hover {
+                @include get-sprite($icon_page_next_hover);
+            }
+            &:disabled {
+                cursor:default;
+
+                @include get-sprite($icon_page_next_disabled);
+            }
+        }
+    }
+}

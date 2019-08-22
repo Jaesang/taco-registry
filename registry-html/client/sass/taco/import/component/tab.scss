@@ -1,0 +1,55 @@
+@charset "utf-8";
+
+/***************************************************************************************
+   Tab
+***************************************************************************************/
+[class*="taco-"],
+.layout-popup {
+    .component-tab {
+        border-bottom:1px solid #b7b9c2;
+
+        &:after {
+            @extend %clear;
+        }
+        > li {
+            float:left;
+
+            // Selected
+            &[aria-selected="true"] .link-tab {
+                border-color:#b7b9c2;
+                background-color:#fff;
+                color:#1e2432;
+
+                &:before {
+                   display:block;
+                }
+            }
+        }
+        .link-tab {
+            display:block;
+            position:relative;
+            height:50px;
+            padding:0 32px;
+            border:1px solid #f6f6f7;
+            border-bottom:0 none;
+            background-color:#f6f6f7;
+            line-height:50px;
+            font-size:14px;
+            color:#b7b9c2;
+            font-weight:bold;
+
+            @extend %box-sizing;
+
+            &:before {
+                display:none;
+                position:absolute;
+                left:0;
+                bottom:-1px;
+                width:100%;
+                height:1px;
+                background-color:#fff;
+                content:'';
+            }
+        }
+    }
+}

@@ -1,0 +1,102 @@
+// [ Scss 작성 가이드 ]
+//
+// 1. 마크업 레벨(Depth) Class 가이드
+// {project code}-wrap > layout-xxx > page-xxx(컨텐츠 영역,화면 고유) > section-xxx > xxx-area > xxx-block
+//
+// 2. 클래스명 가이드
+// table-xxx, list-xxx, item-xxx, btn(button)-xxx, link(a tag)-xxx
+// txt(text)-xxx, num(number)-xxx, data-xxx, desc(description)-xxx
+// input(textbox)-xxx, radio-xxx, checkbox-xxx, textarea-xxx(textarea), select(selectbox)-xxx
+//
+// 3. 동적 클래스
+// is-activated, is-selected, is-disabled, is-fold(unfold), is-show(hide), is-xxx
+//
+// 4. 유형 클래스 : type-xxx
+//
+// 5. 컴포넌트 클래스 정의 : component-xxx, ex:component-datepicker
+//
+// 6. 화면 별 고유 클래스 정의 : page-xxx, ex:page-login
+//
+// 7. 작성 가이드
+// overflow,visibility,display,position(left,right,top,bottom),z-index,width,height,margin,padding,border,background,box-sizing, ~ 자유배치
+// @include, @extend는 마지막에 삽입
+//
+// 8. z-index 가이드
+// 기본 10 증가 폭 5단위
+// 팝업 300 증가폭 10단위
+// 로딩 1000
+
+/***************************************************************************************
+   기본설정, 공통 SCSS
+***************************************************************************************/
+@import "import/common/sprite"; // Sprite Image
+@import "import/common/common"; // 공통(mixin, extend(placeholder))
+@import "import/common/base"; // 기본설정
+
+/***************************************************************************************
+   Layout
+***************************************************************************************/
+@import "import/layout/layout"; // 레이아웃
+@import "import/layout/title"; // Title,Filter
+@import "import/layout/layer-popup"; // Layer Popup
+@import "import/layout/loading"; // Loading
+
+/***************************************************************************************
+   Component
+***************************************************************************************/
+@import "import/component/button"; // 버튼
+@import "import/component/input"; // Input Box
+@import "import/component/search"; // 검색
+@import "import/component/selectbox"; // Select box
+@import "import/component/checkbox"; // Checkbox
+@import "import/component/radio"; // Radio
+@import "import/component/pagination"; // Pagination
+@import "import/component/tooltip"; // Tooltip
+@import "import/component/tab"; // Tab
+@import "import/component/file_attachment"; // File Attachment, Upload Image
+
+/***************************************************************************************
+   Library Component
+***************************************************************************************/
+@import "import/component/toast"; // Toast Popup
+
+/***************************************************************************************
+   Common UI
+***************************************************************************************/
+@import "import/component/table"; // Repository Table
+@import "import/component/form"; // Form
+@import "import/component/card"; // Repository Card
+@import "import/component/activity"; // Activity
+@import "import/component/bg_profile"; // Profile, Organization Image
+@import "import/component/nodata"; // No Data
+
+/***************************************************************************************
+   Front
+***************************************************************************************/
+@import "import/front/login"; // 로그인
+@import "import/front/main"; // 메인
+@import "import/front/page_organization"; // 새로운 조직생성
+@import "import/front/page_team_role"; // Team & Role Settings
+@import "import/front/page_usage_logs"; // Usage Logs
+@import "import/front/page_organization_setting"; // Organization Settings
+@import "import/front/page_account_setting"; // Account Settings
+@import "import/front/page_repositories_info"; // Repositories Info
+@import "import/front/page_build_history"; // Repository Build History
+@import "import/front/page_repository_tag"; // Repository Tag
+@import "import/front/page_repository_setting"; // Repository Setting
+@import "import/front/page_tag_history"; // Tag History
+
+/***************************************************************************************
+   Admin
+***************************************************************************************/
+@import "import/admin/page_user_management"; // User Management
+
+/***************************************************************************************
+   Popup
+***************************************************************************************/
+@import "import/popup/popup"; // Popup
+
+/***************************************************************************************
+   Error
+***************************************************************************************/
+@import "import/front/page_error"; // Error
