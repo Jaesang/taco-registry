@@ -26,18 +26,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resource/**").addResourceLocations("classpath:static/resource/dist/");
-        registry.addResourceHandler("/assets/**").addResourceLocations("classpath:static/resource/dist/assets/");
+        registry.addResourceHandler("/resource/**").addResourceLocations("classpath:static/resource/");
+        registry.addResourceHandler("/assets/**").addResourceLocations("classpath:static/resource/assets/");
         registry.addResourceHandler("/swagger/**").addResourceLocations("classpath:static/swagger/");
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("forward:/resource/index.html");
-        registry.addViewController("/user").setViewName("forward:/resource/index.html");
-        registry.addViewController("/user/**").setViewName("forward:/resource/index.html");
-        registry.addViewController("/main").setViewName("forward:/resource/index.html");
-        registry.addViewController("/main/**").setViewName("forward:/resource/index.html");
+        registry.addViewController("/registry/**").setViewName("forward:/resource/index.html");
     }
 
     /**
