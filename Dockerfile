@@ -18,13 +18,15 @@ WORKDIR /app
 # git clone project
 RUN git clone https://starlkj:'dlrudwls78!'@tde.sktelecom.com/stash/scm/oreotools/taco-registry-app.git
 
+# ui install & build
 WORKDIR taco-registry-app/registry-ui
 RUN npm install
 RUN npm run build
 
+# server mvn install
 WORKDIR ../registry-server
-
 RUN mvn -U clean install
 
+# server run
 ENTRYPOINT ["mvn"]
 CMD ["spring-boot:run"]

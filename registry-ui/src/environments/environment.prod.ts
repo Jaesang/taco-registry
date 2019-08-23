@@ -1,4 +1,4 @@
-const HOST = 'localhost:8080';
+const HOST = 'registry.exntu.kr:30088';
 
 export const environment = {
   production: true,
