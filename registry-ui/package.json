@@ -5,8 +5,8 @@
   "scripts": {
     "ng": "ng",
     "cp": "mkdir -p ../registry-server/src/main/resources/static/resource && cp -R ./dist/* ../registry-server/src/main/resources/static/resource",
-    "start": "ng serve --env=dev --base-href /registry/ --disable-host-check",
-    "build": "ng build --env=prod --prod && npm run cp",
+    "start": "ng serve --env=dev --disable-host-check",
+    "build": "ng build --env=prod --prod -d /resource/ && npm run cp",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

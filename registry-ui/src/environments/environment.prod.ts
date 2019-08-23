@@ -1,4 +1,4 @@
-const HOST = '192.168.30.147';
+const HOST = 'localhost:8080';
 
 export const environment = {
   production: true,
