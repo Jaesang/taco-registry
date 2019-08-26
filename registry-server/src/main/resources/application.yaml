@@ -75,6 +75,10 @@ spring:
 
 # Ribbon
 builder:
+  redis:
+    key: builderList
+    health-uri: /v1/health
+    connect-timeout: 3000
   ribbon:
     eureka:
       enabled: false
@@ -119,6 +123,10 @@ spring:
 
 # Ribbon
 builder:
+  redis:
+    key: builderList
+    health_uri: /v1/health
+    connect-timeout: 3000
   ribbon:
     eureka:
       enabled: false
