@@ -41,4 +41,8 @@ public interface ImageRepository extends JpaRepository<Image, UUID>{
             "and image.delYn = false " +
             "order by image.createdDate desc")
     List<Image> getImagesByNameContaining(@Param("name") String name);
+
+    @Query("select image from Image image " +
+            "where image.delYn = false")
+    List<Image> getAllImages();
 }

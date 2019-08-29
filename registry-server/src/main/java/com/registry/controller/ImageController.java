@@ -13,6 +13,7 @@ import com.registry.service.ExternalAPIService;
 import com.registry.service.ImageService;
 import com.registry.service.TagService;
 import com.registry.service.UsageLogService;
+import com.registry.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
@@ -258,13 +259,17 @@ public class ImageController {
     ) throws Exception{
         Page<Image> result = imageService.getImages(namespace, pageable);
         // 형 변환
-        List<ImageDto.VIEW> collect = result.getContent()
+        List<ImageDto.VIEW> collect = new ArrayList<>();
+        result.getContent()
                 .stream()
-                .map(value -> {
-                    ImageDto.VIEW item = mapper.map(value, ImageDto.VIEW.class);
-                    item.popularity = imageService.getPopularityCount(namespace, value.getName());
-                    return item;
-                }).collect(Collectors.toList());
+                .forEach(value -> {
+                    List<Role> roles = value.getRole().stream().filter(v -> v.getUser().getUsername().equals(SecurityUtil.getUser())).collect(Collectors.toList());
+                    if ((roles != null && roles.size() > 0) || value.getIsPublic()) {
+                        ImageDto.VIEW item = mapper.map(value, ImageDto.VIEW.class);
+                        item.popularity = imageService.getPopularityCount(namespace, value.getName());
+                        collect.add(item);
+                    }
+                });
 
         return new PageImpl<>(collect, pageable, result.getTotalElements());
     }

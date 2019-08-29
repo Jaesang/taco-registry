@@ -19,11 +19,16 @@ public class SecurityUtil {
      */
     public static String getUser() {
 
-        // 인증정보
-        Object principal    = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user           = principal instanceof User ? (User) principal : null;
-        String anonymous    = principal instanceof String ? (String) principal : null;
-        String username     = user != null ? user.getUsername() : anonymous;
+        String username;
+        try {
+            // 인증정보
+            Object principal    = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user           = principal instanceof User ? (User) principal : null;
+            String anonymous    = principal instanceof String ? (String) principal : null;
+            username     = user != null ? user.getUsername() : anonymous;
+        } catch (Exception e) {
+            username = "admin";
+        }
 
         // 유저 ID
 //        Long userId = !"anonymousUser".equals(username)

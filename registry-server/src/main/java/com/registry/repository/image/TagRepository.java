@@ -48,4 +48,8 @@ public interface TagRepository extends JpaRepository<Tag, UUID>{
             "and tag.name = :tagName " +
             "and (tag.endTime = null or tag.endTime > now())")
     Tag getTagByTagName(@Param("imageId") UUID imageId, @Param("tagName") String tagName);
+
+    @Query("select tag from Tag tag " +
+            "where (tag.endTime = null or tag.endTime > now())")
+    List<Tag> getAllTags();
 }

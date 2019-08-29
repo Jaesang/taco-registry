@@ -1,6 +1,7 @@
 package com.registry.service;
 
 import com.registry.constant.Const;
+import com.registry.exception.BadRequestException;
 import com.registry.repository.image.Image;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.usage.Log;
@@ -35,16 +36,15 @@ public class UserService extends AbstractService {
     @Autowired
     private RoleRepository roleRepo;
 
-    /** user org Repo */
-    @Autowired
-    private UserOrganizationRepository _userOrgRepo;
-
     /** usage log Repo */
     @Autowired
     private UsageLogService logService;
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private OrganizationService organizationService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -159,17 +159,23 @@ public class UserService extends AbstractService {
         if(isCreate){
             // 신규 등록
 
+            User preUser = userRepo.getUser(user.getUsername());
+            Organization preOrg = organizationService.getOrg(user.getUsername());
+            if (preUser != null || preOrg != null) {
+                throw new BadRequestException("A user or organization with this name already exists");
+            }
+
             user.setDelYn(false);
             user.setName(user.getUsername());
             user.setSuperuser(false);
             user.setEnabled(true);
-            if (rolename.equals("ADMIN")) {
+            if (rolename.equals(Const.Role.ADMIN)) {
                 user.setSuperuser(true);
             }
             user.setCreatedBy(user);
             user.setUpdatedBy(user);
 
-            user =  userRepo.save(user);
+            user = userRepo.save(user);
         }else{
             User preUser;
             if (user.getUsername() != null) {
@@ -179,7 +185,7 @@ public class UserService extends AbstractService {
             }
 
             if (rolename != null) {
-                if (rolename.equals("ADMIN")) {
+                if (rolename.equals(Const.Role.ADMIN)) {
                     user.setSuperuser(true);
                 } else {
                     user.setSuperuser(false);
@@ -242,14 +248,14 @@ public class UserService extends AbstractService {
         logger.info("findMembers namespace : {}", namespace);
 
         List<User> users = userRepo.getUserByUsernameContaining(username);
-        List<User> results = users.stream().filter(value -> {
-            boolean exist = value.getUserOrg().stream().anyMatch(v -> {
-               return namespace.equals(v.getOrganization().getName());
-            });
-
-            return !exist;
-        }).collect(Collectors.toList());
-        return results;
+//        List<User> results = users.stream().filter(value -> {
+//            boolean exist = value.getUserOrg().stream().anyMatch(v -> {
+//               return namespace.equals(v.getOrganization().getName());
+//            });
+//
+//            return !exist;
+//        }).collect(Collectors.toList());
+        return users;
     }
 
     /**

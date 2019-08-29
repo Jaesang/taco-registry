@@ -110,7 +110,7 @@ public class ImageService extends AbstractService {
         }
 
         // sync with builder
-        externalService.syncWithBuilder();
+        externalService.syncWithBuilder(image.getNamespace(), image.getName());
 
         Image preImage = imageRepo.getImage(image.getNamespace(), image.getName());
         if (preImage != null) {
@@ -132,7 +132,7 @@ public class ImageService extends AbstractService {
         Role role = new Role();
         role.setImage(image);
         role.setUser(user);
-        role.setName("ADMIN");
+        role.setName(Const.Role.ADMIN);
         role.setIsStarred(false);
         members.add(role);
 
@@ -143,7 +143,7 @@ public class ImageService extends AbstractService {
                     Role r = new Role();
                     r.setImage(image);
                     r.setUser(value.getUser());
-                    r.setName("ADMIN");
+                    r.setName(Const.Role.ADMIN);
                     r.setIsStarred(false);
                     members.add(r);
                 }
@@ -527,7 +527,7 @@ public class ImageService extends AbstractService {
         Role role = roleRepo.getRole(SecurityUtil.getUser(), image.getId());
         User user = userService.getUser(SecurityUtil.getUser());
 
-        if (!user.getSuperuser() && !"ADMIN".equals(role.getName()) && !"WRITE".equals(role.getName())) {
+        if (!user.getSuperuser() && !Const.Role.ADMIN.equals(role.getName()) && !Const.Role.WRITE.equals(role.getName())) {
             throw new AccessDeniedException("Has not permission");
         }
 

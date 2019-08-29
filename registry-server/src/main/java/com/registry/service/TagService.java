@@ -8,6 +8,7 @@ import com.registry.repository.image.Tag;
 import com.registry.repository.image.TagRepository;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.usage.Log;
+import com.registry.repository.user.User;
 import com.registry.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,12 @@ public class TagService extends AbstractService {
     /** Log Service */
     @Autowired
     private UsageLogService logService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ExternalAPIService externalService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -107,6 +114,9 @@ public class TagService extends AbstractService {
         logger.info("createTag tag : {}", tag);
         LocalDateTime now = LocalDateTime.now();
 
+        // sync with builder
+        externalService.syncWithBuilder(tag.getImage().getNamespace(), tag.getImage().getName());
+
         Tag preTag = tagRepo.getTagByTagName(tag.getImage().getId(), tag.getName());
         if (preTag != null) {
             // 같은 이름의 태그는 삭제
@@ -119,13 +129,13 @@ public class TagService extends AbstractService {
         tagRepo.save(tag);
 
         // 로그 등록
-        Organization org = organizationService.getOrg(tag.getImage().getNamespace());
         Log log = new Log();
         log.setKind(Const.UsageLog.CREATE_TAG);
         if (tag.getImage().getIsOrganization()) {
+            Organization org = organizationService.getOrg(tag.getImage().getNamespace());
             log.setOrganizationId(org.getId());
         } else {
-            log.setUsername(SecurityUtil.getUser());
+            log.setUsername(tag.getImage().getNamespace());
         }
         log.setImageId(tag.getImage().getId());
         log.setNamespace(tag.getImage().getNamespace());
@@ -206,13 +216,13 @@ public class TagService extends AbstractService {
             tagRepo.save(preTag);
 
             // 로그 등록
-            Organization org = organizationService.getOrg(image.getNamespace());
             Log log = new Log();
             log.setKind(Const.UsageLog.DELETE_TAG);
             if (image.getIsOrganization()) {
+                Organization org = organizationService.getOrg(image.getNamespace());
                 log.setOrganizationId(org.getId());
             } else {
-                log.setUsername(SecurityUtil.getUser());
+                log.setUsername(image.getNamespace());
             }
             log.setImageId(image.getId());
             log.setNamespace(image.getNamespace());
@@ -236,8 +246,6 @@ public class TagService extends AbstractService {
         logger.info("createTag name : {}", name);
         logger.info("createTag dockerImageId : {}", dockerImageId);
 
-        //todo builder tagging 후 digest 받아오기
-
         Image image = imageRepo.getImage(namespace, name);
 
         // 기존 살아있는 태그 중에 같은 이름이 있는지 체크
@@ -254,6 +262,7 @@ public class TagService extends AbstractService {
             throw new BadRequestException("not exists");
         }
 
+        // tag 정보는 미리 생성하고 빌드 후 builder 에서 manafest 정보 업데이트
         preTag = preTags.get(0);
         Tag tag = new Tag();
         tag.setImage(image);

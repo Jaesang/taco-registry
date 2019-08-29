@@ -84,12 +84,10 @@ public class OrganizationService extends AbstractService {
             throw new BadRequestException("Be at least 2 characters in length and max 40 characters in length");
         }
 
-        // sync with builder
-        externalService.syncWithBuilder();
-
+        User preUser = userService.getUser(org.getName());
         Organization preOrg = orgRepo.getOrganization(org.getName());
-        if (preOrg != null) {
-            throw new BadRequestException("Already exists");
+        if (preUser != null || preOrg != null) {
+            throw new BadRequestException("A user or organization with this name already exists");
         }
 
         Pattern p = Pattern.compile("^[a-z0-9_-]+$");
@@ -197,7 +195,7 @@ public class OrganizationService extends AbstractService {
                     Role role = new Role();
                     role.setUser(user);
                     role.setImage(value);
-                    role.setName("ADMIN");
+                    role.setName(Const.Role.ADMIN);
                     role.setIsStarred(false);
 
                     addMembers.add(role);

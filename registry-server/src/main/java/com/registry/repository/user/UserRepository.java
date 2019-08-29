@@ -10,9 +10,7 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, String> {
     @Query("select user from User user " +
-            "where user.username = :username " +
-            "and user.delYn = false " +
-            "and user.enabled = true")
+            "where user.username = :username")
     User getUser(@Param("username") String username);
 
     @Query("select user from User user " +

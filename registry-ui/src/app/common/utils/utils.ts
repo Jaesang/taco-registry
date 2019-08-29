@@ -28,11 +28,12 @@ export namespace Utils {
       textarea.value = text;
       textarea.select();
       // Ask the browser to copy the current selection to the clipboard.
-      let successful = document.execCommand("copy");
-      if (successful) {
-        // do something
-      } else {
-        // handle the error
+      try {
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+        console.log('Copying Chart to Clipboard was ' + msg);
+      } catch (err) {
+        console.log('Oops, unable to copy');
       }
       if (textarea && textarea.parentNode) {
         textarea.parentNode.removeChild(textarea);

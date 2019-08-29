@@ -35,10 +35,7 @@ public class BuilderScheduler {
     @Resource(name="redisTemplate")
     private ValueOperations<String, String> valueOperations;
 
-    @Autowired
-    private RestApiUtil restApiUtil;
-
-    // 실행에 대한 결과 등과 같은 정보 동기화 모듈 (10분 마다)
+    // builder의 image, tag 동기화 모듈 (10분 마다)
     @Scheduled(fixedDelay = 1000 * 60 * 10)
     public void syncWithBuilder() {
         externalService.syncWithBuilder();

@@ -1,30 +1,32 @@
 package com.registry.service;
 
+import com.registry.constant.Const;
 import com.registry.exception.UnknownServerException;
-import com.registry.repository.common.CodeEntity;
-import com.registry.repository.common.CodeRepository;
+import com.registry.repository.image.Image;
+import com.registry.repository.image.ImageRepository;
+import com.registry.repository.image.Tag;
+import com.registry.repository.image.TagRepository;
+import com.registry.repository.organization.Organization;
+import com.registry.repository.user.*;
 import com.registry.util.RestApiUtil;
+import ma.glasnost.orika.MapperFacade;
 import org.apache.commons.collections.map.HashedMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.net.URI;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Created by boozer on 2019. 7. 15
@@ -37,10 +39,34 @@ public class ExternalAPIService extends AbstractService {
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     @Autowired
+    private MapperFacade mapper;
+
+    @Autowired
     private LoadBalancerClient loadBalancer;
 
     @Autowired
     private RestApiUtil restApiUtil;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private OrganizationService organizationService;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private ImageRepository imageRepo;
+
+    @Autowired
+    private TagRepository tagRepo;
+
+    @Autowired
+    private RoleRepository roleRepo;
+
+    @Autowired
+    private UserOrganizationRepository userOrgRepo;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -67,6 +93,64 @@ public class ExternalAPIService extends AbstractService {
      */
     public void syncWithBuilder() {
         boolean result = true;
+
+        try {
+            URI builderHost = this.getBuilderUri();
+            if (builderHost == null) {
+                return;
+            }
+
+            List<Image> syncImages = new ArrayList<>();
+            String url = MessageFormat.format("{0}/v1/registry/repositories/", builderHost);
+            LinkedHashMap body = (LinkedHashMap) restApiUtil.excute(url, HttpMethod.GET, null, Object.class);
+            List<Map<String, Object>> repositories = (List<Map<String, Object>>) body.get("repositories");
+            repositories.stream().forEach(value -> {
+                Image image = syncImage(value);
+                if (image != null) {
+                    syncImages.add(image);
+                }
+            });
+
+            // 실제 존재하지 않는 Image 삭제
+            List<Image> allImages = imageRepo.getAllImages();
+            allImages.stream().forEach(value -> {
+                List<Image> img = syncImages.stream()
+                        .filter(v -> v.getNamespace().equals(value.getNamespace()) && v.getName().equals(value.getName()))
+                        .collect(Collectors.toList());
+                if (img == null || img.size() == 0) {
+                    imageService.deleteImage(value.getNamespace(), value.getName());
+                }
+            });
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            result = false;
+        }
+
+        if (!result) {
+            throw new UnknownServerException("sync fail");
+        }
+    }
+
+    /**
+     * 빌더와 싱크
+     */
+    public void syncWithBuilder(String namespace, String imageName) {
+        boolean result = true;
+
+        try {
+            URI builderHost = this.getBuilderUri();
+            if (builderHost == null) {
+                return;
+            }
+            String url = MessageFormat.format("{0}/v1/registry/repositories/{1}/{2}", builderHost, namespace, imageName);
+            LinkedHashMap body = (LinkedHashMap) restApiUtil.excute(url, HttpMethod.GET, null, Object.class);
+            if (body != null) {
+                syncImage(body);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            result = false;
+        }
 
         if (!result) {
             throw new UnknownServerException("sync fail");
@@ -144,6 +228,116 @@ public class ExternalAPIService extends AbstractService {
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+
+    /**
+     * sync Image
+     * @param image
+     * @return
+     */
+    @Transactional
+    private Image syncImage(Map<String, Object> image) {
+        String name = (String) image.get("name");
+        String[] names = name.split("/");
+        if (names.length != 2) {
+            // org/image or user/image 형태의 이름이 아니면 싱크하지 않음
+            return null;
+        }
+
+        String namespace = names[0];
+        String imageName = names[1];
+
+        Organization org = organizationService.getOrg(namespace);
+        User user = userService.getUser(namespace);
+
+        if (org == null && user == null) {
+            // org / user 둘중 하나라도 정보가 있어야 싱크
+            return null;
+        }
+
+        Image img = imageService.getImage(namespace, imageName);
+        if (img == null) {
+
+            img = new Image();
+            img.setNamespace(namespace);
+            img.setName(imageName);
+            img.setDelYn(false);
+
+            if (org != null) {
+                img.setIsOrganization(true);
+            } else {
+                img.setIsOrganization(false);
+            }
+
+            img.setIsPublic(true);
+            imageRepo.save(img);
+
+            if (org != null) {
+
+                List<Role> members = new ArrayList<>();
+                List<UserOrganization> userOrgs = userOrgRepo.getUserOrgs(org.getId());
+                Image i = img;
+                userOrgs.stream().forEach(value -> {
+                    Role role = new Role();
+                    role.setUser(value.getUser());
+                    role.setImage(i);
+                    role.setName(Const.Role.ADMIN);
+                    role.setIsStarred(false);
+                    members.add(role);
+                });
+
+                roleRepo.saveAll(members);
+            } else {
+                Role role = new Role();
+                role.setImage(img);
+                role.setUser(user);
+                role.setName(Const.Role.ADMIN);
+                role.setIsStarred(false);
+                roleRepo.save(role);
+            }
+        }
+
+        // sync tag
+        syncTags(img, (List<String>) image.get("tags"));
+
+        return img;
+    }
+
+    /**
+     * sync tag
+     * @param image
+     * @param tags
+     */
+    @Transactional
+    private void syncTags(Image image, List<String> tags) {
+        List<Tag> syncTags = new ArrayList<>();
+        tags.stream().forEach(value -> {
+            Tag tag = tagRepo.getTagByTagName(image.getId(), value);
+            if (tag == null) {
+                tag = new Tag();
+                tag.setImage(image);
+                tag.setName(value);
+                tag.setDockerImageId(UUID.randomUUID().toString());
+                tag.setStartTime(LocalDateTime.now());
+                tagRepo.save(tag);
+            }
+
+            syncTags.add(tag);
+        });
+
+        // 실제 존재하지 않는 Tag 삭제
+        List<Tag> allTags = tagRepo.getTags(image.getId());
+        allTags.stream().forEach(value -> {
+            List<Tag> tag = syncTags.stream()
+                    .filter(v -> v.getName().equals(value.getName()))
+                    .collect(Collectors.toList());
+            if (tag == null || tag.size() == 0) {
+                LocalDateTime now = LocalDateTime.now();
+                value.setExpiration(now);
+                value.setEndTime(now);
+                tagRepo.save(value);
+            }
+        });
+    }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Inner Class

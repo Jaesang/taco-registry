@@ -1,5 +1,6 @@
 package com.registry.controller;
 
+import com.registry.constant.Const;
 import com.registry.constant.Path;
 import com.registry.dto.LogDto;
 import com.registry.dto.OrganizationDto;
@@ -199,7 +200,7 @@ public class OrganizationController {
                     OrganizationDto.MEMBER member = new OrganizationDto.MEMBER();
                     member.name = value.getUser().getUsername();
                     member.kind = "organization";
-                    member.role = "ADMIN";
+                    member.role = Const.Role.ADMIN;
                     return member;
                 }).collect(Collectors.toList());
 

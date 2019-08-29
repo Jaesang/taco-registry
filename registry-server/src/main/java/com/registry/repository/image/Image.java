@@ -2,6 +2,7 @@ package com.registry.repository.image;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.registry.constant.Const;
 import com.registry.repository.AbstractEntity;
 import com.registry.repository.user.Role;
 import com.registry.util.SecurityUtil;
@@ -214,7 +215,7 @@ public class Image extends AbstractEntity {
 		if (role != null && role.size() > 0) {
 			role.stream().forEach(value -> {
 				if (value.getUser().getUsername().equals(SecurityUtil.getUser())) {
-					if ("ADMIN".equals(value.getName())) {
+					if (Const.Role.ADMIN.equals(value.getName())) {
 						this.canAdmin = true;
 					}
 				}
@@ -228,7 +229,7 @@ public class Image extends AbstractEntity {
 		if (role != null && role.size() > 0) {
 			role.stream().forEach(value -> {
 				if (value.getUser().getUsername().equals(SecurityUtil.getUser())) {
-					if ("ADMIN".equals(value.getName()) || "WRITE".equals(value.getName())) {
+					if (Const.Role.ADMIN.equals(value.getName()) || Const.Role.WRITE.equals(value.getName())) {
 						this.canWrite = true;
 					}
 				}

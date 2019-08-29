@@ -4,10 +4,12 @@ import com.registry.constant.Path;
 import com.registry.dto.SearchDto;
 import com.registry.repository.image.Image;
 import com.registry.repository.organization.Organization;
+import com.registry.repository.user.Role;
 import com.registry.repository.user.User;
 import com.registry.service.ImageService;
 import com.registry.service.OrganizationService;
 import com.registry.service.UserService;
+import com.registry.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
@@ -113,16 +115,20 @@ public class SearchController {
             results.add(item);
         });
         images.stream().forEach(value -> {
-            SearchDto.VIEW item = new SearchDto.VIEW();
-            item.kind = "image";
-            item.name = value.getName();
+            // 권한이 있거나 public Image 만 결과로 보여줌
+            List<Role> roles = value.getRole().stream().filter(v -> v.getUser().getUsername().equals(SecurityUtil.getUser())).collect(Collectors.toList());
+            if ((roles != null && roles.size() > 0) || value.getIsPublic()) {
+                SearchDto.VIEW item = new SearchDto.VIEW();
+                item.kind = "image";
+                item.name = value.getName();
 
-            SearchDto.VIEW namespace = new SearchDto.VIEW();
-            namespace.name = value.getNamespace();
-            namespace.kind = value.getIsOrganization() ? "organization" : "user";
-            item.namespace = namespace;
+                SearchDto.VIEW namespace = new SearchDto.VIEW();
+                namespace.name = value.getNamespace();
+                namespace.kind = value.getIsOrganization() ? "organization" : "user";
+                item.namespace = namespace;
 
-            results.add(item);
+                results.add(item);
+            }
         });
 
         result.put("content", results);
@@ -162,20 +168,25 @@ public class SearchController {
         Page<Image> result = imageService.getImagesByContainName(query, pageable);
 
         // 형 변환
-        List<SearchDto.VIEW> collect = result.getContent()
+        List<SearchDto.VIEW> collect = new ArrayList<>();
+        result.getContent()
                 .stream()
-                .map(value -> {
-                    SearchDto.VIEW item = mapper.map(value, SearchDto.VIEW.class);
-                    item.kind = "image";
-                    item.stars = value.getRole().stream().filter(v -> v.getIsStarred()).count();
-                    item.popularity = imageService.getPopularityCount(value.getNamespace(), value.getName());
+                .forEach(value -> {
+                    // 권한이 있거나 public Image 만 결과로 보여줌
+                    List<Role> roles = value.getRole().stream().filter(v -> v.getUser().getUsername().equals(SecurityUtil.getUser())).collect(Collectors.toList());
+                    if ((roles != null && roles.size() > 0) || value.getIsPublic()) {
+                        SearchDto.VIEW item = mapper.map(value, SearchDto.VIEW.class);
+                        item.kind = "image";
+                        item.stars = value.getRole().stream().filter(v -> v.getIsStarred()).count();
+                        item.popularity = imageService.getPopularityCount(value.getNamespace(), value.getName());
 
-                    SearchDto.VIEW namespace = new SearchDto.VIEW();
-                    namespace.name = value.getNamespace();
-                    namespace.kind = value.getIsOrganization() ? "organization" : "user";
-                    item.namespace = namespace;
-                    return item;
-                }).collect(Collectors.toList());
+                        SearchDto.VIEW namespace = new SearchDto.VIEW();
+                        namespace.name = value.getNamespace();
+                        namespace.kind = value.getIsOrganization() ? "organization" : "user";
+                        item.namespace = namespace;
+                        collect.add(item);
+                    }
+                });
 
         return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
