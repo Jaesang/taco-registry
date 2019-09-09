@@ -122,7 +122,6 @@ public class ImageService extends AbstractService {
         if (!m.find()) {
             throw new BadRequestException("Image names must match [a-z0-9_-]+");
         }
-        //todo builder에 image 생성 요청
 
         User user = userService.getUser(SecurityUtil.getUser());
 

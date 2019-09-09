@@ -15,6 +15,7 @@ import {FileService} from "../../../common/service/file.service";
 import {BuildHistoryService} from "../build-history/build-history.service";
 import {Alert} from "../../../common/utils/alert-util";
 import {CommonConstant} from "../../../common/constant/common-constant";
+import {Build} from "../build-history/build-history.value";
 
 @Component({
   selector: '[create-repo-popup]',
@@ -137,18 +138,16 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
     this.repo.isOrganization = this.repo.namespace == this.userService.user.username ? false : true;
     this.repositoryService.createRepository(this.repo).then(result => {
       if (this.withDockerfile) {
+        let build: Build.Entity = new Build.Entity();
+        build.dockerfile = this.dockerFileContent;
 
-        this.fileService.createFile(this.dockerFileContent).then(result => {
-          this.buildService.build(this.repo.namespace, this.repo.name, result.file_id).then(result => {
-            this.close();
-            this.router.navigate([`app/image/${this.repo.namespace}/${this.repo.name}/build`]);
+        this.buildService.build(this.repo.namespace, this.repo.name, build).then(result => {
+          this.close();
+          this.router.navigate([`app/image/${this.repo.namespace}/${this.repo.name}/build`]);
 
-            this.loaderService.show.next(false);
+          this.loaderService.show.next(false);
 
-            Alert.success(CommonConstant.MESSAGE.SUCCESS);
-          });
-        }).catch(reason => {
-
+          Alert.success(CommonConstant.MESSAGE.SUCCESS);
         });
       } else {
         this.close();

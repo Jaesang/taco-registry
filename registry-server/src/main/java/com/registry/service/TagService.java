@@ -211,8 +211,12 @@ public class TagService extends AbstractService {
         Tag preTag = tagRepo.getTagByTagName(image.getId(), tagName);
 
         if (preTag != null) {
-            preTag.setExpiration(LocalDateTime.now());
-            preTag.setEndTime(LocalDateTime.now());
+            // builder tag 삭제 요청
+            externalService.deleteTag(preTag);
+
+            LocalDateTime now = LocalDateTime.now();
+            preTag.setExpiration(now);
+            preTag.setEndTime(now);
             tagRepo.save(preTag);
 
             // 로그 등록
@@ -270,6 +274,9 @@ public class TagService extends AbstractService {
         tag.setBuildId(preTag.getBuildId());
         tag.setDockerImageId(preTag.getDockerImageId());
         tag.setSize(preTag.getSize());
+
+        // builder tag 생성 요청
+        externalService.createTag(tag, preTags.get(0).getName());
 
         createTag(tag);
     }

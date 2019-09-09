@@ -3,10 +3,7 @@ package com.registry.controller;
 import com.registry.constant.Path;
 import com.registry.dto.ImageDto;
 import com.registry.dto.LogDto;
-import com.registry.dto.SearchDto;
-import com.registry.dto.TagDto;
 import com.registry.repository.image.Image;
-import com.registry.repository.image.Tag;
 import com.registry.repository.usage.Log;
 import com.registry.repository.user.Role;
 import com.registry.service.ExternalAPIService;
@@ -17,7 +14,6 @@ import com.registry.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +25,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -526,7 +521,7 @@ public class ImageController {
             )
             @PathVariable("dockerImageId") String dockerImageId
     ) throws Exception{
-        return externalAPIService.getDockerImage(namespace, name, dockerImageId);
+        return externalAPIService.getManifests(namespace, name, dockerImageId);
     }
 
     /**

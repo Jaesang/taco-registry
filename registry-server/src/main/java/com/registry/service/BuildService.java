@@ -56,6 +56,9 @@ public class BuildService extends AbstractService {
     private UsageLogService logService;
 
     @Autowired
+    private ExternalAPIService externalService;
+
+    @Autowired
     private FileService fileService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -122,8 +125,6 @@ public class BuildService extends AbstractService {
 
         Build build = new Build();
 
-        //todo builder build 요청
-
         Image image = imageService.getImage(namespace, name);
         build.setImage(image);
         build.setPhase(Const.Build.PHASE.WAITING);
@@ -141,6 +142,9 @@ public class BuildService extends AbstractService {
             encodedBytes = encoder.encode(targetBytes);
             build.setGitPassword(new String(encodedBytes));
         }
+
+        // builder build 요청
+        externalService.createBuild(build);
 
         build = buildRepo.save(build);
 
