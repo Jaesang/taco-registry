@@ -218,6 +218,13 @@
 		</dependency>
 		<!-- //Apache Commons 관련 -->
 
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
 		<!-- Test 관련 -->
 		<dependency>
 			<groupId>com.jayway.restassured</groupId>
