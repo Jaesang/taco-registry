@@ -75,9 +75,10 @@ spring:
 
 # Ribbon
 builder:
+  username: builder
   redis:
     key: builderList
-    health-uri: /v1/health
+    health_uri: /v1/health
     connect-timeout: 3000
   ribbon:
     eureka:
@@ -89,6 +90,13 @@ builder:
 config:
   file:
     upload_dir: /tmp/file
+  oauth:
+    jwt:
+      issuer: Auth Service
+      key: classpath:registry.jks
+      password: registry.starkube.com
+      key-pair-alias: servercert
+      key-pair-password: exntu
 ---
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Exntu Dev Profile
@@ -123,6 +131,7 @@ spring:
 
 # Ribbon
 builder:
+  username: builder
   redis:
     key: builderList
     health_uri: /v1/health
@@ -139,64 +148,11 @@ config:
     upload_dir: /tmp/file
   oauth:
     jwt:
+      issuer: Auth Service
       key: classpath:registry.jks
       password: registry.starkube.com
       key-pair-alias: servercert
       key-pair-password: exntu
-      private-key:
-        MIIEpAIBAAKCAQEAw1jh/Z0u+PzIQsQbBQ2YQz79YTjPWQrkKWyrfFKZrafUC2pE
-        Q4ZbrGSJdDIZUoit3uPkdDoiJg0mj/XEbQ2Npv6zbxtI+TflTi4UsSAMiQjGvBMT
-        Mg/g6Asc9CGYxhFEqNkCX/AyvV6WhwE6s7MPqINJp2Xf15tJTc++N3SFcHFp2y2v
-        r8O4WfwbxV++voCw34O20UBlj8J04pUPZ8moXRytxHFTX3oRNOauou8OMh73dG3w
-        sA0vkOfQ+2VEm/+0361wsqXIVZS6wReGQrkw0+S6nXcDhY85RhEPvuVVgITil/iN
-        AqxlPuJppm1BClGcmrp9p76jUN61ZPngYdZTuQIDAQABAoIBAGnj01TLkHvNYqy2
-        asMZdHD3QxghWFw3CCjgTDCvAbjdYZbyeqBzw1u2f7/prEpN5poMxHiwTnR76mxc
-        16YZk7BzHkba7nqRbw4q8nJ1IfZiOIAYgu4/JzYBWCeJ0quDDsnMIHpq1MZL8KKr
-        6usf5Bv/VryT/3t7JIg2VTDwS6kADmCcMMZexKsg243P/yNuSzf8Mr3dYs0S2ezt
-        sxrCQgWC38oQV/3+PXPr6/E5C38PxzVtcgbNqAxTqnycSTjitdhvj3lBNcS/djce
-        u+W9qTjz+HX9h3mAHchVJNFfwsTZgB/uYFGmn66YYZpM0hossWKWYGq4GaVnXZ4N
-        YGSUCZECgYEA7r4Z2JDzsxjktiSRWgVfwPa9vEf6W/aWIX/A5Z8i1PC7PA48Dlb0
-        0Chk9m0j0bpDvKp9TT13kh+dtT53UVaS9PLbTaHbyaUWSgiT0kTGH+VxZgopFLUG
-        MAIoFcQcz15IXErzNe4rXeG0n496zFptw3cvt9htepQxWhGEuyZ9xk0CgYEA0XfB
-        klcljPC+6hhCYnqcoHOnwgKpNiaiGo9B9N9kTMUls+L8hT7IDzs1FStCLwNyD34X
-        ENmoKjGrBpmp/Wi4ogLY5aQt+TLYVnxsIaq065HzTzMqq2wMQkjeUxv6YfCZJV/c
-        h5lk0kKNMNZ8Ec+ZSBy4M1QwM9wYmWH6Zi560R0CgYEAmHydP4Dd1t+ofVn/6LKU
-        BUjTySVkGEb4fy79AuzQr5eOz338B+CsfyO90NPG1BcXWrK+U45WB+PftDrQtQgJ
-        1yAiyIQAQNwLz3+JAv1gWlEPS/BjatFwwUsvVS+sgxqiNyi8DQ8xbcZSurNG6K09
-        fGJs/QzkaC2tE+0qjOq53OUCgYBRr0bQX6WoGbYJqh4xMyljNNblxI3iLRyoCNeq
-        u3bsrTDvvoPFHl97+RXRRIZRuSFAw2YRTx/SHH5aW5A73xupKj0VCHpZJKfSykCM
-        vHpDJy5f408vfDonmyz/8fgpO18tgP2J75qul/9hXTMS6wcWZQS8F4eYoasCHYA9
-        WsDQTQKBgQC2u50JUac1AMgsur1/dtae9F8TabSytGnLQUB3bnLbtiwE41b90DOK
-        FwjUTfjdKwiiPMMRFloO4VoW1QHbgHywwRvACqpjJm1TvhMW0owufgxyqPgY8gHC
-        tJhzfU435wBh/Nsogip/9UY5fsJGbtSfVJLxOtaw1eJkL/rucJueAA==
-      cert:
-        -----BEGIN CERTIFICATE-----
-        MIIEljCCA36gAwIBAgIJANkw6VXdijmkMA0GCSqGSIb3DQEBCwUAMIGBMQswCQYD
-        VQQGEwJLUjEQMA4GA1UECAwHS3l1bmdnaTEPMA0GA1UEBwwGUGFua3lvMQ4wDAYD
-        VQQKDAVFeG50dTEMMAoGA1UECwwDUiZEMREwDwYDVQQDDAhzdGFya3ViZTEeMBwG
-        CSqGSIb3DQEJARYPbGludXNAZXhudHUuY29tMB4XDTE5MDkxMDA1NTg1M1oXDTIw
-        MDkwOTA1NTg1M1owgYExCzAJBgNVBAYTAktSMRAwDgYDVQQIDAdLeXVuZ2dpMQ8w
-        DQYDVQQHDAZQYW5reW8xDjAMBgNVBAoMBUV4bnR1MQwwCgYDVQQLDANSJkQxETAP
-        BgNVBAMMCHN0YXJrdWJlMR4wHAYJKoZIhvcNAQkBFg9saW51c0BleG50dS5jb20w
-        ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDDWOH9nS74/MhCxBsFDZhD
-        Pv1hOM9ZCuQpbKt8Upmtp9QLakRDhlusZIl0MhlSiK3e4+R0OiImDSaP9cRtDY2m
-        /rNvG0j5N+VOLhSxIAyJCMa8ExMyD+DoCxz0IZjGEUSo2QJf8DK9XpaHATqzsw+o
-        g0mnZd/Xm0lNz743dIVwcWnbLa+vw7hZ/BvFX76+gLDfg7bRQGWPwnTilQ9nyahd
-        HK3EcVNfehE05q6i7w4yHvd0bfCwDS+Q59D7ZUSb/7TfrXCypchVlLrBF4ZCuTDT
-        5LqddwOFjzlGEQ++5VWAhOKX+I0CrGU+4mmmbUEKUZyaun2nvqNQ3rVk+eBh1lO5
-        AgMBAAGjggENMIIBCTCBoAYDVR0jBIGYMIGVoYGHpIGEMIGBMQswCQYDVQQGEwJL
-        UjEQMA4GA1UECAwHS3l1bmdnaTEPMA0GA1UEBwwGUGFua3lvMQ4wDAYDVQQKDAVF
-        eG50dTEMMAoGA1UECwwDUiZEMREwDwYDVQQDDAhzdGFya3ViZTEeMBwGCSqGSIb3
-        DQEJARYPbGludXNAZXhudHUuY29tggkA2TDpVd2KOaQwCQYDVR0TBAIwADALBgNV
-        HQ8EBAMCBPAwTAYDVR0RBEUwQ4IVcmVnaXN0cnkuc3Rhcmt1YmUuY29tgglsb2Nh
-        bGhvc3SCDzE5Mi4xNjguMjAxLjE0NoIOMTkyLjE2OC4yMDEuMjQwDQYJKoZIhvcN
-        AQELBQADggEBAA0/ljaKI03wRZnPOKscvKvvp0Ws2FQf+msaUG8RE2bYuXIbBx2W
-        k/r4hjru55AU5gpDQWh3p/jo6GWZeMxx5njviMFq7Jv7z6Ua4TDgTmwCay8KLSkj
-        r3MNhHYKm3+QHR2QEBAeAxraAVjQF5v7f9bqprHK+86eDrWG+PLBV7TvsSHjq73k
-        L34WJLOSFVxHZcmt0r09215WTHJ5zUs3aaTvDdIsgusuG15GMRIFxcz+F6Za+/ik
-        XC8ffT4fDPUm0uQDqclIIJyBl7F0aP+JLYSQse4byMoxt33SUWjQEoWRthLnwFfO
-        GEYSnDB4MnpHsBXxy9MWyn7k6rgb+lKTNCE=
-        -----END CERTIFICATE-----
 ---
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Log Profile
