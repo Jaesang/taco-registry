@@ -8,6 +8,7 @@ import com.registry.dto.BuildLogDto;
 import com.registry.repository.image.Build;
 import com.registry.repository.image.BuildLog;
 import com.registry.service.BuildService;
+import com.registry.service.ExternalAPIService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
@@ -41,6 +42,9 @@ public class BuildController {
 
     @Autowired
     private BuildService buildService;
+
+    @Autowired
+    private ExternalAPIService externalService;
 
     @Autowired
     private MapperFacade mapper;
@@ -135,23 +139,17 @@ public class BuildController {
                     required = true
             )
             @PathVariable("name") String name,
-//            @ApiParam(
-//                    name = "file"
-//            )
-//            @RequestParam("file") MultipartFile file,
             @ApiParam(
                     name = "build"
             )
             @RequestBody BuildDto.CREATE buildDto
     ) throws Exception{
-        return buildService.createBuild(namespace, name, buildDto);
+        Build build = buildService.createBuild(namespace, name, buildDto);
 
-//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-//                .path("/downloadFile/")
-//                .path(fileName)
-//                .toUriString();
+        // builder build 요청
+        externalService.createBuild(build);
 
-//        return new FileUploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+        return build;
     }
 
     /**

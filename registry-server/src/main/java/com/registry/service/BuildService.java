@@ -143,9 +143,6 @@ public class BuildService extends AbstractService {
             build.setGitPassword(new String(encodedBytes));
         }
 
-        // builder build 요청
-        externalService.createBuild(build);
-
         build = buildRepo.save(build);
 
         Tag tag = new Tag();

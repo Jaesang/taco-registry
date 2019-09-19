@@ -127,7 +127,6 @@ public class OAuthService extends AbstractService {
                 .setNotBefore(now)
                 .setId(UUID.randomUUID().toString())
                 .signWith(SignatureAlgorithm.RS256, keyPair.getPrivate())
-                .setId(UUID.randomUUID().toString())
                 .compact();
 
         JSONObject obj = new JSONObject();

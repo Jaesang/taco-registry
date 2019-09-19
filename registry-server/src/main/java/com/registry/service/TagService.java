@@ -8,7 +8,6 @@ import com.registry.repository.image.Tag;
 import com.registry.repository.image.TagRepository;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.usage.Log;
-import com.registry.repository.user.User;
 import com.registry.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;

@@ -62,9 +62,10 @@ public class BuilderScheduler {
                 Long port = (Long) object.get("port");
                 String url = "http://" + host + ":" + port + builderHealthUri;
 
+                HttpURLConnection connection = null;
                 try {
                     URL siteURL = new URL(url);
-                    HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
+                    connection = (HttpURLConnection) siteURL.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setConnectTimeout(builderConnectTimeout);
                     connection.connect();
@@ -75,6 +76,9 @@ public class BuilderScheduler {
                     }
                     connection.disconnect();
                 } catch (Exception e) {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
                     logger.error(e.getMessage() + " " + host + " : " + port);
                 }
 
