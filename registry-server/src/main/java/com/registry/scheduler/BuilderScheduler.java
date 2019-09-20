@@ -84,14 +84,14 @@ public class BuilderScheduler {
 
             });
 
-            connectedBuilderList.put("builders", connectedBuilders);
-            String server = connectedBuilderList.toJSONString();
-            valueOperations.set(builderKey, server);
-
         } catch (ParseException e) {
             logger.error("json parsing error");
         } catch (Exception e) {
             logger.error("other exception");
+        } finally {
+            connectedBuilderList.put("builders", connectedBuilders);
+            String server = connectedBuilderList.toJSONString();
+            valueOperations.set(builderKey, server);
         }
 
     }

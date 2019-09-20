@@ -9,6 +9,7 @@ export namespace Tag {
     public name: string;
     public size: string;
     public expiration: any;
+    public buildId: string;
 
     public formattedLastModified: string;
     public formattedExpiration: string;

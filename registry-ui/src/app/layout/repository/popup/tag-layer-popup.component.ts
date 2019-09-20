@@ -27,6 +27,9 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
   @Input()
   public imageId: string;
 
+  @Input()
+  public tagName: string;
+
   @Output()
   public onClose: EventEmitter<any> = new EventEmitter();
 
@@ -51,11 +54,12 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
 
   public ngOnChanges(changes: SimpleChanges): void {
     for (let propName in changes) {
-      if (propName === 'imageId' && this.imageId) {
+      if (propName === 'tagName' && this.tagName) {
         this.orgName = '';
         this.repo = this.repositoryService.repository;
         this.orgName = this.repo.namespace;
         this.repoName = this.repo.name;
+        this.layerList = [];
 
         this.getImageDetail();
       }
@@ -71,7 +75,7 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
    * 이미지 상세 조회
    */
   private getImageDetail() {
-    this.tagService.getImageDetail(this.orgName, this.repoName, this.imageId).then(result => {
+    this.tagService.getImageDetail(this.orgName, this.repoName, this.tagName).then(result => {
       this.layerList = [];
       this.setCommand(result);
       this.layerList.push(result);

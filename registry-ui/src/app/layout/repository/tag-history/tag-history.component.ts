@@ -25,6 +25,7 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
 
   public showTagLayerPopup: boolean = false;
   public selectedImageId: string;
+  public selectedTag: string;
 
   public showRestoreImagePopup: boolean = false;
   public selectedHistory: Tag.History = new Tag.History();
@@ -74,6 +75,7 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
    */
   public imageClick(history: Tag.History) {
     this.selectedImageId = history.dockerImageId;
+    this.selectedTag = history.name;
     this.showTagLayerPopup = true;
   }
 

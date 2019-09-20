@@ -93,8 +93,8 @@ export class TagService extends AbstractService {
    * @param imageId
    * @returns {Promise<any>}
    */
-  public getImageDetail(namespace: string, repository: string, dockerImageId: string): Promise<Image.Layer> {
-    return this.get(`${environment.apiUrl}/image/${namespace}/${repository}/image/${dockerImageId}`);
+  public getImageDetail(namespace: string, repository: string, tagName: string): Promise<Image.Layer> {
+    return this.get(`${environment.apiUrl}/image/${namespace}/${repository}/tag/${tagName}/manifests`);
   }
 
   /**

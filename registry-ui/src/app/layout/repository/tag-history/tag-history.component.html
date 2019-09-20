@@ -98,7 +98,7 @@
 </div>
 <!-- //Repository Tag -->
 
-<div tag-layer-popup [show]="showTagLayerPopup" [imageId]="selectedImageId" (onClose)="showTagLayerPopup = false"></div>
+<div tag-layer-popup [show]="showTagLayerPopup" [imageId]="selectedImageId" [tagName]="selectedTag" (onClose)="showTagLayerPopup = false"></div>
 
 <!-- Layer Popup -->
 <div class="layout-popup" *ngIf="showRestoreImagePopup">

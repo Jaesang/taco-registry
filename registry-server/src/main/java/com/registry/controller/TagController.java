@@ -3,6 +3,8 @@ package com.registry.controller;
 import com.registry.constant.Path;
 import com.registry.dto.TagDto;
 import com.registry.repository.image.Tag;
+import com.registry.repository.image.TagRepository;
+import com.registry.service.ExternalAPIService;
 import com.registry.service.TagService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -35,6 +37,12 @@ public class TagController {
 
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private ExternalAPIService externalService;
+
+    @Autowired
+    private TagRepository tagRepo;
 
     @Autowired
     private MapperFacade mapper;
@@ -145,7 +153,7 @@ public class TagController {
             // 태그 복사
             tagService.copyTag(namespace, name, tagName, tag.dockerImageId);
         } else {
-            // expiration 변
+            // expiration 변경
             tagService.updateExpiration(namespace, name, tagName, tag.expiration != null ? tag.expiration : 0);
         }
 

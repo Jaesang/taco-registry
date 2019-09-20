@@ -493,7 +493,7 @@ public class ImageController {
      * @throws Exception
      */
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @GetMapping(Path.DOCKER_IMAGE)
+    @GetMapping(Path.MANIFESTS)
     @ApiOperation(
             value = "get docker image detail",
             notes = "Docker image detail"
@@ -516,12 +516,12 @@ public class ImageController {
             )
             @PathVariable("name") String name,
             @ApiParam(
-                    name = "docker image id",
+                    name = "tagName",
                     required = true
             )
-            @PathVariable("dockerImageId") String dockerImageId
+            @PathVariable("tagName") String tagName
     ) throws Exception{
-        return externalAPIService.getManifests(namespace, name, dockerImageId);
+        return externalAPIService.getManifests(namespace, name, tagName);
     }
 
     /**

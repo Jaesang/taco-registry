@@ -126,7 +126,7 @@ public class Path {
     public static final String IMAGE_DETAIL                 = API + "/image/{namespace}/{name}";
 
     // docker image detail
-    public static final String DOCKER_IMAGE                 = IMAGE_DETAIL + "/image/{dockerImageId}";
+    public static final String MANIFESTS                    = IMAGE_DETAIL + "/tag/{tagName}/manifests";
 
     // image security
     public static final String IMAGE_SECURITY               = IMAGE_DETAIL + "/image/{dockerImageId}/security";

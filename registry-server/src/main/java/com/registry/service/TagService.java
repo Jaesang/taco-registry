@@ -242,7 +242,6 @@ public class TagService extends AbstractService {
      * @param tagName
      * @param dockerImageId
      */
-    @Transactional
     public void copyTag(String namespace, String name, String tagName, String dockerImageId) {
         logger.info("createTag namespace : {}", namespace);
         logger.info("createTag name : {}", name);
@@ -273,10 +272,10 @@ public class TagService extends AbstractService {
         tag.setDockerImageId(preTag.getDockerImageId());
         tag.setSize(preTag.getSize());
 
+        createTag(tag);
+
         // builder tag 생성 요청
         externalService.createTag(tag, preTags.get(0).getName());
-
-        createTag(tag);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

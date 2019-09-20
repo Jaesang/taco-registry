@@ -128,6 +128,7 @@ spring:
     host: 192.168.201.146
     port: 6379
     password:
+    timeout: 60
 
 # Ribbon
 builder:

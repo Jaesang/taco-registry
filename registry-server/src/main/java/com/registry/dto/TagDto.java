@@ -20,6 +20,7 @@ public class TagDto {
 
     @ApiModel("Tag.VIEW")
     public static class VIEW {
+        public String buildId;
         public String dockerImageId;
         public String lastModified;
         public String manifestDigest;
