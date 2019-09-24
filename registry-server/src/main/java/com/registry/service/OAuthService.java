@@ -199,6 +199,8 @@ public class OAuthService extends AbstractService {
         String action = scopes[2];
 
         if (builderUsername.equals(username)) {
+            // builder에서 요청할 경우 전부 허용
+
             JSONObject obj = new JSONObject();
             obj.put("type", type);
             obj.put("name", name);
@@ -226,7 +228,7 @@ public class OAuthService extends AbstractService {
                 Set<String> actions = new LinkedHashSet<>();
 
                 if (image.getIsPublic()) {
-                    // public image or builder에서 요청할 경우 전부 허용
+                    // public image 전부 허용
                     actions.add("*");
                 } else {
                     Role role = image.getRole().stream().filter(v -> username.equals(v.getUser().getUsername())).findFirst().orElse(null);
