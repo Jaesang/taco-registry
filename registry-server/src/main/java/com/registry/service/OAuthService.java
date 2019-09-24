@@ -92,7 +92,9 @@ public class OAuthService extends AbstractService {
         User user = userService.getUser(username);
         // password check
         if (user == null || !BCrypt.checkpw(password, user.getPassword())) {
-            throw new InvalidTokenException("unauthorized");
+            if (!builderUsername.equals(username)) {
+                throw new InvalidTokenException("unauthorized");
+            }
         }
 
         // load jks file
@@ -196,40 +198,52 @@ public class OAuthService extends AbstractService {
         String name = scopes[1];
         String action = scopes[2];
 
-        String[] names = name.split("/");
-        if (names.length != 2) {
-            return result;
-        }
-
-        String namespace = names[0];
-        String imageName = names[1];
-
-        Image image = this.imageService.getImage(namespace, imageName);
-        if (image != null) {
+        if (builderUsername.equals(username)) {
             JSONObject obj = new JSONObject();
             obj.put("type", type);
             obj.put("name", name);
 
             Set<String> actions = new LinkedHashSet<>();
-
-            if (image.getIsPublic() || builderUsername.equals(username)) {
-                // public image or builder에서 요청할 경우 전부 허용
-                actions.add("*");
-            } else {
-                Role role = image.getRole().stream().filter(v -> username.equals(v.getUser().getUsername())).findFirst().orElse(null);
-                if (role != null) {
-                    if (action.contains("pull")) {
-                        actions.add("pull");
-                    }
-                    if (action.contains("push") && (Const.Role.WRITE.equals(role.getName()) || Const.Role.ADMIN.equals(role.getName()))) {
-                        actions.add("push");
-                    }
-                }
-            }
-
+            actions.add("*");
             obj.put("actions", actions);
 
             result.add(obj);
+        } else {
+            String[] names = name.split("/");
+            if (names.length != 2) {
+                return result;
+            }
+
+            String namespace = names[0];
+            String imageName = names[1];
+
+            Image image = this.imageService.getImage(namespace, imageName);
+            if (image != null) {
+                JSONObject obj = new JSONObject();
+                obj.put("type", type);
+                obj.put("name", name);
+
+                Set<String> actions = new LinkedHashSet<>();
+
+                if (image.getIsPublic()) {
+                    // public image or builder에서 요청할 경우 전부 허용
+                    actions.add("*");
+                } else {
+                    Role role = image.getRole().stream().filter(v -> username.equals(v.getUser().getUsername())).findFirst().orElse(null);
+                    if (role != null) {
+                        if (action.contains("pull")) {
+                            actions.add("pull");
+                        }
+                        if (action.contains("push") && (Const.Role.WRITE.equals(role.getName()) || Const.Role.ADMIN.equals(role.getName()))) {
+                            actions.add("push");
+                        }
+                    }
+                }
+
+                obj.put("actions", actions);
+
+                result.add(obj);
+            }
         }
 
         return result;

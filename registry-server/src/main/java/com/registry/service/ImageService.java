@@ -185,9 +185,6 @@ public class ImageService extends AbstractService {
 
         imageRepo.save(preImage);
 
-        // builder image 삭제 요청
-        externalService.deleteImage(preImage);
-
         // 로그 등록
         Organization org = organizationService.getOrg(preImage.getNamespace());
         Log log = new Log();
@@ -219,6 +216,9 @@ public class ImageService extends AbstractService {
         image.setDelYn(true);
 
         imageRepo.save(image);
+
+        // builder image 삭제 요청
+        externalService.deleteImage(image);
 
         // 로그 등록
         Organization org = organizationService.getOrg(image.getNamespace());
