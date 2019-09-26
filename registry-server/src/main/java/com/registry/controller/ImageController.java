@@ -553,16 +553,16 @@ public class ImageController {
             )
             @PathVariable("name") String name,
             @ApiParam(
-                    name = "docker image id",
+                    name = "tagName",
                     required = true
             )
-            @PathVariable("dockerImageId") String dockerImageId,
+            @PathVariable("tagName") String tagName,
             @ApiParam(
                     name = "vulnerabilities"
             )
             @RequestParam(value = "vulnerabilities", required = false) Boolean vulnerabilities
     ) throws Exception{
-        return externalAPIService.getSecurity(namespace, name, dockerImageId);
+        return externalAPIService.getSecurity(namespace, name, tagName);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

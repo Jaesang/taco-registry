@@ -467,7 +467,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
       // dockerImageId 로 중복 제거
       var imageList = _.uniqBy(this.tagList, 'dockerImageId');
       imageList.forEach(value => {
-        this.getSecurityData(value.dockerImageId);
+        this.getSecurityData(value.dockerImageId, value.name);
       });
     });
   }
@@ -476,10 +476,10 @@ export class TagInfoComponent extends PageComponent implements OnInit {
    * security scan 조회
    * @param imageId
    */
-  private getSecurityData(imageId: string) {
+  private getSecurityData(imageId: string, tagName: string) {
     this.loaderService.show.next(true);
 
-    this.tagService.getSecurity(this.orgName, this.repoName, imageId).then(result => {
+    this.tagService.getSecurity(this.orgName, this.repoName, tagName).then(result => {
       this.tagService.setSecurityCount(result);
 
       this.securityData[imageId] = result;

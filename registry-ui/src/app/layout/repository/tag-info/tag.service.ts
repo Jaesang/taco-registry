@@ -45,8 +45,8 @@ export class TagService extends AbstractService {
    * @param imageId
    * @returns {Promise<any>}
    */
-  public getSecurity(namespace: string, repository: string, dockerImageId: string): Promise<Tag.Security> {
-    return this.get(`${environment.apiUrl}/image/${namespace}/${repository}/image/${dockerImageId}/security?vulnerabilities=true`);
+  public getSecurity(namespace: string, repository: string, tagName: string): Promise<Tag.Security> {
+    return this.get(`${environment.apiUrl}/image/${namespace}/${repository}/tag/${tagName}/security?vulnerabilities=true`);
   }
 
   /**

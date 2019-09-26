@@ -422,6 +422,6 @@
 </div>
 <!-- //Layer Popup(change expiration) -->
 
-<div tag-layer-popup *ngIf="showTagLayerPopup" [imageId]="selectedImageId" (onClose)="showTagLayerPopup = false"></div>
+<div tag-layer-popup *ngIf="showTagLayerPopup" [imageId]="selectedImageId" [tag]="currentSelectedTag" (onClose)="showTagLayerPopup = false"></div>
 
-<div tag-security-popup *ngIf="showTagSecurityPopup" [imageId]="selectedImageId" (onClose)="showTagSecurityPopup = false"></div>
+<div tag-security-popup *ngIf="showTagSecurityPopup" [imageId]="selectedImageId" [tag]="currentSelectedTag" (onClose)="showTagSecurityPopup = false"></div>

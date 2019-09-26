@@ -14,6 +14,7 @@ import {Alert} from "../../../common/utils/alert-util";
 import {TagService} from "../tag-info/tag.service";
 import {Repository} from "../repository.value";
 import {Image} from "../tag-info/image.value";
+import {Tag} from "../tag-info/tag.value";
 
 @Component({
   selector: '[tag-layer-popup]',
@@ -28,7 +29,7 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
   public imageId: string;
 
   @Input()
-  public tagName: string;
+  public tag: Tag.Entity;
 
   @Output()
   public onClose: EventEmitter<any> = new EventEmitter();
@@ -54,7 +55,7 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
 
   public ngOnChanges(changes: SimpleChanges): void {
     for (let propName in changes) {
-      if (propName === 'tagName' && this.tagName) {
+      if (propName === 'tagName' && this.tag.name) {
         this.orgName = '';
         this.repo = this.repositoryService.repository;
         this.orgName = this.repo.namespace;
@@ -75,7 +76,7 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
    * 이미지 상세 조회
    */
   private getImageDetail() {
-    this.tagService.getImageDetail(this.orgName, this.repoName, this.tagName).then(result => {
+    this.tagService.getImageDetail(this.orgName, this.repoName, this.tag.name).then(result => {
       this.layerList = [];
       this.setCommand(result);
       this.layerList.push(result);

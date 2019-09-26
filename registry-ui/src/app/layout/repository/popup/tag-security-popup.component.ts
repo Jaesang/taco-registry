@@ -38,6 +38,9 @@ export class TagSecurityPopupComponent extends AbstractComponent implements OnIn
   @Input()
   public imageId: string;
 
+  @Input()
+  public tag: Tag.Entity;
+
   @Output()
   public onClose: EventEmitter<any> = new EventEmitter();
 
@@ -87,10 +90,10 @@ export class TagSecurityPopupComponent extends AbstractComponent implements OnIn
   public getSecurity() {
     this.loaderService.show.next(true);
 
-    this.tagService.getSecurity(this.orgName, this.repoName, this.imageId).then(r => {
+    this.tagService.getSecurity(this.orgName, this.repoName, this.tag.name).then(r => {
       this.security = r;
 
-      this.tagService.getImageDetail(this.orgName, this.repoName, this.imageId).then(result => {
+      this.tagService.getImageDetail(this.orgName, this.repoName, this.tag.name).then(result => {
         this.layerList = [];
         this.tagService.setCommand(result);
         this.layerList.push(result);

@@ -129,7 +129,7 @@ public class Path {
     public static final String MANIFESTS                    = IMAGE_DETAIL + "/tag/{tagName}/manifests";
 
     // image security
-    public static final String IMAGE_SECURITY               = IMAGE_DETAIL + "/image/{dockerImageId}/security";
+    public static final String IMAGE_SECURITY               = IMAGE_DETAIL + "/tag/{tagName}/security";
 
     // build 목록
     public static final String IMAGE_BUILD                  = IMAGE_DETAIL + "/build/";
