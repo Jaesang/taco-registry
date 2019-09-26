@@ -1,4 +1,4 @@
-const HOST = '192.168.201.11:31080';
+const HOST = 'exntu.kr:38383';
 
 export const environment = {
   production: true,

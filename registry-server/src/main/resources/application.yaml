@@ -92,7 +92,7 @@ config:
     upload_dir: /tmp/file
   oauth:
     jwt:
-      issuer: Auth Service
+      issuer: taco-registry
       key: classpath:registry.jks
       password: registry.starkube.com
       key-pair-alias: servercert
@@ -149,7 +149,7 @@ config:
     upload_dir: /tmp/file
   oauth:
     jwt:
-      issuer: Auth Service
+      issuer: taco-registry
       key: classpath:registry.jks
       password: registry.starkube.com
       key-pair-alias: servercert
