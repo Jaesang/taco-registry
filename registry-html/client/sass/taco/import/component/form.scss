@@ -125,9 +125,8 @@
         td .component-file {
             width:556px;
         }
-
-        .multi-area {
-            .component-input {
+        td {
+            .component-input + .component-input {
                 margin:6px 0 0;
             }
         }
