@@ -39,6 +39,15 @@ export namespace Build {
     error = <any>'error'
   }
 
+  /**
+   * create type
+   */
+  export enum CreateType {
+    DEFAULT,
+    DOCKERFILE,
+    GIT
+  }
+
 	export class Entity {
     public status: Object;
     public error: string;

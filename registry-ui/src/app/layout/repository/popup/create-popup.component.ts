@@ -44,7 +44,12 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
   public fileStatus: string;
   public dockerFileContent: string;
 
-  public withDockerfile: boolean = false;
+  public CreateType: typeof Build.CreateType = Build.CreateType;
+  public createType: Build.CreateType;
+
+  public gitPath: string;
+  public gitUsername: string;
+  public gitPassword: string;
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
@@ -67,9 +72,12 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
         this.orgName = '';
         this.repo = new Repository.Entity();
         this.repo.isPublic = false;
-        this.withDockerfile = false;
+        this.createType = this.CreateType.DEFAULT;
         this.errorRepoName = false;
         this.dockerFileContent = '';
+        this.gitPath = '';
+        this.gitUsername = '';
+        this.gitPassword = '';
         this.initSelectList();
       }
     }
@@ -109,10 +117,12 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
   public changeCreateType(index: number) {
     this.fileStatus = null;
 
-    if (index == 1) {
-      this.withDockerfile = true;
+    if (index == 0) {
+      this.createType = this.CreateType.DEFAULT;
+    } else if (index == 1) {
+      this.createType = this.CreateType.DOCKERFILE;
     } else {
-      this.withDockerfile = false;
+      this.createType = this.CreateType.GIT;
     }
   }
 
@@ -137,9 +147,22 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
 
     this.repo.isOrganization = this.repo.namespace == this.userService.user.username ? false : true;
     this.repositoryService.createRepository(this.repo).then(result => {
-      if (this.withDockerfile) {
+      if (this.createType == null) {
+        this.close();
+        this.router.navigate([`app/image/${this.repo.namespace}/${this.repo.name}/info`]);
+
+        this.loaderService.show.next(false);
+
+        Alert.success(CommonConstant.MESSAGE.SUCCESS);
+      } else {
         let build: Build.Entity = new Build.Entity();
-        build.dockerfile = this.dockerFileContent;
+        if (this.createType == this.CreateType.DOCKERFILE) {
+          build.dockerfile = this.dockerFileContent;
+        } else {
+          build.gitPath = this.gitPath;
+          build.gitUsername = this.gitUsername;
+          build.gitPassword = this.gitPassword;
+        }
 
         this.buildService.build(this.repo.namespace, this.repo.name, build).then(result => {
           this.close();
@@ -149,13 +172,6 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
 
           Alert.success(CommonConstant.MESSAGE.SUCCESS);
         });
-      } else {
-        this.close();
-        this.router.navigate([`app/image/${this.repo.namespace}/${this.repo.name}/info`]);
-
-        this.loaderService.show.next(false);
-
-        Alert.success(CommonConstant.MESSAGE.SUCCESS);
       }
     }).catch(reason => {
       let body = JSON.parse(reason._body);
@@ -182,8 +198,17 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
 
     this.errorMsg = '';
 
-    if (this.withDockerfile) {
+    if (this.createType == this.CreateType.DOCKERFILE) {
       if (this.fileStatus != 'success') {
+        return false;
+      }
+    } else if (this.createType == this.CreateType.GIT) {
+      if (Validate.isEmpty(this.gitPath)) {
+        return false;
+      }
+
+      if ((!Validate.isEmpty(this.gitUsername) && Validate.isEmpty(this.gitPassword)) ||
+        (Validate.isEmpty(this.gitUsername) && !Validate.isEmpty(this.gitPassword))) {
         return false;
       }
     }

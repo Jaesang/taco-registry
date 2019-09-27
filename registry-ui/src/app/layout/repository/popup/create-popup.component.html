@@ -35,7 +35,7 @@
                   <div class="component-input" [class.is-error]="errorRepoName">
                     <div class="input-area">
                       <input type="text" class="input-text" placeholder="Image Name" [(ngModel)]="repo.name" (keyup)="repoNameChange()" maxlength="40">
-                      <a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+                      <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="repo.name = ''" tabIndex="-1"></a>
                     </div>
                     <span class="txt-error">Image names must match [a-z0-9_-]+</span>
                   </div>
@@ -50,7 +50,7 @@
                   <div class="component-input">
                     <div class="input-area">
                       <input type="text" class="input-text" placeholder="Description" [(ngModel)]="repo.description">
-                      <a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
+                      <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="repo.description = ''" tabIndex="-1"></a>
                     </div>
                   </div>
                 </td>
@@ -96,7 +96,7 @@
                   <ul class="list-radio">
                     <li>
                       <div class="component-radio">
-                        <input type="radio" id="radio3" class="input-radio" name="createType" [value]="false" [(ngModel)]="withDockerfile" (change)="changeCreateType(0)">
+                        <input type="radio" id="radio3" class="input-radio" name="createType" [value]="CreateType.DEFAULT" [(ngModel)]="createType" (change)="changeCreateType(0)">
                         <label for="radio3" class="label">
                           <span class="icon-radio"></span>
                           <span class="txt-label type-empty">
@@ -107,7 +107,7 @@
                     </li>
                     <li>
                       <div class="component-radio">
-                        <input type="radio" id="radio4" class="input-radio" name="createType" [value]="true" [(ngModel)]="withDockerfile" (change)="changeCreateType(1)">
+                        <input type="radio" id="radio4" class="input-radio" name="createType" [value]="CreateType.DOCKERFILE" [(ngModel)]="createType" (change)="changeCreateType(1)">
                         <label for="radio4" class="label">
                           <span class="icon-radio"></span>
                           <span class="txt-label type-docker">
@@ -116,21 +116,21 @@
                         </label>
                       </div>
                     </li>
-                    <!--<li>-->
-                      <!--<div class="component-radio">-->
-                        <!--<input type="radio" id="radio8" class="input-radio" name="createType" (change)="changeCreateType(2)">-->
-                        <!--<label for="radio8" class="label">-->
-                          <!--<span class="icon-radio"></span>-->
-                          <!--<span class="txt-label type-custom">-->
-														<!--Link to a Custom Git Repository Push-->
-													<!--</span>-->
-                        <!--</label>-->
-                      <!--</div>-->
-                    <!--</li>-->
+                    <li>
+                      <div class="component-radio">
+                        <input type="radio" id="radio8" class="input-radio" name="createType" [value]="CreateType.GIT" [(ngModel)]="createType" (change)="changeCreateType(2)">
+                        <label for="radio8" class="label">
+                          <span class="icon-radio"></span>
+                          <span class="txt-label type-custom">
+														Link to a Custom Git Repository Push
+													</span>
+                        </label>
+                      </div>
+                    </li>
                   </ul>
                 </td>
               </tr>
-              <tr *ngIf="withDockerfile">
+              <tr *ngIf="createType == CreateType.DOCKERFILE">
                 <th>
                   <label class="txt-label">Initialize from Dockerfile</label>
                 </th>
@@ -138,6 +138,31 @@
                   <!-- File -->
                   <div file-upload [status]="fileStatus" (onChange)="fileChange($event)"></div>
                   <!-- //File -->
+                </td>
+              </tr>
+              <tr *ngIf="createType == CreateType.GIT">
+                <th>
+                  <label class="txt-label">Git Repository</label>
+                </th>
+                <td>
+                  <div class="component-input">
+                    <div class="input-area">
+                      <input type="text" class="input-text" placeholder="Git Repository Path" [(ngModel)]="gitPath">
+                      <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="gitPath = ''" tabIndex="-1"></a>
+                    </div>
+                  </div>
+                  <div class="component-input">
+                    <div class="input-area">
+                      <input type="text" class="input-text" placeholder="Git Repository Username" [(ngModel)]="gitUsername">
+                      <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="gitUsername = ''" tabIndex="-1"></a>
+                    </div>
+                  </div>
+                  <div class="component-input">
+                    <div class="input-area">
+                      <input type="password" class="input-text" placeholder="Git Repository Password" [(ngModel)]="gitPassword">
+                      <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="gitPassword = ''" tabIndex="-1"></a>
+                    </div>
+                  </div>
                 </td>
               </tr>
               </tbody>

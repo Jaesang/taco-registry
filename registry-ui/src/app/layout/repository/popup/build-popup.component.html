@@ -9,7 +9,56 @@
 
         <!-- Popup Start Repository Build -->
         <div class="popup-repository-build">
-          <div file-upload [status]="fileStatus" (onChange)="fileChange($event)"></div>
+
+          <!-- Initialize Repository -->
+          <ul class="initialize-block">
+            <li>
+              <div class="component-radio">
+                <input type="radio" id="radio4" class="input-radio" [value]="CreateType.DOCKERFILE" [(ngModel)]="createType" (change)="changeCreateType(0)">
+                <label for="radio4" class="label">
+                  <span class="icon-radio"></span>
+                  <span class="txt-label type-docker">
+											Initialize from a Dockerfile
+										</span>
+                </label>
+              </div>
+            </li>
+            <li>
+              <div class="component-radio">
+                <input type="radio" id="radio8" class="input-radio" [value]="CreateType.GIT" [(ngModel)]="createType" (change)="changeCreateType(1)">
+                <label for="radio8" class="label">
+                  <span class="icon-radio"></span>
+                  <span class="txt-label type-custom">
+											Link to a Custom Git Repository Push
+										</span>
+                </label>
+              </div>
+            </li>
+          </ul>
+          <!-- //Initialize Repository -->
+
+          <div file-upload *ngIf="createType == CreateType.DOCKERFILE" [status]="fileStatus" (onChange)="fileChange($event)"></div>
+
+          <div class="git-block" *ngIf="createType == CreateType.GIT">
+            <div class="component-input">
+              <div class="input-area">
+                <input type="text" class="input-text" placeholder="Git Repository Path" [(ngModel)]="gitPath">
+                <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="gitPath = ''" tabIndex="-1"></a>
+              </div>
+            </div>
+            <div class="component-input">
+              <div class="input-area">
+                <input type="text" class="input-text" placeholder="Git Repository Username" [(ngModel)]="gitUsername">
+                <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="gitUsername = ''" tabIndex="-1"></a>
+              </div>
+            </div>
+            <div class="component-input">
+              <div class="input-area">
+                <input type="password" class="input-text" placeholder="Git Repository Password" [(ngModel)]="gitPassword">
+                <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="gitPassword = ''" tabIndex="-1"></a>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- //Popup Start Repository Build -->
 
@@ -17,7 +66,7 @@
         <div class="button-block">
           <button type="button" class="btn-basic type-small" (click)="close()">Cancel</button>
           <!-- [D] Success 인 경우 disabled 속성 제거 -->
-          <button type="button" class="btn-action type-small" [disabled]="fileStatus != 'success'" (click)="startBuildClick()">Start Build</button>
+          <button type="button" class="btn-action type-small" [disabled]="!checkValidate()" (click)="startBuildClick()">Start Build</button>
         </div>
       </div>
 

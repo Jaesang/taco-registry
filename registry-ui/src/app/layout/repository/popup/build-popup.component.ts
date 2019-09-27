@@ -12,6 +12,7 @@ import {OrganizationService} from "../../organization/organization.service";
 import {CommonConstant} from "../../../common/constant/common-constant";
 import {Alert} from "../../../common/utils/alert-util";
 import {Build} from "../build-history/build-history.value";
+import {Validate} from "../../../common/utils/validate-util";
 
 @Component({
   selector: '[build-popup]',
@@ -34,6 +35,13 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
   public repoName: string;
   public errorMsg: string = '';
 
+  public CreateType: typeof Build.CreateType = Build.CreateType;
+  public createType: Build.CreateType;
+
+  public gitPath: string;
+  public gitUsername: string;
+  public gitPassword: string;
+
   private dockerFileContent: string;
 
   constructor(protected elementRef: ElementRef,
@@ -55,15 +63,36 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
       if (propName === 'show') {
         this.errorMsg = '';
         this.orgName = '';
+        this.createType = this.CreateType.DOCKERFILE;
+        this.dockerFileContent = '';
+        this.gitPath = '';
+        this.gitUsername = '';
+        this.gitPassword = '';
       }
     }
   }
 
   public close() {
-    this.fileUploader.init();
+    if (this.fileUploader) {
+      this.fileUploader.init();
+    }
     this.fileStatus = null;
     this.show = false;
     this.onClose.emit();
+  }
+
+  /**
+   * 생성 타입 변경
+   * @param index
+   */
+  public changeCreateType(index: number) {
+    this.fileStatus = null;
+
+    if (index == 0) {
+      this.createType = this.CreateType.DOCKERFILE;
+    } else {
+      this.createType = this.CreateType.GIT;
+    }
   }
 
   /**
@@ -87,7 +116,13 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
     this.repoName = this.repositoryService.repository.name;
 
     let build: Build.Entity = new Build.Entity();
-    build.dockerfile = this.dockerFileContent;
+    if (this.createType == this.CreateType.DOCKERFILE) {
+      build.dockerfile = this.dockerFileContent;
+    } else {
+      build.gitPath = this.gitPath;
+      build.gitUsername = this.gitUsername;
+      build.gitPassword = this.gitPassword;
+    }
 
     this.buildService.build(this.orgName, this.repoName, build).then(result => {
       this.buildService.newBuild.next(result);
@@ -99,6 +134,32 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
       let body = JSON.parse(reason._body);
       Alert.error(body.message);
     });
+  }
+
+  /**
+   * check validation
+   * @returns {boolean}
+   */
+  public checkValidate() {
+
+    this.errorMsg = '';
+
+    if (this.createType == this.CreateType.DOCKERFILE) {
+      if (this.fileStatus != 'success') {
+        return false;
+      }
+    } else if (this.createType == this.CreateType.GIT) {
+      if (Validate.isEmpty(this.gitPath)) {
+        return false;
+      }
+
+      if ((!Validate.isEmpty(this.gitUsername) && Validate.isEmpty(this.gitPassword)) ||
+        (Validate.isEmpty(this.gitUsername) && !Validate.isEmpty(this.gitPassword))) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
 }

@@ -142,6 +142,8 @@ public class BuildService extends AbstractService {
             encodedBytes = encoder.encode(targetBytes);
             build.setGitPassword(new String(encodedBytes));
         }
+        build.setGitPath(buildDto.gitPath);
+        build.setGitUsername(buildDto.gitUsername);
 
         build = buildRepo.save(build);
 
