@@ -118,12 +118,18 @@
             }
         }
 
-        td > .component-input,
-        td > .component-selectbox {
+        td .component-input,
+        td .component-selectbox {
             width:420px;
         }
-        td > .component-file {
+        td .component-file {
             width:556px;
+        }
+
+        .multi-area {
+            .component-input {
+                margin:6px 0 0;
+            }
         }
     }
 }
