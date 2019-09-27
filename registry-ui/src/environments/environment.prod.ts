@@ -1,8 +1,8 @@
-const HOST = 'exntu.kr:38383';
+const HOST = '';
 
 export const environment = {
   production: true,
-  host : `http://${HOST}`,
-  hostName: HOST,
-  apiUrl: `http://${HOST}/api`
+  host : ``,
+  hostName: location.hostname,
+  apiUrl: `/api`
 };
