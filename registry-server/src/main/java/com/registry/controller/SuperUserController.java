@@ -86,7 +86,7 @@ public class SuperUserController {
                     defaultValue=" ",
                     value ="Pageable"
             )
-            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
     ) throws Exception{
         JSONObject result = new JSONObject();
 

@@ -250,7 +250,7 @@ public class ImageController {
                     defaultValue=" ",
                     value ="Pageable"
             )
-            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
     ) throws Exception{
         Page<Image> result = imageService.getImages(namespace, pageable);
         // 형 변환
@@ -301,7 +301,7 @@ public class ImageController {
                     defaultValue=" ",
                     value ="Pageable"
             )
-            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
     ) throws Exception{
         Page<Role> result = imageService.getMembers(namespace, name, pageable);
 
@@ -472,7 +472,7 @@ public class ImageController {
                     defaultValue=" ",
                     value ="Pageable"
             )
-            @PageableDefault(sort = {"datetime"}, direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = {"datetime"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
     ) throws Exception{
         Page<Log> result = usageLogService.getImageLogs(namespace, name, starttime, endtime, pageable);
 

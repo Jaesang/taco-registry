@@ -69,7 +69,7 @@
           <span class="txt-date">{{ item.formattedLastModified }}</span>
         </td>
         <td>
-          <span class="txt-scan type-success" *ngIf="getSecurity(item.dockerImageId).fixableCount == 0 && getSecurity(item.dockerImageId).vulnerabilityHighCount == 0" (click)="scanClick(item)">
+          <span class="txt-scan type-success" *ngIf="getSecurity(item.dockerImageId).status != 'queued' && getSecurity(item.dockerImageId).fixableCount == 0 && getSecurity(item.dockerImageId).vulnerabilityHighCount == 0" (click)="scanClick(item)">
             Passed
             <!-- Tooltip -->
             <div class="component-tooltip">
@@ -80,7 +80,7 @@
             <!-- //Tooltip -->
           </span>
 
-          <span class="txt-scan type-scan" *ngIf="getSecurity(item.dockerImageId).fixableCount != 0 || getSecurity(item.dockerImageId).vulnerabilityHighCount != 0" (click)="scanClick(item)">
+          <span class="txt-scan type-scan" *ngIf="getSecurity(item.dockerImageId).status != 'queued' && (getSecurity(item.dockerImageId).fixableCount != 0 || getSecurity(item.dockerImageId).vulnerabilityHighCount != 0)" (click)="scanClick(item)">
             <em>{{ getSecurity(item.dockerImageId).vulnerabilityHighCount }} High</em> · {{ getSecurity(item.dockerImageId).fixableCount }} Fixable
             <!-- Tooltip -->
             <div class="component-tooltip">

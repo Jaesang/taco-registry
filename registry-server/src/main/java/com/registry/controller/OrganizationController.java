@@ -312,7 +312,7 @@ public class OrganizationController {
                     defaultValue=" ",
                     value ="Pageable"
             )
-            @PageableDefault(sort = {"datetime"}, direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = {"datetime"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
     ) throws Exception{
         Page<Log> result = usageLogService.getOrganizationLogs(name, starttime, endtime, pageable);
 

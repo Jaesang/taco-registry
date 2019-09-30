@@ -99,7 +99,7 @@ public class TagController {
                     defaultValue=" ",
                     value ="Pageable"
             )
-            @PageableDefault(sort = {"startTime"}, direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = {"startTime"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
     ) throws Exception{
         Page<Tag> result = tagService.getTagHistory(namespace, name, pageable);
         // 형 변환

@@ -16,7 +16,7 @@ RUN yum install -y nodejs npm
 WORKDIR /app/portal
 
 # add project
-ADD ./* /app/portal/
+ADD ./ /app/portal/
 RUN mv /app/portal/registry-server/src/main/resources/application.prod.yaml /app/portal/registry-server/src/main/resources/application.yaml
 
 # ui install & build
