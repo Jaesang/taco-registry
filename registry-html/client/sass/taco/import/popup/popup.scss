@@ -203,8 +203,6 @@
     width:1068px;
 
     .option-area {
-        margin:10px 0 0;
-
         &:after {
             @extend %clear;
         }
