@@ -9,6 +9,7 @@ import {Utils} from "../../../common/utils/utils";
 import {CommonConstant} from "../../../common/constant/common-constant";
 import {Alert} from "../../../common/utils/alert-util";
 import {environment} from "../../../../environments/environment";
+import {UserService} from "../../user/user.service";
 
 @Component({
   selector: 'info',
@@ -41,6 +42,7 @@ export class InfoComponent extends PageComponent implements OnInit {
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
+              private userService: UserService,
               private repositoryService: RepositoryService,
               public buildHistoryService: BuildHistoryService) {
 
@@ -60,7 +62,7 @@ export class InfoComponent extends PageComponent implements OnInit {
             this.repoName = params[ 'repo' ];
           }
 
-          this.dockerPullCommand = `docker pull ${environment.hostName}/${this.orgName}/${this.repoName}`;
+          this.dockerPullCommand = `docker pull ${this.userService.user.registryUrl}/${this.orgName}/${this.repoName}`;
 
           this.getRepository();
           this.getBuildHistory();

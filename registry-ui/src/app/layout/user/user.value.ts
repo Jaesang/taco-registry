@@ -9,6 +9,7 @@ export namespace User {
     public canCreateRepo: boolean;
     public email: string;
     public superuser: boolean;
+    public registryUrl: string;
   }
 
   export class List {

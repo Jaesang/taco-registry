@@ -51,6 +51,8 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
   public gitUsername: string;
   public gitPassword: string;
 
+  public noCache: boolean = false;
+
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
               private repositoryService: RepositoryService,
@@ -78,6 +80,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
         this.gitPath = '';
         this.gitUsername = '';
         this.gitPassword = '';
+        this.noCache = false;
         this.initSelectList();
       }
     }
@@ -116,6 +119,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
    */
   public changeCreateType(index: number) {
     this.fileStatus = null;
+    this.noCache = false;
 
     if (index == 0) {
       this.createType = this.CreateType.DEFAULT;
@@ -163,6 +167,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
           build.gitUsername = this.gitUsername;
           build.gitPassword = this.gitPassword;
         }
+        build.noCache = this.noCache;
 
         this.buildService.build(this.repo.namespace, this.repo.name, build).then(result => {
           this.close();

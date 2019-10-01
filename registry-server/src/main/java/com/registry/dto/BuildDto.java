@@ -14,6 +14,7 @@ public class BuildDto {
         public String gitPath;
         public String gitUsername;
         public String gitPassword;
+        public boolean noCache;
     }
 
     @ApiModel("Build.EDIT")

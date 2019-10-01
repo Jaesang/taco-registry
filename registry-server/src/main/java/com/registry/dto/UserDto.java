@@ -34,6 +34,7 @@ public class UserDto {
         public String email;
         public Boolean enabled;
         public Boolean superuser;
+        public String registryUrl;
         public List<Role> roles;
         public List<OrganizationDto.VIEW> organizations;
     }

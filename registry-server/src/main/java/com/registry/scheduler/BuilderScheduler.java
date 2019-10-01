@@ -62,6 +62,7 @@ public class BuilderScheduler {
                 Long port = (Long) object.get("port");
                 String url = "http://" + host + ":" + port + builderHealthUri;
 
+                logger.info("check builder health : " + url);
                 HttpURLConnection connection = null;
                 try {
                     URL siteURL = new URL(url);
@@ -75,6 +76,7 @@ public class BuilderScheduler {
                         connectedBuilders.add(value);
                     }
                     connection.disconnect();
+                    logger.info("result code : " + code);
                 } catch (Exception e) {
                     if (connection != null) {
                         connection.disconnect();
@@ -91,6 +93,7 @@ public class BuilderScheduler {
         } finally {
             connectedBuilderList.put("builders", connectedBuilders);
             String server = connectedBuilderList.toJSONString();
+            logger.info("live builders : " + server);
             valueOperations.set(builderKey, server);
         }
 

@@ -147,7 +147,7 @@ public class BuildController {
         Build build = buildService.createBuild(namespace, name, buildDto);
 
         // builder build 요청
-        externalService.createBuild(build);
+        externalService.createBuild(build, buildDto.noCache);
 
         return build;
     }

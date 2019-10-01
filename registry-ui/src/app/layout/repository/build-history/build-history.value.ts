@@ -66,6 +66,7 @@ export namespace Build {
     public manualUser: string;
     public id: string;
     public dockerfilePath: string;
+    public noCache: boolean;
 
     public dockerfile: string;
     public gitPath: string;

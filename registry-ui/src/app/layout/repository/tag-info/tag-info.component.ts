@@ -12,6 +12,7 @@ import {SelectBoxComponent} from "../../../common/component/selectbox/select-box
 import {environment} from "../../../../environments/environment";
 import {Utils} from "../../../common/utils/utils";
 import {CommonConstant} from "../../../common/constant/common-constant";
+import {UserService} from "../../user/user.service";
 
 @Component({
   selector: 'tag-info',
@@ -67,6 +68,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
               private tagService: TagService,
+              private userService: UserService,
               private confirmPopupService: ConfirmPopupService,
               private repositoryService: RepositoryService) {
 
@@ -249,9 +251,9 @@ export class TagInfoComponent extends PageComponent implements OnInit {
    */
   public fetchSelect(item: Select.Value) {
     if (item.value == 0) {
-      this.fetchPullPath = `docker pull ${environment.hostName}/${this.orgName}/${this.repoName}:${this.currentSelectedTag.name}`;
+      this.fetchPullPath = `docker pull ${this.userService.user.registryUrl}/${this.orgName}/${this.repoName}:${this.currentSelectedTag.name}`;
     } else {
-      this.fetchPullPath = `docker pull ${environment.hostName}/${this.orgName}/${this.repoName}@${this.currentSelectedTag.manifestDigest}`;
+      this.fetchPullPath = `docker pull ${this.userService.user.registryUrl}/${this.orgName}/${this.repoName}@${this.currentSelectedTag.manifestDigest}`;
     }
   }
 

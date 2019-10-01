@@ -165,6 +165,29 @@
                   </div>
                 </td>
               </tr>
+              <tr class="type-option" *ngIf="createType == CreateType.DOCKERFILE || createType == CreateType.GIT">
+                <th>
+                  <label class="txt-label">Cache</label>
+                </th>
+                <td>
+                  <div class="option-area">
+                    <div class="component-radio">
+                      <input type="radio" id="radio11" name="cache-radio" class="input-radio" [value]="false" [(ngModel)]="noCache">
+                      <label for="radio11" class="label">
+                        <span class="icon-radio"></span>
+                        <span class="txt-label">Cache</span>
+                      </label>
+                    </div>
+                    <div class="component-radio">
+                      <input type="radio" id="radio12" name="cache-radio" class="input-radio" [value]="true" [(ngModel)]="noCache">
+                      <label for="radio12" class="label">
+                        <span class="icon-radio"></span>
+                        <span class="txt-label">No Cache</span>
+                      </label>
+                    </div>
+                  </div>
+                </td>
+              </tr>
               </tbody>
             </table>
           </div>

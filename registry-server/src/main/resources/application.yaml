@@ -88,6 +88,8 @@ builder:
 
 # Config
 config:
+  registry:
+    url: http://localhost:5000
   file:
     upload_dir: /tmp/file
   oauth:
@@ -145,6 +147,8 @@ builder:
 
 # Config
 config:
+  registry:
+    url: http://192.168.201.146:5000
   file:
     upload_dir: /tmp/file
   oauth:

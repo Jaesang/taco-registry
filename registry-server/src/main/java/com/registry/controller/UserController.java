@@ -20,6 +20,7 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +51,8 @@ public class UserController {
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     protected static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    private @Value("${config.registry.url}") String registryUrl;
 
     @Autowired
     private UserService userService;
@@ -99,7 +102,9 @@ public class UserController {
             )
             @RequestHeader(name = "Authorization") String authorization
     ) throws Exception{
-        return mapper.map(userService.getLoginUser(), UserDto.VIEW.class);
+        UserDto.VIEW user = mapper.map(userService.getLoginUser(), UserDto.VIEW.class);
+        user.registryUrl = registryUrl;
+        return user;
     }
 
     /**

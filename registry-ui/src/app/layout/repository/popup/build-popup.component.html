@@ -14,7 +14,7 @@
           <ul class="initialize-block">
             <li>
               <div class="component-radio">
-                <input type="radio" id="build-popup-radio4" class="input-radio" [value]="CreateType.DOCKERFILE" [(ngModel)]="createType" (change)="changeCreateType(0)">
+                <input type="radio" id="build-popup-radio4" name="create-type-radio" class="input-radio" [value]="CreateType.DOCKERFILE" [(ngModel)]="createType" (change)="changeCreateType(0)">
                 <label for="build-popup-radio4" class="label">
                   <span class="icon-radio"></span>
                   <span class="txt-label type-docker">
@@ -25,7 +25,7 @@
             </li>
             <li>
               <div class="component-radio">
-                <input type="radio" id="build-popup-radio8" class="input-radio" [value]="CreateType.GIT" [(ngModel)]="createType" (change)="changeCreateType(1)">
+                <input type="radio" id="build-popup-radio8" name="create-type-radio" class="input-radio" [value]="CreateType.GIT" [(ngModel)]="createType" (change)="changeCreateType(1)">
                 <label for="build-popup-radio8" class="label">
                   <span class="icon-radio"></span>
                   <span class="txt-label type-custom">
@@ -57,6 +57,23 @@
                 <input type="password" class="input-text" placeholder="Git Repository Password" [(ngModel)]="gitPassword">
                 <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="gitPassword = ''" tabIndex="-1"></a>
               </div>
+            </div>
+          </div>
+
+          <div class="option-block">
+            <div class="component-radio">
+              <input type="radio" id="build-popup-radio11" name="cache-radio" class="input-radio" [value]="false" [(ngModel)]="noCache">
+              <label for="build-popup-radio11" class="label">
+                <span class="icon-radio"></span>
+                <span class="txt-label">Cache</span>
+              </label>
+            </div>
+            <div class="component-radio">
+              <input type="radio" id="build-popup-radio12" name="cache-radio" class="input-radio" [value]="true" [(ngModel)]="noCache">
+              <label for="build-popup-radio12" class="label">
+                <span class="icon-radio"></span>
+                <span class="txt-label">No Cache</span>
+              </label>
             </div>
           </div>
         </div>

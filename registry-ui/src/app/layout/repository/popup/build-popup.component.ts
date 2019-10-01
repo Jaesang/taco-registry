@@ -42,6 +42,8 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
   public gitUsername: string;
   public gitPassword: string;
 
+  public noCache: boolean = false;
+
   private dockerFileContent: string;
 
   constructor(protected elementRef: ElementRef,
@@ -68,6 +70,7 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
         this.gitPath = '';
         this.gitUsername = '';
         this.gitPassword = '';
+        this.noCache = false;
       }
     }
   }
@@ -87,6 +90,7 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
    */
   public changeCreateType(index: number) {
     this.fileStatus = null;
+    this.noCache = false;
 
     if (index == 0) {
       this.createType = this.CreateType.DOCKERFILE;
@@ -123,6 +127,7 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
       build.gitUsername = this.gitUsername;
       build.gitPassword = this.gitPassword;
     }
+    build.noCache = this.noCache;
 
     this.buildService.build(this.orgName, this.repoName, build).then(result => {
       this.buildService.newBuild.next(result);
