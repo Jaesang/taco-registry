@@ -179,6 +179,21 @@
         .component-input + .component-input {
             margin:6px 0 0;
         }
+
+        .git-option {
+            margin:10px 0 0;
+
+            &:after {
+                @extend %clear;
+            }
+            .component-radio {
+                float:left;
+
+                & + .component-radio {
+                    margin-left:15px;
+                }
+            }
+        }
     }
 }
 
@@ -187,6 +202,21 @@
 ***************************************************************************************/
 .popup-create-repository {
     width:1068px;
+
+    .option-area {
+        margin:10px 0 0;
+
+        &:after {
+            @extend %clear;
+        }
+        .component-radio {
+            float:left;
+
+            & + .component-radio {
+                margin-left:15px;
+            }
+        }
+    }
 }
 
 /***************************************************************************************
