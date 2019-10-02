@@ -62,7 +62,7 @@ server:
 # Config
 config:
   registry:
-    url: ${REGISTRY_URL:'http://192.168.201.146:5000'}
+    url: ${REGISTRY_URL:'taco-registry:5000'}
   file:
     upload_dir: /tmp/file
   oauth:
