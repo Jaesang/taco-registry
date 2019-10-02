@@ -249,7 +249,7 @@ public class ExternalAPIService extends AbstractService {
         params.put("build", build.getId());
         params.put("name", MessageFormat.format("{0}/{1}", build.getImage().getNamespace(), build.getImage().getName()));
         params.put("push", true);
-        params.put("useCache", noCache);
+        params.put("useCache", !noCache);
         if (build.getDockerfile() != null) {
             params.put("contents", build.getDockerfile());
             url = MessageFormat.format("{0}/v1/docker/build/file", this.getBuilderUri().toString());
