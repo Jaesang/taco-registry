@@ -33,7 +33,7 @@
         <th>
           <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'date' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'date' && sortDirection == 'desc'" (click)="sortClick('date')">Date</a>
         </th>
-        <th>Revert</th>
+<!--        <th>Revert</th>-->
       </tr>
       </thead>
       <tbody>
@@ -64,7 +64,7 @@
         <td>
           <span class="txt-date">{{ item.formattedDate }}</span>
         </td>
-        <td>
+<!--        <td>-->
 <!--          <a href="javascript:;" class="link-revert" *ngIf="item.isDeleted || item.isMoved" (click)="restoreImageClick(item.beforeHistory, item.isDeleted)">-->
 <!--            <span class="txt-revert">{{ item.isDeleted ? 'Restore' : 'Revert' }}</span>-->
 <!--            <span class="ver-block">{{ item.name }}</span>-->
@@ -72,7 +72,7 @@
 <!--            <span class="txt-sha">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[0].toUpperCase() : 'V1ID' }}</span>-->
 <!--            <span class="txt-id">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[1].substr(0, 12) : item.beforeHistory.dockerImageId.substr(0, 12) }}</span>-->
 <!--          </a>-->
-        </td>
+<!--        </td>-->
       </tr>
       </tbody>
     </table>
