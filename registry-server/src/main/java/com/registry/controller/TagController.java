@@ -20,6 +20,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -195,7 +196,7 @@ public class TagController {
             @PathVariable("tagName") String tagName
     ) throws Exception{
 
-        tagService.deleteTag(namespace, name, tagName);
+        tagService.deleteTag(namespace, name, tagName, LocalDateTime.now());
 
         return true;
     }

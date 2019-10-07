@@ -122,6 +122,12 @@ public class BuildService extends AbstractService {
      */
     @Transactional
     public Build createBuild(String namespace, String name, BuildDto.CREATE buildDto) throws Exception {
+        logger.info("createBuild namespace : {}", namespace);
+        logger.info("createBuild name : {}", name);
+        logger.info("createBuild build type : {}", buildDto.dockerfile != null ? "dockerfile" : "git");
+
+        // 권한 체크
+        imageService.checkAuth(namespace, name);
 
         Build build = new Build();
 
@@ -178,6 +184,13 @@ public class BuildService extends AbstractService {
      * @param buildId
      */
     public void cancelBuild(String namespace, String name, String buildId) {
+        logger.info("cancelBuild namespace : {}", namespace);
+        logger.info("cancelBuild name : {}", name);
+        logger.info("cancelBuild build id : {}", buildId);
+
+        // 권한 체크
+        imageService.checkAuth(namespace, name);
+
         Build build = getBuild(namespace, name, buildId);
 
         if (Const.Build.PHASE.WAITING.equals(build.getPhase()) || Const.Build.PHASE.PULLING.equals(build.getPhase()) || Const.Build.PHASE.BUILDING.equals(build.getPhase())) {

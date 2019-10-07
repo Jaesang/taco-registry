@@ -98,7 +98,8 @@ public class ImageService extends AbstractService {
      */
     @Transactional
     public void create(Image image) throws Exception {
-        logger.info("create : {}", image);
+        logger.info("create namespace : {}", image.getNamespace());
+        logger.info("create name : {}", image.getName());
 
         // 권한 체크
         if (image.getIsOrganization()) {
@@ -171,7 +172,8 @@ public class ImageService extends AbstractService {
      */
     @Transactional
     public void update(Image image) throws Exception {
-        logger.info("update : {}", image);
+        logger.info("update namespace : {}", image.getNamespace());
+        logger.info("update name : {}", image.getName());
 
         // 권한 체크
         checkAuth(image.getNamespace(), image.getName());
@@ -207,9 +209,10 @@ public class ImageService extends AbstractService {
      */
     @Transactional
     public void deleteImage(String namespace, String name) {
-        checkAuth(namespace, name);
+        logger.info("deleteImage namespace : {}", namespace);
+        logger.info("deleteImage name : {}", name);
 
-        //todo builder에서 이미지 삭제
+        checkAuth(namespace, name);
 
         // image 삭제
         Image image = imageRepo.getImage(namespace, name);
@@ -300,6 +303,7 @@ public class ImageService extends AbstractService {
      * @return
      */
     public List<Role> getMembers(String namespace, String name) {
+        logger.info("getMembers namespace : {}", namespace);
         logger.info("getMembers name : {}", name);
 
         Image image = imageRepo.getImage(namespace, name);
@@ -313,6 +317,7 @@ public class ImageService extends AbstractService {
      * @return
      */
     public Page<Role> getMembers(String namespace, String name, Pageable pageable) {
+        logger.info("getMembers namespace : {}", namespace);
         logger.info("getMembers name : {}", name);
 
         Image image = imageRepo.getImage(namespace, name);
@@ -330,6 +335,10 @@ public class ImageService extends AbstractService {
      */
     @Transactional
     public void updateRole(String username, String namespace, String name, String roleName) throws Exception {
+        logger.info("updateRole namespace : {}", namespace);
+        logger.info("updateRole name : {}", name);
+        logger.info("updateRole role name : {}", roleName);
+
         // 권한 체크
         this.checkAuth(namespace, name);
 
@@ -381,6 +390,9 @@ public class ImageService extends AbstractService {
      */
     @Transactional
     public void deleteRole(String username, String namespace, String name) throws Exception {
+        logger.info("deleteRole namespace : {}", namespace);
+        logger.info("deleteRole name : {}", name);
+
         // 권한 체크
         this.checkAuth(namespace, name);
 
@@ -418,6 +430,9 @@ public class ImageService extends AbstractService {
      */
     @Transactional
     public Image updateVisibility(String namespace, String name, boolean visibility) {
+        logger.info("updateVisibility namespace : {}", namespace);
+        logger.info("updateVisibility name : {}", name);
+
         // 권한 체크
         this.checkAuth(namespace, name);
 
@@ -451,6 +466,9 @@ public class ImageService extends AbstractService {
      * @return
      */
     public List<Map<String, Object>> getStats(String namespace, String name) {
+        logger.info("getStats namespace : {}", namespace);
+        logger.info("getStats name : {}", name);
+
         Image image = imageRepo.getImage(namespace, name);
 
         LocalDate now = LocalDate.now();
@@ -505,18 +523,13 @@ public class ImageService extends AbstractService {
      * @return
      */
     public Long getPopularityCount(String namespace, String name) {
+        logger.info("getPopularityCount namespace : {}", namespace);
+        logger.info("getPopularityCount name : {}", name);
+
         Image image = imageRepo.getImage(namespace, name);
 
         return logRepo.getStatsCount(image.getId());
     }
-
-    /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    | Protected Method
-    |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-
-    /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    | Private Method
-    |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     /**
      * 권한 체크
@@ -524,7 +537,7 @@ public class ImageService extends AbstractService {
      * @param name
      * @return
      */
-    private boolean checkAuth(String namespace, String name) {
+    public boolean checkAuth(String namespace, String name) {
         Image image = imageRepo.getImage(namespace, name);
         Role role = roleRepo.getRole(SecurityUtil.getUser(), image.getId());
         User user = userService.getUser(SecurityUtil.getUser());
@@ -535,6 +548,14 @@ public class ImageService extends AbstractService {
 
         return true;
     }
+
+    /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    | Protected Method
+    |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+
+    /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    | Private Method
+    |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Inner Class

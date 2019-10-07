@@ -78,7 +78,7 @@ public class OrganizationService extends AbstractService {
      */
     @Transactional
     public void create(Organization org) {
-        logger.info("organization : {}", org);
+        logger.info("create name : {}", org.getName());
 
         if (org.getName().length() < 2 || org.getName().length() > 40) {
             throw new BadRequestException("Be at least 2 characters in length and max 40 characters in length");
@@ -116,6 +116,8 @@ public class OrganizationService extends AbstractService {
      */
     @Transactional
     public void deleteOrg(String name) {
+        logger.info("deleteOrg name : {}", name);
+
         // 권한 체크
         checkAuth(name);
 

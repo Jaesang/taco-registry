@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,4 +53,16 @@ public interface TagRepository extends JpaRepository<Tag, UUID>{
     @Query("select tag from Tag tag " +
             "where (tag.endTime = null or tag.endTime > now())")
     List<Tag> getAllTags();
+
+    @Query("select tag from Tag tag " +
+            "join tag.image image " +
+            "where image.id = :imageId " +
+            "and tag.manifestDigest = :manifestDigest")
+    List<Tag> getTagsByManifestDigest(@Param("imageId") UUID imageId, @Param("manifestDigest") String manifestDigest);
+
+    @Query("select tag from Tag tag " +
+            "where " +
+            "tag.expiration < :date " +
+            "and tag.endTime is null")
+    List<Tag> getAllDeleteTagsByExpired(@Param("date") LocalDateTime date);
 }

@@ -1,7 +1,11 @@
 package com.registry.scheduler;
 
+import com.registry.repository.image.Tag;
+import com.registry.repository.image.TagRepository;
 import com.registry.service.ExternalAPIService;
+import com.registry.service.TagService;
 import com.registry.util.RestApiUtil;
+import org.apache.tomcat.jni.Local;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,6 +21,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * Created by boozer on 2019. 7. 15
@@ -31,6 +38,12 @@ public class BuilderScheduler {
 
     @Autowired
     private ExternalAPIService externalService;
+
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
+    private TagRepository tagRepo;
 
     @Resource(name="redisTemplate")
     private ValueOperations<String, String> valueOperations;
@@ -62,7 +75,7 @@ public class BuilderScheduler {
                 Long port = (Long) object.get("port");
                 String url = "http://" + host + ":" + port + builderHealthUri;
 
-                logger.info("check builder health : " + url);
+                logger.info("check builder health : {}", url);
                 HttpURLConnection connection = null;
                 try {
                     URL siteURL = new URL(url);
@@ -76,12 +89,12 @@ public class BuilderScheduler {
                         connectedBuilders.add(value);
                     }
                     connection.disconnect();
-                    logger.info("result code : " + code);
+                    logger.info("result code : {}", code);
                 } catch (Exception e) {
                     if (connection != null) {
                         connection.disconnect();
                     }
-                    logger.error(e.getMessage() + " " + host + " : " + port);
+                    logger.error("{} {} : {}", e.getMessage(), host, port);
                 }
 
             });
@@ -93,9 +106,36 @@ public class BuilderScheduler {
         } finally {
             connectedBuilderList.put("builders", connectedBuilders);
             String server = connectedBuilderList.toJSONString();
-            logger.info("live builders : " + server);
+            logger.info("live builders : {}", server);
             valueOperations.set(builderKey, server);
         }
 
+    }
+
+    // 만료일이 지난 tag 삭제 모듈 (일배치)
+    @Scheduled(cron = "0 0 0 * * *")
+    public void cleanUpTag() {
+        logger.info("cleanUpTag start");
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0);
+        List<Tag> tags = tagRepo.getAllDeleteTagsByExpired(date);
+
+        tags.stream().forEach(value -> {
+            logger.info("namespace : {}", value.getImage().getNamespace());
+            logger.info("image name : {}", value.getImage().getName());
+            logger.info("tag name : {}", value.getName());
+            logger.info("expiration : {}", value.getExpiration());
+
+            try {
+                LocalDateTime expiration = LocalDateTime.parse(value.getExpiration(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                tagService.deleteTag(value.getImage().getNamespace(), value.getImage().getName(), value.getName(), expiration);
+            } catch (Exception e) {
+                logger.error("Fail cleanUpTag");
+                logger.error("namespace : {}", value.getImage().getNamespace());
+                logger.error("image name : {}", value.getImage().getName());
+                logger.error("tag name : {}", value.getName());
+                logger.error(e.getMessage());
+            }
+        });
     }
 }

@@ -51,6 +51,9 @@ public class TagService extends AbstractService {
     @Autowired
     private ExternalAPIService externalService;
 
+    @Autowired
+    private ImageService imageService;
+
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -110,6 +113,10 @@ public class TagService extends AbstractService {
     @Transactional
     public void createTag(Tag tag) {
         logger.info("createTag tag : {}", tag);
+
+        // 권한 체크
+        imageService.checkAuth(tag.getImage().getNamespace(), tag.getImage().getName());
+
         LocalDateTime now = LocalDateTime.now();
 
         // sync with builder
@@ -159,38 +166,52 @@ public class TagService extends AbstractService {
         logger.info("updateTag tagName : {}", tagName);
         logger.info("updateTag expiration : {}", expiration);
 
+        // 권한 체크
+        imageService.checkAuth(namespace, name);
+
         Image image = imageRepo.getImage(namespace, name);
         Tag tag = tagRepo.getTagByTagName(image.getId(), tagName);
+        Tag latestTag = tagRepo.getTagByTagName(image.getId(), "latest");
 
-        // log에서 사용
-        String oldExpiration = tag.getExpiration();
-
-        if (expiration > 0) {
-            LocalDateTime expirationDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(expiration), TimeZone.getDefault().toZoneId());
-            tag.setExpiration(expirationDateTime);
-            tag.setEndTime(expirationDateTime);
-        } else {
-            tag.setExpiration(null);
-            tag.setEndTime(null);
+        if ("latest".equals(tagName)) {
+            throw new BadRequestException("latest tag cannot set an expiration date.");
+        } else if (latestTag == null || tag.getManifestDigest().equals(latestTag.getManifestDigest())) {
+            throw new BadRequestException("If the 'latest' tag and the manifestDigest value are the same, you cannot set an expiration date.");
         }
-        tagRepo.save(tag);
 
-        // 로그 등록
-        Organization org = organizationService.getOrg(tag.getImage().getNamespace());
-        Log log = new Log();
-        log.setKind(Const.UsageLog.CHANGE_TAG_EXPIRATION);
-        if (tag.getImage().getIsOrganization()) {
-            log.setOrganizationId(org.getId());
-        } else {
-            log.setUsername(SecurityUtil.getUser());
-        }
-        log.setImageId(tag.getImage().getId());
-        log.setNamespace(tag.getImage().getNamespace());
-        log.setImage(tag.getImage().getName());
-        log.setTag(tag.getName());
-        log.setExpirationDate(tag.getExpiration());
-        log.setOldExpirationDate(oldExpiration);
-        logService.create(log);
+        List<Tag> deleteTags = tagRepo.getTagsByManifestDigest(image.getId(), tag.getManifestDigest());
+
+        deleteTags.stream().forEach(value -> {
+            // log에서 사용
+            String oldExpiration = tag.getExpiration();
+
+            if (expiration > 0) {
+                LocalDateTime expirationDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(expiration), TimeZone.getDefault().toZoneId());
+                tag.setExpiration(expirationDateTime);
+                tag.setEndTime(null);
+            } else {
+                tag.setExpiration(null);
+                tag.setEndTime(null);
+            }
+            tagRepo.save(tag);
+
+            // 로그 등록
+            Organization org = organizationService.getOrg(tag.getImage().getNamespace());
+            Log log = new Log();
+            log.setKind(Const.UsageLog.CHANGE_TAG_EXPIRATION);
+            if (tag.getImage().getIsOrganization()) {
+                log.setOrganizationId(org.getId());
+            } else {
+                log.setUsername(SecurityUtil.getUser());
+            }
+            log.setImageId(tag.getImage().getId());
+            log.setNamespace(tag.getImage().getNamespace());
+            log.setImage(tag.getImage().getName());
+            log.setTag(tag.getName());
+            log.setExpirationDate(tag.getExpiration());
+            log.setOldExpirationDate(oldExpiration);
+            logService.create(log);
+        });
     }
 
     /**
@@ -200,38 +221,51 @@ public class TagService extends AbstractService {
      * @param tagName
      */
     @Transactional
-    public void deleteTag(String namespace, String name, String tagName) {
+    public void deleteTag(String namespace, String name, String tagName, LocalDateTime date) {
         logger.info("deleteTag namespace : {}", namespace);
         logger.info("deleteTag name : {}", name);
         logger.info("deleteTag tagName : {}", tagName);
 
+        // 권한 체크
+        imageService.checkAuth(namespace, name);
+
         Image image = imageRepo.getImage(namespace, name);
         Tag preTag = tagRepo.getTagByTagName(image.getId(), tagName);
+        Tag latestTag = tagRepo.getTagByTagName(image.getId(), "latest");
 
         if (preTag != null) {
+            if ("latest".equals(tagName)) {
+                throw new BadRequestException("latest tag cannot be deleted.");
+            } else if (latestTag == null || preTag.getManifestDigest().equals(latestTag.getManifestDigest())) {
+                throw new BadRequestException("If the 'latest' tag and the manifestDigest value are the same, it cannot be deleted.");
+            }
+
             // builder tag 삭제 요청
             externalService.deleteTag(preTag);
 
-            LocalDateTime now = LocalDateTime.now();
-            preTag.setExpiration(now);
-            preTag.setEndTime(now);
-            tagRepo.save(preTag);
+            List<Tag> deleteTags = tagRepo.getTagsByManifestDigest(image.getId(), preTag.getManifestDigest());
 
-            // 로그 등록
-            Log log = new Log();
-            log.setKind(Const.UsageLog.DELETE_TAG);
-            if (image.getIsOrganization()) {
-                Organization org = organizationService.getOrg(image.getNamespace());
-                log.setOrganizationId(org.getId());
-            } else {
-                log.setUsername(image.getNamespace());
-            }
-            log.setImageId(image.getId());
-            log.setNamespace(image.getNamespace());
-            log.setImage(image.getName());
-            log.setTag(tagName);
-            log.setMember(SecurityUtil.getUser());
-            logService.create(log);
+            deleteTags.stream().forEach(value -> {
+                value.setExpiration(date);
+                value.setEndTime(date);
+                tagRepo.save(value);
+
+                // 로그 등록
+                Log log = new Log();
+                log.setKind(Const.UsageLog.DELETE_TAG);
+                if (image.getIsOrganization()) {
+                    Organization org = organizationService.getOrg(image.getNamespace());
+                    log.setOrganizationId(org.getId());
+                } else {
+                    log.setUsername(image.getNamespace());
+                }
+                log.setImageId(image.getId());
+                log.setNamespace(image.getNamespace());
+                log.setImage(image.getName());
+                log.setTag(value.getName());
+                log.setMember(SecurityUtil.getUser());
+                logService.create(log);
+            });
         }
     }
 
@@ -246,6 +280,9 @@ public class TagService extends AbstractService {
         logger.info("createTag namespace : {}", namespace);
         logger.info("createTag name : {}", name);
         logger.info("createTag dockerImageId : {}", dockerImageId);
+
+        // 권한 체크
+        imageService.checkAuth(namespace, name);
 
         Image image = imageRepo.getImage(namespace, name);
 

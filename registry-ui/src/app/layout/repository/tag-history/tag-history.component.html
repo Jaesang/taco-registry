@@ -65,13 +65,13 @@
           <span class="txt-date">{{ item.formattedDate }}</span>
         </td>
         <td>
-          <a href="javascript:;" class="link-revert" *ngIf="item.isDeleted || item.isMoved" (click)="restoreImageClick(item.beforeHistory, item.isDeleted)">
-            <span class="txt-revert">{{ item.isDeleted ? 'Restore' : 'Revert' }}</span>
-            <span class="ver-block">{{ item.name }}</span>
-            <span class="txt-revert">to</span>
-            <span class="txt-sha">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[0].toUpperCase() : 'V1ID' }}</span>
-            <span class="txt-id">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[1].substr(0, 12) : item.beforeHistory.dockerImageId.substr(0, 12) }}</span>
-          </a>
+<!--          <a href="javascript:;" class="link-revert" *ngIf="item.isDeleted || item.isMoved" (click)="restoreImageClick(item.beforeHistory, item.isDeleted)">-->
+<!--            <span class="txt-revert">{{ item.isDeleted ? 'Restore' : 'Revert' }}</span>-->
+<!--            <span class="ver-block">{{ item.name }}</span>-->
+<!--            <span class="txt-revert">to</span>-->
+<!--            <span class="txt-sha">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[0].toUpperCase() : 'V1ID' }}</span>-->
+<!--            <span class="txt-id">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[1].substr(0, 12) : item.beforeHistory.dockerImageId.substr(0, 12) }}</span>-->
+<!--          </a>-->
         </td>
       </tr>
       </tbody>

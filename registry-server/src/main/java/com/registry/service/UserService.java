@@ -265,6 +265,9 @@ public class UserService extends AbstractService {
      * @throws Exception
      */
     public void updateStarred(String namespace, String imageName, boolean starred) throws Exception {
+        logger.info("updateStarred namespace : {}", namespace);
+        logger.info("updateStarred imageName : {}", imageName);
+        logger.info("updateStarred starred : {}", starred);
 
         Image image = imageService.getImage(namespace, imageName);
         Role role = roleRepo.getRole(SecurityUtil.getUser(), image.getId());

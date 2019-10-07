@@ -88,7 +88,6 @@ export class TagInfoComponent extends PageComponent implements OnInit {
         navTitles: { days: 'yyyy<span>년&nbsp;</span> MM' },
         onHide: function () {},
         position: 'bottom left',
-        timepicker: true,
         minDate: minDate
       })
       .data('datepicker');

@@ -77,6 +77,10 @@ public class UsageLogService extends AbstractService {
      * @return
      */
     public Page<Log> getUserLogs(String username, String startTime, String endTime, Pageable pageable) {
+        logger.info("username username : {}", username);
+        logger.info("username startTime : {}", startTime);
+        logger.info("username endTime : {}", endTime);
+
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         return logRepo.getLogsByUsername(username, start, end, pageable);
@@ -88,6 +92,10 @@ public class UsageLogService extends AbstractService {
      * @return
      */
     public Page<Log> getOrganizationLogs(String namespace, String startTime, String endTime, Pageable pageable) {
+        logger.info("username namespace : {}", namespace);
+        logger.info("username startTime : {}", startTime);
+        logger.info("username endTime : {}", endTime);
+
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         Organization org = organizationService.getOrg(namespace);
@@ -101,6 +109,10 @@ public class UsageLogService extends AbstractService {
      * @return
      */
     public Page<Log> getImageLogs(String namespace, String imageName, String startTime, String endTime, Pageable pageable) {
+        logger.info("username image name : {}", imageName);
+        logger.info("username startTime : {}", startTime);
+        logger.info("username endTime : {}", endTime);
+
         LocalDateTime start = LocalDateTime.parse(startTime + " 00:00:00", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(endTime + " 23:59:59", DateTimeFormatter.ofPattern("M/d/y HH:mm:ss"));
         Image image = imageService.getImage(namespace, imageName);
