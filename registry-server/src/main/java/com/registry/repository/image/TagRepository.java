@@ -22,7 +22,7 @@ public interface TagRepository extends JpaRepository<Tag, UUID>{
 //            "   group by t.name)")
     @Query(value = "select * from tag t " +
             "where image_id = :imageId " +
-            "and (t.end_time is null or t.end_time > now()) " +
+            "and t.end_time is null " +
             "and (t.start_time, t.name) in (select max(start_time) start_time, name from tag where image_id = :imageId group by name)", nativeQuery = true)
     List<Tag> getTags(@Param("imageId") UUID imageId);
 
@@ -47,11 +47,11 @@ public interface TagRepository extends JpaRepository<Tag, UUID>{
             "join tag.image image " +
             "where image.id = :imageId " +
             "and tag.name = :tagName " +
-            "and (tag.endTime = null or tag.endTime > now())")
+            "and tag.endTime is null")
     Tag getTagByTagName(@Param("imageId") UUID imageId, @Param("tagName") String tagName);
 
     @Query("select tag from Tag tag " +
-            "where (tag.endTime = null or tag.endTime > now())")
+            "where tag.endTime is null")
     List<Tag> getAllTags();
 
     @Query("select tag from Tag tag " +

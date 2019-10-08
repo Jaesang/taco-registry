@@ -17,14 +17,15 @@ WORKDIR /app
 
 # git clone project
 RUN git clone https://starlkj:'dlrudwls78!'@tde.sktelecom.com/stash/scm/oreotools/taco-registry-app.git
+RUN mv /app/taco-registry-app/registry-server/src/main/resources/application.prod.yaml /app/taco-registry-app/registry-server/src/main/resources/application.yaml
 
 # ui install & build
-WORKDIR taco-registry-app/registry-ui
+WORKDIR /app/taco-registry-app/registry-ui
 RUN npm install
 RUN npm run build
 
 # server mvn install
-WORKDIR ../registry-server
+WORKDIR /app/taco-registry-app/registry-server
 RUN mvn -U clean install
 
 # server run

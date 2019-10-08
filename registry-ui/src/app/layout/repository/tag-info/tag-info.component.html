@@ -106,10 +106,10 @@
           <span class="txt-size">{{ item.size }}</span>
         </td>
         <td>
-          <a href="javascript:;" class="txt-expires" (click)="changeExpirationPopupClick(item)">{{ item.expiration ? item.formattedExpiration : 'Never' }}</a>
+          <a href="javascript:;" class="txt-expires" *ngIf="item.manifestDigest" (click)="changeExpirationPopupClick(item)">{{ item.expiration ? item.formattedExpiration : 'Never' }}</a>
         </td>
         <td>
-          <div class="image-area">
+          <div class="image-area" *ngIf="item.manifestDigest">
             <em class="txt-image" (click)="manifestClick(item)">
               SHA256
               <!-- Tooltip -->
@@ -125,8 +125,8 @@
         </td>
         <td>
           <div class="buttons">
-            <a href="javascript:;" class="btn-download" aria-label="Fetch Tag" (click)="fetchTagClick(item)"></a>
-            <a href="javascript:;" class="btn-setting" aria-label="Setting" (click)="settingClick(index)" *ngIf="writer"></a>
+            <a href="javascript:;" class="btn-download" aria-label="Fetch Tag" *ngIf="item.manifestDigest" (click)="fetchTagClick(item)"></a>
+            <a href="javascript:;" class="btn-setting" aria-label="Setting" (click)="settingClick(index)" *ngIf="writer && item.manifestDigest"></a>
 
             <!-- Layer Setting -->
             <div class="layer-setting" [attr.aria-expanded]="index == currentSettingIndex">
