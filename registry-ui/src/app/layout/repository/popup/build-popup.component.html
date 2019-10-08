@@ -14,8 +14,8 @@
           <ul class="initialize-block">
             <li>
               <div class="component-radio">
-                <input type="radio" id="build-popup-radio4" name="create-type-radio" class="input-radio" [value]="CreateType.DOCKERFILE" [(ngModel)]="createType" (change)="changeCreateType(0)">
-                <label for="build-popup-radio4" class="label">
+                <input type="radio" [id]="'build-popup-radio4-' + uuid" [name]="'create-type-radio-' + uuid" class="input-radio" [value]="CreateType.DOCKERFILE" [(ngModel)]="createType" (change)="changeCreateType(0)">
+                <label [for]="'build-popup-radio4-' + uuid" class="label">
                   <span class="icon-radio"></span>
                   <span class="txt-label type-docker">
 											Initialize from a Dockerfile
@@ -25,8 +25,8 @@
             </li>
             <li>
               <div class="component-radio">
-                <input type="radio" id="build-popup-radio8" name="create-type-radio" class="input-radio" [value]="CreateType.GIT" [(ngModel)]="createType" (change)="changeCreateType(1)">
-                <label for="build-popup-radio8" class="label">
+                <input type="radio" [id]="'build-popup-radio8-' + uuid" [name]="'create-type-radio-' + uuid" class="input-radio" [value]="CreateType.GIT" [(ngModel)]="createType" (change)="changeCreateType(1)">
+                <label [for]="'build-popup-radio8-' + uuid" class="label">
                   <span class="icon-radio"></span>
                   <span class="txt-label type-custom">
 											Link to a Custom Git Repository Push

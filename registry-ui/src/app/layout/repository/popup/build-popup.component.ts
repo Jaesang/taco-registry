@@ -13,6 +13,7 @@ import {CommonConstant} from "../../../common/constant/common-constant";
 import {Alert} from "../../../common/utils/alert-util";
 import {Build} from "../build-history/build-history.value";
 import {Validate} from "../../../common/utils/validate-util";
+import {Utils} from "../../../common/utils/utils";
 
 @Component({
   selector: '[build-popup]',
@@ -43,6 +44,8 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
   public gitPassword: string;
 
   public noCache: boolean = false;
+
+  public uuid: string = Utils.Generate.UUID();
 
   private dockerFileContent: string;
 
