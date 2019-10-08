@@ -76,9 +76,9 @@ export class LogsService {
         break;
 
       case Logs.Kind.change_tag_expiration:
-        desc = `Tag <em>${log.tag}</em> set to expire on <em>${moment(log.expirationDate).format('YYYY-MM-DD HH:mm')}</em>`;
+        desc = `Tag <em>${log.tag}</em> set to expire on <em>${moment(log.expirationDate).format('YYYY-MM-DD')}</em>`;
         if (log.oldExpirationDate) {
-          desc += ` (previously <em>${moment(log.oldExpirationDate).format('YYYY-MM-DD HH:mm')}</em>)`;
+          desc += ` (previously <em>${moment(log.oldExpirationDate).format('YYYY-MM-DD')}</em>)`;
         }
         break;
 

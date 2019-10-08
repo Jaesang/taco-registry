@@ -456,7 +456,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
         let tag = result.tags[key];
         tag.formattedLastModified = moment(tag.lastModified).format('YYYY-MM-DD HH:mm');
         if (tag.expiration) {
-          tag.formattedExpiration = moment(tag.expiration).format('YYYY-MM-DD HH:mm');
+          tag.formattedExpiration = moment(tag.expiration).format('YYYY-MM-DD');
         } else {
           tag.formattedExpiration = '';
         }
