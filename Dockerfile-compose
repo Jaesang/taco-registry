@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:7 AS build
 
 # Install JAVA
 RUN yum install -y \
@@ -17,7 +17,6 @@ WORKDIR /app/portal
 
 # add project
 ADD ./* /app/portal/
-RUN mv /app/portal/registry-server/src/main/resources/application.prod.yaml /app/portal/registry-server/src/main/resources/application.yaml
 
 # ui install & build
 WORKDIR /app/portal/registry-ui
@@ -25,9 +24,19 @@ RUN npm install
 RUN npm run build
 
 # server mvn install
-WORKDIR /app/portal/registry-server
-RUN mvn -U clean install
+WORKDIR /app/portal
+RUN mvn clean package -Dmaven.test.skip=true -U
+
+###
+
+FROM openjdk:8 AS app
+
+WORKDIR /app
+COPY --from=build /app/portal/registry-server/target/registry-1.0.0-RELEASE.jar .
+COPY --from=build /app/portal/registry-server/src/main/resources/application.prod.yaml ./application.yaml
+
+EXPOSE 8080
 
 # server run
-ENTRYPOINT ["mvn"]
-CMD ["spring-boot:run"]
+ENTRYPOINT ["java"]
+CMD ["-jar", "registry-1.0.0-RELEASE.jar"]
