@@ -61,6 +61,7 @@ server:
 
 # Config
 config:
+  time-zone: ${APP_TIME_ZONE:'UTC'}
   registry:
     url: ${REGISTRY_URL:'taco-registry:5000'}
   file:
@@ -86,6 +87,8 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
+        jdbc:
+          time_zone: ${APP_TIME_ZONE:'UTC'}
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
         hbm2ddl:
@@ -103,6 +106,8 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
+        jdbc:
+          time_zone: ${APP_TIME_ZONE:'UTC'}
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
         hbm2ddl:
