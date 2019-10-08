@@ -293,7 +293,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
     this.currentSelectedTag = tag;
     this.showCreateTagPopup = true;
     this.createTag = new Tag.Entity();
-    this.createTag.dockerImageId = tag.dockerImageId;
+    this.createTag.oldTagName = tag.name;
     this.createErrorMsg = '';
   }
 
@@ -478,14 +478,11 @@ export class TagInfoComponent extends PageComponent implements OnInit {
    * @param imageId
    */
   private getSecurityData(imageId: string, tagName: string) {
-    this.loaderService.show.next(true);
-
     this.tagService.getSecurity(this.orgName, this.repoName, tagName).then(result => {
       this.tagService.setSecurityCount(result);
 
       this.securityData[imageId] = result;
 
-      this.loaderService.show.next(false);
     });
   }
 

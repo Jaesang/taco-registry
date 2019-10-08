@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.net.HttpURLConnection;
@@ -114,6 +115,7 @@ public class BuilderScheduler {
 
     // 만료일이 지난 tag 삭제 모듈 (일배치)
     @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
     public void cleanUpTag() {
         logger.info("cleanUpTag start");
         LocalDateTime now = LocalDateTime.now();
@@ -138,4 +140,5 @@ public class BuilderScheduler {
             }
         });
     }
+
 }

@@ -10,6 +10,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.codec.binary.Base32;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -26,6 +28,8 @@ import java.util.*;
  */
 @Service
 public class OAuthService extends AbstractService {
+
+    protected static final Logger logger = LoggerFactory.getLogger(OAuthService.class);
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables

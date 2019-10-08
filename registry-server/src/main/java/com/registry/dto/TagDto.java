@@ -14,7 +14,7 @@ public class TagDto {
 
     @ApiModel("Tag.EDIT")
     public static class EDIT {
-        public String dockerImageId;
+        public String oldTagName;
         public Long expiration;
     }
 

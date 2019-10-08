@@ -6,6 +6,8 @@ import com.registry.repository.usage.Log;
 import com.registry.repository.usage.LogRepository;
 import com.registry.util.CommonUtil;
 import com.registry.util.SecurityUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,8 @@ import java.util.List;
  */
 @Service
 public class UsageLogService extends AbstractService {
+
+    protected static final Logger logger = LoggerFactory.getLogger(UsageLogService.class);
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables

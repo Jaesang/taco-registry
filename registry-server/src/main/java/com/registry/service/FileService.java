@@ -1,5 +1,7 @@
 package com.registry.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -19,6 +21,8 @@ import java.nio.file.StandardCopyOption;
  */
 @Service
 public class FileService extends AbstractService {
+
+    protected static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables

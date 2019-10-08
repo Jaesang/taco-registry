@@ -8,6 +8,8 @@ import com.registry.repository.usage.Log;
 import com.registry.repository.user.*;
 import com.registry.util.SecurityUtil;
 import com.registry.value.common.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserService extends AbstractService {
+
+    protected static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables

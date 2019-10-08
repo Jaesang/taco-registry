@@ -58,7 +58,7 @@ export class TagService extends AbstractService {
    */
   public createTag(namespace: string, repository: string, tag: Tag.Entity): Promise<any> {
     let data = {
-      dockerImageId: tag.dockerImageId
+      oldTagName: tag.oldTagName
     };
 
     return this.put(`${environment.apiUrl}/image/${namespace}/${repository}/tag/${tag.name}`, data);

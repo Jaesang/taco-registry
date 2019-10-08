@@ -15,6 +15,8 @@ import com.registry.repository.user.RoleRepository;
 import com.registry.repository.user.User;
 import com.registry.util.SecurityUtil;
 import org.apache.commons.collections.map.HashedMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,8 @@ import java.util.regex.Pattern;
  */
 @Service
 public class ImageService extends AbstractService {
+
+    protected static final Logger logger = LoggerFactory.getLogger(ImageService.class);
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables

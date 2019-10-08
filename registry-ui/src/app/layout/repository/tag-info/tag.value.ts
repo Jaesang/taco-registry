@@ -11,6 +11,8 @@ export namespace Tag {
     public expiration: any;
     public buildId: string;
 
+    public oldTagName: string;
+
     public formattedLastModified: string;
     public formattedExpiration: string;
     public checked: boolean = false;

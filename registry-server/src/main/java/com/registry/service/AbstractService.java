@@ -19,8 +19,6 @@ public abstract class AbstractService {
     | Private Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractService.class);
-
     @Autowired
     private UserService userService;
 

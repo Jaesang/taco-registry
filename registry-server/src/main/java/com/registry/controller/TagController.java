@@ -150,9 +150,9 @@ public class TagController {
             @RequestBody TagDto.EDIT tag
     ) throws Exception{
 
-        if (tag.dockerImageId != null) {
+        if (tag.oldTagName != null) {
             // 태그 복사
-            tagService.copyTag(namespace, name, tagName, tag.dockerImageId);
+            tagService.copyTag(namespace, name, tagName, tag.oldTagName);
         } else {
             // expiration 변경
             tagService.updateExpiration(namespace, name, tagName, tag.expiration != null ? tag.expiration : 0);

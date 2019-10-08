@@ -9,6 +9,8 @@ import com.registry.repository.image.TagRepository;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.usage.Log;
 import com.registry.util.SecurityUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,8 @@ import java.util.TimeZone;
  */
 @Service
 public class TagService extends AbstractService {
+
+    protected static final Logger logger = LoggerFactory.getLogger(TagService.class);
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables
@@ -274,12 +278,12 @@ public class TagService extends AbstractService {
      * @param namespace
      * @param name
      * @param tagName
-     * @param dockerImageId
+     * @param oldTagName
      */
-    public void copyTag(String namespace, String name, String tagName, String dockerImageId) {
+    public void copyTag(String namespace, String name, String tagName, String oldTagName) {
         logger.info("createTag namespace : {}", namespace);
         logger.info("createTag name : {}", name);
-        logger.info("createTag dockerImageId : {}", dockerImageId);
+        logger.info("createTag oldTagName : {}", oldTagName);
 
         // 권한 체크
         imageService.checkAuth(namespace, name);
@@ -294,14 +298,13 @@ public class TagService extends AbstractService {
         }
 
         // 복사할 tag(원본)가 있는지 체크
-        List<Tag> preTags = tagRepo.getTagsByDockerImageId(image.getId(), dockerImageId);
+        preTag = tagRepo.getTagByTagName(image.getId(), oldTagName);
 
-        if (preTags == null || preTags.size() == 0) {
-            throw new BadRequestException("not exists");
+        if (preTag == null) {
+            throw new BadRequestException("source tag not exists");
         }
 
-        // tag 정보는 미리 생성하고 빌드 후 builder 에서 manafest 정보 업데이트
-        preTag = preTags.get(0);
+        // tag 정보는 미리 생성하고 빌드 후 builder 에서 manifest 정보 업데이트
         Tag tag = new Tag();
         tag.setImage(image);
         tag.setName(tagName);
@@ -312,7 +315,7 @@ public class TagService extends AbstractService {
         createTag(tag);
 
         // builder tag 생성 요청
-        externalService.createTag(tag, preTags.get(0).getName());
+        externalService.createTag(tag, preTag.getName());
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
