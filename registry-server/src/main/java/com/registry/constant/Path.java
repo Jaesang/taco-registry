@@ -31,6 +31,8 @@ public class Path {
     // tag 목록
     public static final String COMMON_TAG                  = API + "/tag";
 
+    public static final String HEALTH                       = API + "/health";
+
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| User
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/

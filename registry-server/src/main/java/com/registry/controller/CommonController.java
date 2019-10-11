@@ -93,6 +93,20 @@ public class CommonController {
         return result;
     }
 
+    /**
+     * Health check
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(Path.HEALTH)
+    @ApiOperation(
+            value = "check health",
+            notes = "Check Health"
+    )
+    public Object checkHealth() throws Exception{
+        return true;
+    }
+
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
