@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import {UserService} from "../../user/user.service";
 import {Alert} from "../../../common/utils/alert-util";
 import {ConfirmPopupService} from "../../../common/component/confirm-popup/confirm-popup.service";
+import {Validate} from "../../../common/utils/validate-util";
 
 @Component({
   selector: '[user-list]',
@@ -114,6 +115,7 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
     this.currentSettingIndex = -1;
     this.showChangeEmailPopup = true;
     this.currentSelectedUser = user;
+    this.currentSelectedUser.newEmail = user.email;
   }
 
   /**
@@ -124,7 +126,7 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
 
     let user = new SuperUser.Entity();
     user.username = this.currentSelectedUser.username;
-    user.email = this.currentSelectedUser.email;
+    user.email = this.currentSelectedUser.newEmail;
 
     this.superUserService.updateUser(user).then(result => {
       this.loaderService.show.next(false);
@@ -243,6 +245,36 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
       `${user.enabled ? 'Disable' : 'Enable'} User`,
     );
   }
+
+  public validateCreateUser() {
+    if (!Validate.checkValidateWithPattern('^[a-z0-9_-]+$', this.addUser.username) || Validate.isEmpty(this.addUser.username)) {
+      return false;
+    }
+
+    if (Validate.isEmpty(this.addUser.email)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  public validateChangeEmail() {
+    if (Validate.isEmpty(this.currentSelectedUser.newEmail) || this.currentSelectedUser.email == this.currentSelectedUser.newEmail) {
+      return false;
+    }
+
+    return true;
+  }
+
+
+  public validateChangePassword() {
+    if (Validate.isEmpty(this.currentSelectedUser.password) || Validate.isEmpty(this.verifyNewPassword) || this.currentSelectedUser.password != this.verifyNewPassword) {
+      return false;
+    }
+
+    return true;
+  }
+
 
   private getUserList() {
     this.loaderService.show.next(true);

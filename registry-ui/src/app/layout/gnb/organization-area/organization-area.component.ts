@@ -20,7 +20,7 @@ export class OrganizationAreaComponent extends AbstractComponent implements OnIn
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
-              private userService: UserService) {
+              public userService: UserService) {
     super(elementRef, injector);
   }
 

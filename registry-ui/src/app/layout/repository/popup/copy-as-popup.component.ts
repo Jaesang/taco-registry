@@ -151,6 +151,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
 
       let build: Build.Entity = new Build.Entity();
       build.dockerfile = this.dockerFileContent;
+      build.noCache = true;
 
       this.buildService.build(this.repo.namespace, this.repo.name, build).then(result => {
         this.close();
@@ -196,7 +197,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
    * select 초기화
    */
   private initSelectList() {
-    let orgList = [new Select.Value(this.userService.user.username, this.userService.user.username, true)];
+    let orgList = [new Select.Value(`${this.userService.user.username} (Private)`, this.userService.user.username, true)];
 
     this.userService.user.organizations.forEach(value => {
       orgList.push(new Select.Value(value.name, value.name, false));

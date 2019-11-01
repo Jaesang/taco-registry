@@ -13,6 +13,8 @@ export namespace SuperUser {
     email: string;
     avatar: Avatar;
     password: string;
+
+    newEmail: string;
   }
 
   export namespace Result {

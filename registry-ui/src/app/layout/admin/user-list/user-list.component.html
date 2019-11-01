@@ -132,7 +132,7 @@
         <!-- Button -->
         <div class="button-block">
           <button type="button" class="btn-basic type-small" (click)="showCreateUserPopup = false">Cancel</button>
-          <button type="button" class="btn-action type-small" (click)="createUserClick()">Create User</button>
+          <button type="button" class="btn-action type-small" (click)="createUserClick()" [disabled]="!validateCreateUser()">Create User</button>
         </div>
       </div>
 
@@ -222,8 +222,8 @@
               <td>
                 <div class="component-input">
                   <div class="input-area">
-                    <input type="text" class="input-text" placeholder="Your E-mail Address" [(ngModel)]="currentSelectedUser.email">
-                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="currentSelectedUser.email = ''" tabIndex="-1"></a>
+                    <input type="text" class="input-text" placeholder="Your E-mail Address" [(ngModel)]="currentSelectedUser.newEmail">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="currentSelectedUser.newEmail = ''" tabIndex="-1"></a>
                   </div>
                   <span class="txt-error">Error Message.</span>
                 </div>
@@ -237,7 +237,7 @@
         <!-- Button -->
         <div class="button-block">
           <button type="button" class="btn-basic type-small" (click)="showChangeEmailPopup = false">Cancel</button>
-          <button type="button" class="btn-action type-small" (click)="changeUserEmailClick()">Change User E-mail</button>
+          <button type="button" class="btn-action type-small" (click)="changeUserEmailClick()" [disabled]="!validateChangeEmail()">Change User E-mail</button>
         </div>
       </div>
 
@@ -299,7 +299,7 @@
         <!-- Button -->
         <div class="button-block">
           <button type="button" class="btn-basic type-small" (click)="showChangePasswordPopup = false">Cancel</button>
-          <button type="button" class="btn-action type-small" (click)="changeUserPasswordClick()">Change User Password</button>
+          <button type="button" class="btn-action type-small" (click)="changeUserPasswordClick()" [disabled]="!validateChangePassword()">Change User Password</button>
         </div>
       </div>
 

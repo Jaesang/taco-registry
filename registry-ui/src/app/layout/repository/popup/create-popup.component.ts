@@ -225,7 +225,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
    * select 초기화
    */
   private initSelectList() {
-    let orgList = [new Select.Value(this.userService.user.username, this.userService.user.username, false)];
+    let orgList = [new Select.Value(`${this.userService.user.username} (Private)` , this.userService.user.username, false)];
 
     this.userService.user.organizations.forEach(value => {
       orgList.push(new Select.Value(value.name, value.name, false));

@@ -84,6 +84,11 @@ public class OrganizationService extends AbstractService {
     public void create(Organization org) {
         logger.info("create name : {}", org.getName());
 
+        User user = userService.getUser(SecurityUtil.getUser());
+        if (!user.getSuperuser()) {
+            throw new AccessDeniedException("Organizations can only be created by administrators.");
+        }
+
         if (org.getName().length() < 2 || org.getName().length() > 40) {
             throw new BadRequestException("Be at least 2 characters in length and max 40 characters in length");
         }
@@ -97,7 +102,7 @@ public class OrganizationService extends AbstractService {
         Pattern p = Pattern.compile("^[a-z0-9_-]+$");
         Matcher m = p.matcher(org.getName());
         if (m.find()) {
-            User user = new User();
+            user = new User();
             user.setUsername(SecurityUtil.getUser());
 
             org.setCreatedBy(user);
