@@ -10,6 +10,9 @@ export class PaginationComponent extends AbstractComponent implements OnInit, On
 
   public page: Page = new Page();
 
+  @Input()
+  public showElements: boolean = false;
+
   @Output()
   public onPageClick: EventEmitter<number> = new EventEmitter();
 

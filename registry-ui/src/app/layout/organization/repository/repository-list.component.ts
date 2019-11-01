@@ -1,8 +1,9 @@
-import {Component, OnInit, ElementRef, Injector, Input} from '@angular/core';
+import {Component, OnInit, ElementRef, Injector, Input, Output, EventEmitter} from '@angular/core';
 import {RepositoryListBaseComponent} from "./repository-list-base.component";
 import {Repository} from "../../repository/repository.value";
 import {RepositoryService} from "../../repository/repository.service";
 import {Main} from "../../main/main.value";
+import {Sort} from "../../../common/value/result-value";
 
 @Component({
   selector: 'repository-list',
@@ -17,6 +18,19 @@ export class RepositoryListComponent extends RepositoryListBaseComponent impleme
 
   @Input()
   public namespaceType: Main.Type;
+
+  @Input()
+  public set sort(sort: Sort) {
+    if (sort.property) {
+      this.sortProperty = sort.property;
+    }
+    if (sort.direction) {
+      this.sortDirection = sort.direction;
+    }
+  }
+
+  @Output('sortClick')
+  private sortClickEvent: EventEmitter<Sort> = new EventEmitter<Sort>();
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
@@ -49,5 +63,10 @@ export class RepositoryListComponent extends RepositoryListBaseComponent impleme
       this.sortDirection = 'desc';
     }
     this.sortProperty = property;
+
+    let sort: Sort = new Sort();
+    sort.property = this.sortProperty;
+    sort.direction = this.sortDirection;
+    this.sortClickEvent.emit(sort);
   }
 }

@@ -39,8 +39,8 @@ export class SettingComponent extends PageComponent implements OnInit {
     });
 
     // repository list 조회
-    this.repositoryService.getRepositoryList(this.org.name).then(result => {
-      this.repoCount = result.totalElements;
+    this.repositoryService.getRepositoryListCount(this.org.name).then(result => {
+      this.repoCount = result;
     });
   }
 

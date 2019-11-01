@@ -247,12 +247,17 @@ public class ImageController {
             )
             @RequestParam("namespace") String namespace,
             @ApiParam(
+                    name = "searchKey",
+                    required = true
+            )
+            @RequestParam(value = "searchKey") String searchKey,
+            @ApiParam(
                     defaultValue=" ",
                     value ="Pageable"
             )
             @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
     ) throws Exception{
-        Page<Image> result = imageService.getImages(namespace, pageable);
+        Page<Image> result = imageService.getImages(namespace, searchKey, pageable);
         // 형 변환
         List<ImageDto.VIEW> collect = new ArrayList<>();
         result.getContent()
@@ -280,7 +285,7 @@ public class ImageController {
             value = "get image",
             notes = "Image 조회"
     )
-    public Object getImages(
+    public Object getImageMembers(
             @ApiParam(
                     defaultValue="bearer ",
                     value ="토큰",

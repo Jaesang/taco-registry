@@ -1,5 +1,8 @@
 <!-- Pagination -->
 <div class="component-pagination" *ngIf="page.number > 0 || !page.last">
+  <span class="txt-total" *ngIf="showElements">
+    <em>{{ page.number * page.size + 1 }} ~ {{ page.number * page.size + page.size > page.totalElements ? page.totalElements : page.number * page.size + page.size }}</em> of {{ page.totalElements }}
+  </span>
   <button type="button" class="btn-prev" (click)="prevClick()" [disabled]="page.number < 1"></button>
   <button type="button" class="btn-next" (click)="nextClick()" [disabled]="page.last"></button>
 </div>

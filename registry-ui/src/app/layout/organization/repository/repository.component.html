@@ -7,12 +7,17 @@
   <!-- Title, Filter -->
   <div class="section-title">
     <h2 class="txt-title">Repository</h2>
+
+    <!-- Pagination -->
+    <div pagination [showElements]="true" (onPageClick)="pageClick($event)" #pagination></div>
+    <!-- //Pagination -->
+
     <!-- Filter -->
     <div class="filter-area">
       <div class="component-search type-filter">
-        <input type="text" class="input-search" placeholder="Search for Image Name" #searchInput (keyup.enter)="searchKey = searchInput.value">
+        <input type="text" class="input-search" placeholder="Search for Image Name" [(ngModel)]="searchKey" (keyup.enter)="search()">
         <span class="icon-search"></span>
-        <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="searchInput.value = ''"></a>
+        <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="searchKey = ''"></a>
       </div>
 
       <!-- Toggle -->
@@ -26,9 +31,9 @@
   </div>
   <!-- //Title, Filter -->
 
-  <repository-card *ngIf="showCard" [repositoryList]="repositoryList" [searchKey]="searchKey"></repository-card>
+  <repository-card *ngIf="showCard" [repositoryList]="repositoryList"></repository-card>
 
-  <repository-list *ngIf="!showCard" [repositoryList]="repositoryList" [searchKey]="searchKey" [namespaceType]="namespaceType"></repository-list>
+  <repository-list *ngIf="!showCard" [repositoryList]="repositoryList" [namespaceType]="namespaceType" [sort]="sort" (sortClick)="sortClick($event)"></repository-list>
 
   <!-- Repository Table -->
   <div class="nodata-area" *ngIf="!showCard && !isSearching && searchKey == '' && !repositoryList.length">

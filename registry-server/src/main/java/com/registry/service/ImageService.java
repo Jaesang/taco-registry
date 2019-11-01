@@ -270,11 +270,11 @@ public class ImageService extends AbstractService {
      * @param namespace
      * @return
      */
-    public Page<Image> getImages(String namespace, Pageable pageable) {
+    public Page<Image> getImages(String namespace, String searchKey, Pageable pageable) {
         logger.info("getImages namespace : {}", namespace);
         logger.info("getImages pageable : {}", pageable);
 
-        return imageRepo.getImages(namespace, pageable);
+        return imageRepo.getImages(namespace, searchKey, pageable);
     }
 
     /**

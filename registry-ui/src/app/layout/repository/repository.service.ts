@@ -1,6 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import {AbstractService} from "../../common/service/abstract.service";
-import {CommonResult} from "../../common/value/result-value";
+import {CommonResult, Page} from "../../common/value/result-value";
 import {environment} from "../../../environments/environment";
 import {Repository} from "./repository.value";
 import {Build} from "./build-history/build-history.value";
@@ -46,11 +46,24 @@ export class RepositoryService extends AbstractService {
 	 * Repository 목록 조회
 	 * @returns {Promise<any>}
 	 */
-	public getRepositoryList(namespace: string): Promise<Repository.Result> {
-	  let url = `${environment.apiUrl}/image?namespace=${namespace}`;
+	public getRepositoryList(namespace: string, searchKey: string, page: Page): Promise<Repository.Result> {
+	  let url = `${environment.apiUrl}/image?namespace=${namespace}&page=${page.number}&size=${page.size}&searchKey=${searchKey}`;
+	  if (page.sort) {
+	    url += `&sort=${page.sort.property},${page.sort.direction}`;
+    }
 
 		return this.get(url);
 	}
+
+  /**
+   * Repository 목록 count 조회
+   * @returns {Promise<any>}
+   */
+  public getRepositoryListCount(namespace: string): Promise<number> {
+    let url = `${environment.apiUrl}/image?namespace=${namespace}`;
+
+    return this.get(url);
+  }
 
   /**
    * Repository 상세 조회
