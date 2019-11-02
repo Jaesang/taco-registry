@@ -97,17 +97,15 @@ public class TagService extends AbstractService {
      * 태그 history 목록 조회
      * @param namespace
      * @param name
-     * @param pageable
      * @return
      */
-    public Page<Tag> getTagHistory(String namespace, String name, Pageable pageable) {
+    public List<Tag> getTagHistory(String namespace, String name) {
         logger.info("getTagHistory namespace : {}", namespace);
         logger.info("getTagHistory name : {}", name);
-        logger.info("getTagHistory pageable : {}", pageable);
 
         Image image = this.imageRepo.getImage(namespace, name);
 
-        return this.tagRepo.getTags(image.getId(), pageable);
+        return this.tagRepo.getAllTags(image.getId());
     }
 
     /**

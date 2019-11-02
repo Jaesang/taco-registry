@@ -11,6 +11,7 @@ import com.registry.value.common.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -107,8 +108,8 @@ public class UserService extends AbstractService {
         return user;
     }
 
-    public List<User> getUsers(Pageable pageable) {
-        return userRepo.getUsers(pageable);
+    public Page<User> getUsers(String searchKey, Pageable pageable) {
+        return userRepo.getUsers(searchKey, pageable);
     }
 
     public User getUser(String username) {

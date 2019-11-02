@@ -2,9 +2,12 @@ package com.registry.controller;
 
 import com.registry.constant.CommonConstant;
 import com.registry.constant.Path;
+import com.registry.dto.ImageDto;
 import com.registry.dto.UserDto;
+import com.registry.repository.user.Role;
 import com.registry.repository.user.User;
 import com.registry.service.UserService;
+import com.registry.util.SecurityUtil;
 import com.registry.value.common.Result;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -13,6 +16,8 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -23,6 +28,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by boozer on 2019. 7. 15
@@ -83,18 +89,28 @@ public class SuperUserController {
             )
             @RequestHeader(name = "Authorization") String authorization,
             @ApiParam(
+                    name = "searchKey",
+                    required = true
+            )
+            @PathVariable("searchKey") String searchKey,
+            @ApiParam(
                     defaultValue=" ",
                     value ="Pageable"
             )
             @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
     ) throws Exception{
-        JSONObject result = new JSONObject();
+        Page<User> result = userService.getUsers(searchKey, pageable);
 
-        List<User> userList = userService.getUsers(pageable);
-        userList = userList == null ? new ArrayList<>() : userList;
-        result.put("users", mapper.mapAsList(userList, UserDto.VIEW.class));
+        // 형 변환
+        List<UserDto.VIEW> collect = new ArrayList<>();
+        result.getContent()
+                .stream()
+                .forEach(value -> {
+                    UserDto.VIEW item = mapper.map(value, UserDto.VIEW.class);
+                    collect.add(item);
+                });
 
-        return result;
+        return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
 
     /**

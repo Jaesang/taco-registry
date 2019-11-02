@@ -10,10 +10,14 @@
   <!-- Filter -->
   <div class="filter-area">
 
+    <!-- Pagination -->
+    <div pagination [showElements]="true" (onPageClick)="pageClick($event)" #pagination></div>
+    <!-- //Pagination -->
+
     <div class="component-search type-filter">
-      <input type="text" class="input-search" placeholder="Search for Username / E-mail" #searchInput (keyup.enter)="searchKey = searchInput.value">
+      <input type="text" class="input-search" placeholder="Search for Username / E-mail" (keyup.enter)="search()">
       <span class="icon-search"></span>
-      <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="searchInput.value = ''"></a>
+      <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="searchKey = ''"></a>
     </div>
 
     <!-- Button -->
@@ -37,17 +41,17 @@
     <thead>
     <tr>
       <th>
-        <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'username' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'username' && sortDirection == 'desc'" (click)="sortClick('username')">Username</a>
+        <a href="javascript:;" class="btn-sort" [class.type-asc]="sort.property == 'username' && sort.direction == 'asc'" [class.type-desc]="sort.property == 'username' && sort.direction == 'desc'" (click)="sortClick('username')">Username</a>
       </th>
       <th>
-        <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'email' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'email' && sortDirection == 'desc'" (click)="sortClick('email')">E-mail Address</a>
+        <a href="javascript:;" class="btn-sort" [class.type-asc]="sort.property == 'email' && sort.direction == 'asc'" [class.type-desc]="sort.property == 'email' && sort.direction == 'desc'" (click)="sortClick('email')">E-mail Address</a>
       </th>
       <th>
       </th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let user of users | sort:sortProperty:sortDirection | filter:{ email: searchKey, username: searchKey }; let index = index;">
+    <tr *ngFor="let user of users; let index = index;">
       <td>
         <span class="name-area">
           <em class="txt-name">{{ user.username }}</em>
@@ -78,6 +82,15 @@
   </table>
 </div>
 <!-- //Repository Table -->
+
+<!-- Search No Data -->
+<div class="nodata-area type-search" *ngIf="showSearchNodata">
+  <span class="txt-nodata">No matching users found.</span>
+  <p class="txt-desc">
+    There are no matching users for the search.
+  </p>
+</div>
+<!-- //Search No Data -->
 
 <!-- Layer Popup(create user) -->
 <div class="layout-popup" *ngIf="showCreateUserPopup">

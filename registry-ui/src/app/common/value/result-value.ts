@@ -56,7 +56,7 @@ export class Page {
   public number: number;
 
   // Data 목록
-  public content: Object;
+  public content: any;
 
 }
 

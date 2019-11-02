@@ -95,23 +95,11 @@ public class TagController {
                     name = "name",
                     required = true
             )
-            @PathVariable("name") String name,
-            @ApiParam(
-                    defaultValue=" ",
-                    value ="Pageable"
-            )
-            @PageableDefault(sort = {"startTime"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
+            @PathVariable("name") String name
     ) throws Exception{
-        Page<Tag> result = tagService.getTagHistory(namespace, name, pageable);
-        // 형 변환
-        List<TagDto.VIEW> collect = result.getContent()
-                .stream()
-                .map(value -> {
-                    TagDto.VIEW item = mapper.map(value, TagDto.VIEW.class);
-                    return item;
-                }).collect(Collectors.toList());
+        List<Tag> result = tagService.getTagHistory(namespace, name);
 
-        return new PageImpl<>(collect, pageable, result.getTotalElements());
+        return mapper.mapAsList(result, TagDto.VIEW.class);
     }
 
     /**
