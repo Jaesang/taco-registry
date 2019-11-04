@@ -153,6 +153,9 @@ main {
                 .btn-create {
                     display:block;
                     height:32px;
+                    margin:0 0 4px;
+                    padding:0 0 4px;
+                    border-bottom:1px solid #e7e7ea;
                     line-height:32px;
                     font-size:12px;
                     color:#35393f;
@@ -169,9 +172,7 @@ main {
                     overflow-y:auto;
                     overflow-x:hidden;
                     max-height:200px;
-                    margin:4px -13px 0;
-                    padding:4px 0 0;
-                    border-top:1px solid #e7e7ea;
+                    margin:0 -13px 0;
 
                     .link-item {
                         display:block;
