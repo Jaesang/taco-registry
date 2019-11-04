@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -151,7 +152,7 @@ public class UserService extends AbstractService {
         logger.info("saveUser rolename : {}", rolename);
         logger.info("saveUser isCreate : {}", isCreate);
 
-        String password = isCreate ? UUID.randomUUID().toString() : user.getPassword();
+        String password = isCreate ? this.passwordGenerate() : user.getPassword();
         if(password != null) {
             // 패스워드 인코더
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -301,6 +302,19 @@ public class UserService extends AbstractService {
         }).collect(Collectors.toList());
 
         user.setOrganizations(orgs);
+    }
+
+    /**
+     * 임시 비밀번호 생성
+     * @return
+     */
+    private String passwordGenerate() {
+        // 6 digit
+        Random generator = new Random();
+        int i = generator.nextInt(1000000) % 1000000;
+
+        DecimalFormat f = new DecimalFormat("000000");
+        return f.format(i);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
