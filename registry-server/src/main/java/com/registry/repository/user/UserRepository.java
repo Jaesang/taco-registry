@@ -14,7 +14,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     User getUser(@Param("username") String username);
 
     @Query("select user from User user " +
-            "where user.delYn = false")
+            "where user.delYn = false " +
+            "order by user.username")
     List<User> getUsers();
 
     @Query("select user from User user  " +
