@@ -23,12 +23,12 @@
         <a href="javascript:;" class="btn-sort" [class.type-asc]="sortProperty == 'popularity' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'popularity' && sortDirection == 'desc'" (click)="sortClick('popularity')">Activity</a>
       </th>
       <th>
-        <a href="javascript:;"class="btn-sort" [class.type-asc]="sortProperty == 'updatedDate' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'updatedDate' && sortDirection == 'desc'" (click)="sortClick('updatedDate')">Last Modified</a>
+        <a href="javascript:;"class="btn-sort" [class.type-asc]="sortProperty == 'lastModified' && sortDirection == 'asc'" [class.type-desc]="sortProperty == 'lastModified' && sortDirection == 'desc'" (click)="sortClick('lastModified')">Last Modified</a>
       </th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let item of repositoryList; let index = index;">
+    <tr *ngFor="let item of repositoryList | sort:sortProperty:sortDirection | filter:{name: searchKey, namespace: searchKey}; let index = index;">
       <td class="align-center">
         <div class="component-starred">
           <input type="checkbox" class="input-checkbox" [attr.id]="'starred' + index" [checked]="item.isStarred" (change)="starChange(item)">

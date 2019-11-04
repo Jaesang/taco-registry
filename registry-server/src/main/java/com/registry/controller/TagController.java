@@ -98,8 +98,15 @@ public class TagController {
             @PathVariable("name") String name
     ) throws Exception{
         List<Tag> result = tagService.getTagHistory(namespace, name);
+        // 형 변환
+        List<TagDto.VIEW> collect = result
+                .stream()
+                .map(value -> {
+                    TagDto.VIEW item = mapper.map(value, TagDto.VIEW.class);
+                    return item;
+                }).collect(Collectors.toList());
 
-        return mapper.mapAsList(result, TagDto.VIEW.class);
+        return collect;
     }
 
     /**

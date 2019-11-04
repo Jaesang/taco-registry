@@ -103,7 +103,7 @@ export class TagService extends AbstractService {
    * @param repository
    * @returns {Promise<any>}
    */
-  public getHistory(namespace: string, repository: string): Promise<Tag.HistoryResult> {
+  public getHistory(namespace: string, repository: string): Promise<Tag.History[]> {
     return this.get(`${environment.apiUrl}/image/${namespace}/${repository}/tag/`);
   }
 

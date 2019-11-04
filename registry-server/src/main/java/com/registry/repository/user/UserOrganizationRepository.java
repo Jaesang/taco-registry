@@ -15,12 +15,6 @@ public interface UserOrganizationRepository extends JpaRepository<UserOrganizati
             "join userOrg.organization org " +
             "join userOrg.user user " +
             "where org.id = :organizationId")
-    Page<UserOrganization> getUserOrgs(@Param("organizationId") UUID organizationId, Pageable pageable);
-
-    @Query("select userOrg from UserOrganization userOrg " +
-            "join userOrg.organization org " +
-            "join userOrg.user user " +
-            "where org.id = :organizationId")
     List<UserOrganization> getUserOrgs(@Param("organizationId") UUID organizationId);
 
     @Query("select userOrg from UserOrganization userOrg " +

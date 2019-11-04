@@ -266,18 +266,6 @@ public class ImageService extends AbstractService {
     }
 
     /**
-     * image 목록 조회
-     * @param namespace
-     * @return
-     */
-    public Page<Image> getImages(String namespace, String searchKey, Pageable pageable) {
-        logger.info("getImages namespace : {}", namespace);
-        logger.info("getImages pageable : {}", pageable);
-
-        return imageRepo.getImages(namespace, searchKey, pageable);
-    }
-
-    /**
      * image 검색
      * @param name
      * @param pageable
@@ -313,20 +301,6 @@ public class ImageService extends AbstractService {
         Image image = imageRepo.getImage(namespace, name);
 
         return image.getRole();
-    }
-
-    /**
-     * image member 목록 조회
-     * @param name
-     * @return
-     */
-    public Page<Role> getMembers(String namespace, String name, Pageable pageable) {
-        logger.info("getMembers namespace : {}", namespace);
-        logger.info("getMembers name : {}", name);
-
-        Image image = imageRepo.getImage(namespace, name);
-
-        return roleRepo.getRoles(image.getId(), pageable);
     }
 
     /**

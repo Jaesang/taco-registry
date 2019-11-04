@@ -123,6 +123,8 @@ public class Path {
     // (GET) 목록
     public static final String IMAGE                        = API + "/image";
 
+    public static final String IMAGE_COUNT                  = IMAGE + "/count";
+
     // image 상세
     // (GET) 상세
     public static final String IMAGE_DETAIL                 = API + "/image/{namespace}/{name}";

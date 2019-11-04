@@ -233,7 +233,15 @@ public class OAuthService extends AbstractService {
 
                 if (image.getIsPublic()) {
                     // public image 전부 허용
-                    actions.add("*");
+                    if (action.contains("pull")) {
+                        actions.add("pull");
+                    }
+                    Role role = image.getRole().stream().filter(v -> username.equals(v.getUser().getUsername())).findFirst().orElse(null);
+                    if (role != null) {
+                        if (action.contains("push") && (Const.Role.WRITE.equals(role.getName()) || Const.Role.ADMIN.equals(role.getName()))) {
+                            actions.add("push");
+                        }
+                    }
                 } else {
                     Role role = image.getRole().stream().filter(v -> username.equals(v.getUser().getUsername())).findFirst().orElse(null);
                     if (role != null) {

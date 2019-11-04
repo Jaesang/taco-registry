@@ -5,7 +5,7 @@
 
       <div class="popup-area type-large">
         <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="close()"></a>
-        <h1 class="txt-title">Security Scan : {{ imageId ? imageId.substr(0, 12) : '' }}</h1>
+        <h1 class="txt-title">Security Scan : {{ imageId ? imageId.split('-')[0] : '' }}</h1>
 
         <!-- Popup Security Scan -->
         <div class="popup-security-scan">

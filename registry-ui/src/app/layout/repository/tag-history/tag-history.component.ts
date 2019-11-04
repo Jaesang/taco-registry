@@ -133,7 +133,7 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
 
     this.tagService.getHistory(this.orgName, this.repoName).then(result => {
       this.historyList = [];
-      result.content.forEach((value, index) => {
+      result.forEach((value, index) => {
         this.historyList.push(value);
         value.date = value.startTs;
         value.formattedDate = moment(value.startTs).format('YYYY-MM-DD HH:mm');
@@ -141,7 +141,7 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
         if (value.endTs) {
           // moved 인 경우 삭제된 내용은 화면에 표시하지 않음
           let isMoved: boolean = false;
-          result.content.forEach((v, i) => {
+          result.forEach((v, i) => {
             if (v.name == value.name && v.startTs == value.endTs) {
               isMoved = true;
               return;
@@ -159,7 +159,7 @@ export class TagHistoryComponent extends PageComponent implements OnInit {
           }
         }
 
-        result.content.forEach((v, i) => {
+        result.forEach((v, i) => {
           if (i > index && v.name == value.name && v.endTs >= value.startTs){
             value.isMoved = true;
             value.beforeHistory = v;

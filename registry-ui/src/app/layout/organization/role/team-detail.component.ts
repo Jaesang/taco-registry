@@ -157,7 +157,7 @@ export class TeamDetailComponent extends PageComponent implements OnInit {
     this.loaderService.show.next(true);
 
     this.teamService.getTeamMemberList(this.orgName, this.teamName).then(result => {
-      this.memberList = result.content;
+      this.memberList = result;
 
       this.loaderService.show.next(false);
     });

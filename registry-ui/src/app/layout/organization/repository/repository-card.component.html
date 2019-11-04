@@ -1,9 +1,9 @@
 <!-- Starred -->
-<div class="section-starred" *ngIf="searchKey == '' || starredList.length">
+<div class="section-starred" *ngIf="searchKey == '' || (starredList | filter:{name: searchKey, namespace: searchKey}).length">
   <span class="txt-title">STARRED</span>
   <ol class="list-repository">
-    <li *ngFor="let item of starredList; let index = index;">
-      <div class="box-card" [class.type-private]="!item.isPublic">
+    <li *ngFor="let item of starredList | filter:{name: searchKey, namespace: searchKey}; let index = index;">
+      <div class="box-card" [class.type-private]="!item.isPublic" *ngIf="item != -1">
         <div class="component-starred">
           <input type="checkbox" class="input-checkbox" [attr.id]="'starred' + index" [checked]="item.isStarred" (change)="starChange(item)">
           <label [attr.for]="'starred' + index" class="txt-label"></label>
@@ -29,7 +29,7 @@
 <!-- Repository List -->
 <div class="section-list">
   <ol class="list-repository">
-    <li *ngFor="let item of repositoryList; let index = index;">
+    <li *ngFor="let item of repositoryList | filter:{name: searchKey, namespace: searchKey}; let index = index;">
       <div class="box-card" [class.type-private]="!item.isPublic">
         <div class="component-starred">
           <input type="checkbox" class="input-checkbox" [attr.id]="'non-starred' + index" [checked]="item.isStarred" (change)="starChange(item)">
@@ -56,7 +56,7 @@
 <!-- //Repository List -->
 
 <!-- Search No Data -->
-<div class="nodata-area type-search" *ngIf="searchKey != '' && (!repositoryList || repositoryList.length == 0)">
+<div class="nodata-area type-search" *ngIf="searchKey != '' && (!repositoryList || (repositoryList | filter:{name: searchKey, namespace: searchKey}).length == 0)">
   <span class="txt-nodata">No matching images found.</span>
   <p class="txt-desc">
     There are no matching images for the search.

@@ -3,7 +3,7 @@ import {AbstractService} from '../../../common/service/abstract.service';
 import {environment} from '../../../../environments/environment';
 import * as _ from 'lodash';
 import {SuperUser} from './super-user.value';
-import {CommonResult, Page} from '../../../common/value/result-value';
+import {CommonResult} from "../../../common/value/result-value";
 
 @Injectable()
 export class SuperUserService extends AbstractService {
@@ -12,10 +12,12 @@ export class SuperUserService extends AbstractService {
     super(injector);
   }
 
-  public getUsers(searchKey: string, page: Page): Promise<Page> {
-    let url = `${environment.apiUrl}/superuser/users/?page=${page.number}&size=${page.size}&sort=${page.sort.property},${page.sort.direction}`;
-    if (!_.isNil(searchKey)) {
-      url += `&searchKey=${searchKey}`;
+  public getUsers(disabled: boolean = undefined): Promise<SuperUser.Entity[]> {
+
+    let url = `${environment.apiUrl}/superuser/users/`;
+
+    if (!_.isNil(disabled)) {
+      url += `?disabled=${disabled}`;
     }
 
     return this.get(url);

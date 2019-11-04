@@ -59,7 +59,7 @@ export class TeamService extends AbstractService {
    * Team member 조회
    * @returns {Promise<any>}
    */
-  public getTeamMemberList(org: string, team: string): Promise<Member.MemberList> {
+  public getTeamMemberList(org: string, team: string): Promise<Member.Entity[]> {
     return this.get(`${environment.apiUrl}/organization/${org}/members?includePending=true`);
   }
 

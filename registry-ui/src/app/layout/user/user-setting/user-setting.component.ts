@@ -37,8 +37,8 @@ export class UserSettingComponent extends PageComponent implements OnInit {
     this.user = this.userService.user;
 
     // repository list 조회
-    this.repositoryService.getRepositoryListCount(this.user.username).then(result => {
-      this.repoCount = result;
+    this.repositoryService.getRepositoryList(this.user.username).then(result => {
+      this.repoCount = result.length;
     });
   }
 

@@ -167,12 +167,12 @@ public class OrganizationService extends AbstractService {
      * @param orgName
      * @return
      */
-    public Page<UserOrganization> getMembers(String orgName, Pageable pageable) {
+    public List<UserOrganization> getMembers(String orgName) {
         logger.info("getMembers userorgNamename : {}", orgName);
 
         Organization org = getOrg(orgName);
 
-        return userOrgRepo.getUserOrgs(org.getId(), pageable);
+        return userOrgRepo.getUserOrgs(org.getId());
     }
 
     /**

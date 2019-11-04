@@ -184,17 +184,12 @@ public class OrganizationController {
                     name = "organization",
                     required = true
             )
-            @PathVariable("name") String name,
-            @ApiParam(
-                    defaultValue=" ",
-                    value ="Pageable"
-            )
-            @PageableDefault(direction = Sort.Direction.DESC) Pageable pageable
+            @PathVariable("name") String name
     ) throws Exception{
-        Page<UserOrganization> result = organizationService.getMembers(name, pageable);
+        List<UserOrganization> result = organizationService.getMembers(name);
 
         // 형 변환
-        List<OrganizationDto.MEMBER> collect = result.getContent()
+        List<OrganizationDto.MEMBER> collect = result
                 .stream()
                 .map(value -> {
                     OrganizationDto.MEMBER member = new OrganizationDto.MEMBER();
@@ -204,7 +199,7 @@ public class OrganizationController {
                     return member;
                 }).collect(Collectors.toList());
 
-        return new PageImpl<>(collect, pageable, result.getTotalElements());
+        return collect;
     }
 
     /**

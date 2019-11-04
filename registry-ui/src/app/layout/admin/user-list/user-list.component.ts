@@ -8,8 +8,6 @@ import {UserService} from "../../user/user.service";
 import {Alert} from "../../../common/utils/alert-util";
 import {ConfirmPopupService} from "../../../common/component/confirm-popup/confirm-popup.service";
 import {Validate} from "../../../common/utils/validate-util";
-import {Page, Sort} from '../../../common/value/result-value';
-import {PaginationComponent} from '../../../common/component/pagination/pagination.component';
 
 @Component({
   selector: '[user-list]',
@@ -21,6 +19,9 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
   public users: SuperUser.Entity[] = [];
 
   public searchKey: string;
+
+  public sortProperty: string = '';
+  public sortDirection: string = '';
 
   public addUser: SuperUser.Entity = new SuperUser.Entity();
 
@@ -34,14 +35,6 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
   public showChangeEmailPopup: boolean = false;
   public showChangePasswordPopup: boolean = false;
 
-  @ViewChild('pagination')
-  private pagination: PaginationComponent;
-
-  public page: Page;
-  public sort: Sort;
-
-  public showSearchNodata: boolean = false;
-
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
               public userService: UserService,
@@ -52,7 +45,6 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
 
   ngOnInit() {
 
-    this.initPage();
     this.getUserList();
   }
 
@@ -90,33 +82,17 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
     });
   }
 
-  public search() {
-    this.getUserList();
-  }
-
-  /**
-   * paging
-   * @param page
-   */
-  public pageClick(page: number) {
-    this.page.number = page;
-
-    this.getUserList();
-  }
-
   /**
    * 정렬
    * @param property
    */
   public sortClick(property: string) {
-    if (this.sort.property == property) {
-      this.sort.direction = this.sort.direction == 'desc' ? 'asc' : 'desc';
+    if (this.sortProperty == property) {
+      this.sortDirection = this.sortDirection == 'desc' ? 'asc' : 'desc';
     } else {
-      this.sort.direction = 'desc';
+      this.sortDirection = 'desc';
     }
-    this.sort.property = property;
-
-    this.getUserList();
+    this.sortProperty = property;
   }
 
   /**
@@ -241,7 +217,7 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
 
     this.confirmPopupService.show(
       `${user.enabled ? 'Disable' : 'Enable'} User`,
-      `${user.enabled ?  'Are you sure you want to disable this user? This user will be unable to login, pull or push.' : 
+      `${user.enabled ?  'Are you sure you want to disable this user? This user will be unable to login, pull or push.' :
         'Are you sure you want to reenable this user? They will be able to login, pull or push.'}`,
       null,
       () => {
@@ -299,41 +275,19 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
     return true;
   }
 
-  /**
-   * page 초기화
-   * @param page
-   */
-  private initPage(page: Page = null) {
-    let result: Page = new Page(page);
-    if (page) {
-      result.sort = this.sort;
-    } else {
-      result.number = 0;
-      result.size = 20;
-      this.sort = new Sort();
-      this.sort.property = 'createdDate';
-      this.sort.direction = 'desc';
-      result.sort = this.sort;
-    }
-
-    this.page = result;
-  }
 
   private getUserList() {
     this.loaderService.show.next(true);
 
-    this.superUserService.getUsers(this.searchKey, this.page)
+    this.superUserService.getUsers()
       .then(result => {
 
-        this.users = result.content;
-        this.initPage(result);
-        this.pagination.init(this.page);
-
-        if (!_.isNil(this.searchKey) && !this.users.length) {
-          this.showSearchNodata = true;
-        } else {
-          this.showSearchNodata = false;
+        const users: SuperUser.Entity[] = result;
+        if (_.isNil(users)) {
+          this.users = [];
         }
+
+        this.users = users;
 
         this.loaderService.show.next(false);
       });

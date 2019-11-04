@@ -85,8 +85,8 @@ public class ImageController {
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @PostMapping(Path.IMAGE)
     @ApiOperation(
-        value = "create image",
-        notes = "Image 생성"
+            value = "create image",
+            notes = "Image 생성"
     )
     public Object createImage(
             @ApiParam(
@@ -245,33 +245,11 @@ public class ImageController {
                     name = "namespace",
                     required = true
             )
-            @RequestParam("namespace") String namespace,
-            @ApiParam(
-                    name = "searchKey",
-                    required = true
-            )
-            @RequestParam(value = "searchKey") String searchKey,
-            @ApiParam(
-                    defaultValue=" ",
-                    value ="Pageable"
-            )
-            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
+            @RequestParam("namespace") String namespace
     ) throws Exception{
-        Page<Image> result = imageService.getImages(namespace, searchKey, pageable);
-        // 형 변환
-        List<ImageDto.VIEW> collect = new ArrayList<>();
-        result.getContent()
-                .stream()
-                .forEach(value -> {
-                    List<Role> roles = value.getRole().stream().filter(v -> v.getUser().getUsername().equals(SecurityUtil.getUser())).collect(Collectors.toList());
-                    if ((roles != null && roles.size() > 0) || value.getIsPublic()) {
-                        ImageDto.VIEW item = mapper.map(value, ImageDto.VIEW.class);
-                        item.popularity = imageService.getPopularityCount(namespace, value.getName());
-                        collect.add(item);
-                    }
-                });
+        List<Image> result = imageService.getImages(namespace);
 
-        return new PageImpl<>(collect, pageable, result.getTotalElements());
+        return mapper.mapAsList(result, ImageDto.VIEW.class);
     }
 
     /**
@@ -301,17 +279,12 @@ public class ImageController {
                     name = "name",
                     required = true
             )
-            @PathVariable("name") String name,
-            @ApiParam(
-                    defaultValue=" ",
-                    value ="Pageable"
-            )
-            @PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC, size = 200) Pageable pageable
+            @PathVariable("name") String name
     ) throws Exception{
-        Page<Role> result = imageService.getMembers(namespace, name, pageable);
+        List<Role> result = imageService.getMembers(namespace, name);
 
         // 형 변환
-        List<ImageDto.MEMBER> collect = result.getContent()
+        List<ImageDto.MEMBER> collect = result
                 .stream()
                 .map(value -> {
                     ImageDto.MEMBER item = new ImageDto.MEMBER();
@@ -320,7 +293,7 @@ public class ImageController {
                     return item;
                 }).collect(Collectors.toList());
 
-        return new PageImpl<>(collect, pageable, result.getTotalElements());
+        return collect;
     }
 
     /**

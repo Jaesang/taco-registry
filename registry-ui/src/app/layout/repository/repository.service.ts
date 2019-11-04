@@ -1,6 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import {AbstractService} from "../../common/service/abstract.service";
-import {CommonResult, Page} from "../../common/value/result-value";
+import {CommonResult} from "../../common/value/result-value";
 import {environment} from "../../../environments/environment";
 import {Repository} from "./repository.value";
 import {Build} from "./build-history/build-history.value";
@@ -12,54 +12,41 @@ import {Member} from "../organization/role/member.value";
 @Injectable()
 export class RepositoryService extends AbstractService {
 
-	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+  /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+  /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+  /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Public Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	public repository: Repository.Entity;
+  public repository: Repository.Entity;
 
-	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+  /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Constructor
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	constructor(protected injector: Injector) {
-		super(injector);
-	}
+  constructor(protected injector: Injector) {
+    super(injector);
+  }
 
-	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+  /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Override Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+  /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Public Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	/**
-	 * Repository 목록 조회
-	 * @returns {Promise<any>}
-	 */
-	public getRepositoryList(namespace: string, searchKey: string, page: Page): Promise<Repository.Result> {
-	  let url = `${environment.apiUrl}/image?namespace=${namespace}&page=${page.number}&size=${page.size}&searchKey=${searchKey}`;
-	  if (page.sort) {
-	    url += `&sort=${page.sort.property},${page.sort.direction}`;
-    }
-
-		return this.get(url);
-	}
-
   /**
-   * Repository 목록 count 조회
+   * Repository 목록 조회
    * @returns {Promise<any>}
    */
-  public getRepositoryListCount(namespace: string): Promise<number> {
+  public getRepositoryList(namespace: string): Promise<Repository.Entity[]> {
     let url = `${environment.apiUrl}/image?namespace=${namespace}`;
 
     return this.get(url);
@@ -116,12 +103,12 @@ export class RepositoryService extends AbstractService {
    * @param repository
    * @returns {Promise<any>}
    */
-	public starredRepository(namespace: string, repository: string): Promise<any> {
-	  let data = {
-	    namespace: namespace,
+  public starredRepository(namespace: string, repository: string): Promise<any> {
+    let data = {
+      namespace: namespace,
       name: repository
     }
-	  return this.post(`${environment.apiUrl}/user/starred`, data);
+    return this.post(`${environment.apiUrl}/user/starred`, data);
   }
 
   /**
@@ -151,7 +138,7 @@ export class RepositoryService extends AbstractService {
    * @param repository
    * @returns {Promise<any>}
    */
-  public getMemberList(namespace: string, repository: string): Promise<Member.Permissions> {
+  public getMemberList(namespace: string, repository: string): Promise<Member.Entity[]> {
     return this.get(`${environment.apiUrl}/image/${namespace}/${repository}/permissions/user/`);
   }
 
@@ -198,11 +185,11 @@ export class RepositoryService extends AbstractService {
     return this.post(`${environment.apiUrl}/image/${namespace}/${repository}/changevisibility`, data);
   }
 
-	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-	| Protected Method
-	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+  /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+  | Protected Method
+  |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
-	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+  /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 

@@ -283,7 +283,7 @@ export class SettingComponent extends PageComponent implements OnInit {
     this.loaderService.show.next(true);
 
     this.repositoryService.getMemberList(this.orgName, this.repoName).then(result => {
-      this.memberList = result.content;
+      this.memberList = result;
 
       this.loaderService.show.next(false);
     });
