@@ -238,7 +238,12 @@ public class UserService extends AbstractService {
         User user = this.getLoginUser();
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String p = user.getPassword();
-        return bCryptPasswordEncoder.matches(password, p);
+        boolean result = bCryptPasswordEncoder.matches(password, p);
+        if (!result) {
+            throw new BadRequestException("Your current password is incorrect");
+        }
+
+        return result;
     }
 
     /**
