@@ -7,7 +7,7 @@ public class Const {
 
     public static class Role {
         public static final String ADMIN = "ADMIN";
-        public static final String WRITE = "WRITER";
+        public static final String WRITE = "WRITE";
         public static final String READ = "READ";
     }
 
