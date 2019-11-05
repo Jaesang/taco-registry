@@ -144,6 +144,9 @@ public class BuildController {
             )
             @RequestBody BuildDto.CREATE buildDto
     ) throws Exception{
+        // builder live check
+        externalService.getBuilderUri();
+
         Build build = buildService.createBuild(namespace, name, buildDto);
 
         // builder build 요청
