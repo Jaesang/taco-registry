@@ -8,6 +8,7 @@ import {LoaderService} from "../component/loader/loader.service";
 import {Loader} from "../component/loader/loader.value";
 import {ConfirmPopupService} from "../component/confirm-popup/confirm-popup.service";
 import {CommonService} from "./common.service";
+import {Alert} from "../utils/alert-util";
 
 export abstract class AbstractService {
 
@@ -254,6 +255,12 @@ export abstract class AbstractService {
 		console.log(`[${this[ '__proto__' ].constructor.name}] > ERROR MESSAGE`, error);
 
 		switch (error.status) {
+      case 503: {
+        let body = JSON.parse(error._body);
+        Alert.error(body.message);
+
+        break;
+      }
 			case 500: {
 
         this.router.navigate([ 'app/error/500' ]);

@@ -2,6 +2,7 @@ package com.registry.service;
 
 import com.registry.constant.Const;
 import com.registry.exception.BadRequestException;
+import com.registry.exception.ServiceUnavailableException;
 import com.registry.exception.UnknownServerException;
 import com.registry.repository.image.*;
 import com.registry.repository.organization.Organization;
@@ -175,7 +176,7 @@ public class ExternalAPIService extends AbstractService {
         if (serviceInstance != null) {
             return serviceInstance.getUri();
         } else {
-            return null;
+            throw new ServiceUnavailableException("No Builder available.");
         }
     }
 
