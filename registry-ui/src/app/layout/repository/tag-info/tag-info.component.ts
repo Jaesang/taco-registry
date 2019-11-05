@@ -301,10 +301,14 @@ export class TagInfoComponent extends PageComponent implements OnInit {
    * add new tag
    */
   public addTagClick() {
+    this.loaderService.show.next(true);
+
     this.createErrorMsg = '';
     this.tagService.createTag(this.orgName, this.repoName, this.createTag).then(result => {
       this.getTagList();
       this.showCreateTagPopup = false;
+
+      this.loaderService.show.next(false);
     }).catch(reason => {
       let body = JSON.parse(reason._body);
       this.createErrorMsg = body.message;

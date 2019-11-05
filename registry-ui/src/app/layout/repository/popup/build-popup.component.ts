@@ -119,6 +119,8 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
    * start build 클릭
    */
   public startBuildClick() {
+    this.loaderService.show.next(true);
+
     this.orgName = this.repositoryService.repository.namespace;
     this.repoName = this.repositoryService.repository.name;
 
@@ -138,6 +140,8 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
       this.close();
 
       Alert.success(CommonConstant.MESSAGE.SUCCESS);
+
+      this.loaderService.show.next(false);
     }).catch(reason => {
       let body = JSON.parse(reason._body);
       Alert.error(body.message);
