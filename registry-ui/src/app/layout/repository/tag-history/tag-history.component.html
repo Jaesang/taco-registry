@@ -47,17 +47,17 @@
             <span class="ver-block">{{ item.name }}</span>
             was created pointing to
             <span class="txt-sha">{{ item.manifestDigest ? item.manifestDigest.split(':')[0].toUpperCase() : 'V1ID' }}</span>
-            <a href="javascript:;" class="link-id" (click)="imageClick(item)">{{ item.manifestDigest ? item.manifestDigest.split(':')[1].substr(0, 12) : item.dockerImageId.substr(0, 12) }}</a>
+            <a href="javascript:;" class="link-id" (click)="imageClick(item)">{{ item.manifestDigest ? item.manifestDigest.split(':')[1].substr(0, 12) : item.dockerImageId.split('-')[0] }}</a>
           </div>
 
           <div class="change-area" *ngIf="item.isMoved">
             <span class="ver-block">{{ item.name }}</span>
             was {{ item.reversion ? 'reverted' : 'moved' }} to
             <span class="txt-sha">{{ item.manifestDigest ? item.manifestDigest.split(':')[0].toUpperCase() : 'V1ID' }}</span>
-            <a href="javascript:;" class="link-id" (click)="imageClick(item)">{{ item.manifestDigest ? item.manifestDigest.split(':')[1].substr(0, 12) : item.dockerImageId.substr(0, 12) }}</a>
+            <a href="javascript:;" class="link-id" (click)="imageClick(item)">{{ item.manifestDigest ? item.manifestDigest.split(':')[1].substr(0, 12) : item.dockerImageId.split('-')[0] }}</a>
             from
             <span class="txt-sha">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[0].toUpperCase() : 'V1ID' }}</span>
-            <a href="javascript:;" class="link-id" (click)="imageClick(item.beforeHistory)">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[1].substr(0, 12) : item.beforeHistory.dockerImageId.substr(0, 12) }}</a>
+            <a href="javascript:;" class="link-id" (click)="imageClick(item.beforeHistory)">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[1].substr(0, 12) : item.beforeHistory.dockerImageId.split('-')[0] }}</a>
           </div>
         </td>
         <td>
@@ -69,7 +69,7 @@
 <!--            <span class="ver-block">{{ item.name }}</span>-->
 <!--            <span class="txt-revert">to</span>-->
 <!--            <span class="txt-sha">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[0].toUpperCase() : 'V1ID' }}</span>-->
-<!--            <span class="txt-id">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[1].substr(0, 12) : item.beforeHistory.dockerImageId.substr(0, 12) }}</span>-->
+<!--            <span class="txt-id">{{ item.beforeHistory.manifestDigest ? item.beforeHistory.manifestDigest.split(':')[1].substr(0, 12) : item.beforeHistory.dockerImageId.split('-')[0] }}</span>-->
 <!--          </a>-->
 <!--        </td>-->
       </tr>
@@ -115,7 +115,7 @@
             <span class="txt-ver">{{ selectedHistory.name }}</span>
             to image
             <span class="txt-sha">{{ selectedHistory.manifestDigest ? selectedHistory.manifestDigest.split(':')[0].toUpperCase() : 'V1ID' }}</span>
-            <span class="txt-id">{{ selectedHistory.manifestDigest ? selectedHistory.manifestDigest.split(':')[1].substr(0, 12) : selectedHistory.dockerImageId.substr(0, 12) }}</span>
+            <span class="txt-id">{{ selectedHistory.manifestDigest ? selectedHistory.manifestDigest.split(':')[1].substr(0, 12) : selectedHistory.dockerImageId.split('-')[0] }}</span>
           </div>
           <p class="txt-desc">This will change the image to which the tag points.</p>
         </div>

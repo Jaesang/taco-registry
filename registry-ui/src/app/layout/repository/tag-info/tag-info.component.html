@@ -202,7 +202,7 @@
 
       <div class="popup-area">
         <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showCreateTagPopup = false"></a>
-        <h1 class="txt-title">Add Tag to Image {{ currentSelectedTag.dockerImageId.substr(0, 12) }}</h1>
+        <h1 class="txt-title">Add Tag to Image {{ currentSelectedTag.dockerImageId.split('-')[0] }}</h1>
 
         <!-- Popup Add Tag -->
         <div class="popup-add-tag">
