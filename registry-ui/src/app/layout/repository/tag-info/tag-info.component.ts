@@ -497,9 +497,6 @@ export class TagInfoComponent extends PageComponent implements OnInit {
    */
   public getSecurity(imageId: string) {
     let security = this.securityData[imageId];
-    if (!security) {
-      security = new Tag.Security();
-    }
 
     return security;
   }
