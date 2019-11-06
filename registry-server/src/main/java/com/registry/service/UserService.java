@@ -140,7 +140,7 @@ public class UserService extends AbstractService {
         User user = userRepo.getUser(username);
         user.setDelYn(true);
 
-        saveUser(user, null, false);
+        userRepo.save(user);
     }
 
     /**
