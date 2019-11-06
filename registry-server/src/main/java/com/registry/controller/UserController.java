@@ -176,8 +176,7 @@ public class UserController {
                     value ="토큰",
                     required = true
             )
-            @RequestHeader(name = "Authorization") String authorization,
-            @RequestBody UserDto.EDIT user
+            @RequestHeader(name = "Authorization") String authorization
     ) throws Exception{
         userService.deleteUser(SecurityUtil.getUser());
 
