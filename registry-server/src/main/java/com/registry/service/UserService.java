@@ -210,8 +210,6 @@ public class UserService extends AbstractService {
             if(user.getEmail() != null) preUser.setEmail(user.getEmail());
             if(user.getEnabled() != null) preUser.setEnabled(user.getEnabled());
 
-            preUser.setUpdatedBy(user);
-
             userRepo.save(preUser);
 
             user = preUser;

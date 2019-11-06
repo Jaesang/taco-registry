@@ -159,6 +159,32 @@ public class UserController {
     }
 
     /**
+     * User 삭제
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @DeleteMapping(Path.USER)
+    @ApiOperation(
+            value = "delete user",
+            notes = "user 삭제"
+    )
+    @ResponseBody
+    public Object deleteUser(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @RequestBody UserDto.EDIT user
+    ) throws Exception{
+        userService.deleteUser(SecurityUtil.getUser());
+
+        return true;
+    }
+
+    /**
      * password verify
      * @return
      * @throws Exception
