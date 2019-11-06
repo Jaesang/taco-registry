@@ -107,7 +107,9 @@ export class UserSettingComponent extends PageComponent implements OnInit {
         this.loaderService.show.next(true);
 
         this.userService.deleteUser().then(result => {
-          this.router.navigate(['login']);
+          this.userService.logout().then( () => {
+            this.router.navigate(['login']);
+          });
 
           Alert.success(CommonConstant.MESSAGE.DELETED);
 
