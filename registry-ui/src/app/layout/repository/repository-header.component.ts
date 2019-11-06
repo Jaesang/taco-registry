@@ -9,6 +9,8 @@ import {BuildHistoryService} from "./build-history/build-history.service";
 import {Repository} from "./repository.value";
 import {CommonConstant} from "../../common/constant/common-constant";
 import {Alert} from "../../common/utils/alert-util";
+import {UserService} from "../user/user.service";
+import {User} from "../user/user.value";
 
 @Component({
   selector: '[repository-header]',
@@ -28,9 +30,11 @@ export class RepositoryHeaderComponent extends AbstractComponent implements OnIn
 
   public showBuildPopup: boolean = false;
   public showCopyAsPopup: boolean = false;
+  public showCopyAsButton: boolean = false;
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
+              private userService: UserService,
               private repositoryService: RepositoryService,
               private fileService: FileService,
               private dockerService: DockerService,
@@ -54,7 +58,12 @@ export class RepositoryHeaderComponent extends AbstractComponent implements OnIn
           }
 
           this.repo = this.repositoryService.repository;
-
+          console.log(`${this.userService.user.superuser} || ${this.repo.canWrite} ||  ${this.repo.canAdmin}`);
+          if (this.userService.user.superuser || this.repo.canWrite ||  this.repo.canAdmin) {
+            this.showCopyAsButton = true;
+          } else {
+            this.showCopyAsButton = false;
+          }
         })
     );
 

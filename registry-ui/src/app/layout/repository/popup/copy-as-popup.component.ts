@@ -24,6 +24,7 @@ import {Validate} from "../../../common/utils/validate-util";
 import {CodemirrorComponent} from "../../../common/component/codemirror/codemirror.component";
 import {DockerService} from "../../../common/service/docker.service";
 import {Build} from "../build-history/build-history.value";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: '[copy-as-popup]',
@@ -225,7 +226,11 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
 
       if (list.length) {
         let dockerfile = list[0].dockerfile;
-        this.editor.setText(dockerfile ? atob(dockerfile) : "");
+        if (dockerfile) {
+          this.editor.setText(dockerfile ? atob(dockerfile) : "");
+        } else {
+          this.editor.setText(`FROM ${this.userService.user.registryUrl}/${this.baseRepo.namespace}/${this.baseRepo.name}`);
+        }
         this.loaderService.show.next(false);
       } else {
         this.loaderService.show.next(false);

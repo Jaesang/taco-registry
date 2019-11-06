@@ -38,6 +38,7 @@ public class BuildDto {
         public String resourceKey;
         public String dockerfilePath;
         public String dockerfile;
+        public String gitPath;
         public String[] tags = {"latest"};
     }
 

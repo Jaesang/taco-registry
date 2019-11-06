@@ -15,7 +15,7 @@
 
       <div class="buttons">
         <button type="button" class="btn-sub-action type-box" (click)="startNewBuildClick()" *ngIf="mine">Start New Build</button>
-        <button type="button" class="btn-action type-box" (click)="copyAsClick()">Copy As</button>
+        <button type="button" class="btn-action type-box" (click)="copyAsClick()" *ngIf="showCopyAsButton">Copy As</button>
       </div>
     </div>
   </div>
