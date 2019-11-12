@@ -194,6 +194,19 @@
             }
         }
     }
+
+    .minio-block {
+        margin:20px 0 0;
+
+        .link-minio {
+            display:inline-block;
+            height:30px;
+            line-height:30px;
+            font-size:13px;
+            color:#90969f;
+            text-decoration:underline;
+        }
+    }
 }
 
 /***************************************************************************************

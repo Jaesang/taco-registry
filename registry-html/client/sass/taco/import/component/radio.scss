@@ -83,6 +83,9 @@
                 &.type-custom:before {
                     @include get-sprite($icon_radio_custom);
                 }
+                &.type-minio:before {
+                    @include get-sprite($icon_radio_minio);
+                }
             }
         }
 

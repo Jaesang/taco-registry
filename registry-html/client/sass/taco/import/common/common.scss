@@ -97,15 +97,19 @@
 
 @mixin placeholder($color){
 	&::-webkit-input-placeholder {
+		font-family:sans-serif;
 		color:$color !important; font-weight:normal !important;
 	}
 	&::-moz-placeholder {
+		font-family:sans-serif;
 		color:$color !important; font-weight:normal !important;
 	}
 	&:-ms-input-placeholder {
+		font-family:sans-serif;
 		color:$color !important; font-weight:normal !important;
 	}
 	&:-moz-placeholder {
+		font-family:sans-serif;
 		color:$color !important; font-weight:normal !important;
 	}
 }
