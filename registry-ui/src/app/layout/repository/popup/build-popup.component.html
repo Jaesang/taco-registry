@@ -34,6 +34,17 @@
                 </label>
               </div>
             </li>
+            <li *ngIf="userService.user.minioEnabled">
+              <div class="component-radio">
+                <input type="radio" id="radio9" class="input-radio" [value]="CreateType.MINIO" [(ngModel)]="createType" (change)="changeCreateType(2)">
+                <label for="radio9" class="label">
+                  <span class="icon-radio"></span>
+                  <span class="txt-label type-minio">
+                    From Private Storage(MinIO)
+                  </span>
+                </label>
+              </div>
+            </li>
           </ul>
           <!-- //Initialize Repository -->
 
@@ -60,17 +71,27 @@
             </div>
           </div>
 
+          <div class="minio-block" *ngIf="createType == CreateType.MINIO">
+            <a [href]="minioUrl" class="link-minio">Link MinIO Url</a>
+            <div class="component-input">
+              <div class="input-area">
+                <input type="text" class="input-text" placeholder="Enter Path" [(ngModel)]="minioPath">
+                <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="minioPath = ''"></a>
+              </div>
+            </div>
+          </div>
+
           <div class="option-block">
             <div class="component-radio">
-              <input type="radio" id="build-popup-radio11" name="build-popup-cache-radio" class="input-radio" [value]="false" [(ngModel)]="noCache">
-              <label for="build-popup-radio11" class="label">
+              <input type="radio" [id]="'build-popup-radio11' + uuid" [name]="'build-popup-cache-radio' + uuid" class="input-radio" [value]="false" [(ngModel)]="noCache">
+              <label [for]="'build-popup-radio11' + uuid" class="label">
                 <span class="icon-radio"></span>
                 <span class="txt-label">Cache</span>
               </label>
             </div>
             <div class="component-radio">
-              <input type="radio" id="build-popup-radio12" name="build-popup-cache-radio" class="input-radio" [value]="true" [(ngModel)]="noCache">
-              <label for="build-popup-radio12" class="label">
+              <input type="radio" [id]="'build-popup-radio12' + uuid" [name]="'build-popup-cache-radio' + uuid" class="input-radio" [value]="true" [(ngModel)]="noCache">
+              <label [for]="'build-popup-radio12' + uuid" class="label">
                 <span class="icon-radio"></span>
                 <span class="txt-label">No Cache</span>
               </label>

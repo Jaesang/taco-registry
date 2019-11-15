@@ -92,6 +92,18 @@ export class UserService extends AbstractService {
     return this.delete(`${environment.apiUrl}/user`);
   }
 
+  /**
+   * minio enable / disable
+   */
+  public changeMinioEnable(enable: boolean, password: string): Promise<any> {
+    let data = {
+      enable: enable,
+      password: password
+    };
+
+    return this.put(`${environment.apiUrl}/user/minio`, data);
+  }
+
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Protected Method
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/

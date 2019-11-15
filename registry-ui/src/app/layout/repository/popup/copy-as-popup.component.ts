@@ -1,12 +1,12 @@
 import {
   Component,
-  OnInit,
   ElementRef,
-  Injector,
-  OnDestroy,
-  Input,
-  Output,
   EventEmitter,
+  Injector,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
   ViewChild
 } from "@angular/core";
 import {RepositoryService} from "../repository.service";
@@ -24,13 +24,15 @@ import {Validate} from "../../../common/utils/validate-util";
 import {CodemirrorComponent} from "../../../common/component/codemirror/codemirror.component";
 import {DockerService} from "../../../common/service/docker.service";
 import {Build} from "../build-history/build-history.value";
-import {environment} from "../../../../environments/environment";
+import CreateType = Build.CreateType;
 
 @Component({
   selector: '[copy-as-popup]',
   templateUrl: 'copy-as-popup.component.html'
 })
 export class CopyAsPopupComponent extends AbstractComponent implements OnInit, OnDestroy {
+
+  public CreateType = CreateType;
 
   @ViewChild(SelectBoxComponent)
   private selectBox: SelectBoxComponent;
@@ -58,6 +60,9 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
   public errorRepoName: boolean;
 
   public dockerFileContent: string;
+
+  public createType: CreateType;
+  public minioPath: string;
 
   /**
    * 에디터 옵션
@@ -154,7 +159,11 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
       build.dockerfile = this.dockerFileContent;
       build.noCache = true;
 
-      this.buildService.build(this.repo.namespace, this.repo.name, build).then(result => {
+      if (this.createType == CreateType.MINIO) {
+        build.minioPath = this.minioPath;
+      }
+
+      this.buildService.build(this.repo.namespace, this.repo.name, build, true).then(result => {
         this.close();
         this.router.navigate([`app/image/${this.repo.namespace}/${this.repo.name}/build`]);
 
@@ -185,7 +194,11 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
       return false;
     }
 
-    if (!this.dockerService.validDockerFile(this.editor.value)) {
+    if (this.createType != CreateType.MINIO && !this.dockerService.validDockerFile(this.editor.value)) {
+      return false;
+    }
+
+    if (this.createType == CreateType.MINIO && Validate.isEmpty(this.minioPath)) {
       return false;
     }
 
@@ -216,20 +229,25 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
     this.repositoryService.getBuildHistory(this.baseRepo.namespace, this.baseRepo.name).then(result => {
       // complete 된 것 중에
       let list = result.builds.filter(value => {
-        return value.phase == Build.Phase.complete && value.dockerfile;
+        return value.phase == Build.Phase.complete;
       });
 
       // 최근 순 정렬
-      list = result.builds.sort((a: Build.Entity, b: Build.Entity) => {
+      list = list.sort((a: Build.Entity, b: Build.Entity) => {
         return new Date(a.started).getTime() > new Date(a.started).getTime() ? -1 : new Date(a.started).getTime() < new Date(a.started).getTime() ? 1 : 0;
       });
 
       if (list.length) {
-        let dockerfile = list[0].dockerfile;
-        if (dockerfile) {
-          this.editor.setText(dockerfile ? atob(dockerfile) : "");
+        let build = list[0];
+        if (build.dockerfile) {
+          this.editor.setText(build.dockerfile ? atob(build.dockerfile) : "");
+          this.createType = CreateType.DOCKERFILE;
+        } else if (this.userService.user.minioEnabled) {
+          this.minioPath = build.minioPath;
+          this.createType = CreateType.MINIO;
         } else {
           this.editor.setText(`FROM ${this.userService.user.registryUrl}/${this.baseRepo.namespace}/${this.baseRepo.name}`);
+          this.createType = CreateType.GIT;
         }
         this.loaderService.show.next(false);
       } else {

@@ -51,6 +51,9 @@ public class UserService extends AbstractService {
     @Autowired
     private OrganizationService organizationService;
 
+    @Autowired
+    private ExternalAPIService externalService;
+
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -282,6 +285,29 @@ public class UserService extends AbstractService {
         role.setIsStarred(starred);
 
         roleRepo.save(role);
+    }
+
+    /**
+     * Minio 사용 변경
+     * @throws Exception
+     */
+    public void updateMinio(boolean enable, String password) throws Exception {
+        logger.info("updateMinio enable : {}", enable);
+
+        this.passwordVerify(password);
+
+        Map<String, Object> result = this.externalService.updateMinio(enable, password);
+
+        User user = userRepo.getUser(SecurityUtil.getUser());
+        user.setMinioEnabled(enable);
+        if (enable) {
+            user.setMinioHost(result.get("host").toString());
+            user.setMinioHost(result.get("port").toString());
+        } else {
+            user.setMinioHost(null);
+            user.setMinioHost(null);
+        }
+        userRepo.save(user);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

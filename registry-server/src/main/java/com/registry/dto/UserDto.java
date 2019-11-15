@@ -35,6 +35,9 @@ public class UserDto {
         public Boolean enabled;
         public Boolean superuser;
         public String registryUrl;
+        public Boolean minioEnabled;
+        public String minioHost;
+        public String minioPort;
         public List<Role> roles;
         public List<OrganizationDto.VIEW> organizations;
     }

@@ -58,6 +58,18 @@ public class User extends AbstractEntity {
 	@Column(name = "super_user", nullable=false)
 	private Boolean superuser;
 
+	/** minio enabled */
+	@Column(name = "minio_enabled", columnDefinition = "boolean default false", nullable=false)
+	private Boolean minioEnabled;
+
+	/** minio host */
+	@Column(name = "minio_host", columnDefinition="varchar(255)")
+	private String minioHost;
+
+	/** minio port */
+	@Column(name = "minio_port")
+	private Long minioPort;
+
 	/** 유저 Role 목록 */
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -146,6 +158,30 @@ public class User extends AbstractEntity {
 
 	public void setSuperuser(Boolean superuser) {
 		this.superuser = superuser;
+	}
+
+	public Boolean getMinioEnabled() {
+		return minioEnabled;
+	}
+
+	public void setMinioEnabled(Boolean minioEnabled) {
+		this.minioEnabled = minioEnabled;
+	}
+
+	public String getMinioHost() {
+		return minioHost;
+	}
+
+	public void setMinioHost(String minioHost) {
+		this.minioHost = minioHost;
+	}
+
+	public Long getMinioPort() {
+		return minioPort;
+	}
+
+	public void setMinioPort(Long minioPort) {
+		this.minioPort = minioPort;
 	}
 
 	public List<Role> getRole() {

@@ -10,6 +10,17 @@ export namespace User {
     public email: string;
     public superuser: boolean;
     public registryUrl: string;
+    public minioEnabled: boolean;
+    public minioHost: string;
+    public minioPort: string;
+
+    public get minioUrl() {
+      if (this.minioEnabled) {
+        return `http://${this.minioHost}:${this.minioPort}/minio`;
+      }
+
+      return null;
+    }
   }
 
   export class List {

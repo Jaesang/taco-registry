@@ -14,6 +14,7 @@ import {Alert} from "../../../common/utils/alert-util";
 import {Build} from "../build-history/build-history.value";
 import {Validate} from "../../../common/utils/validate-util";
 import {Utils} from "../../../common/utils/utils";
+import {UserService} from "../../user/user.service";
 
 @Component({
   selector: '[build-popup]',
@@ -45,12 +46,16 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
 
   public noCache: boolean = false;
 
+  public minioUrl: string;
+  public minioPath: string;
+
   public uuid: string = Utils.Generate.UUID();
 
   private dockerFileContent: string;
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
+              private userService: UserService,
               private repositoryService: RepositoryService,
               private organizationService: OrganizationService,
               private dockerService: DockerService,
@@ -58,6 +63,8 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
               private buildService: BuildHistoryService) {
 
     super(elementRef, injector);
+
+    this.minioUrl = this.userService.user.minioUrl;
   }
 
   ngOnInit() {
@@ -73,6 +80,7 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
         this.gitPath = '';
         this.gitUsername = '';
         this.gitPassword = '';
+        this.minioPath = '';
         this.noCache = false;
       }
     }
@@ -97,8 +105,10 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
 
     if (index == 0) {
       this.createType = this.CreateType.DOCKERFILE;
-    } else {
+    } else if (index == 1) {
       this.createType = this.CreateType.GIT;
+    } else {
+      this.createType = this.CreateType.MINIO;
     }
   }
 
@@ -127,10 +137,12 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
     let build: Build.Entity = new Build.Entity();
     if (this.createType == this.CreateType.DOCKERFILE) {
       build.dockerfile = this.dockerFileContent;
-    } else {
+    } else if (this.createType == this.CreateType.GIT) {
       build.gitPath = this.gitPath;
       build.gitUsername = this.gitUsername;
       build.gitPassword = this.gitPassword;
+    } else {
+      build.minioPath = this.minioPath;
     }
     build.noCache = this.noCache;
 
@@ -167,6 +179,10 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
 
       if ((!Validate.isEmpty(this.gitUsername) && Validate.isEmpty(this.gitPassword)) ||
         (Validate.isEmpty(this.gitUsername) && !Validate.isEmpty(this.gitPassword))) {
+        return false;
+      }
+    } else if (this.createType == this.CreateType.MINIO) {
+      if (Validate.isEmpty(this.minioPath)) {
         return false;
       }
     }

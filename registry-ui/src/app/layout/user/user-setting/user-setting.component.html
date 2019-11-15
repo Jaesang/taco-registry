@@ -53,6 +53,32 @@
   </table>
   <!-- //Form Setting -->
 
+  <!-- Title -->
+  <div class="section-title">
+    <h2 class="txt-title">Private Storage</h2>
+  </div>
+  <!-- //Title -->
+
+  <!-- Form Setting -->
+  <table class="form-setting">
+    <colgroup>
+      <col width="150" />
+      <col width="420" />
+    </colgroup>
+    <tbody>
+    <tr>
+      <th>
+        <label class="txt-label">{{ user.minioEnabled ? 'Enabled' : 'Disabled' }}</label>
+      </th>
+      <td>
+        <button type="button" class="btn-sub" (click)="minioEnableChange()">{{ user.minioEnabled ? 'Disable' : 'Enable' }}</button>
+        <span class="txt-desc" *ngIf="user.minioEnabled">{{ user.minioUrl }}</span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <!-- //Form Setting -->
+
   <!-- Button -->
   <div class="section-button">
     <button type="button" class="btn-sub-action" (click)="deleteAccountClick()">Delete Account</button>
@@ -125,6 +151,59 @@
         <div class="button-block">
           <button type="button" class="btn-basic type-small" (click)="showChangePasswordPopup = false">Cancel</button>
           <button type="button" class="btn-action type-small" (click)="changePasswordClick()">Change Password</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- //Layer Popup -->
+
+<!-- Layer Popup -->
+<div class="layout-popup" [hidden]="!showConfirmPasswordPopup">
+  <div class="layer-popup">
+    <div class="section-popup">
+
+      <div class="popup-area">
+        <a href="javascript:;" class="btn-close" aria-label="Popup Close" (click)="showConfirmPasswordPopup = false"></a>
+        <h1 class="txt-title">MinIO Enable</h1>
+
+        <!-- Popup 비밀번호 변경 -->
+        <div class="popup-change-password">
+          <div class="form-delete">
+            <label class="txt-label">This MinIO is currently disabled. Are you sure you want to make this MinIO enable?</label>
+            <br>
+          </div>
+
+          <table class="form-password">
+            <colgroup>
+              <col width="150" />
+              <col width="*" />
+            </colgroup>
+            <tbody>
+            <tr>
+              <th class="align-top">
+                <label class="txt-label">Confirm Password</label>
+              </th>
+              <td>
+                <div class="component-input">
+                  <div class="input-area">
+                    <input type="password" class="input-text" placeholder="Enter Current Password" [(ngModel)]="currentPassword">
+                    <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="currentPassword = ''" tabIndex="-1"></a>
+                  </div>
+                  <span class="txt-error" tabIndex="-1">Error Message.</span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- //Popup 비밀번호 변경 -->
+
+        <!-- Button -->
+        <div class="button-block">
+          <button type="button" class="btn-basic type-small" (click)="showConfirmPasswordPopup = false">Cancel</button>
+          <button type="button" class="btn-action type-small" (click)="confirmPasswordClick()">Enable</button>
         </div>
       </div>
 

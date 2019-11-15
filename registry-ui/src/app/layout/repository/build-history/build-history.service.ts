@@ -47,8 +47,8 @@ export class BuildHistoryService extends AbstractService {
    * @param fileId
    * @returns {Promise<any>}
    */
-	public build(namespace: string, repo: string, build: Build.Entity): Promise<Build.Entity> {
-    return this.post(`${environment.apiUrl}/image/${namespace}/${repo}/build/`, build);
+	public build(namespace: string, repo: string, build: Build.Entity, copyAs: boolean = false): Promise<Build.Entity> {
+    return this.post(`${environment.apiUrl}/image/${namespace}/${repo}/build/?copyAs=${copyAs}`, build);
   }
 
   /**

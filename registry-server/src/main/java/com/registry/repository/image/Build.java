@@ -98,6 +98,10 @@ public class Build extends AbstractEntity {
 	@Column(name = "git_password", columnDefinition="varchar(255)")
 	private String gitPassword;
 
+	/** minio path */
+	@Column(name = "minio_path", columnDefinition="varchar(255)")
+	private String minioPath;
+
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="image_id", nullable = false)
@@ -256,6 +260,14 @@ public class Build extends AbstractEntity {
 
 	public void setGitPassword(String gitPassword) {
 		this.gitPassword = gitPassword;
+	}
+
+	public String getMinioPath() {
+		return minioPath;
+	}
+
+	public void setMinioPath(String minioPath) {
+		this.minioPath = minioPath;
 	}
 
 	public Image getImage() {

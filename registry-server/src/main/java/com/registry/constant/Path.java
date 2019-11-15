@@ -67,6 +67,9 @@ public class Path {
     // (DELETE) delete starred
     public static final String USER_STARRED_DETAIL          = API + "/user/starred/{namespace}/{imageName}" ;
 
+    // (PUT) change minio
+    public static final String USER_MINIO    	            = API + "/user/minio" ;
+
     // logs
     // (GET) log 목록
     public static final String USER_LOGS                    = USER + "/logs";

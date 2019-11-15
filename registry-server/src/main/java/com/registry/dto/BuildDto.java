@@ -14,6 +14,7 @@ public class BuildDto {
         public String gitPath;
         public String gitUsername;
         public String gitPassword;
+        public String minioPath;
         public boolean noCache;
     }
 

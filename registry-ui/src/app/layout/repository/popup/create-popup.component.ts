@@ -53,6 +53,9 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
 
   public noCache: boolean = false;
 
+  public minioUrl: string;
+  public minioPath: string;
+
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
               private repositoryService: RepositoryService,
@@ -62,6 +65,8 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
               private buildService: BuildHistoryService) {
 
     super(elementRef, injector);
+
+    this.minioUrl = this.userService.user.minioUrl;
   }
 
   ngOnInit() {
@@ -80,6 +85,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
         this.gitPath = '';
         this.gitUsername = '';
         this.gitPassword = '';
+        this.minioPath = '';
         this.noCache = false;
         this.initSelectList();
       }
@@ -125,8 +131,10 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
       this.createType = this.CreateType.DEFAULT;
     } else if (index == 1) {
       this.createType = this.CreateType.DOCKERFILE;
-    } else {
+    } else if (index == 2) {
       this.createType = this.CreateType.GIT;
+    } else {
+      this.createType = this.CreateType.MINIO;
     }
   }
 
@@ -162,10 +170,12 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
         let build: Build.Entity = new Build.Entity();
         if (this.createType == this.CreateType.DOCKERFILE) {
           build.dockerfile = this.dockerFileContent;
-        } else {
+        } else if (this.createType == this.CreateType.GIT) {
           build.gitPath = this.gitPath;
           build.gitUsername = this.gitUsername;
           build.gitPassword = this.gitPassword;
+        } else {
+          build.minioPath = this.minioPath;
         }
         build.noCache = this.noCache;
 
@@ -214,6 +224,10 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
 
       if ((!Validate.isEmpty(this.gitUsername) && Validate.isEmpty(this.gitPassword)) ||
         (Validate.isEmpty(this.gitUsername) && !Validate.isEmpty(this.gitPassword))) {
+        return false;
+      }
+    } else if (this.createType == this.CreateType.MINIO) {
+      if (Validate.isEmpty(this.minioPath)) {
         return false;
       }
     }

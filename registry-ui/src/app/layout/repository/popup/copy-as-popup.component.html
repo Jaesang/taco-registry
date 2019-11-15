@@ -30,7 +30,7 @@
                   </div>
                 </td>
               </tr>
-              <tr>
+              <tr [hidden]="createType == CreateType.MINIO">
                 <th>
                   <label class="txt-label">Edit Image</label>
                 </th>
@@ -38,6 +38,20 @@
                   <div class="editor-area">
                     <codemirror #codemirror [config]="config"></codemirror>
                   </div>
+                </td>
+              </tr>
+              <tr *ngIf="createType == CreateType.MINIO">
+                <th>
+                  <label class="txt-label">Private Storage</label>
+                </th>
+                <td>
+                  <div class="component-input">
+                    <div class="input-area">
+                      <input type="text" class="input-text" placeholder="Enter Path" [(ngModel)]="minioPath">
+                      <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="minioPath = ''"></a>
+                    </div>
+                  </div>
+                  <p class="txt-desc">Once Created, all files will be copied.</p>
                 </td>
               </tr>
               <tr>

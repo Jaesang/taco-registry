@@ -128,7 +128,7 @@ public class BuildService extends AbstractService {
     public Build createBuild(String namespace, String name, BuildDto.CREATE buildDto) throws Exception {
         logger.info("createBuild namespace : {}", namespace);
         logger.info("createBuild name : {}", name);
-        logger.info("createBuild build type : {}", buildDto.dockerfile != null ? "dockerfile" : "git");
+        logger.info("createBuild build type : {}", buildDto.dockerfile != null ? "dockerfile" : (buildDto.gitPath != null ? "git" : "minio"));
 
         // 권한 체크
         imageService.checkAuth(namespace, name);
@@ -154,6 +154,7 @@ public class BuildService extends AbstractService {
         }
         build.setGitPath(buildDto.gitPath);
         build.setGitUsername(buildDto.gitUsername);
+        build.setMinioPath(buildDto.minioPath);
 
         build = buildRepo.save(build);
 

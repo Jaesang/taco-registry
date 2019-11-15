@@ -45,7 +45,8 @@ export namespace Build {
   export enum CreateType {
     DEFAULT,
     DOCKERFILE,
-    GIT
+    GIT,
+    MINIO
   }
 
 	export class Entity {
@@ -67,6 +68,7 @@ export namespace Build {
     public id: string;
     public dockerfilePath: string;
     public noCache: boolean;
+    public minioPath: string;
 
     public dockerfile: string;
     public gitPath: string;

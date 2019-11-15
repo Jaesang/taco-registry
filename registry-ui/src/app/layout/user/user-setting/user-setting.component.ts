@@ -14,6 +14,7 @@ import {RepositoryService} from "../../repository/repository.service";
 export class UserSettingComponent extends PageComponent implements OnInit {
 
   public showChangePasswordPopup: boolean = false;
+  public showConfirmPasswordPopup: boolean = false;
 
   public user: User.Entity;
 
@@ -86,6 +87,25 @@ export class UserSettingComponent extends PageComponent implements OnInit {
   }
 
   /**
+   * 비민번호 확인 팝업 enable 클릭
+   */
+  public confirmPasswordClick() {
+    this.loaderService.show.next(true);
+
+    this.userService.changeMinioEnable(true, this.currentPassword).then(result => {
+
+      Alert.success(CommonConstant.MESSAGE.SUCCESS);
+
+      this.loaderService.show.next(false);
+    }).catch(reason => {
+      let body = JSON.parse(reason._body);
+      Alert.error(body.message);
+
+      this.loaderService.show.next(false);
+    });
+  }
+
+  /**
    * repo 클릭
    */
   public repoClick() {
@@ -124,6 +144,46 @@ export class UserSettingComponent extends PageComponent implements OnInit {
       'Cancel',
       'Delete Account'
     );
+  }
+
+  /**
+   * minio enable change
+   */
+  public minioEnableChange() {
+    let current = this.user.minioEnabled ? 'Enabled' : 'Disabled';
+    let after = this.user.minioEnabled ? 'Disable' : 'Enable';
+
+    if (this.user.minioEnabled) {
+      this.confirmPopupService.show(
+        `MinIO ${after}`,
+        `This MinIO is currently ${current}. Are you sure you want to make this MinIO ${after}?`,
+        null,
+        () => {
+
+        },
+        () => {
+          this.loaderService.show.next(true);
+
+          this.userService.changeMinioEnable(false, null).then(result => {
+
+            Alert.success(CommonConstant.MESSAGE.SUCCESS);
+
+            this.loaderService.show.next(false);
+          }).catch(reason => {
+            let body = JSON.parse(reason._body);
+            Alert.error(body.message);
+
+            this.loaderService.show.next(false);
+          });
+        },
+        'Cancel',
+        after
+      );
+    } else {
+      this.currentPassword = '';
+      this.showConfirmPasswordPopup = true;
+    }
+
   }
 
 }

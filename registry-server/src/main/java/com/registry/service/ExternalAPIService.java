@@ -8,6 +8,7 @@ import com.registry.repository.image.*;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.user.*;
 import com.registry.util.RestApiUtil;
+import com.registry.util.SecurityUtil;
 import ma.glasnost.orika.MapperFacade;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections.map.LinkedMap;
@@ -260,7 +261,7 @@ public class ExternalAPIService extends AbstractService {
      * @param build
      * @return
      */
-    public Map<String, Object> createBuild(Build build, boolean noCache) {
+    public Map<String, Object> createBuild(Build build, boolean noCache, boolean copyAs) {
         logger.info("createBuild");
         logger.info("namespace : {}", build.getImage().getNamespace());
         logger.info("name : {}", build.getImage().getName());
@@ -275,11 +276,14 @@ public class ExternalAPIService extends AbstractService {
         if (build.getDockerfile() != null) {
             params.put("contents", build.getDockerfile());
             url = MessageFormat.format("{0}/v1/docker/build/file", this.getBuilderUri().toString());
-        } else {
+        } else if (build.getGitPath() != null) {
             params.put("gitRepo", build.getGitPath());
             params.put("userId", build.getGitUsername());
             params.put("userPw", build.getGitPassword());
             url = MessageFormat.format("{0}/v1/docker/build/git", this.getBuilderUri().toString());
+        } else {
+            params.put("minioPath", build.getMinioPath());
+            url = MessageFormat.format("{0}/v1/docker/build/minio", this.getBuilderUri().toString());
         }
 
         Map<String, Object> result = new HashedMap();
@@ -376,6 +380,46 @@ public class ExternalAPIService extends AbstractService {
             result = (LinkedHashMap) restApiUtil.excute(
                     MessageFormat.format("{0}/v1/registry/repositories/{1}/{2}", this.getBuilderUri().toString(), image.getNamespace(), image.getName()),
                     HttpMethod.DELETE, null, Object.class);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new BadRequestException(e.getMessage());
+        }
+
+        if (!"SUCCESS".equals(result.get("code"))) {
+            throw new BadRequestException("error");
+        }
+
+        return (Map<String, Object>) result.get("data");
+    }
+
+    /**
+     * update minio
+     * @return
+     */
+    public Map<String, Object> updateMinio(Boolean enable, String password) {
+        logger.info("updateMinio enable : {}", enable);
+
+        Map<String, Object> result = new HashedMap();
+        try {
+            Map<String, Object> params = new HashedMap();
+            params.put("userId", SecurityUtil.getUser());
+
+            if (enable) {
+                byte[] targetBytes;
+                byte[] encodedBytes;
+                Base64.Encoder encoder = Base64.getEncoder();
+                targetBytes = password.getBytes();
+                encodedBytes = encoder.encode(targetBytes);
+                params.put("userPw", new String(encodedBytes));
+
+                result = (LinkedHashMap) restApiUtil.excute(
+                        MessageFormat.format("{0}/v1/minio", this.getBuilderUri().toString()),
+                        HttpMethod.POST, params, Object.class);
+            } else {
+                result = (LinkedHashMap) restApiUtil.excute(
+                        MessageFormat.format("{0}/v1/minio", this.getBuilderUri().toString()),
+                        HttpMethod.DELETE, params, Object.class);
+            }
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw new BadRequestException(e.getMessage());

@@ -267,6 +267,32 @@ public class UserController {
     }
 
     /**
+     * change minio enable
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PostMapping(Path.USER_MINIO)
+    @ApiOperation(
+            value = "change minio enable",
+            notes = "Minio 사용 변경"
+    )
+    @ResponseBody
+    public Object addStarred(
+            @ApiParam(
+                    defaultValue="bearer ",
+                    value ="토큰",
+                    required = true
+            )
+            @RequestHeader(name = "Authorization") String authorization,
+            @RequestParam(name = "enable") Boolean enable,
+            @RequestParam(name = "password", required = false) String password
+    ) throws Exception{
+        userService.updateMinio(enable, password);
+        return true;
+    }
+
+    /**
      * User logs
      * @return
      * @throws Exception

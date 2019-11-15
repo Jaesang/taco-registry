@@ -140,6 +140,11 @@ public class BuildController {
             )
             @PathVariable("name") String name,
             @ApiParam(
+                    name = "copyAs",
+                    required = false
+            )
+            @RequestParam(value = "copyAs", required = false) boolean copyAs,
+            @ApiParam(
                     name = "build"
             )
             @RequestBody BuildDto.CREATE buildDto
@@ -150,7 +155,7 @@ public class BuildController {
         Build build = buildService.createBuild(namespace, name, buildDto);
 
         // builder build 요청
-        externalService.createBuild(build, buildDto.noCache);
+        externalService.createBuild(build, buildDto.noCache, copyAs);
 
         return build;
     }
@@ -231,7 +236,7 @@ public class BuildController {
         return true;
     }
 
-    /**d
+    /**
      * Build log 조회
      * @return
      * @throws Exception
