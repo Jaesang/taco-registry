@@ -285,9 +285,11 @@ public class UserController {
                     required = true
             )
             @RequestHeader(name = "Authorization") String authorization,
-            @RequestParam(name = "enable") Boolean enable,
-            @RequestParam(name = "password", required = false) String password
+            @RequestBody Map<String, Object> body
     ) throws Exception{
+        Boolean enable = (Boolean) body.get("enable");
+        String password = (String) body.get("password");
+
         userService.updateMinio(enable, password);
         return true;
     }
