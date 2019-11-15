@@ -55,7 +55,7 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
-              private userService: UserService,
+              public userService: UserService,
               private repositoryService: RepositoryService,
               private organizationService: OrganizationService,
               private dockerService: DockerService,

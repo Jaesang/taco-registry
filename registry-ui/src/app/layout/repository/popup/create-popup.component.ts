@@ -59,7 +59,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
               private repositoryService: RepositoryService,
-              private userService: UserService,
+              public userService: UserService,
               private dockerService: DockerService,
               private fileService: FileService,
               private buildService: BuildHistoryService) {
