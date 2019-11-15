@@ -301,11 +301,16 @@ public class UserService extends AbstractService {
         User user = userRepo.getUser(SecurityUtil.getUser());
         user.setMinioEnabled(enable);
         if (enable) {
-            user.setMinioHost(result.get("domain").toString());
-            user.setMinioHost(result.get("port").toString());
+            String domain = result.get("domain").toString();
+            Long port = Long.parseLong(result.get("port").toString());
+            logger.info("updateMinio domain : {}", domain);
+            logger.info("updateMinio port : {}", port);
+            
+            user.setMinioHost(domain);
+            user.setMinioPort(port);
         } else {
             user.setMinioHost(null);
-            user.setMinioHost(null);
+            user.setMinioPort(null);
         }
         userRepo.save(user);
     }
