@@ -58,7 +58,7 @@ export class UserSettingComponent extends PageComponent implements OnInit {
    * 패스워드 변경 클릭
    */
   public changePasswordClick() {
-    if (this.newPassword != this.newPasswordConfirm) {
+    if (this.newPassword != this.newPasswordConfirm || this.newPassword.length < 8) {
       return;
     }
 

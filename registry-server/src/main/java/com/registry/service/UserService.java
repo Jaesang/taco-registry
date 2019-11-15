@@ -340,9 +340,9 @@ public class UserService extends AbstractService {
     private String passwordGenerate() {
         // 6 digit
         Random generator = new Random();
-        int i = generator.nextInt(1000000) % 1000000;
+        int i = generator.nextInt(100000000) % 100000000;
 
-        DecimalFormat f = new DecimalFormat("000000");
+        DecimalFormat f = new DecimalFormat("00000000");
         return f.format(i);
     }
 

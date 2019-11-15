@@ -272,7 +272,7 @@ public class UserController {
      * @throws Exception
      */
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @PostMapping(Path.USER_MINIO)
+    @PutMapping(Path.USER_MINIO)
     @ApiOperation(
             value = "change minio enable",
             notes = "Minio 사용 변경"

@@ -266,9 +266,11 @@ export class UserListComponent extends PageComponent implements OnInit, OnDestro
     return true;
   }
 
-
   public validateChangePassword() {
-    if (Validate.isEmpty(this.currentSelectedUser.password) || Validate.isEmpty(this.verifyNewPassword) || this.currentSelectedUser.password != this.verifyNewPassword) {
+    if (Validate.isEmpty(this.currentSelectedUser.password) ||
+      Validate.isEmpty(this.verifyNewPassword) ||
+      this.currentSelectedUser.password != this.verifyNewPassword ||
+      this.currentSelectedUser.password.length < 8) {
       return false;
     }
 
