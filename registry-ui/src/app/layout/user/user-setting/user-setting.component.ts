@@ -155,8 +155,8 @@ export class UserSettingComponent extends PageComponent implements OnInit {
 
     if (this.user.minioEnabled) {
       this.confirmPopupService.show(
-        `MinIO ${after}`,
-        `This MinIO is currently ${current}. Are you sure you want to make this MinIO ${after}?`,
+        `Private Storage ${after}`,
+        `This private storage is currently ${current}. Are you sure you want to make this private storage ${after}?`,
         null,
         () => {
 

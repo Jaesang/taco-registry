@@ -301,7 +301,7 @@ public class UserService extends AbstractService {
         User user = userRepo.getUser(SecurityUtil.getUser());
         user.setMinioEnabled(enable);
         if (enable) {
-            user.setMinioHost(result.get("host").toString());
+            user.setMinioHost(result.get("domain").toString());
             user.setMinioHost(result.get("port").toString());
         } else {
             user.setMinioHost(null);
