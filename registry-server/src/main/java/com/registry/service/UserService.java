@@ -296,7 +296,9 @@ public class UserService extends AbstractService {
     public User updateMinio(boolean enable, String password) throws Exception {
         logger.info("updateMinio enable : {}", enable);
 
-        this.passwordVerify(password);
+        if (enable) {
+            this.passwordVerify(password);
+        }
 
         Map<String, Object> result = this.externalService.updateMinio(enable, password);
 
