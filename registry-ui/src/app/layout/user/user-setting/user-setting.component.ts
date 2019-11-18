@@ -6,6 +6,7 @@ import {Alert} from "../../../common/utils/alert-util";
 import {CommonConstant} from "../../../common/constant/common-constant";
 import {ConfirmPopupService} from "../../../common/component/confirm-popup/confirm-popup.service";
 import {RepositoryService} from "../../repository/repository.service";
+import {Validate} from "../../../common/utils/validate-util";
 
 @Component({
   selector: 'user-setting',
@@ -58,7 +59,7 @@ export class UserSettingComponent extends PageComponent implements OnInit {
    * 패스워드 변경 클릭
    */
   public changePasswordClick() {
-    if (this.newPassword != this.newPasswordConfirm || this.newPassword.length < 8) {
+    if (!this.validateChangePassword()) {
       return;
     }
 
@@ -90,6 +91,10 @@ export class UserSettingComponent extends PageComponent implements OnInit {
    * 비민번호 확인 팝업 enable 클릭
    */
   public confirmPasswordClick() {
+    if (!this.validateEnableMinio()) {
+      return;
+    }
+    
     this.loaderService.show.next(true);
 
     this.userService.changeMinioEnable(true, this.currentPassword).then(result => {
@@ -195,6 +200,22 @@ export class UserSettingComponent extends PageComponent implements OnInit {
       this.showConfirmPasswordPopup = true;
     }
 
+  }
+
+  public validateChangePassword() {
+    if (Validate.isEmpty(this.currentPassword) || Validate.isEmpty(this.newPassword) || this.newPassword != this.newPasswordConfirm || this.newPassword.length < 8) {
+      return false;
+    }
+
+    return true;
+  }
+
+  public validateEnableMinio() {
+    if (Validate.isEmpty(this.currentPassword)) {
+      return false;
+    }
+
+    return true;
   }
 
 }

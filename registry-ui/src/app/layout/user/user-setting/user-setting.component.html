@@ -150,7 +150,7 @@
         <!-- Button -->
         <div class="button-block">
           <button type="button" class="btn-basic type-small" (click)="showChangePasswordPopup = false">Cancel</button>
-          <button type="button" class="btn-action type-small" (click)="changePasswordClick()">Change Password</button>
+          <button type="button" class="btn-action type-small" [disabled]="!validateChangePassword()" (click)="changePasswordClick()">Change Password</button>
         </div>
       </div>
 
@@ -203,7 +203,7 @@
         <!-- Button -->
         <div class="button-block">
           <button type="button" class="btn-basic type-small" (click)="showConfirmPasswordPopup = false">Cancel</button>
-          <button type="button" class="btn-action type-small" (click)="confirmPasswordClick()">Enable</button>
+          <button type="button" class="btn-action type-small" [disabled]="!validateEnableMinio()" (click)="confirmPasswordClick()">Enable</button>
         </div>
       </div>
 
