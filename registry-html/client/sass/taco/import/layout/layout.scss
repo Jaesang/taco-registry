@@ -165,12 +165,16 @@ main {
                         @include get-sprite($icon_org_add);
                     }
                 }
+                .divider-line {
+                    margin:4px 0 0;
+                    height:1px;
+                    background-color:#e7e7ea;
+                }
                 .list-org {
                     overflow-y:auto;
                     overflow-x:hidden;
                     max-height:200px;
-                    margin:4px -13px 0;
-                    border-top:1px solid #e7e7ea;
+                    margin:0 -13px 0;
 
                     &:empty {
                         margin:0;
