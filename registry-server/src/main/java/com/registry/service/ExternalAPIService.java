@@ -266,7 +266,7 @@ public class ExternalAPIService extends AbstractService {
         logger.info("namespace : {}", build.getImage().getNamespace());
         logger.info("name : {}", build.getImage().getName());
         logger.info("build id : {}", build.getId());
-        logger.info("sourceBuild id : {}", sourceBuild.getId());
+        logger.info("sourceBuild id : {}", sourceBuild != null ? sourceBuild.getId() : null);
 
         String url;
         Map<String, Object> params = new HashedMap();

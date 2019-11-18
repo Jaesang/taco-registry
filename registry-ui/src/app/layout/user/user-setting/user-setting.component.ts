@@ -176,6 +176,9 @@ export class UserSettingComponent extends PageComponent implements OnInit {
 
             Alert.success(CommonConstant.MESSAGE.SUCCESS);
 
+            this.userService.user = result;
+            this.user = this.userService.user;
+
             this.loaderService.show.next(false);
           }).catch(reason => {
             let body = JSON.parse(reason._body);
