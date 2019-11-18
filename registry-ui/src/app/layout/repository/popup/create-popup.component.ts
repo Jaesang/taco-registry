@@ -149,7 +149,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
   }
 
   public minioLinkClick() {
-    window.open(`http://${this.userService.user.minioHost}:${this.userService.user.minioPort}`);
+    window.open(this.userService.getMinioUrl(this.userService.user));
   }
 
   /**

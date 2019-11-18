@@ -122,7 +122,7 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
   }
 
   public minioLinkClick() {
-    window.open(`http://${this.userService.user.minioHost}:${this.userService.user.minioPort}`);
+    window.open(this.userService.getMinioUrl(this.userService.user));
   }
 
   /**

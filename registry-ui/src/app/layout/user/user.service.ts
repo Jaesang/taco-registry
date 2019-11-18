@@ -104,6 +104,14 @@ export class UserService extends AbstractService {
     return this.put(`${environment.apiUrl}/user/minio`, data);
   }
 
+  public getMinioUrl(user: User.Entity) {
+    if (user.minioEnabled) {
+      return `http://${user.minioHost}:${user.minioPort}/minio`;
+    }
+
+    return null;
+  }
+
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Protected Method
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/

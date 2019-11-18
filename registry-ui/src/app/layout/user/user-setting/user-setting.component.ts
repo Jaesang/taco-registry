@@ -26,7 +26,7 @@ export class UserSettingComponent extends PageComponent implements OnInit {
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
-              private userService: UserService,
+              public userService: UserService,
               private repositoryService: RepositoryService,
               private confirmPopupService: ConfirmPopupService) {
 
