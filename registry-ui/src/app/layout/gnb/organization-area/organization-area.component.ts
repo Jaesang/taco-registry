@@ -13,6 +13,8 @@ export class OrganizationAreaComponent extends AbstractComponent implements OnIn
 
   public showCreateOrgPopup: boolean = false;
 
+  public showDivider: boolean = false;
+
   /**
    * 조직 목록
    */
@@ -28,6 +30,12 @@ export class OrganizationAreaComponent extends AbstractComponent implements OnIn
     const organizationWithinUser = this.userService.user.organizations;
     if (User.isOrganizationsExist(organizationWithinUser)) {
       this.organizations = organizationWithinUser;
+
+      if (this.userService.user.superuser) {
+        this.showDivider = true;
+      } else {
+        this.showDivider = false;
+      }
     }
 
     this.subscriptions.push(
@@ -36,6 +44,12 @@ export class OrganizationAreaComponent extends AbstractComponent implements OnIn
           this.userService.getUser().then(result => {
             this.userService.user = result;
             this.organizations = this.userService.user.organizations;
+
+            if (this.userService.user.superuser && this.organizations && this.organizations.length) {
+              this.showDivider = true;
+            } else {
+              this.showDivider = false;
+            }
             return true;
           });
         }

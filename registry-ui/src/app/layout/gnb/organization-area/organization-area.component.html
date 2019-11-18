@@ -6,6 +6,7 @@
   <!-- Layer -->
   <div class="layer-organization" *ngIf="userService.user.superuser || (organizations && organizations.length)">
     <a href="javascript:;" class="btn-create" (click)="createOrganization()" *ngIf="userService.user.superuser">Create New Organization</a>
+    <div class="divider-line" *ngIf="showDivider"></div>
     <ul class="list-org">
       <li *ngFor="let organization of organizations">
         <a href="javascript:;" class="link-item" (click)="selectOrganization(organization)">{{organization.name}}</a>

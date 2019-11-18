@@ -94,7 +94,7 @@ export class UserSettingComponent extends PageComponent implements OnInit {
     if (!this.validateEnableMinio()) {
       return;
     }
-    
+
     this.loaderService.show.next(true);
 
     this.userService.changeMinioEnable(true, this.currentPassword).then(result => {
