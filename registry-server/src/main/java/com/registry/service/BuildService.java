@@ -7,6 +7,7 @@ import com.registry.repository.image.*;
 import com.registry.repository.organization.Organization;
 import com.registry.repository.usage.Log;
 import com.registry.util.SecurityUtil;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,7 +129,7 @@ public class BuildService extends AbstractService {
     public Build createBuild(String namespace, String name, BuildDto.CREATE buildDto) throws Exception {
         logger.info("createBuild namespace : {}", namespace);
         logger.info("createBuild name : {}", name);
-        logger.info("createBuild build type : {}", buildDto.dockerfile != null ? "dockerfile" : (buildDto.gitPath != null ? "git" : "minio"));
+        logger.info("createBuild build type : {}", !StringUtils.isEmpty(buildDto.dockerfile) ? "dockerfile" : (!StringUtils.isEmpty(buildDto.gitPath) ? "git" : "minio"));
 
         // 권한 체크
         imageService.checkAuth(namespace, name);
@@ -143,11 +144,11 @@ public class BuildService extends AbstractService {
         byte[] encodedBytes;
         Encoder encoder = Base64.getEncoder();
 
-        if (buildDto.dockerfile != null) {
+        if (!StringUtils.isEmpty(buildDto.dockerfile)) {
             targetBytes = buildDto.dockerfile.getBytes();
             encodedBytes = encoder.encode(targetBytes);
             build.setDockerfile(new String(encodedBytes));
-        } else if (buildDto.gitPassword != null) {
+        } else if (!StringUtils.isEmpty(buildDto.gitPassword)) {
             targetBytes = buildDto.gitPassword.getBytes();
             encodedBytes = encoder.encode(targetBytes);
             build.setGitPassword(new String(encodedBytes));

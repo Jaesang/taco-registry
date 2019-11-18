@@ -50,7 +50,7 @@ export class BuildHistoryService extends AbstractService {
 	public build(namespace: string, repo: string, build: Build.Entity, sourceBuild: Build.Entity = null): Promise<Build.Entity> {
 	  let url = `${environment.apiUrl}/image/${namespace}/${repo}/build/`;
 	  if (sourceBuild) {
-	    url += `?srcBuildId=${sourceBuild.id}`;
+	    url += `?sourceBuildId=${sourceBuild.id}`;
     }
     return this.post(url, build);
   }

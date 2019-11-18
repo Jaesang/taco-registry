@@ -12,6 +12,7 @@ import com.registry.util.SecurityUtil;
 import ma.glasnost.orika.MapperFacade;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections.map.LinkedMap;
+import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -274,10 +275,10 @@ public class ExternalAPIService extends AbstractService {
         params.put("name", MessageFormat.format("{0}/{1}", build.getImage().getNamespace(), build.getImage().getName()));
         params.put("push", true);
         params.put("useCache", !noCache);
-        if (build.getDockerfile() != null) {
+        if (!StringUtils.isEmpty(build.getDockerfile())) {
             params.put("contents", build.getDockerfile());
             url = MessageFormat.format("{0}/v1/docker/build/file", this.getBuilderUri().toString());
-        } else if (build.getGitPath() != null) {
+        } else if (!StringUtils.isEmpty(build.getGitPath())) {
             params.put("gitRepo", build.getGitPath());
             params.put("userId", build.getGitUsername());
             params.put("userPw", build.getGitPassword());
@@ -382,7 +383,7 @@ public class ExternalAPIService extends AbstractService {
      * @param image
      * @return
      */
-    public Map<String, Object> deleteImage(Image image) {
+    public void deleteImage(Image image) {
         logger.info("deleteTag");
         logger.info("namespace : {}", image.getNamespace());
         logger.info("name : {}", image.getName());
@@ -397,11 +398,9 @@ public class ExternalAPIService extends AbstractService {
             throw new BadRequestException(e.getMessage());
         }
 
-        if (!"SUCCESS".equals(result.get("code"))) {
-            throw new BadRequestException("error");
-        }
-
-        return (Map<String, Object>) result.get("data");
+//        if (!"SUCCESS".equals(result.get("code"))) {
+//            throw new BadRequestException("error");
+//        }
     }
 
     /**
