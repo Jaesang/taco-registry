@@ -293,7 +293,7 @@ public class UserService extends AbstractService {
      * @throws Exception
      */
     @Transactional
-    public void updateMinio(boolean enable, String password) throws Exception {
+    public User updateMinio(boolean enable, String password) throws Exception {
         logger.info("updateMinio enable : {}", enable);
 
         this.passwordVerify(password);
@@ -315,6 +315,8 @@ public class UserService extends AbstractService {
             user.setMinioPort(null);
         }
         userRepo.save(user);
+
+        return user;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

@@ -290,8 +290,8 @@ public class UserController {
         Boolean enable = (Boolean) body.get("enable");
         String password = (String) body.get("password");
 
-        userService.updateMinio(enable, password);
-        return true;
+        User user = userService.updateMinio(enable, password);
+        return user;
     }
 
     /**

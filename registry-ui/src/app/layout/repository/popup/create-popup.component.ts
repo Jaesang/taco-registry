@@ -53,7 +53,6 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
 
   public noCache: boolean = false;
 
-  public minioUrl: string;
   public minioPath: string;
 
   constructor(protected elementRef: ElementRef,
@@ -65,8 +64,6 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
               private buildService: BuildHistoryService) {
 
     super(elementRef, injector);
-
-    this.minioUrl = this.userService.user.minioUrl;
   }
 
   ngOnInit() {
@@ -159,7 +156,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
 
     this.repo.isOrganization = this.repo.namespace == this.userService.user.username ? false : true;
     this.repositoryService.createRepository(this.repo).then(result => {
-      if (this.createType == null) {
+      if (this.createType == this.CreateType.DEFAULT) {
         this.close();
         this.router.navigate([`app/image/${this.repo.namespace}/${this.repo.name}/info`]);
 

@@ -46,7 +46,6 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
 
   public noCache: boolean = false;
 
-  public minioUrl: string;
   public minioPath: string;
 
   public uuid: string = Utils.Generate.UUID();
@@ -63,8 +62,6 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
               private buildService: BuildHistoryService) {
 
     super(elementRef, injector);
-
-    this.minioUrl = this.userService.user.minioUrl;
   }
 
   ngOnInit() {
@@ -80,7 +77,6 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
         this.gitPath = '';
         this.gitUsername = '';
         this.gitPassword = '';
-        this.minioPath = '';
         this.noCache = false;
       }
     }

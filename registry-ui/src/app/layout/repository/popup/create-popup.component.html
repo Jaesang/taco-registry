@@ -181,7 +181,7 @@
                   <label class="txt-label">Private Storage</label>
                 </th>
                 <td>
-                  <a [href]="minioUrl" class="link-minio">Link MinIO Url</a>
+                  <a [href]="userService.user.minioUrl" class="link-minio">Link MinIO Url</a>
                   <div class="component-input">
                     <div class="input-area">
                       <input type="text" class="input-text" placeholder="Enter Path" [(ngModel)]="minioPath">
