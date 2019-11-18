@@ -441,7 +441,7 @@ public class ExternalAPIService extends AbstractService {
             throw new BadRequestException("error");
         }
 
-        return (Map<String, Object>) result.get("data");
+        return result;
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

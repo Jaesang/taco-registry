@@ -292,6 +292,7 @@ public class UserService extends AbstractService {
      * Minio 사용 변경
      * @throws Exception
      */
+    @Transactional
     public void updateMinio(boolean enable, String password) throws Exception {
         logger.info("updateMinio enable : {}", enable);
 
