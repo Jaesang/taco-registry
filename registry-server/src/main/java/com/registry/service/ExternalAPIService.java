@@ -261,18 +261,19 @@ public class ExternalAPIService extends AbstractService {
      * @param build
      * @return
      */
-    public Map<String, Object> createBuild(Build build, boolean noCache, boolean copyAs) {
+    public Map<String, Object> createBuild(Build build, boolean noCache, Build sourceBuild) {
         logger.info("createBuild");
         logger.info("namespace : {}", build.getImage().getNamespace());
         logger.info("name : {}", build.getImage().getName());
         logger.info("build id : {}", build.getId());
+        logger.info("sourceBuild id : {}", sourceBuild.getId());
 
         String url;
         Map<String, Object> params = new HashedMap();
         params.put("build", build.getId());
         params.put("name", MessageFormat.format("{0}/{1}", build.getImage().getNamespace(), build.getImage().getName()));
         params.put("push", true);
-        params.put("useCache", false);
+        params.put("useCache", !noCache);
         if (build.getDockerfile() != null) {
             params.put("contents", build.getDockerfile());
             url = MessageFormat.format("{0}/v1/docker/build/file", this.getBuilderUri().toString());
@@ -282,8 +283,19 @@ public class ExternalAPIService extends AbstractService {
             params.put("userPw", build.getGitPassword());
             url = MessageFormat.format("{0}/v1/docker/build/git", this.getBuilderUri().toString());
         } else {
-            params.put("minioPath", build.getMinioPath());
-            url = MessageFormat.format("{0}/v1/docker/build/minio", this.getBuilderUri().toString());
+            params.put("path", build.getMinioPath());
+            params.put("userId", SecurityUtil.getUser());
+            if (sourceBuild != null) {
+                // copy as (minio)
+                params.put("srcPath", sourceBuild.getMinioPath());
+                params.put("srcUserId", sourceBuild.getCreatedBy().getUsername());
+
+                logger.info("sourceBuild path : {}", sourceBuild.getMinioPath());
+                logger.info("sourceBuild userId : {}", sourceBuild.getCreatedBy().getUsername());
+                url = MessageFormat.format("{0}/v1/docker/build/minio-copy-as", this.getBuilderUri().toString());
+            } else {
+                url = MessageFormat.format("{0}/v1/docker/build/minio", this.getBuilderUri().toString());
+            }
         }
 
         Map<String, Object> result = new HashedMap();

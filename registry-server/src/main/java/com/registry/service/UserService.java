@@ -180,6 +180,7 @@ public class UserService extends AbstractService {
             if (rolename.equals(Const.Role.ADMIN)) {
                 user.setSuperuser(true);
             }
+            user.setMinioEnabled(false);
             user.setCreatedBy(user);
             user.setUpdatedBy(user);
 
@@ -305,7 +306,7 @@ public class UserService extends AbstractService {
             Long port = Long.parseLong(result.get("port").toString());
             logger.info("updateMinio domain : {}", domain);
             logger.info("updateMinio port : {}", port);
-            
+
             user.setMinioHost(domain);
             user.setMinioPort(port);
         } else {

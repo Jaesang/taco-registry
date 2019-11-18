@@ -150,10 +150,10 @@ export class UserSettingComponent extends PageComponent implements OnInit {
    * minio enable change
    */
   public minioEnableChange() {
-    let current = this.user.minioEnabled ? 'Enabled' : 'Disabled';
-    let after = this.user.minioEnabled ? 'Disable' : 'Enable';
-
     if (this.user.minioEnabled) {
+      let current = this.user.minioEnabled ? 'Enabled' : 'Disabled';
+      let after = this.user.minioEnabled ? 'Disable' : 'Enable';
+
       this.confirmPopupService.show(
         `Private Storage ${after}`,
         `This private storage is currently ${current}. Are you sure you want to make this private storage ${after}?`,

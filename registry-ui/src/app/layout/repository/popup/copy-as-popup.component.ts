@@ -61,6 +61,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
 
   public dockerFileContent: string;
 
+  public sourceBuild: Build.Entity;
   public createType: CreateType;
   public minioPath: string;
 
@@ -163,7 +164,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
         build.minioPath = this.minioPath;
       }
 
-      this.buildService.build(this.repo.namespace, this.repo.name, build, true).then(result => {
+      this.buildService.build(this.repo.namespace, this.repo.name, build, this.sourceBuild).then(result => {
         this.close();
         this.router.navigate([`app/image/${this.repo.namespace}/${this.repo.name}/build`]);
 
@@ -239,6 +240,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
 
       if (list.length) {
         let build = list[0];
+        this.sourceBuild = build;
         if (build.dockerfile) {
           this.editor.setText(build.dockerfile ? atob(build.dockerfile) : "");
           this.createType = CreateType.DOCKERFILE;

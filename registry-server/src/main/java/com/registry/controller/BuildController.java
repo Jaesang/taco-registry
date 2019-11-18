@@ -7,6 +7,7 @@ import com.registry.dto.BuildDto;
 import com.registry.dto.BuildLogDto;
 import com.registry.repository.image.Build;
 import com.registry.repository.image.BuildLog;
+import com.registry.repository.image.BuildRepository;
 import com.registry.service.BuildService;
 import com.registry.service.ExternalAPIService;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +28,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by boozer on 2019. 7. 15
@@ -42,6 +44,9 @@ public class BuildController {
 
     @Autowired
     private BuildService buildService;
+
+    @Autowired
+    private BuildRepository buildRepo;
 
     @Autowired
     private ExternalAPIService externalService;
@@ -140,10 +145,10 @@ public class BuildController {
             )
             @PathVariable("name") String name,
             @ApiParam(
-                    name = "copyAs",
+                    name = "sourceBuildId",
                     required = false
             )
-            @RequestParam(value = "copyAs", required = false) boolean copyAs,
+            @RequestParam(value = "sourceBuildId", required = false) String sourceBuildId,
             @ApiParam(
                     name = "build"
             )
@@ -154,8 +159,14 @@ public class BuildController {
 
         Build build = buildService.createBuild(namespace, name, buildDto);
 
+        Build sourceBuild = null;
+        if (sourceBuildId != null) {
+            UUID uuid = UUID.fromString(sourceBuildId);
+            sourceBuild = buildRepo.findById(uuid).orElse(null);
+        }
+
         // builder build 요청
-        externalService.createBuild(build, buildDto.noCache, copyAs);
+        externalService.createBuild(build, buildDto.noCache, sourceBuild);
 
         return build;
     }
