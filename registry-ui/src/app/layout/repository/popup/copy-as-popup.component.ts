@@ -109,6 +109,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
     this.repo.isPublic = false;
     this.errorRepoName = false;
     this.dockerFileContent = '';
+    this.minioPath = '';
     this.getLastDockerfile();
     this.initSelectList();
   }
@@ -245,8 +246,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
         if (build.dockerfile) {
           this.editor.setText(build.dockerfile ? atob(build.dockerfile) : "");
           this.createType = CreateType.DOCKERFILE;
-        } else if (this.userService.user.minioEnabled) {
-          this.minioPath = build.minioPath;
+        } else if (this.userService.user.minioEnabled && !Validate.isEmpty(build.minioPath)) {
           this.createType = CreateType.MINIO;
         } else {
           this.editor.setText(`FROM ${this.userService.user.registryUrl}/${this.baseRepo.namespace}/${this.baseRepo.name}`);
