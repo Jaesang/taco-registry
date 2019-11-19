@@ -36,7 +36,7 @@
             </li>
             <li *ngIf="userService.user.minioEnabled">
               <div class="component-radio">
-                <input type="radio" [id]="'build-popup-radio9-' + uuid" class="input-radio" [value]="CreateType.MINIO" [(ngModel)]="createType" (change)="changeCreateType(2)">
+                <input type="radio" [id]="'build-popup-radio9-' + uuid" [name]="'create-type-radio-' + uuid" class="input-radio" [value]="CreateType.MINIO" [(ngModel)]="createType" (change)="changeCreateType(2)">
                 <label [for]="'build-popup-radio9-' + uuid" class="label">
                   <span class="icon-radio"></span>
                   <span class="txt-label type-minio">
