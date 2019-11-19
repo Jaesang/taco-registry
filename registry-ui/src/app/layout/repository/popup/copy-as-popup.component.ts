@@ -219,6 +219,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
     });
 
     this.selectBox.init(orgList);
+    this.repo.namespace = orgList[0].value;
   }
 
   /**

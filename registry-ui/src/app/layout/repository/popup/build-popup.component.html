@@ -36,8 +36,8 @@
             </li>
             <li *ngIf="userService.user.minioEnabled">
               <div class="component-radio">
-                <input type="radio" id="radio9" class="input-radio" [value]="CreateType.MINIO" [(ngModel)]="createType" (change)="changeCreateType(2)">
-                <label for="radio9" class="label">
+                <input type="radio" [id]="'build-popup-radio9-' + uuid" class="input-radio" [value]="CreateType.MINIO" [(ngModel)]="createType" (change)="changeCreateType(2)">
+                <label [for]="'build-popup-radio9-' + uuid" class="label">
                   <span class="icon-radio"></span>
                   <span class="txt-label type-minio">
                     From Private Storage(MinIO)
@@ -72,7 +72,7 @@
           </div>
 
           <div class="minio-block" *ngIf="createType == CreateType.MINIO">
-            <a href="javascript:;" class="link-minio" (click)="minioLinkClick()">Link MinIO Url</a>
+            <a [href]="userService.getMinioUrl(userService.user)" target="_blank" class="link-minio">{{ userService.getMinioUrl(userService.user) }}</a>
             <div class="component-input">
               <div class="input-area">
                 <input type="text" class="input-text" placeholder="Enter Path" [(ngModel)]="minioPath">

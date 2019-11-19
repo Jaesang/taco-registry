@@ -148,10 +148,6 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
     }
   }
 
-  public minioLinkClick() {
-    window.open(this.userService.getMinioUrl(this.userService.user));
-  }
-
   /**
    * 생성 버튼 클릭
    */
@@ -205,12 +201,12 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
       return false;
     }
 
-    // if (!Validate.checkValidateWithPattern('^[a-z0-9_-]+$', this.repo.name) || Validate.isEmpty(this.repo.name)) {
-    //   if (!Validate.isEmpty(this.repo.name)) {
-    //     this.errorMsg = 'error';
-    //   }
-    //   return false;
-    // }
+    if (!Validate.checkValidateWithPattern('^[a-z0-9_-]+$', this.repo.name) || Validate.isEmpty(this.repo.name)) {
+      if (!Validate.isEmpty(this.repo.name)) {
+        this.errorMsg = 'error';
+      }
+      return false;
+    }
 
     this.errorMsg = '';
 

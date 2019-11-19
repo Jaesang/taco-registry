@@ -72,7 +72,7 @@
       </th>
       <td>
         <button type="button" class="btn-sub" (click)="minioEnableChange()">{{ user.minioEnabled ? 'Disable' : 'Enable' }}</button>
-        <span class="txt-desc" *ngIf="user.minioEnabled">{{ userService.getMinioUrl(user) }}</span>
+        <a class="txt-desc" [href]="userService.getMinioUrl(userService.user)" target="_blank">{{ userService.getMinioUrl(userService.user) }}</a>
       </td>
     </tr>
     </tbody>
