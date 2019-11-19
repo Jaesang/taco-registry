@@ -40,6 +40,7 @@ public class BuildDto {
         public String dockerfilePath;
         public String dockerfile;
         public String gitPath;
+        public String minioPath;
         public String[] tags = {"latest"};
     }
 

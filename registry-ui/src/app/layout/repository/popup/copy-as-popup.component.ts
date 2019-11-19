@@ -243,7 +243,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
       if (list.length) {
         let build = list[0];
         this.sourceBuild = build;
-        if (build.dockerfile) {
+        if (!Validate.isEmpty(build.dockerfile)) {
           this.editor.setText(build.dockerfile ? atob(build.dockerfile) : "");
           this.createType = CreateType.DOCKERFILE;
         } else if (this.userService.user.minioEnabled && !Validate.isEmpty(build.minioPath)) {
