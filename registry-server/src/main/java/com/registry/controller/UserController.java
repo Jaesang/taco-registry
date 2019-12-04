@@ -292,7 +292,9 @@ public class UserController {
         Boolean enable = (Boolean) body.get("enable");
         String password = (String) body.get("password");
 
-        User user = userService.updateMinio(enable, password);
+        UserDto.VIEW user = mapper.map(userService.updateMinio(enable, password), UserDto.VIEW.class);
+        user.registryUrl = registryUrl;
+        user.minioAvailable = minioAvailable;
         return user;
     }
 
