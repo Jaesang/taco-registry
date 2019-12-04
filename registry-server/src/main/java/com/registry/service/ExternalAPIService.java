@@ -258,6 +258,33 @@ public class ExternalAPIService extends AbstractService {
     }
 
     /**
+     * security scan 요청
+     * @param namespace
+     * @param name
+     * @param tagName
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Object> createSecurity(String namespace, String name, String tagName) throws Exception {
+        logger.info("createSecurity");
+        logger.info("namespace : {}", namespace);
+        logger.info("name : {}", name);
+        logger.info("tagName : {}", tagName);
+
+        String body = (String) restApiUtil.excute(MessageFormat.format("{0}/v1/sescan/repository/{1}/{2}?tag={3}", this.getBuilderUri().toString(), namespace, name, tagName), HttpMethod.PATCH, null, String.class);
+        JSONObject result = new JSONObject();
+
+        try {
+            result = (JSONObject) new JSONParser().parse(body);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new BadRequestException(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
      * build 요청
      * @param build
      * @return
@@ -556,6 +583,13 @@ public class ExternalAPIService extends AbstractService {
                 tag.setDockerImageId(UUID.randomUUID().toString());
                 tag.setStartTime(LocalDateTime.now());
                 tagRepo.save(tag);
+
+                try {
+                    // security scan 요청
+                    this.createSecurity(image.getNamespace(), image.getName(), name);
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
             }
 
             syncTags.add(tag);

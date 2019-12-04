@@ -53,6 +53,7 @@ public class UserController {
     protected static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private @Value("${config.registry.url}") String registryUrl;
+    private @Value("${config.minio.available}") Boolean minioAvailable;
 
     @Autowired
     private UserService userService;
@@ -104,6 +105,7 @@ public class UserController {
     ) throws Exception{
         UserDto.VIEW user = mapper.map(userService.getLoginUser(), UserDto.VIEW.class);
         user.registryUrl = registryUrl;
+        user.minioAvailable = minioAvailable;
         return user;
     }
 

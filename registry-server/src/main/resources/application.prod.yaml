@@ -61,6 +61,8 @@ server:
 
 # Config
 config:
+  minio:
+    available: ${APP_MINIO_AVAILABLE:true}
   time-zone: ${APP_TIME_ZONE:'UTC'}
   registry:
     url: ${REGISTRY_URL:'taco-registry:5000'}

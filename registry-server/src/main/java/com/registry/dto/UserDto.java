@@ -40,6 +40,7 @@ public class UserDto {
         public String minioPort;
         public List<Role> roles;
         public List<OrganizationDto.VIEW> organizations;
+        public Boolean minioAvailable;
     }
 
 }

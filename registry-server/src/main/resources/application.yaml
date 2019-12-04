@@ -90,6 +90,8 @@ builder:
 
 # Config
 config:
+  minio:
+    available: true
   time-zone: Asia/Seoul
   registry:
     url: localhost:5000
@@ -152,6 +154,8 @@ builder:
 
 # Config
 config:
+  minio:
+    available: true
   time-zone: Asia/Seoul
   registry:
     url: 192.168.201.146:5000

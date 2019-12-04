@@ -137,11 +137,17 @@ public class UserService extends AbstractService {
      * @param username
      * @throws Exception
      */
+    @Transactional
     public void deleteUser(String username) throws Exception {
         logger.info("deleteUser username : {}", username);
 
         User user = userRepo.getUser(username);
         user.setDelYn(true);
+
+        // minio 사용 중지
+        if (user.getMinioEnabled()) {
+            externalService.updateMinio(false, null);
+        }
 
         userRepo.save(user);
     }
@@ -349,7 +355,7 @@ public class UserService extends AbstractService {
      * @return
      */
     private String passwordGenerate() {
-        // 6 digit
+        // 8 digit
         Random generator = new Random();
         int i = generator.nextInt(100000000) % 100000000;
 

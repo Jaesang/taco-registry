@@ -54,13 +54,13 @@
   <!-- //Form Setting -->
 
   <!-- Title -->
-  <div class="section-title">
+  <div class="section-title" *ngIf="user.minioAvailable">
     <h2 class="txt-title">Private Storage</h2>
   </div>
   <!-- //Title -->
 
   <!-- Form Setting -->
-  <table class="form-setting">
+  <table class="form-setting" *ngIf="user.minioAvailable">
     <colgroup>
       <col width="150" />
       <col width="420" />

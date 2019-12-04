@@ -13,6 +13,7 @@ export namespace User {
     public minioEnabled: boolean;
     public minioHost: string;
     public minioPort: string;
+    public minioAvailable: boolean;
   }
 
   export class List {
