@@ -125,14 +125,23 @@ public class TagService extends AbstractService {
         externalService.syncWithBuilder(tag.getImage().getNamespace(), tag.getImage().getName());
 
         Tag preTag = tagRepo.getTagByTagName(tag.getImage().getId(), tag.getName());
-        if (preTag != null) {
-            // 같은 이름의 태그는 삭제
-            preTag.setEndTime(now);
-            preTag.setExpiration(now);
-            tagRepo.save(preTag);
-        }
+        if ("latest".equals(tag.getName())) {
+            if (preTag != null) {
+                // 기존 latest tag update
+                tag.setId(preTag.getId());
+            } else {
+                tag.setStartTime(now);
+            }
+        } else {
+            if (preTag != null) {
+                // 같은 이름의 태그는 삭제
+                preTag.setEndTime(now);
+                preTag.setExpiration(now);
+                tagRepo.save(preTag);
+            }
 
-        tag.setStartTime(now);
+            tag.setStartTime(now);
+        }
         tagRepo.save(tag);
 
         // 로그 등록
