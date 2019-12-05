@@ -128,7 +128,9 @@ public class TagService extends AbstractService {
         if ("latest".equals(tag.getName())) {
             if (preTag != null) {
                 // 기존 latest tag update
-                tag.setId(preTag.getId());
+                preTag.setBuildId(tag.getBuildId());
+                preTag.setDockerImageId(tag.getDockerImageId());
+                tag = preTag;
             } else {
                 tag.setStartTime(now);
             }
