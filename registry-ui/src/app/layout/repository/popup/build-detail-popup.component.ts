@@ -1,14 +1,14 @@
 import {
   Component,
-  OnInit,
   ElementRef,
-  Injector,
-  OnDestroy,
-  Input,
-  Output,
   EventEmitter,
-  SimpleChanges,
+  Injector,
+  Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
   ViewChild
 } from "@angular/core";
 import {RepositoryService} from "../repository.service";
@@ -20,12 +20,16 @@ import {CommonConstant} from "../../../common/constant/common-constant";
 import {Build} from "../build-history/build-history.value";
 import {BuildHistoryService} from "../build-history/build-history.service";
 import {environment} from "../../../../environments/environment";
+import Phase = Build.Phase;
+import LogType = Build.LogType;
 
 @Component({
   selector: '[build-detail-popup]',
   templateUrl: 'build-detail-popup.component.html'
 })
 export class BuildDetailPopupComponent extends AbstractComponent implements OnInit, OnDestroy, OnChanges {
+
+  public LogType = LogType;
 
   @ViewChild('fileDownload')
   private fileDownload: ElementRef;
@@ -266,18 +270,7 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
     this.logNotFound = false;
 
     this.buildHistoryService.getBuildLogList(this.namespace, this.repoName, this.buildId).then(result => {
-      if (result.logsUrl) {
-        this.buildHistoryService.getCompleteBuildLogList(this.buildId).then(result => {
-          this.setLogs(result);
-        }).catch(reason => {
-          this.logNotFound = true;
-          clearInterval(this.timeoutId);
-          // this.loaderService.show.next(false);
-        });
-      } else {
-        this.setLogs(result);
-      }
-
+      this.setLogs(result);
 
       // this.loaderService.show.next(false);
     }).catch(reason => {
@@ -321,6 +314,11 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
           parent = value;
           value.commandName = value.message.substr(value.message.indexOf(': ') + 2).split(' ')[0];
           value.command = value.message.substr(value.message.indexOf(value.commandName) + value.commandName.length);
+          if (this.build.phase == Phase.building || this.build.phase == Phase.pulling || this.build.phase == Phase.pushing || this.build.phase == Phase.waiting) {
+            value.expand = true;
+          } else {
+            value.expand = false;
+          }
           value.children = [];
           this.buildLogListMiddle.push(value);
         } else {
@@ -334,4 +332,5 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
       return true;
     });
   }
+
 }

@@ -92,7 +92,7 @@
                       <strong class="txt-type">{{ item.commandName }}</strong>
                       <strong class="txt-desc">{{ item.command }}</strong>
                     </div>
-                    <div class="log-detail" *ngFor="let child of item.children" [class.is-error]="child.type == 'error'">
+                    <div class="log-detail" *ngFor="let child of item.children" [class.is-error]="child.type == LogType.error">
                       <span class="txt-date">{{ child.datetime | dateTimeFormat:'YYYY-MM-DD HH:mm:ss' }}</span>
                       <span class="txt-desc">{{ child.message }}</span>
                     </div>
