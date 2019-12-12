@@ -1,25 +1,19 @@
 package com.registry.repository.user;
 
 
-import com.registry.repository.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.registry.repository.AbstractEntity;
 import com.registry.repository.image.Image;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 /**
  * @author boozer
  */
 @Entity
-@Table(name = "user_role")
-public class Role extends AbstractEntity {
+@Table(name = "user_starred")
+public class Starred extends AbstractEntity {
 	
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Private Variables
@@ -37,10 +31,10 @@ public class Role extends AbstractEntity {
 	private UUID id;
 
 	/**
-	 * Role 이름
+	 * starred
 	 */
-	@Column(name = "name", columnDefinition="varchar(40)", nullable=false)
-	private String name;
+	@Column(name = "is_starred", nullable=false)
+	private Boolean isStarred;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -72,20 +66,20 @@ public class Role extends AbstractEntity {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Boolean getIsStarred() {
+		return isStarred;
+	}
+
+	public void setIsStarred(Boolean starred) {
+		isStarred = starred;
 	}
 
 	public Image getImage() {
@@ -107,17 +101,7 @@ public class Role extends AbstractEntity {
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Override Method
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-	@Override
-	@JsonIgnore(false)
-	public String getCreatedDateFormmat() {
-	    return super.getCreatedDateFormmat();
-	}
 
-	@Override
-	@JsonIgnore(false)
-	public String getCreatedDateTimeFormmat() {
-		return super.getCreatedDateTimeFormmat();
-	}
 	/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Protected Method
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/

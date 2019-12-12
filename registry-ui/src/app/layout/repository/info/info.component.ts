@@ -10,6 +10,9 @@ import {CommonConstant} from "../../../common/constant/common-constant";
 import {Alert} from "../../../common/utils/alert-util";
 import {environment} from "../../../../environments/environment";
 import {UserService} from "../../user/user.service";
+import {Tag} from "../tag-info/tag.value";
+import {TagService} from "../tag-info/tag.service";
+import * as _ from "lodash";
 
 @Component({
   selector: 'info',
@@ -35,15 +38,20 @@ export class InfoComponent extends PageComponent implements OnInit {
   public currentBuildId: string;
   public showBuildDetailPopup: boolean = false;
 
-  public stats: Array<Object> = [];
-  public monthList: Array<string>;
+  public tagList: Tag.Entity[] = [];
+  public currentSelectedTag: Tag.Entity = new Tag.Entity();
+  public selectedImageId: string;
+  public showTagSecurityPopup: boolean = false;
 
   public showBuildPopup: boolean = false;
+
+  public securityData: Object = {};
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
               private userService: UserService,
               private repositoryService: RepositoryService,
+              private tagService: TagService,
               public buildHistoryService: BuildHistoryService) {
 
     super(elementRef, injector);
@@ -103,6 +111,13 @@ export class InfoComponent extends PageComponent implements OnInit {
   }
 
   /**
+   * tag view more 클릭
+   */
+  public tagViewMoreClick() {
+    this.router.navigate([`app/image/${this.orgName}/${this.repoName}/tag-info`]);
+  }
+
+  /**
    * 정렬
    * @param colName
    * @param sort
@@ -151,47 +166,40 @@ export class InfoComponent extends PageComponent implements OnInit {
   }
 
   /**
+   * scan 클릭
+   * @param tag
+   */
+  public scanClick(tag: Tag.Entity) {
+    this.currentSelectedTag = tag;
+    this.selectedImageId = tag.dockerImageId;
+    this.showTagSecurityPopup = true;
+  }
+
+  /**
    * repository 상세 조회
    */
   private getRepository() {
-    this.repositoryService.getRepository(`${this.orgName}/${this.repoName}`, true).then(result => {
+    this.repositoryService.getRepository(`${this.orgName}/${this.repoName}`).then(result => {
       this.repo = result;
 
-      this.stats = [];
-      this.monthList = [];
+      this.tagList = [];
 
-      let now = new Date();
-      let month1 = new Date().setMonth(now.getMonth() - 1);
-      let month2 = new Date().setMonth(now.getMonth() - 2);
+      Array.from(result.tags).forEach((value, index) => {
+        if (index > 4) {
+          return;
+        }
 
-      this.monthList.push(moment(month2).format('MMMM'));
-      this.monthList.push(moment(month1).format('MMMM'));
-      this.monthList.push(moment(now).format('MMMM'));
+        this.tagList.push(value);
+      });
 
-      for(let i = 0; i < 31; i++) {
-        let data = [];
-        this.monthList.forEach((value, index) => {
-          let d = this.getDataByDate(this.repo.stats, value, i + 1);
-          data.push(d ? d.count : -1);
-        });
+      this.loaderService.show.next(false);
 
-        this.stats.push(data);
-      }
-
+      // dockerImageId 로 중복 제거
+      let imageList = _.uniqBy(this.tagList, 'dockerImageId');
+      imageList.forEach(value => {
+        this.getSecurityData(value.dockerImageId, value.name);
+      });
     });
-  }
-
-  private getDataByDate(list: Repository.Stat[], month, date) {
-    let data;
-    list.forEach(value => {
-      let m = moment(value.date).format('MMMM');
-      let d = moment(value.date).format('D');
-      if (m == month && d == date) {
-        data = value;
-      }
-    });
-
-    return data;
   }
 
   /**
@@ -209,4 +217,29 @@ export class InfoComponent extends PageComponent implements OnInit {
       this.loaderService.show.next(false);
     });
   }
+
+  /**
+   * security scan 조회
+   * @param imageId
+   */
+  private getSecurityData(imageId: string, tagName: string) {
+    this.tagService.getSecurity(this.orgName, this.repoName, tagName).then(result => {
+      this.tagService.setSecurityCount(result);
+
+      this.securityData[imageId] = result;
+
+    });
+  }
+
+  /**
+   * image id 로 security data 가져오기
+   * @param imageId
+   * @returns {any}
+   */
+  public getSecurity(imageId: string) {
+    let security = this.securityData[imageId];
+
+    return security;
+  }
+
 }

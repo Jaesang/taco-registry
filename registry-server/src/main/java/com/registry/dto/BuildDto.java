@@ -16,6 +16,7 @@ public class BuildDto {
         public String gitPassword;
         public String minioPath;
         public boolean noCache;
+        public String tag;
     }
 
     @ApiModel("Build.EDIT")

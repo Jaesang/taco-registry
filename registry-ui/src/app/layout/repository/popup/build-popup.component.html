@@ -10,6 +10,16 @@
         <!-- Popup Start Repository Build -->
         <div class="popup-repository-build">
 
+          <div class="input-block">
+            <div class="component-input" [class.is-error]="errorTagName">
+              <div class="input-area">
+                <input type="text" class="input-text" placeholder="Tag Name" [(ngModel)]="tag" (keyup)="checkValidate()" maxlength="40">
+                <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="tag = ''" tabIndex="-1"></a>
+              </div>
+              <span class="txt-error">Tag names must match [a-z0-9_-.]+</span>
+            </div>
+          </div>
+
           <!-- Initialize Repository -->
           <ul class="initialize-block">
             <li>
@@ -104,7 +114,7 @@
         <div class="button-block">
           <button type="button" class="btn-basic type-small" (click)="close()">Cancel</button>
           <!-- [D] Success 인 경우 disabled 속성 제거 -->
-          <button type="button" class="btn-action type-small" [disabled]="!checkValidate()" (click)="startBuildClick()">Start Build</button>
+          <button type="button" class="btn-action type-small" [disabled]="!validate" (click)="startBuildClick()">Start Build</button>
         </div>
       </div>
 

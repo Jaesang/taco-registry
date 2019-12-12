@@ -20,6 +20,7 @@ export namespace Main {
     public score: number;
     public stars: number;
     public title: string;
+    public lastModified: string;
   }
 
   export class PageResult extends Page {

@@ -166,7 +166,7 @@ public class BuildController {
         }
 
         // builder build 요청
-        externalService.createBuild(build, buildDto.noCache, sourceBuild);
+        externalService.createBuild(build, buildDto.noCache, buildDto.tag, sourceBuild);
 
         return build;
     }

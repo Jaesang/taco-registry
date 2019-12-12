@@ -7,6 +7,8 @@ import {OrganizationAreaModule} from "../gnb/organization-area/organization-area
 import {ProfileAreaModule} from "../gnb/profile-area/profile-area.module";
 import {MainService} from "./main.service";
 import {OrganizationService} from "../organization/organization.service";
+import {TagSecurityPopupModule} from "../repository/popup/tag-security-popup.module";
+import {TagService} from "../repository/tag-info/tag.service";
 
 @NgModule({
   imports: [
@@ -18,7 +20,8 @@ import {OrganizationService} from "../organization/organization.service";
       }
     ]),
     OrganizationAreaModule,
-    ProfileAreaModule
+    ProfileAreaModule,
+    TagSecurityPopupModule
   ],
   declarations: [
     MainComponent
@@ -29,7 +32,8 @@ import {OrganizationService} from "../organization/organization.service";
   providers: [
     RepositoryService,
     OrganizationService,
-    MainService
+    MainService,
+    TagService
   ]
 })
 export class MainModule {

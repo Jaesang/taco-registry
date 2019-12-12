@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.registry.constant.Const;
 import com.registry.repository.AbstractEntity;
 import com.registry.repository.user.Role;
+import com.registry.repository.user.Starred;
 import com.registry.util.SecurityUtil;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -69,6 +70,11 @@ public class Image extends AbstractEntity {
 	@JsonIgnore
 	@OneToMany(mappedBy = "image", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Role> role = new ArrayList<Role>();
+
+	/** 유저 Starred 목록 */
+	@JsonIgnore
+	@OneToMany(mappedBy = "image", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	private List<Starred> starreds = new ArrayList<Starred>();
 
 	/** build 목록 */
 	@JsonIgnore
@@ -186,6 +192,14 @@ public class Image extends AbstractEntity {
 		this.role = role;
 	}
 
+	public List<Starred> getStarreds() {
+		return starreds;
+	}
+
+	public void setStarreds(List<Starred> starreds) {
+		this.starreds = starreds;
+	}
+
 	public List<Build> getBuilds() {
 		return builds;
 	}
@@ -242,7 +256,7 @@ public class Image extends AbstractEntity {
 	public Boolean getIsStarred() {
 		this.isStarred = false;
 		if (role != null && role.size() > 0) {
-			role.stream().forEach(value -> {
+			starreds.stream().forEach(value -> {
 				if (SecurityUtil.getUser().equals(value.getUser().getUsername())) {
 					this.isStarred = value.getIsStarred();
 				}

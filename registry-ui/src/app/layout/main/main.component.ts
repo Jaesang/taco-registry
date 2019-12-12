@@ -3,6 +3,11 @@ import {PageComponent} from "../../common/component/page.component";
 import {MainService} from "./main.service";
 import {Main} from "./main.value";
 import {PaginationComponent} from "../../common/component/pagination/pagination.component";
+import {TagService} from "../repository/tag-info/tag.service";
+import {Image} from "../repository/tag-info/image.value";
+import {Repository} from "../repository/repository.value";
+import {RepositoryService} from "../repository/repository.service";
+import {Tag} from "../repository/tag-info/tag.value";
 
 @Component({
   selector: 'main',
@@ -24,9 +29,16 @@ export class MainComponent extends PageComponent implements OnInit {
 
   public isSearching: boolean = false;
 
+  public securityData: Object = {};
+  public selectedImage: string;
+  public selectedTag: Tag.Entity = new Tag.Entity();
+  public showTagSecurityPopup: boolean = false;
+
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
-              private mainService: MainService) {
+              private repositoryService: RepositoryService,
+              private mainService: MainService,
+              private tagService: TagService) {
 
     super(elementRef, injector);
 
@@ -90,6 +102,20 @@ export class MainComponent extends PageComponent implements OnInit {
   }
 
   /**
+   * scan 클릭
+   * @param tag
+   */
+  public scanClick(image: Main.Entity) {
+    this.selectedImage = `${image.namespace.name}/${image.name}:latest`;
+    this.selectedTag.name = 'latest';
+    let repo: Repository.Entity = new Repository.Entity();
+    repo.namespace = image.namespace.name;
+    repo.name = image.name;
+    this.repositoryService.repository = repo;
+    this.showTagSecurityPopup = true;
+  }
+
+  /**
    * repository 목록 조회
    * @param orgName
    */
@@ -104,6 +130,23 @@ export class MainComponent extends PageComponent implements OnInit {
       this.isSearching = false;
 
       this.loaderService.show.next(false);
+
+      this.repositoryList.forEach(value => {
+        this.getSecurityData(value);
+      });
+    });
+  }
+
+  /**
+   * security scan 조회
+   * @param imageId
+   */
+  private getSecurityData(image: Main.Entity) {
+    this.tagService.getSecurity(image.namespace.name, image.name, 'latest').then(result => {
+      this.tagService.setSecurityCount(result);
+
+      this.securityData[`${image.namespace.name}/${image.name}`] = result;
+
     });
   }
 

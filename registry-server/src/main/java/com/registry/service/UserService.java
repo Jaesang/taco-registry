@@ -41,6 +41,9 @@ public class UserService extends AbstractService {
     @Autowired
     private RoleRepository roleRepo;
 
+    @Autowired
+    private StarredRepository starredRepo;
+
     /** usage log Repo */
     @Autowired
     private UsageLogService logService;
@@ -282,16 +285,26 @@ public class UserService extends AbstractService {
      * @param imageName
      * @throws Exception
      */
-    public void updateStarred(String namespace, String imageName, boolean starred) throws Exception {
+    public void updateStarred(String namespace, String imageName, boolean star) throws Exception {
         logger.info("updateStarred namespace : {}", namespace);
         logger.info("updateStarred imageName : {}", imageName);
-        logger.info("updateStarred starred : {}", starred);
+        logger.info("updateStarred star : {}", star);
 
         Image image = imageService.getImage(namespace, imageName);
-        Role role = roleRepo.getRole(SecurityUtil.getUser(), image.getId());
-        role.setIsStarred(starred);
+        Starred starred = starredRepo.getStarred(SecurityUtil.getUser(), image.getId());
+        if (starred != null) {
+            starredRepo.delete(starred);
+        }
 
-        roleRepo.save(role);
+        if (star) {
+            User user = userRepo.getUser(SecurityUtil.getUser());
+            starred = new Starred();
+            starred.setIsStarred(star);
+            starred.setUser(user);
+            starred.setImage(image);
+
+            starredRepo.save(starred);
+        }
     }
 
     /**

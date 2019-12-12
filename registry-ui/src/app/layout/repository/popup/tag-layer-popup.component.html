@@ -12,7 +12,7 @@
           <div class="section-image">
             <ul class="list-image">
               <li *ngFor="let item of layerList">
-                <span class="txt-image">{{ item.id.split('-')[0] }}</span>
+                <span class="txt-image">{{ item.id.substr(0, 12) }}</span>
                 <span class="image-line"><em></em></span>
                 <span [ngClass]="'txt-type ' + buildHistoryService.getClassCommandLog(item.commandName)">{{ item.commandName }}</span>
                 <span class="txt-desc">{{ item.commandText }}</span>

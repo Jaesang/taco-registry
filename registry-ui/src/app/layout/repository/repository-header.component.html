@@ -10,7 +10,7 @@
           <input type="checkbox" class="input-checkbox" id="starred01" [checked]="repo.isStarred" (change)="starChange(repo)">
           <label for="starred01" class="txt-label"></label>
         </div>
-        <span class="type-private" *ngIf="!repo.isPublic"></span>
+        <span class="txt-status">{{ repo.isPublic ? 'PUBLIC' : 'PRIVATE' }}</span>
       </div>
 
       <div class="buttons">

@@ -162,7 +162,7 @@ public class BuildService extends AbstractService {
         Tag tag = new Tag();
         tag.setImage(image);
         tag.setBuildId(build.getId());
-        tag.setName("latest");
+        tag.setName(buildDto.tag);
         tag.setDockerImageId(UUID.randomUUID().toString());
         tagService.createTag(tag);
 

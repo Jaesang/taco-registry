@@ -289,7 +289,7 @@ public class ExternalAPIService extends AbstractService {
      * @param build
      * @return
      */
-    public Map<String, Object> createBuild(Build build, boolean noCache, Build sourceBuild) {
+    public Map<String, Object> createBuild(Build build, boolean noCache, String tag, Build sourceBuild) {
         logger.info("createBuild");
         logger.info("namespace : {}", build.getImage().getNamespace());
         logger.info("name : {}", build.getImage().getName());
@@ -302,6 +302,7 @@ public class ExternalAPIService extends AbstractService {
         params.put("name", MessageFormat.format("{0}/{1}", build.getImage().getNamespace(), build.getImage().getName()));
         params.put("push", true);
         params.put("useCache", !noCache);
+        params.put("tag", tag);
         if (!StringUtils.isEmpty(build.getDockerfile())) {
             params.put("contents", build.getDockerfile());
             url = MessageFormat.format("{0}/v1/docker/build/file", this.getBuilderUri().toString());
@@ -539,7 +540,6 @@ public class ExternalAPIService extends AbstractService {
                     role.setUser(value.getUser());
                     role.setImage(i);
                     role.setName(Const.Role.ADMIN);
-                    role.setIsStarred(false);
                     members.add(role);
                 });
 
@@ -549,7 +549,6 @@ public class ExternalAPIService extends AbstractService {
                 role.setImage(img);
                 role.setUser(user);
                 role.setName(Const.Role.ADMIN);
-                role.setIsStarred(false);
                 roleRepo.save(role);
             }
         }

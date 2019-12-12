@@ -52,8 +52,13 @@ export class RepositoryGuard implements CanActivate {
     return this.repositoryService.getRepository(path).then(result => {
       this.repositoryService.repository = result;
 
-      this.commonService.lnbAdmin.next(result.canAdmin);
-      this.commonService.lnbWriter.next(result.canWrite);
+      if (this.userService.user.superuser) {
+        this.commonService.lnbAdmin.next(true);
+        this.commonService.lnbWriter.next(true);
+      } else {
+        this.commonService.lnbAdmin.next(result.canAdmin);
+        this.commonService.lnbWriter.next(result.canWrite);
+      }
 
       return true;
     }).catch(reason => {

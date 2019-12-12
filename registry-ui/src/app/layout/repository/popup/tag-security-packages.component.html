@@ -202,7 +202,7 @@
         <td>
           <div class="introduce-area">
             <span [ngClass]="'txt-type ' + buildHistoryService.getClassCommandLog(item.layer.commandName)">{{ item.layer.commandName }}</span>
-            <span class="txt-desc">{{ item.layer.commandText }}</span>
+            <span class="txt-desc" [title]="item.layer.commandText">{{ item.layer.commandText }}</span>
           </div>
         </td>
       </tr>

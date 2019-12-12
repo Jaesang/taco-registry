@@ -55,7 +55,7 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
 
   public ngOnChanges(changes: SimpleChanges): void {
     for (let propName in changes) {
-      if (propName === 'tag' && this.tag.name) {
+      if (propName === 'tag' && this.tag && this.tag.name) {
         this.orgName = '';
         this.repo = this.repositoryService.repository;
         this.orgName = this.repo.namespace;

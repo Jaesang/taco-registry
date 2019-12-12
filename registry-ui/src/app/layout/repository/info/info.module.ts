@@ -5,12 +5,15 @@ import {InfoComponent} from "./info.component";
 import {RepositoryHeaderModule} from "../repository-header.module";
 import {BuildDetailPopupModule} from "../popup/build-detail-popup.module";
 import {BuildPopupModule} from "../popup/build-popup.module";
+import {TagSecurityPopupModule} from "../popup/tag-security-popup.module";
+import {TagService} from "../tag-info/tag.service";
 
 @NgModule({
   imports: [
     SharedModule,
     RepositoryHeaderModule,
     BuildDetailPopupModule,
+    TagSecurityPopupModule,
     BuildPopupModule,
     RouterModule.forChild([
       {
@@ -23,6 +26,7 @@ import {BuildPopupModule} from "../popup/build-popup.module";
     InfoComponent
   ],
   providers: [
+    TagService
   ]
 })
 export class InfoModule {

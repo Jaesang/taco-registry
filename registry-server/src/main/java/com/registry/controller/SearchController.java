@@ -177,7 +177,7 @@ public class SearchController {
                     if ((roles != null && roles.size() > 0) || value.getIsPublic()) {
                         SearchDto.VIEW item = mapper.map(value, SearchDto.VIEW.class);
                         item.kind = "image";
-                        item.stars = value.getRole().stream().filter(v -> v.getIsStarred()).count();
+                        item.stars = value.getStarreds().stream().filter(v -> v.getIsStarred()).count();
                         item.popularity = imageService.getPopularityCount(value.getNamespace(), value.getName());
 
                         SearchDto.VIEW namespace = new SearchDto.VIEW();

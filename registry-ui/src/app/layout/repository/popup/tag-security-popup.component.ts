@@ -69,7 +69,6 @@ export class TagSecurityPopupComponent extends AbstractComponent implements OnIn
   public ngOnChanges(changes: SimpleChanges): void {
     for (let propName in changes) {
       if (propName === 'imageId' && this.imageId) {
-        this.orgName = '';
         this.repo = this.repositoryService.repository;
         this.orgName = this.repo.namespace;
         this.repoName = this.repo.name;

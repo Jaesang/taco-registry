@@ -15,7 +15,7 @@ export namespace Repository {
     public popularity: number;
     public isOrganization: boolean;
     public stats: Stat[] = [];
-    public tags: any;
+    public tags: Tag.Entity[];
 	}
 
 	export class Stat {

@@ -22,6 +22,7 @@ import {Build} from "../build-history/build-history.value";
   templateUrl: 'create-popup.component.html'
 })
 export class CreateRepoPopupComponent extends AbstractComponent implements OnInit, OnChanges  {
+  public Main = Main;
 
   @ViewChild(SelectBoxComponent)
   private selectBox: SelectBoxComponent;
@@ -35,11 +36,13 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
   public namespaceType: Main.Type;
 
   public repo:Repository.Entity = new Repository.Entity();
+  public tag: string;
 
   public orgName: string;
   public errorMsg: string = '';
 
   public errorRepoName: boolean;
+  public errorTagName: boolean;
 
   public fileStatus: string;
   public dockerFileContent: string;
@@ -71,20 +74,22 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
 
   public ngOnChanges(changes: SimpleChanges): void {
     for (let propName in changes) {
-      if (propName === 'show') {
+      if (propName === 'show' && this.show) {
         this.errorMsg = '';
         this.orgName = '';
         this.repo = new Repository.Entity();
         this.repo.isPublic = false;
         this.createType = this.CreateType.DEFAULT;
         this.errorRepoName = false;
+        this.errorTagName = false;
         this.dockerFileContent = '';
         this.gitPath = '';
         this.gitUsername = '';
         this.gitPassword = '';
         this.minioPath = '';
         this.noCache = false;
-        this.initSelectList();
+        this.namespaceType = Main.Type.user;
+        this.repo.namespace = this.userService.user.username;
       }
     }
   }
@@ -97,23 +102,23 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
     this.onClose.emit();
   }
 
+  public namespaceTypeChange() {
+    if (this.namespaceType == Main.Type.user) {
+      this.repo.namespace = this.userService.user.username;
+    } else {
+      this.repo.namespace = null;
+      this.initSelectList();
+    }
+    this.checkValidate();
+  }
+
   /**
    * namespace 선택
    * @param item
    */
   public namespaceSelect(item: Select.Value) {
     this.repo.namespace = item.value;
-  }
-
-  /**
-   * repository name 변경
-   */
-  public repoNameChange() {
-    if (this.errorMsg != '') {
-      this.errorRepoName = true;
-    } else {
-      this.errorRepoName = false;
-    }
+    this.checkValidate();
   }
 
   /**
@@ -146,6 +151,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
     } else {
       this.fileStatus = 'error';
     }
+    this.checkValidate();
   }
 
   /**
@@ -175,6 +181,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
           build.minioPath = this.minioPath;
         }
         build.noCache = this.noCache;
+        build.tag = this.tag;
 
         this.buildService.build(this.repo.namespace, this.repo.name, build).then(result => {
           this.close();
@@ -196,52 +203,61 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
    * @returns {boolean}
    */
   public checkValidate() {
+    this.errorRepoName = false;
+    this.errorTagName = false;
+    let result = true;
 
     if (!Validate.checkValidateWithPattern('^[a-z0-9_-]+$', this.repo.namespace) || Validate.isEmpty(this.repo.namespace)) {
-      return false;
+      result = false;
     }
 
     if (!Validate.checkValidateWithPattern('^[a-z0-9_-]+$', this.repo.name) || Validate.isEmpty(this.repo.name)) {
       if (!Validate.isEmpty(this.repo.name)) {
-        this.errorMsg = 'error';
+        this.errorRepoName = true;
       }
-      return false;
+      result = false;
     }
 
-    this.errorMsg = '';
+    if (!Validate.isEmpty(this.tag) && !Validate.checkValidateWithPattern(/^[a-zA-Z0-9\_\-\.]+$/, this.tag)) {
+      this.errorTagName = true;
+      result = false;
+    }
 
     if (this.createType == this.CreateType.DOCKERFILE) {
       if (this.fileStatus != 'success') {
-        return false;
+        result = false;
       }
     } else if (this.createType == this.CreateType.GIT) {
       if (Validate.isEmpty(this.gitPath)) {
-        return false;
+        result = false;
       }
 
       if ((!Validate.isEmpty(this.gitUsername) && Validate.isEmpty(this.gitPassword)) ||
         (Validate.isEmpty(this.gitUsername) && !Validate.isEmpty(this.gitPassword))) {
-        return false;
+        result = false;
       }
     } else if (this.createType == this.CreateType.MINIO) {
       if (Validate.isEmpty(this.minioPath)) {
-        return false;
+        result = false;
       }
     }
 
-    return true;
+
+    return result;
   }
 
   /**
    * select 초기화
    */
   private initSelectList() {
-    let orgList = [new Select.Value(`${this.userService.user.username} (Private)` , this.userService.user.username, false)];
+    let orgList = [];
 
     this.userService.user.organizations.forEach(value => {
       orgList.push(new Select.Value(value.name, value.name, false));
     });
 
-    this.selectBox.init(orgList);
+    if (orgList.length) {
+      this.selectBox.init(orgList);
+    }
   }
 }

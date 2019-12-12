@@ -75,6 +75,11 @@ public class User extends AbstractEntity {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Role> role = new ArrayList<Role>();
 
+	/** 유저 Starred 목록 */
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	private List<Role> starreds = new ArrayList<Role>();
+
 	// 권한목록
 	@JsonProperty
 	@Transient

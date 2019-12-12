@@ -293,7 +293,7 @@ export class Validate {
    * @param text
    * @returns {boolean}
    */
-	public static checkValidateWithPattern(pattern: string, text: string): boolean {
+	public static checkValidateWithPattern(pattern: any, text: string): boolean {
     let regex = new RegExp(pattern);
 
     return regex.test(text);

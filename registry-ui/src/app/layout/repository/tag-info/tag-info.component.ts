@@ -316,6 +316,18 @@ export class TagInfoComponent extends PageComponent implements OnInit {
   }
 
   /**
+   * tagging latest
+   * @param tag
+   */
+  public taggingLatest(tag: Tag.Entity) {
+    this.createTag = new Tag.Entity();
+    this.createTag.oldTagName = tag.name;
+    this.createTag.name = 'latest';
+
+    this.addTagClick();
+  }
+
+  /**
    * delete tag 클릭(팝업)
    * @param tag
    */

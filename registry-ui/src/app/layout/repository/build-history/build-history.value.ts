@@ -74,6 +74,7 @@ export namespace Build {
     public gitPath: string;
     public gitUsername: string;
     public gitPassword: string;
+    public tag: string;
 
     public formattedStarted: string;
 	}

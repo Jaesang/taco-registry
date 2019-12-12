@@ -3,6 +3,7 @@ import {AbstractService} from "../../../common/service/abstract.service";
 import {Build} from "./build-history.value";
 import {environment} from "../../../../environments/environment";
 import {BehaviorSubject} from "rxjs";
+import {Validate} from "../../../common/utils/validate-util";
 
 /**
  * Build history 서비스
@@ -51,6 +52,10 @@ export class BuildHistoryService extends AbstractService {
 	  let url = `${environment.apiUrl}/image/${namespace}/${repo}/build/`;
 	  if (sourceBuild) {
 	    url += `?sourceBuildId=${sourceBuild.id}`;
+    }
+
+	  if (Validate.isEmpty(build.tag)) {
+	    build.tag = 'latest';
     }
     return this.post(url, build);
   }

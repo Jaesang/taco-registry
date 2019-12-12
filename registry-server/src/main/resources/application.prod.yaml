@@ -116,6 +116,25 @@ spring:
           import_files: /sql/init.sql
 ---
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# Product Update Profile
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+spring:
+  profiles: prod-update
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: ${APP_TIME_ZONE:'UTC'}
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        hbm2ddl:
+          import_files: /sql/init.sql
+---
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Log Profile
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 spring:

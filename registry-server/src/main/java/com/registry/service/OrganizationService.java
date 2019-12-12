@@ -207,7 +207,6 @@ public class OrganizationService extends AbstractService {
                     role.setUser(user);
                     role.setImage(value);
                     role.setName(Const.Role.ADMIN);
-                    role.setIsStarred(false);
 
                     addMembers.add(role);
                 }

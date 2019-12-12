@@ -16,32 +16,59 @@
     <ol class="list-repository">
       <li *ngFor="let item of repositoryList; let index = index;">
         <div class="box-main-card" [class.type-private]="!item.isPublic">
-          <a href="javascript:;" class="link-card" (click)="moveToDetail(item.namespace.name, item.name)">
-            <span class="card-repository">
-              <span class="txt-repository">{{ item.namespace.name }}/{{ item.name }}</span>
-              <span class="txt-desc">{{ item.description }}</span>
+
+          <span class="info-repository">
+            <span class="txt-scan type-success"
+                  *ngIf="securityData[item.namespace.name + '/' + item.name] && securityData[item.namespace.name + '/' + item.name].status != 'queued' &&
+                  securityData[item.namespace.name + '/' + item.name].fixableCount == 0 && securityData[item.namespace.name + '/' + item.name].vulnerabilityHighCount == 0" (click)="scanClick(item)">
+              Passed
+              <!-- Tooltip -->
+              <div class="component-tooltip">
+                <div class="box-tooltip">
+                  The image for this tag has no vulnerabilities as found in our database
+                </div>
+              </div>
+              <!-- //Tooltip -->
             </span>
 
+            <span class="txt-scan type-scan"
+                  *ngIf="securityData[item.namespace.name + '/' + item.name] && securityData[item.namespace.name + '/' + item.name].status != 'queued'
+                  && (securityData[item.namespace.name + '/' + item.name].fixableCount != 0 || securityData[item.namespace.name + '/' + item.name].vulnerabilityHighCount != 0)" (click)="scanClick(item)">
+              <em>{{ securityData[item.namespace.name + '/' + item.name].vulnerabilityHighCount }} High</em> · {{ securityData[item.namespace.name + '/' + item.name].fixableCount }} Fixable
+              <!-- Tooltip -->
+              <div class="component-tooltip">
+                <div class="box-tooltip">
+                  This tag has {{ securityData[item.namespace.name + '/' + item.name].fixableCount }} vulnerabilities across {{ securityData[item.namespace.name + '/' + item.name].fixablePackageCount }} packages
+                </div>
+              </div>
+              <!-- //Tooltip -->
+            </span>
+            <span class="txt-starred">{{ item.stars }}</span>
+            <!--
+              [D]
+              1개 : type-1st
+              2개 : type-2nd
+              3개 : type-3rd
+              4개 : type-4th
+              5개 이상 : type-max
+            -->
+            <ul class="component-activity" [class.type-1st]="item.popularity == 1" [class.type-2nd]="item.popularity == 2" [class.type-3rd]="item.popularity == 3" [class.type-4th]="item.popularity == 4" [class.type-max]="item.popularity >= 5">
+              <li class="bar"></li>
+              <li class="bar"></li>
+              <li class="bar"></li>
+              <li class="bar"></li>
+            </ul>
+
+            <span class="txt-status">{{ item.isPublic ? 'PUBLIC' : 'PRIVATE' }}</span>
+          </span>
+          <span class="card-repository">
+            <a href="javascript:;" (click)="moveToDetail(item.namespace.name, item.name)">
+              <span class="txt-repository">{{ item.namespace.name }}/{{ item.name }}</span>
+            </a>
             <span class="txt-date">
               Last Modified : {{ item.lastModified ? (item.lastModified | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}
             </span>
-            <span class="info-repository">
-              <span class="txt-starred">{{ item.stars }}</span>
-              <!--
-                  [D]
-                  1개 : type-1st
-                  2개 : type-2nd
-                  3개 : type-3rd
-                  4개 : typs-all
-              -->
-              <ul class="component-activity" [class.type-1st]="item.popularity == 1" [class.type-2nd]="item.popularity == 2" [class.type-3rd]="item.popularity == 3" [class.type-4th]="item.popularity == 4" [class.type-max]="item.popularity >= 5">
-                <li class="bar"></li>
-                <li class="bar"></li>
-                <li class="bar"></li>
-                <li class="bar"></li>
-              </ul>
-            </span>
-          </a>
+          </span>
         </div>
       </li>
     </ol>
@@ -75,3 +102,5 @@
   <!-- //Repository Table Nodata -->
 </div>
 <!-- //Page : Main -->
+
+<div tag-security-popup *ngIf="showTagSecurityPopup" [imageId]="selectedImage" [tag]="selectedTag" (onClose)="showTagSecurityPopup = false"></div>

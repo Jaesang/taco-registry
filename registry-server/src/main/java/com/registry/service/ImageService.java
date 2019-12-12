@@ -137,7 +137,6 @@ public class ImageService extends AbstractService {
         role.setImage(image);
         role.setUser(user);
         role.setName(Const.Role.ADMIN);
-        role.setIsStarred(false);
         members.add(role);
 
         if (image.getIsOrganization()) {
@@ -148,7 +147,6 @@ public class ImageService extends AbstractService {
                     r.setImage(image);
                     r.setUser(value.getUser());
                     r.setName(Const.Role.ADMIN);
-                    r.setIsStarred(false);
                     members.add(r);
                 }
             });
@@ -337,7 +335,6 @@ public class ImageService extends AbstractService {
             role.setUser(user);
             role.setImage(image);
             role.setName(roleName.toUpperCase());
-            role.setIsStarred(false);
 
             roleRepo.save(role);
         }

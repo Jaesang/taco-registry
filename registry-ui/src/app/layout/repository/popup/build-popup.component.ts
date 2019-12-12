@@ -15,12 +15,14 @@ import {Build} from "../build-history/build-history.value";
 import {Validate} from "../../../common/utils/validate-util";
 import {Utils} from "../../../common/utils/utils";
 import {UserService} from "../../user/user.service";
+import {Main} from "../../main/main.value";
 
 @Component({
   selector: '[build-popup]',
   templateUrl: 'build-popup.component.html'
 })
 export class BuildPopupComponent extends AbstractComponent implements OnInit, OnChanges {
+  public Main = Main;
 
   @ViewChild(FileUploadComponent)
   private fileUploader: FileUploadComponent;
@@ -33,9 +35,15 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
 
   public fileStatus: string;
 
+  public namespaceType: Main.Type;
+
   public orgName: string;
   public repoName: string;
   public errorMsg: string = '';
+
+  public errorTagName: boolean;
+
+  public tag: string;
 
   public CreateType: typeof Build.CreateType = Build.CreateType;
   public createType: Build.CreateType;
@@ -49,6 +57,8 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
   public minioPath: string;
 
   public uuid: string = Utils.Generate.UUID();
+
+  public validate: boolean;
 
   private dockerFileContent: string;
 
@@ -78,6 +88,8 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
         this.gitUsername = '';
         this.gitPassword = '';
         this.noCache = false;
+        this.errorTagName = false;
+        this.validate = false;
       }
     }
   }
@@ -119,6 +131,7 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
     } else {
       this.fileStatus = 'error';
     }
+    this.checkValidate();
   }
 
   /**
@@ -141,6 +154,7 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
       build.minioPath = this.minioPath;
     }
     build.noCache = this.noCache;
+    build.tag = this.tag;
 
     this.buildService.build(this.orgName, this.repoName, build).then(result => {
       this.buildService.newBuild.next(result);
@@ -161,29 +175,35 @@ export class BuildPopupComponent extends AbstractComponent implements OnInit, On
    * @returns {boolean}
    */
   public checkValidate() {
+    this.errorTagName = false;
+    let result = true;
 
-    this.errorMsg = '';
+    if (!Validate.isEmpty(this.tag) && !Validate.checkValidateWithPattern(/^[a-zA-Z0-9\_\-\.]+$/, this.tag)) {
+      this.errorTagName = true;
+      result = false;
+    }
 
     if (this.createType == this.CreateType.DOCKERFILE) {
       if (this.fileStatus != 'success') {
-        return false;
+        result = false;
       }
     } else if (this.createType == this.CreateType.GIT) {
       if (Validate.isEmpty(this.gitPath)) {
-        return false;
+        result = false;
       }
 
       if ((!Validate.isEmpty(this.gitUsername) && Validate.isEmpty(this.gitPassword)) ||
         (Validate.isEmpty(this.gitUsername) && !Validate.isEmpty(this.gitPassword))) {
-        return false;
+        result = false;
       }
     } else if (this.createType == this.CreateType.MINIO) {
       if (Validate.isEmpty(this.minioPath)) {
-        return false;
+        result = false;
       }
     }
 
-    return true;
+    this.validate = result;
+    return result;
   }
 
 }

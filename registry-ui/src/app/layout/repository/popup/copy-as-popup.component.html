@@ -54,7 +54,31 @@
                   <p class="txt-desc">Once Created, all files will be copied.</p>
                 </td>
               </tr>
-              <tr>
+
+              <tr class="type-option">
+                <th>
+                  <label class="txt-label">Namespace</label>
+                </th>
+                <td>
+                  <div class="option-area">
+                    <div class="component-radio">
+                      <input type="radio" id="radio_namespaceType_1" name="namespaceType" class="input-radio" [value]="Main.Type.user" [(ngModel)]="namespaceType" (change)="namespaceTypeChange()">
+                      <label for="radio_namespaceType_1" class="label">
+                        <span class="icon-radio"></span>
+                        <span class="txt-label">Personal</span>
+                      </label>
+                    </div>
+                    <div class="component-radio" *ngIf="this.userService.user.organizations.length">
+                      <input type="radio" id="radio_namespaceType_2" name="namespaceType" class="input-radio" [value]="Main.Type.organization" [(ngModel)]="namespaceType" (change)="namespaceTypeChange()">
+                      <label for="radio_namespaceType_2" class="label">
+                        <span class="icon-radio"></span>
+                        <span class="txt-label">Organization</span>
+                      </label>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="this.userService.user.organizations.length" [hidden]="namespaceType != Main.Type.organization">
                 <th>
                   <label class="txt-label">Organization</label>
                 </th>
@@ -71,12 +95,26 @@
                 <td>
                   <div class="component-input" [class.is-error]="errorRepoName">
                     <div class="input-area">
-                      <input type="text" class="input-text" placeholder="Image Name" [(ngModel)]="repo.name" (keyup)="repoNameChange()" maxlength="40">
+                      <input type="text" class="input-text" placeholder="Image Name" [(ngModel)]="repo.name" (keyup)="checkValidate()" maxlength="40">
                       <a href="javascript:;" class="btn-clear" aria-label="Clear"></a>
                     </div>
                     <span class="txt-error">Image names must match [a-z0-9_-]+</span>
                   </div>
                   <p class="txt-desc">Only alphabetical lower case letters, numbers and -_ +] can be entered as the image name.</p>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <label class="txt-label">Tag Name</label>
+                </th>
+                <td>
+                  <div class="component-input" [class.is-error]="errorTagName">
+                    <div class="input-area">
+                      <input type="text" class="input-text" placeholder="latest" [(ngModel)]="tag" (keyup)="checkValidate()" maxlength="40">
+                      <a href="javascript:;" class="btn-clear" aria-label="Clear" (click)="tag = ''" tabIndex="-1"></a>
+                    </div>
+                    <span class="txt-error">Tag names must match [a-z0-9_-.]+</span>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -136,7 +174,7 @@
         <div class="button-block">
           <button type="button" class="btn-basic type-small" (click)="close()">Cancel</button>
           <!-- [D] Success 인 경우 disabled 속성 제거 -->
-          <button type="button" class="btn-action type-small" [disabled]="!checkValidate()" (click)="createRepoClick()">Create {{ repo.isPublic ? 'Public' : 'Private' }} Image</button>
+          <button type="button" class="btn-action type-small" [disabled]="!validate" (click)="createRepoClick()">Create {{ repo.isPublic ? 'Public' : 'Private' }} Image</button>
         </div>
       </div>
 

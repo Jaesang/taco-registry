@@ -32,6 +32,7 @@ import CreateType = Build.CreateType;
 })
 export class CopyAsPopupComponent extends AbstractComponent implements OnInit, OnDestroy {
 
+  public Main = Main;
   public CreateType = CreateType;
 
   @ViewChild(SelectBoxComponent)
@@ -53,11 +54,15 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
 
   public baseRepo:Repository.Entity = new Repository.Entity();
   public repo:Repository.Entity = new Repository.Entity();
+  public tag: string;
 
   public orgName: string;
   public errorMsg: string = '';
 
   public errorRepoName: boolean;
+  public errorTagName: boolean;
+
+  public validate: boolean;
 
   public dockerFileContent: string;
 
@@ -103,15 +108,17 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
 
   ngOnInit() {
     this.errorMsg = '';
-    this.orgName = '';
     this.baseRepo = this.repositoryService.repository;
     this.repo = new Repository.Entity();
     this.repo.isPublic = false;
     this.errorRepoName = false;
+    this.errorTagName = false;
     this.dockerFileContent = '';
     this.minioPath = '';
+    this.namespaceType = Main.Type.user;
+    this.repo.namespace = this.userService.user.username;
+    this.validate = false;
     this.getLastDockerfile();
-    this.initSelectList();
   }
 
   ngOnDestroy() {
@@ -127,23 +134,23 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
     this.onClose.emit();
   }
 
+  public namespaceTypeChange() {
+    if (this.namespaceType == Main.Type.user) {
+      this.repo.namespace = this.userService.user.username;
+    } else {
+      this.repo.namespace = null;
+      this.initSelectList();
+    }
+    this.checkValidate();
+  }
+
   /**
    * namespace 선택
    * @param item
    */
   public namespaceSelect(item: Select.Value) {
     this.repo.namespace = item.value;
-  }
-
-  /**
-   * repository name 변경
-   */
-  public repoNameChange() {
-    if (this.errorMsg != '') {
-      this.errorRepoName = true;
-    } else {
-      this.errorRepoName = false;
-    }
+    this.checkValidate();
   }
 
   /**
@@ -164,6 +171,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
       if (this.createType == CreateType.MINIO) {
         build.minioPath = this.minioPath;
       }
+      build.tag = this.tag;
 
       this.buildService.build(this.repo.namespace, this.repo.name, build, this.sourceBuild).then(result => {
         this.close();
@@ -184,43 +192,52 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
    * @returns {boolean}
    */
   public checkValidate() {
+    this.errorRepoName = false;
+    this.errorTagName = false;
+    let result = true;
 
     if (!Validate.checkValidateWithPattern('^[a-z0-9_-]+$', this.repo.namespace) || Validate.isEmpty(this.repo.namespace)) {
-      return false;
+      result = false;
     }
 
     if (!Validate.checkValidateWithPattern('^[a-z0-9_-]+$', this.repo.name) || Validate.isEmpty(this.repo.name)) {
       if (!Validate.isEmpty(this.repo.name)) {
-        this.errorMsg = 'error';
+        this.errorRepoName = true;
       }
-      return false;
+      result = false;
+    }
+
+    if (!Validate.isEmpty(this.tag) && !Validate.checkValidateWithPattern(/^[a-zA-Z0-9\_\-\.]+$/, this.tag)) {
+      this.errorTagName = true;
+      result = false;
     }
 
     if (this.createType != CreateType.MINIO && !this.dockerService.validDockerFile(this.editor.value)) {
-      return false;
+      result = false;
     }
 
     if (this.createType == CreateType.MINIO && Validate.isEmpty(this.minioPath)) {
-      return false;
+      result = false;
     }
 
-    this.errorMsg = '';
+    this.validate = result;
 
-    return true;
+    return result;
   }
 
   /**
    * select 초기화
    */
   private initSelectList() {
-    let orgList = [new Select.Value(`${this.userService.user.username} (Private)`, this.userService.user.username, true)];
+    let orgList = [];
 
     this.userService.user.organizations.forEach(value => {
       orgList.push(new Select.Value(value.name, value.name, false));
     });
 
-    this.selectBox.init(orgList);
-    this.repo.namespace = orgList[0].value;
+    if (orgList.length) {
+      this.selectBox.init(orgList);
+    }
   }
 
   /**
