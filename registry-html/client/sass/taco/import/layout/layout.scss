@@ -457,6 +457,9 @@ main {
         @extend %box-sizing;
 
         [class*="page-"] {
+            padding:0 106px 95px 186px;
+        }
+        .page-main {
             padding:0 186px 95px;
         }
     }
@@ -527,12 +530,12 @@ main {
     }
     .taco-wrap .layout-content {
         [class*="page-"] {
-            width:1068px;
-            margin:0 auto;
-            padding:0 0 95px;
+            //width:1068px;
+            //margin:0 auto;
+            //padding:0 0 95px;
         }
         .page-main {
-            width:1192px;
+            //width:1192px;
         }
     }
     .taco-wrap .layout-header {
@@ -543,8 +546,8 @@ main {
 @media screen and (min-width: 1920px) {
     .taco-wrap .layout-content {
         [class*="page-"] {
-            width:1548px;
-            padding:0 0 95px 186px;
+            //width:1548px;
+            //padding:0 106px 95px 186px;
         }
     }
 }
