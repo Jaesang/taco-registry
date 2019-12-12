@@ -14,6 +14,8 @@
             @include flex(auto);
         }
         .right-info {
+            width:440px;
+            min-width:440px;
             padding-left:40px;
 
             @include flex(initial);
