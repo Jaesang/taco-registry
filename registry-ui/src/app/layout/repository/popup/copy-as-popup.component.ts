@@ -97,7 +97,7 @@ export class CopyAsPopupComponent extends AbstractComponent implements OnInit, O
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
               public buildHistoryService: BuildHistoryService,
-              private userService: UserService,
+              public userService: UserService,
               private fileService: FileService,
               private buildService: BuildHistoryService,
               private dockerService: DockerService,
