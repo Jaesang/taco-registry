@@ -75,7 +75,7 @@
 									<input type="checkbox" class="input-checkbox" id="starred01" checked>
 									<label for="starred01" class="txt-label"></label>
 								</div>
-								<span class="type-private"></span>
+								<span class="txt-status">PUBLIC</span>
 							</div>
 							
 							<div class="buttons">
@@ -199,42 +199,77 @@
 					<div class="right-info">
 						<h3 class="txt-title">Recent Activity</h3>
 						<div class="detail-area">
-							<table class="table-activity">
-								<colgroup>
-									<col width="" />
-									<col width="" />
-									<col width="" />
-									<col width="" />
-								</colgroup>
-								<thead>
+							<div class="component-table">
+								<table class="table-tags">
+									<colgroup>
+										<col width="200" />
+										<col width="*" />
+									</colgroup>
+									<thead>
 									<tr>
-										<th></th>
-										<th>November</th>
-										<th>December</th>
-										<th>January</th>
+										<th>
+											Tags
+										</th>
+										<th>
+											Sicurity Scan
+										</th>
 									</tr>
-								</thead>
-								<tbody>
+									</thead>
+									<tbody>
 									<tr>
-										<th>1</th>
-										<td>0</td>
-										<td>1,234</td>
-										<td>999</td>
+										<td>
+											Latest
+										</td>
+										<td>
+										<span class="txt-scan type-success">
+											Passed
+											<!-- Tooltip -->
+											<div class="component-tooltip">
+												<div class="box-tooltip">
+													Passed Tooltip Description
+												</div>
+											</div>
+											<!-- //Tooltip -->
+										</span>
+										</td>
 									</tr>
 									<tr>
-										<th>2</th>
-										<td>0</td>
-										<td>1,234</td>
-										<td>999</td>
+										<td>
+											Latest
+										</td>
+										<td>
+										<span class="txt-scan type-fail">
+											Could not load
+											<!-- Tooltip -->
+											<div class="component-tooltip">
+												<div class="box-tooltip">
+													The vulnerabilities for this tag could not be retrieved at the present time, try again later
+												</div>
+											</div>
+											<!-- //Tooltip -->
+										</span>
+										</td>
 									</tr>
 									<tr>
-										<th>3</th>
-										<td class="is-nothing"></td>
-										<td>1,234</td>
-										<td class="is-nothing"></td>
+										<td>
+											Latest
+										</td>
+										<td>
+										<span class="txt-scan type-scan">
+											<em>2 High</em> · 8 Fixable
+											<!-- Tooltip -->
+											<div class="component-tooltip">
+												<div class="box-tooltip">
+													This tag has 5 vulnerabilities across 3 packages
+												</div>
+											</div>
+											<!-- //Tooltip -->
+										</span>
+										</td>
 									</tr>
-								</tbody>
-							</table>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 					<!-- //오른쪽 영역 -->
