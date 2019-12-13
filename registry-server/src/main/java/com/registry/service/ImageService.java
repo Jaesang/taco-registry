@@ -13,12 +13,14 @@ import com.registry.repository.usage.LogRepository;
 import com.registry.repository.user.Role;
 import com.registry.repository.user.RoleRepository;
 import com.registry.repository.user.User;
+import com.registry.util.PageableUtil;
 import com.registry.util.SecurityUtil;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by boozer on 2019. 7. 15
@@ -273,7 +276,23 @@ public class ImageService extends AbstractService {
         logger.info("getImagesByContainName name : {}", name);
         logger.info("getImagesByContainName pageable : {}", pageable);
 
-        return imageRepo.getImagesByNameContaining(name, pageable);
+        User user = userService.getUser(SecurityUtil.getUser());
+        if (user.getSuperuser()) {
+            return imageRepo.getImagesByNameContaining(name, pageable);
+        } else {
+            List<Image> images = imageRepo.getImagesByNameContaining(name);
+            images = images.stream().filter(value -> {
+                List<Role> roles = value.getRole().stream().filter(v -> v.getUser().getUsername().equals(SecurityUtil.getUser())).collect(Collectors.toList());
+                // 권한이 있거나 public Image
+                if ((roles != null && roles.size() > 0) || value.getIsPublic()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }).collect(Collectors.toList());
+
+            return new PageImpl<>(PageableUtil.subList(images, pageable), pageable, images.size());
+        }
     }
 
     /**

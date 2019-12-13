@@ -115,20 +115,26 @@ public class SearchController {
             results.add(item);
         });
         images.stream().forEach(value -> {
-            // 권한이 있거나 public Image 만 결과로 보여줌
-            List<Role> roles = value.getRole().stream().filter(v -> v.getUser().getUsername().equals(SecurityUtil.getUser())).collect(Collectors.toList());
-            if ((roles != null && roles.size() > 0) || value.getIsPublic()) {
-                SearchDto.VIEW item = new SearchDto.VIEW();
-                item.kind = "image";
-                item.name = value.getName();
+            SearchDto.VIEW item = new SearchDto.VIEW();
+            item.kind = "image";
+            item.name = value.getName();
 
-                SearchDto.VIEW namespace = new SearchDto.VIEW();
-                namespace.name = value.getNamespace();
-                namespace.kind = value.getIsOrganization() ? "organization" : "user";
-                item.namespace = namespace;
+            SearchDto.VIEW namespace = new SearchDto.VIEW();
+            namespace.name = value.getNamespace();
+            namespace.kind = value.getIsOrganization() ? "organization" : "user";
+            item.namespace = namespace;
 
+            User user = userService.getUser(SecurityUtil.getUser());
+            if (!user.getSuperuser()) {
+                // 권한이 있거나 public Image 만 결과로 보여줌
+                List<Role> roles = value.getRole().stream().filter(v -> v.getUser().getUsername().equals(SecurityUtil.getUser())).collect(Collectors.toList());
+                if ((roles != null && roles.size() > 0) || value.getIsPublic()) {
+                    results.add(item);
+                }
+            } else {
                 results.add(item);
             }
+
         });
 
         result.put("content", results);
@@ -172,20 +178,16 @@ public class SearchController {
         result.getContent()
                 .stream()
                 .forEach(value -> {
-                    // 권한이 있거나 public Image 만 결과로 보여줌
-                    List<Role> roles = value.getRole().stream().filter(v -> v.getUser().getUsername().equals(SecurityUtil.getUser())).collect(Collectors.toList());
-                    if ((roles != null && roles.size() > 0) || value.getIsPublic()) {
-                        SearchDto.VIEW item = mapper.map(value, SearchDto.VIEW.class);
-                        item.kind = "image";
-                        item.stars = value.getStarreds().stream().filter(v -> v.getIsStarred()).count();
-                        item.popularity = imageService.getPopularityCount(value.getNamespace(), value.getName());
+                    SearchDto.VIEW item = mapper.map(value, SearchDto.VIEW.class);
+                    item.kind = "image";
+                    item.stars = value.getStarreds().stream().filter(v -> v.getIsStarred()).count();
+                    item.popularity = imageService.getPopularityCount(value.getNamespace(), value.getName());
 
-                        SearchDto.VIEW namespace = new SearchDto.VIEW();
-                        namespace.name = value.getNamespace();
-                        namespace.kind = value.getIsOrganization() ? "organization" : "user";
-                        item.namespace = namespace;
-                        collect.add(item);
-                    }
+                    SearchDto.VIEW namespace = new SearchDto.VIEW();
+                    namespace.name = value.getNamespace();
+                    namespace.kind = value.getIsOrganization() ? "organization" : "user";
+                    item.namespace = namespace;
+                    collect.add(item);
                 });
 
         return new PageImpl<>(collect, pageable, result.getTotalElements());

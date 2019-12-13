@@ -184,6 +184,10 @@ export class InfoComponent extends PageComponent implements OnInit {
 
       this.tagList = [];
 
+      result.tags = Array.from(result.tags).sort(function(a, b) {
+        // 내림차순
+        return a.lastModified > b.lastModified ? -1 : a.lastModified < b.lastModified ? 1 : 0;
+      });
       Array.from(result.tags).forEach((value, index) => {
         if (index > 4) {
           return;

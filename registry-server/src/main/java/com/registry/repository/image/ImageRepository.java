@@ -26,14 +26,14 @@ public interface ImageRepository extends JpaRepository<Image, UUID>{
     List<Image> getImages(@Param("namespace") String namespace);
 
     @Query("select image from Image image " +
-            "where image.name like concat('%', :name, '%') " +
-            "and image.delYn = false " +
+            "where image.delYn = false " +
+            "and image.name like concat('%', :name, '%') " +
             "order by image.createdDate desc")
     Page<Image> getImagesByNameContaining(@Param("name") String name, Pageable pageable);
 
     @Query("select image from Image image " +
-            "where image.name like concat('%', :name, '%') " +
-            "and image.delYn = false " +
+            "where image.delYn = false " +
+            "and image.name like concat('%', :name, '%') " +
             "order by image.createdDate desc")
     List<Image> getImagesByNameContaining(@Param("name") String name);
 
