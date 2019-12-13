@@ -131,9 +131,9 @@
             <!-- Layer Setting -->
             <div class="layer-setting" [attr.aria-expanded]="index == currentSettingIndex">
               <a href="javascript:;" class="link-item type-add" (click)="addNewTagPopupClick(item)" *ngIf="item.buildId != null">Add New Tag</a>
+              <a href="javascript:;" class="link-item type-add" (click)="taggingLatest(item)">Tagging "latest"</a>
               <a href="javascript:;" class="link-item type-delete" (click)="deleteTagPopupClick(item)">Delete Tag</a>
               <a href="javascript:;" class="link-item type-change" (click)="changeExpirationPopupClick(item)">Change Expiration</a>
-              <a href="javascript:;" class="link-item type-add" (click)="taggingLatest(item)">Tagging "latest"</a>
             </div>
             <!-- //Layer Setting -->
           </div>
