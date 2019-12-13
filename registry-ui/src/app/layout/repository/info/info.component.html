@@ -11,7 +11,7 @@
       <h3 class="txt-title">Description</h3>
       <div class="detail-area">
         <div class="component-textarea">
-          <textarea class="textarea" placeholder="Team Description"  [(ngModel)]="repo.description" [readonly]="!mine"></textarea>
+          <textarea class="textarea" placeholder="Description"  [(ngModel)]="repo.description" [readonly]="!mine"></textarea>
         </div>
         <div class="button-block" *ngIf="mine">
           <button type="button" class="btn-sub" (click)="saveClick()">Save</button>
