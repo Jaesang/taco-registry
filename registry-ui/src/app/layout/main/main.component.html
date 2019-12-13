@@ -63,7 +63,7 @@
           </span>
           <span class="card-repository">
             <a href="javascript:;" (click)="moveToDetail(item.namespace.name, item.name)">
-              <span class="txt-repository">{{ item.namespace.name }}/{{ item.name }}</span>
+              <span class="txt-repository" [title]="item.namespace.name + '/' + item.name">{{ item.namespace.name }}/{{ item.name }}</span>
             </a>
             <span class="txt-date">
               Last Modified : {{ item.lastModified ? (item.lastModified | dateTimeFormat:'YYYY-MM-DD HH:mm') : '(Empty Image)' }}
