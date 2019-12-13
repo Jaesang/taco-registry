@@ -1,16 +1,17 @@
 import {
-  Component, OnInit, ElementRef, Injector, Input, Output, EventEmitter, OnChanges,
-  SimpleChanges, ViewChild
+  Component,
+  ElementRef,
+  EventEmitter,
+  Injector,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
 } from "@angular/core";
 import {AbstractComponent} from "../../../common/component/abstract.component";
-import {DockerService} from "../../../common/service/docker.service";
-import {FileService} from "../../../common/service/file.service";
-import {FileUploadComponent} from "../../../common/component/file-upload/file-upload.component";
 import {BuildHistoryService} from "../build-history/build-history.service";
 import {RepositoryService} from "../repository.service";
-import {OrganizationService} from "../../organization/organization.service";
-import {CommonConstant} from "../../../common/constant/common-constant";
-import {Alert} from "../../../common/utils/alert-util";
 import {TagService} from "../tag-info/tag.service";
 import {Repository} from "../repository.value";
 import {Image} from "../tag-info/image.value";
@@ -21,9 +22,6 @@ import {Tag} from "../tag-info/tag.value";
   templateUrl: 'tag-layer-popup.component.html'
 })
 export class TagLayerPopupComponent extends AbstractComponent implements OnInit, OnChanges {
-
-  @Input()
-  public show: boolean = false;
 
   @Input()
   public imageId: string;
@@ -40,6 +38,8 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
   public repoName: string;
 
   public layerList: Image.Layer[] = [];
+
+  public isError: boolean = false;
 
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
@@ -68,7 +68,6 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
   }
 
   public close() {
-    this.show = false;
     this.onClose.emit();
   }
 
@@ -86,6 +85,8 @@ export class TagLayerPopupComponent extends AbstractComponent implements OnInit,
         this.setCommand(value);
         this.layerList.push(value);
       });
+    }).catch(reason => {
+      this.isError = true;
     });
   }
 
