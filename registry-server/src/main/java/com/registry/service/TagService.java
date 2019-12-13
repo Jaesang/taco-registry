@@ -121,27 +121,13 @@ public class TagService extends AbstractService {
 
         LocalDateTime now = LocalDateTime.now();
 
-        // sync with builder
-        externalService.syncWithBuilder(tag.getImage().getNamespace(), tag.getImage().getName());
-
         Tag preTag = tagRepo.getTagByTagName(tag.getImage().getId(), tag.getName());
-        if ("latest".equals(tag.getName())) {
-            if (preTag != null) {
-                // 기존 latest tag update
-                preTag.setBuildId(tag.getBuildId());
-                preTag.setDockerImageId(tag.getDockerImageId());
-                tag = preTag;
-            } else {
-                tag.setStartTime(now);
-            }
+        if (preTag != null) {
+            // 기존 tag update
+            preTag.setBuildId(tag.getBuildId());
+            preTag.setDockerImageId(tag.getDockerImageId());
+            tag = preTag;
         } else {
-            if (preTag != null) {
-                // 같은 이름의 태그는 삭제
-                preTag.setEndTime(now);
-                preTag.setExpiration(now);
-                tagRepo.save(preTag);
-            }
-
             tag.setStartTime(now);
         }
         tagRepo.save(tag);
@@ -299,15 +285,8 @@ public class TagService extends AbstractService {
 
         Image image = imageRepo.getImage(namespace, name);
 
-        // 기존 살아있는 태그 중에 같은 이름이 있는지 체크
-        Tag preTag = tagRepo.getTagByTagName(image.getId(), tagName);
-
-        if (preTag != null) {
-            throw new BadRequestException(MessageFormat.format("{0} is already applied to this image.", tagName));
-        }
-
         // 복사할 tag(원본)가 있는지 체크
-        preTag = tagRepo.getTagByTagName(image.getId(), oldTagName);
+        Tag preTag = tagRepo.getTagByTagName(image.getId(), oldTagName);
 
         if (preTag == null) {
             throw new BadRequestException("source tag not exists");

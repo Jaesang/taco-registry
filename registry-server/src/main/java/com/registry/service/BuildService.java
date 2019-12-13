@@ -166,6 +166,13 @@ public class BuildService extends AbstractService {
         tag.setDockerImageId(UUID.randomUUID().toString());
         tagService.createTag(tag);
 
+        // latest tag 가 없으면 생성
+        Tag latestTag = tagService.getTags(tag.getImage().getNamespace(), tag.getImage().getName()).stream().filter(value -> "latest".equals(value.getName())).findFirst().orElse(null);
+        if (latestTag == null) {
+            tag.setName("latest");
+            tagService.createTag(tag);
+        }
+
         // 로그 등록
         Organization org = organizationService.getOrg(image.getNamespace());
         Log log = new Log();

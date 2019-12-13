@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -28,6 +29,8 @@ import LogType = Build.LogType;
   templateUrl: 'build-detail-popup.component.html'
 })
 export class BuildDetailPopupComponent extends AbstractComponent implements OnInit, OnDestroy, OnChanges {
+
+  @ViewChild('logArea') private logArea: ElementRef;
 
   public LogType = LogType;
 
@@ -65,6 +68,7 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
   constructor(protected elementRef: ElementRef,
               protected injector: Injector,
               public buildHistoryService: BuildHistoryService,
+              private cdRef: ChangeDetectorRef,
               private repositoryService: RepositoryService) {
 
     super(elementRef, injector);
@@ -271,6 +275,8 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
 
     this.buildHistoryService.getBuildLogList(this.namespace, this.repoName, this.buildId).then(result => {
       this.setLogs(result);
+      this.cdRef.detectChanges();
+      this.scrollToBottom();
 
       // this.loaderService.show.next(false);
     }).catch(reason => {
@@ -333,4 +339,9 @@ export class BuildDetailPopupComponent extends AbstractComponent implements OnIn
     });
   }
 
+  private scrollToBottom(): void {
+    try {
+      this.logArea.nativeElement.scrollTop = this.logArea.nativeElement.scrollHeight;
+    } catch(err) { }
+  }
 }
