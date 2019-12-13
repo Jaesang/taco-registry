@@ -72,6 +72,9 @@ public class ExternalAPIService extends AbstractService {
     private RoleRepository roleRepo;
 
     @Autowired
+    private BuildRepository buildRepo;
+
+    @Autowired
     private UserOrganizationRepository userOrgRepo;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -600,14 +603,18 @@ public class ExternalAPIService extends AbstractService {
             List<Tag> tag = syncTags.stream()
                     .filter(v -> v.getName().equals(value.getName()))
                     .collect(Collectors.toList());
-            if (tag == null || tag.size() == 0) {
+            if ((tag == null || tag.size() == 0)) {
                 logger.info("syncTags : delete tag");
                 logger.info("tag name : {}", value.getName());
 
-                LocalDateTime now = LocalDateTime.now();
-                value.setExpiration(now);
-                value.setEndTime(now);
-                tagRepo.save(value);
+                Build build = buildRepo.getOne(value.getBuildId());
+                // build 중 인 것 제외하고 삭제
+                if (build != null && ("complete".equals(build.getStatus()) || "error".equals(build.getStatus()) || "cancelled".equals(build.getStatus()))) {
+                    LocalDateTime now = LocalDateTime.now();
+                    value.setExpiration(now);
+                    value.setEndTime(now);
+                    tagRepo.save(value);
+                }
             }
         });
     }
