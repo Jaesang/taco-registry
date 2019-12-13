@@ -320,6 +320,7 @@ export class TagInfoComponent extends PageComponent implements OnInit {
    * @param tag
    */
   public taggingLatest(tag: Tag.Entity) {
+    this.currentSettingIndex = -1;
     this.createTag = new Tag.Entity();
     this.createTag.oldTagName = tag.name;
     this.createTag.name = 'latest';
