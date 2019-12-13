@@ -169,8 +169,12 @@ public class BuildService extends AbstractService {
         // latest tag 가 없으면 생성
         Tag latestTag = tagService.getTags(tag.getImage().getNamespace(), tag.getImage().getName()).stream().filter(value -> "latest".equals(value.getName())).findFirst().orElse(null);
         if (latestTag == null) {
-            tag.setName("latest");
-            tagService.createTag(tag);
+            latestTag = new Tag();
+            latestTag.setImage(tag.getImage());
+            latestTag.setBuildId(tag.getBuildId());
+            latestTag.setName("latest");
+            latestTag.setDockerImageId(tag.getDockerImageId());
+            tagService.createTag(latestTag);
         }
 
         // 로그 등록
