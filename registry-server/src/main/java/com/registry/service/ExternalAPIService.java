@@ -171,6 +171,34 @@ public class ExternalAPIService extends AbstractService {
     }
 
     /**
+     * 빌더와 싱크
+     */
+    @Transactional
+    public void syncWithBuilder(String namespace, String imageName, String tag) {
+        boolean result = true;
+
+        try {
+            URI builderHost = this.getBuilderUri();
+            if (builderHost == null) {
+                return;
+            }
+            String url = MessageFormat.format("{0}/v1/registry/repositories/{1}/{2}", builderHost, namespace, imageName);
+            logger.info("syncWithBuilder : {}", url);
+            LinkedHashMap body = (LinkedHashMap) restApiUtil.excute(url, HttpMethod.GET, null, Object.class);
+            if (body != null) {
+                syncImage(body, tag);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            result = false;
+        }
+
+        if (!result) {
+            throw new UnknownServerException("sync fail");
+        }
+    }
+
+    /**
      * builder URL 조회
      * loadBalancer(ribbon) 사용
      * @return
@@ -617,6 +645,116 @@ public class ExternalAPIService extends AbstractService {
                 }
             }
         });
+    }
+
+    /**
+     * sync Image
+     * @param image
+     * @param tagName
+     * @return
+     */
+    private Image syncImage(Map<String, Object> image, String tagName) {
+        String name = (String) image.get("name");
+        String[] names = name.split("/");
+        if (names.length != 2) {
+            // org/image or user/image 형태의 이름이 아니면 싱크하지 않음
+            return null;
+        }
+
+        String namespace = names[0];
+        String imageName = names[1];
+
+        logger.info("syncImage");
+        logger.info("namespace : {}", namespace);
+        logger.info("name : {}", imageName);
+
+        Organization org = organizationService.getOrg(namespace);
+        User user = userService.getUser(namespace);
+
+        if (org == null && user == null) {
+            // org / user 둘중 하나라도 정보가 있어야 싱크
+            return null;
+        }
+
+        Image img = imageService.getImage(namespace, imageName);
+        if (img == null) {
+
+            img = new Image();
+            img.setNamespace(namespace);
+            img.setName(imageName);
+            img.setDelYn(false);
+
+            if (org != null) {
+                img.setIsOrganization(true);
+            } else {
+                img.setIsOrganization(false);
+            }
+
+            img.setIsPublic(true);
+            imageRepo.save(img);
+
+            if (org != null) {
+
+                List<Role> members = new ArrayList<>();
+                List<UserOrganization> userOrgs = userOrgRepo.getUserOrgs(org.getId());
+                Image i = img;
+                userOrgs.stream().forEach(value -> {
+                    Role role = new Role();
+                    role.setUser(value.getUser());
+                    role.setImage(i);
+                    role.setName(Const.Role.ADMIN);
+                    members.add(role);
+                });
+
+                roleRepo.saveAll(members);
+            } else {
+                Role role = new Role();
+                role.setImage(img);
+                role.setUser(user);
+                role.setName(Const.Role.ADMIN);
+                roleRepo.save(role);
+            }
+        }
+
+        // find tag
+        List<Map<String, Object>> tags = (List) image.get("tags");
+        Map tag = tags.stream().filter(value -> tagName.equals(value.get("name"))).findFirst().orElse(null);
+        if (tag != null) {
+            syncTag(img, tag);
+        }
+
+        return img;
+    }
+
+    private void syncTag(Image image, Map tag) {
+        String tagName = (String) tag.get("name");
+        String digest = (String) tag.get("digest");
+
+        Tag tagEntity = tagRepo.getTagByTagName(image.getId(), tagName);
+        if (tagEntity == null) {
+            logger.info("syncTags : create tag");
+            logger.info("tag name : {}", tagName);
+
+            tagEntity = new Tag();
+            tagEntity.setImage(image);
+            tagEntity.setName(tagName);
+            tagEntity.setManifestDigest(digest);
+            tagEntity.setDockerImageId(UUID.randomUUID().toString());
+            tagEntity.setStartTime(LocalDateTime.now());
+            tagRepo.save(tagEntity);
+        } else {
+            tagEntity.setManifestDigest(digest);
+            tagEntity.setDockerImageId(UUID.randomUUID().toString());
+            tagEntity.setStartTime(LocalDateTime.now());
+            tagRepo.save(tagEntity);
+        }
+
+        try {
+            // security scan 요청
+            this.createSecurity(image.getNamespace(), image.getName(), tagName);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

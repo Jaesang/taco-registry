@@ -187,6 +187,14 @@ public class Path {
     public static final String SEARCH_ALL                   = API + "/find/all";
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	| Notification
+	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+
+    // Noti
+    // (POST) 목록
+    public static final String NOTI                         = API + "/notification";
+
+    /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
    | Download
    |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
