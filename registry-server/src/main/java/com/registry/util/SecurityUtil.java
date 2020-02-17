@@ -25,7 +25,7 @@ public class SecurityUtil {
             Object principal    = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user           = principal instanceof User ? (User) principal : null;
             String anonymous    = principal instanceof String ? (String) principal : null;
-            username     = user != null ? user.getUsername() : anonymous;
+            username     = user != null ? user.getUsername() : "admin";
         } catch (Exception e) {
             username = "admin";
         }
