@@ -49,8 +49,8 @@ public class BuilderScheduler {
     @Resource(name="redisTemplate")
     private ValueOperations<String, String> valueOperations;
 
-    // builder의 image, tag 동기화 모듈 (10분 마다)
-    @Scheduled(fixedDelay = 1000 * 60 * 10)
+    // builder의 image, tag 동기화 모듈 (30분 마다)
+    @Scheduled(fixedDelay = 1000 * 60 * 30)
     public void syncWithBuilder() {
         externalService.syncWithBuilder();
     }
