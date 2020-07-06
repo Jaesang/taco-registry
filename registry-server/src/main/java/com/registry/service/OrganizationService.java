@@ -11,11 +11,10 @@ import com.registry.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -126,6 +125,11 @@ public class OrganizationService extends AbstractService {
     @Transactional
     public void deleteOrg(String name) {
         logger.info("deleteOrg name : {}", name);
+
+        List images = imageService.getImages(name);
+        if (images.size() > 0) {
+            throw new BadRequestException(MessageFormat.format("After deleting all images, you can delete the {0}.", name));
+        }
 
         // 권한 체크
         checkAuth(name);
