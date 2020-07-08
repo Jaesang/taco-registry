@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -164,7 +165,7 @@ public class UserService extends AbstractService {
         logger.info("saveUser rolename : {}", rolename);
         logger.info("saveUser isCreate : {}", isCreate);
 
-        String password = isCreate ? this.passwordGenerate() : user.getPassword();
+        String password = isCreate ? (StringUtils.isEmpty(user.getPassword()) ? this.passwordGenerate() : user.getPassword()) : user.getPassword();
         if(password != null) {
             // 패스워드 인코더
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

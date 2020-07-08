@@ -47,6 +47,11 @@ security:
       client-secret: registry-secret
     resource:
       token-info-uri: http://localhost:8080/oauth/check_token
+    auth-server-uri: http://localhost:8080/oauth/token
+    keycloak:
+      auth-server-uri: ${KEYCLOAK_AUTH_SERVER_URI:http://localhost:8080/auth}
+      client-id: ${KEYCLOAK_CLIENT_ID:taco-registry-app}
+      realm: ${KEYCLOAK_REALM:test-realm}
 
 # LOG 설정
 logging:

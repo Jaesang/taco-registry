@@ -1,6 +1,7 @@
 package com.registry.service;
 
 import com.registry.constant.Const;
+import com.registry.exception.AccessDeniedException;
 import com.registry.exception.InvalidTokenException;
 import com.registry.repository.image.Image;
 import com.registry.repository.user.Role;
@@ -10,17 +11,27 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.codec.binary.Base32;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.security.KeyPair;
 import java.security.MessageDigest;
 import java.security.PublicKey;
+import java.text.MessageFormat;
 import java.util.*;
 
 /**
@@ -40,6 +51,24 @@ public class OAuthService extends AbstractService {
 
     @Autowired
     private ImageService imageService;
+
+    @Value("${security.oauth2.auth-server-uri}")
+    private String authServerUri;
+
+    @Value("${security.oauth2.client.client-id}")
+    private String clientId;
+
+    @Value("${security.oauth2.client.client-secret}")
+    private String clientSecret;
+
+    @Value("${security.oauth2.keycloak.auth-server-uri}")
+    private String keycloakAuthServerUri;
+
+    @Value("${security.oauth2.keycloak.client-id}")
+    private String keycloakClientId;
+
+    @Value("${security.oauth2.keycloak.realm}")
+    private String keycloakRealm;
 
     @Value("${config.oauth.jwt.issuer}")
     private String jwtIssuer;
@@ -78,6 +107,102 @@ public class OAuthService extends AbstractService {
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Public Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+
+    public Map getToken(String username, String password) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+        map.add("client_id", keycloakClientId);
+        map.add("grant_type", "password");
+        map.add("username", username);
+        map.add("password", password);
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+        // get keycloak token
+        String url = MessageFormat.format("{0}/realms/{1}/protocol/openid-connect/token", keycloakAuthServerUri, keycloakRealm);
+        RestTemplate restTemplate = new RestTemplate();
+        Map result = null;
+        try {
+            ResponseEntity<Map> response = restTemplate.postForEntity( url, request , Map.class );
+            result = response.getBody();
+        } catch (Exception e) {
+            logger.error("get keycloak token error");
+            logger.error(e.getMessage());
+        }
+
+        if (result == null || result.get("access_token") == null) {
+            throw new AccessDeniedException("Access denied");
+        }
+
+        User user = userService.getUser(username);
+
+        // keycloak token parsing
+        String jwtToken = (String) result.get("access_token");
+        String[] split_string = jwtToken.split("\\.");
+        String base64EncodedHeader = split_string[0];
+        String base64EncodedBody = split_string[1];
+        String base64EncodedSignature = split_string[2];
+
+        logger.debug("============ JWT Header ============");
+        String header = new String(Base64.getUrlDecoder().decode(base64EncodedHeader));
+        logger.debug("JWT Header : " + header);
+
+        logger.debug("============ JWT Body ============");
+        String body = new String(Base64.getUrlDecoder().decode(base64EncodedBody));
+        logger.debug("JWT Body : "+body);
+        JSONParser parser = new JSONParser();
+        JSONObject obj = (JSONObject) parser.parse(body);
+        String name = (String) obj.get("name");
+        String email = (String) obj.get("email");
+
+        boolean isCreate = false;
+        if (user == null) {
+            // 유저 없을 경우 생성
+
+            isCreate = true;
+            user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setEmail(email);
+            user.setName(name);
+        } else {
+            // 유저 있을 경우 업데이트
+
+            user.setEmail(email);
+            user.setName(name);
+            user.setPassword(password);
+        }
+        userService.saveUser(user, "USER", isCreate);
+
+        // get registry app token
+        headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setBasicAuth(clientId, clientSecret);
+
+        map= new LinkedMultiValueMap<String, String>();
+        map.add("scope", "read");
+        map.add("grant_type", "password");
+        map.add("username", username);
+        map.add("password", password);
+        request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+        url = authServerUri;
+        restTemplate = new RestTemplate();
+        result = null;
+        try {
+            ResponseEntity<Map> response = restTemplate.postForEntity( url, request , Map.class );
+            result = response.getBody();
+        } catch (Exception e) {
+            logger.error("get token error");
+            logger.error(e.getMessage());
+        }
+
+        if (result == null || result.get("error") != null) {
+            throw new AccessDeniedException(result.get("error").toString());
+        }
+
+        return result;
+    }
 
     /**
      * get jwt token
