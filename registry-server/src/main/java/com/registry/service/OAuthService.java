@@ -382,6 +382,24 @@ public class OAuthService extends AbstractService {
                 obj.put("actions", actions);
 
                 result.add(obj);
+            } else {
+                logger.debug("getAccess action : {}", action);
+                logger.debug("getAccess username : {}", username);
+                logger.debug("getAccess namespace : {}", namespace);
+                logger.debug("getAccess imageName : {}", imageName);
+
+                if (action.contains("push") && username.equals(namespace)) {
+                    JSONObject obj = new JSONObject();
+                    obj.put("type", type);
+                    obj.put("name", name);
+
+                    Set<String> actions = new LinkedHashSet<>();
+                    actions.add("*");
+
+                    obj.put("actions", actions);
+
+                    result.add(obj);
+                }
             }
         }
 
