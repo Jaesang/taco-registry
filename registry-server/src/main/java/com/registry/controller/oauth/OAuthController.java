@@ -97,24 +97,10 @@ public class OAuthController {
 
     @PostMapping(Path.OAUTH_TOKEN)
     @ApiOperation(value = "dummy token", notes = "dummy token API")
-    protected Object getDummyToken(
-            @ApiParam(
-                defaultValue = "Basic cmVnaXN0cnk6cmVnaXN0cnktc2VjcmV0",
-                value = "",
-                required = true) @RequestHeader(name = "Authorization") String authorization,
-           @ApiParam(
-                   defaultValue = "admin",
-                   value = "username",
-                   required = true
-           ) @RequestParam(name = "username") String username,
-           @ApiParam(
-                   defaultValue = "password",
-                   value = "password",
-                   required = true
-           ) @RequestParam(name = "password") String password ) throws Exception {
-
-        Map result = oAuthService.getToken(username, password);
-        return result;
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Resource Not Found")
+    protected Object postToken() throws Exception {
+        logger.info("dummy function for containerd");
+        return null;
     }
 
     @GetMapping(Path.OAUTH_TOKEN)
