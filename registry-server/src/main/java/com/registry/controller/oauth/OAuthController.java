@@ -112,7 +112,6 @@ public class OAuthController {
                     value = "password",
                     required = true
             ) @RequestParam(name = "password") String password ) throws Exception {
-
         Map result = oAuthService.getToken(username, password);
         return result;
     }
