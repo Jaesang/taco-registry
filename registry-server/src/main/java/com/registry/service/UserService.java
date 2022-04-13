@@ -357,9 +357,12 @@ public class UserService extends AbstractService {
         logger.info("setOrgs user : {}", user);
 
         List<UserOrganization> userOrgs = user.getUserOrg();
-        List<Organization> orgs = userOrgs.stream().map(value -> {
-            return value.getOrganization();
-        }).collect(Collectors.toList());
+        List<Organization> orgs = new ArrayList<>();
+        userOrgs.stream().forEach(value -> {
+            if (!value.getOrganization().getDelYn()) {
+                orgs.add(value.getOrganization());
+            }
+        });
 
         user.setOrganizations(orgs);
     }

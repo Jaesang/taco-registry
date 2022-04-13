@@ -10,7 +10,6 @@ import com.registry.service.ExternalAPIService;
 import com.registry.service.ImageService;
 import com.registry.service.TagService;
 import com.registry.service.UsageLogService;
-import com.registry.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
@@ -22,10 +21,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -507,7 +507,6 @@ public class ImageController {
      * @return
      * @throws Exception
      */
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping(Path.IMAGE_SECURITY)
     @ApiOperation(
             value = "get security",
@@ -541,6 +540,37 @@ public class ImageController {
             @RequestParam(value = "vulnerabilities", required = false) Boolean vulnerabilities
     ) throws Exception{
         return externalAPIService.getSecurity(namespace, name, tagName);
+    }
+
+    /**
+     * Get Mirror state
+     * @return
+     * @throws Exception
+     */
+    @PreAuthorize("permitAll()")
+    @GetMapping(Path.IMAGE_MIRROR_STATE)
+    @ApiOperation(
+            value = "get mirror state",
+            notes = "Get Mirror state"
+    )
+    public Object getMirrorState(
+            @ApiParam(
+                    name = "namespace",
+                    required = true
+            )
+            @PathVariable("namespace") String namespace,
+            @ApiParam(
+                    name = "name",
+                    required = true
+            )
+            @PathVariable("name") String name,
+            @ApiParam(
+                    name = "tag",
+                    required = true
+            )
+            @RequestParam("tag") String tagName
+    ) throws Exception{
+        return externalAPIService.getMirrorState(namespace, name, tagName);
     }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

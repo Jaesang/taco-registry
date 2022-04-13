@@ -105,7 +105,7 @@ export class SettingComponent extends PageComponent implements OnInit {
    * @param value
    */
   public searchAutocompleteSelect(value: Member.Entity) {
-    this.addMember.name = value.name;
+    this.addMember.name = value.username;
     this.addMemberEnable = true;
   }
 

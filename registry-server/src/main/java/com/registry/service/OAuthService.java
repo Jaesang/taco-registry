@@ -9,6 +9,9 @@ import com.registry.repository.user.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.codec.binary.Base32;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,10 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.net.URI;
 
 import java.security.KeyPair;
 import java.security.MessageDigest;
@@ -70,6 +77,12 @@ public class OAuthService extends AbstractService {
     @Value("${security.oauth2.keycloak.realm}")
     private String keycloakRealm;
 
+    @Value("${security.oauth2.keycloak.adminUser}")
+    private String keycloakAdminUser;
+
+    @Value("${security.oauth2.keycloak.adminPassword}")
+    private String keycloakAdminPassword;
+
     @Value("${config.oauth.jwt.issuer}")
     private String jwtIssuer;
 
@@ -85,7 +98,7 @@ public class OAuthService extends AbstractService {
     @Value("${config.oauth.jwt.key-pair-password}")
     private String jwtPairPassword;
 
-    @Value("${builder.username}")
+    @Value("${config.builder.username}")
     private String builderUsername;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -109,71 +122,22 @@ public class OAuthService extends AbstractService {
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     public Map getToken(String username, String password) throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
-        map.add("client_id", keycloakClientId);
-        map.add("grant_type", "password");
-        map.add("username", username);
-        map.add("password", password);
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-
-        // get keycloak token
-        String url = MessageFormat.format("{0}/realms/{1}/protocol/openid-connect/token", keycloakAuthServerUri, keycloakRealm);
-        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers;
+        MultiValueMap<String, String> map;
+        HttpEntity<MultiValueMap<String, String>> request;
+        String url;
+        RestTemplate restTemplate;
         Map result = null;
-        try {
-            ResponseEntity<Map> response = restTemplate.postForEntity( url, request , Map.class );
-            result = response.getBody();
-        } catch (Exception e) {
-            logger.error("get keycloak token error");
-            logger.error(e.getMessage());
+
+        // keycloak auth check
+        this.keycloakAuth(username, password);
+
+        if (username.indexOf('@') > -1) {
+            // 이메일 형식 아이디일 경우 '@'이하 삭제
+            username = username.substring(0, username.indexOf('@'));
         }
-
-        if (result == null || result.get("access_token") == null) {
-            throw new AccessDeniedException("Access denied");
-        }
-
-        User user = userService.getUser(username);
-
-        // keycloak token parsing
-        String jwtToken = (String) result.get("access_token");
-        String[] split_string = jwtToken.split("\\.");
-        String base64EncodedHeader = split_string[0];
-        String base64EncodedBody = split_string[1];
-        String base64EncodedSignature = split_string[2];
-
-        logger.debug("============ JWT Header ============");
-        String header = new String(Base64.getUrlDecoder().decode(base64EncodedHeader));
-        logger.debug("JWT Header : " + header);
-
-        logger.debug("============ JWT Body ============");
-        String body = new String(Base64.getUrlDecoder().decode(base64EncodedBody));
-        logger.debug("JWT Body : "+body);
-        JSONParser parser = new JSONParser();
-        JSONObject obj = (JSONObject) parser.parse(body);
-        String name = (String) obj.get("name");
-        String email = (String) obj.get("email");
-
-        boolean isCreate = false;
-        if (user == null) {
-            // 유저 없을 경우 생성
-
-            isCreate = true;
-            user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
-            user.setEmail(email);
-            user.setName(name);
-        } else {
-            // 유저 있을 경우 업데이트
-
-            user.setEmail(email);
-            user.setName(name);
-            user.setPassword(password);
-        }
-        userService.saveUser(user, "USER", isCreate);
+        // '.' -> '-' 로 치환
+        username = username.replaceAll("\\.", "-");
 
         // get registry app token
         headers = new HttpHeaders();
@@ -218,13 +182,26 @@ public class OAuthService extends AbstractService {
         logger.info("getJWTToken service : {}", service);
         logger.info("getJWTToken scope : {}", scope);
 
+        String usernameOrigin = username;
+
         User user = userService.getUser(username);
         // password check
         if (user == null || !BCrypt.checkpw(password, user.getPassword())) {
             if (!builderUsername.equals(username)) {
-                throw new InvalidTokenException("unauthorized");
+                try {
+                    this.keycloakAuth(username, password);
+                } catch (Exception e) {
+                    throw new InvalidTokenException("unauthorized");
+                }
             }
         }
+
+        if (username.indexOf('@') > -1) {
+            // 이메일 형식 아이디일 경우 '@'이하 삭제
+            username = username.substring(0, username.indexOf('@'));
+        }
+        // '.' -> '-' 로 치환
+        username = username.replaceAll("\\.", "-");
 
         // load jks file
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(this.jwtKey, this.jwtPassword.toCharArray());
@@ -250,7 +227,7 @@ public class OAuthService extends AbstractService {
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("kid", this.getKID(keyPair.getPublic()))
                 .claim("access", access)
-                .setSubject(username)
+                .setSubject(usernameOrigin)
                 .setIssuer(jwtIssuer)
                 .setAudience(service)
                 .setExpiration(expiration)
@@ -269,6 +246,38 @@ public class OAuthService extends AbstractService {
 
         return obj;
     }
+
+    /**
+     * keycloak 관리자 로그인
+     * @throws Exception
+     */
+    public List getKeycloakUsers() throws Exception {
+        HttpHeaders headers;
+        MultiValueMap<String, String> map;
+        HttpEntity<String> request;
+        String url;
+        RestTemplate restTemplate;
+        List result = null;
+
+        headers = new HttpHeaders();
+        headers.setBearerAuth(this.keycloakAdminAuth());
+
+        request = new HttpEntity<String>(headers);
+
+        // get keycloak token
+        url = MessageFormat.format("{0}/admin/realms/{1}/users", keycloakAuthServerUri, keycloakRealm);
+        restTemplate = new RestTemplate(getSSLClient());
+        try {
+            ResponseEntity<List> response = restTemplate.exchange(url, HttpMethod.GET, request, List.class);
+            result = response.getBody();
+        } catch (Exception e) {
+            logger.error("get keycloak token error");
+            logger.error(e.getMessage());
+        }
+
+        return result;
+    }
+
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Method
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -406,7 +415,178 @@ public class OAuthService extends AbstractService {
         return result;
     }
 
+    /**
+     * keycloak 관리자 로그인
+     * @throws Exception
+     */
+    private String keycloakAdminAuth() throws Exception {
+        HttpHeaders headers;
+        MultiValueMap<String, String> map;
+        HttpEntity<MultiValueMap<String, String>> request;
+        String url;
+        RestTemplate restTemplate;
+        Map result = null;
+
+        headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        map= new LinkedMultiValueMap<String, String>();
+        map.add("client_id", "admin-cli");
+        map.add("grant_type", "password");
+        map.add("username", keycloakAdminUser);
+        map.add("password", keycloakAdminPassword);
+        request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+        // get keycloak token
+        url = MessageFormat.format("{0}/realms/{1}/protocol/openid-connect/token", keycloakAuthServerUri, "master");
+        restTemplate = new RestTemplate(getSSLClient());
+        try {
+            ResponseEntity<Map> response = restTemplate.postForEntity( url, request , Map.class );
+            result = response.getBody();
+        } catch (Exception e) {
+            logger.error("get keycloak token error");
+            logger.error(e.getMessage());
+        }
+
+        if (result == null || result.get("access_token") == null) {
+            throw new AccessDeniedException("Access denied");
+        }
+
+        // keycloak token parsing
+        String jwtToken = (String) result.get("access_token");
+
+        return jwtToken;
+    }
+
+    private void keycloakAuth(String username, String password) throws Exception {
+        HttpHeaders headers;
+        MultiValueMap<String, String> map;
+        HttpEntity<MultiValueMap<String, String>> request;
+        String url;
+        RestTemplate restTemplate;
+        Map result = null;
+
+        // admin 일 경우 keycloak 인증 요청 pass
+        if (!"admin".equals(username)) {
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+            map= new LinkedMultiValueMap<String, String>();
+            map.add("client_id", keycloakClientId);
+            map.add("grant_type", "password");
+            map.add("username", username);
+            map.add("password", password);
+            request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+            // get keycloak token
+            url = MessageFormat.format("{0}/realms/{1}/protocol/openid-connect/token", keycloakAuthServerUri, keycloakRealm);
+            restTemplate = new RestTemplate(getSSLClient());
+            try {
+                ResponseEntity<Map> response = restTemplate.postForEntity( url, request , Map.class );
+                result = response.getBody();
+            } catch (Exception e) {
+                logger.error("get keycloak token error");
+                logger.error(e.getMessage());
+            }
+
+            if (result == null || result.get("access_token") == null) {
+                throw new AccessDeniedException("Access denied");
+            }
+
+            if (username.indexOf('@') > -1) {
+                // 이메일 형식 아이디일 경우 '@'이하 삭제
+                username = username.substring(0, username.indexOf('@'));
+            }
+            // '.' -> '-' 로 치환
+            username = username.replaceAll("\\.", "-");
+
+            User user = userService.getUser(username);
+
+            // keycloak token parsing
+            String jwtToken = (String) result.get("access_token");
+            String[] split_string = jwtToken.split("\\.");
+            String base64EncodedHeader = split_string[0];
+            String base64EncodedBody = split_string[1];
+            String base64EncodedSignature = split_string[2];
+
+            logger.debug("============ JWT Header ============");
+            String header = new String(Base64.getUrlDecoder().decode(base64EncodedHeader));
+            logger.debug("JWT Header : " + header);
+
+            logger.debug("============ JWT Body ============");
+            String body = new String(Base64.getUrlDecoder().decode(base64EncodedBody));
+            logger.debug("JWT Body : "+body);
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(body);
+            String name = (String) obj.get("name");
+            String email = (String) obj.get("email");
+            boolean isAdmin = false;
+            try {
+                // admin 체크
+                List roles = (List) ((Map) ((Map) obj.get("resource_access")).get(keycloakClientId)).get("roles");
+                isAdmin = roles.contains("admin");
+            } catch (Exception e) {
+
+            }
+
+            boolean isCreate = false;
+            if (user == null) {
+                // 유저 없을 경우 생성
+
+                isCreate = true;
+                user = new User();
+                user.setUsername(username);
+                user.setPassword(password);
+                user.setEmail(email);
+                user.setName(name);
+            } else {
+                // 유저 있을 경우 업데이트
+
+                user.setEmail(email);
+                user.setName(name);
+                user.setPassword(password);
+            }
+            userService.saveUser(user, isAdmin ? "ADMIN" : "USER", isCreate);
+        }
+    }
+
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Inner Class
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+
+    /**
+     * SSL 오픈을 위한 클라이언트 반환
+     * @return
+     * @throws Exception
+     */
+    private ClientHttpRequestFactory getSSLClient() throws Exception{
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+
+                    public void checkClientTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+
+                    public void checkServerTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                }
+        };
+
+        SSLContext ctx = SSLContext.getInstance("SSL");
+        ctx.init( null, trustAllCerts,  new java.security.SecureRandom() );
+
+
+        CloseableHttpClient httpClient
+                = HttpClients.custom()
+                .setSSLHostnameVerifier( new NoopHostnameVerifier() )
+                .setSSLContext( ctx )
+                .build();
+        ClientHttpRequestFactory httpRequestFactory =  new HttpComponentsClientHttpRequestFactory( httpClient );
+
+        return httpRequestFactory;
+    }
 }

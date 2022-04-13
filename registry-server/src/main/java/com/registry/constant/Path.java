@@ -170,6 +170,9 @@ public class Path {
     // (GET) log 목록
     public static final String IMAGE_LOGS                   = IMAGE_DETAIL + "/logs";
 
+    // get mirror state
+    public static final String IMAGE_MIRROR_STATE           = IMAGE_DETAIL + "/mirrors-state";
+
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	| Search
 	|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/

@@ -1,8 +1,8 @@
 package com.registry.service;
 
 import com.registry.constant.Const;
+import com.registry.exception.AccessDeniedException;
 import com.registry.exception.BadRequestException;
-import com.registry.exception.ServiceUnavailableException;
 import com.registry.exception.UnknownServerException;
 import com.registry.repository.image.*;
 import com.registry.repository.organization.Organization;
@@ -11,7 +11,6 @@ import com.registry.util.RestApiUtil;
 import com.registry.util.SecurityUtil;
 import ma.glasnost.orika.MapperFacade;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.collections.map.LinkedMap;
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -19,17 +18,18 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.http.HttpMethod;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -40,15 +40,15 @@ public class ExternalAPIService extends AbstractService {
 
     protected static final Logger logger = LoggerFactory.getLogger(ExternalAPIService.class);
 
+    @Value("${config.builder.url}")
+    private String builderUrl;
+
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Private Variables
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
     @Autowired
     private MapperFacade mapper;
-
-    @Autowired
-    private LoadBalancerClient loadBalancer;
 
     @Autowired
     private RestApiUtil restApiUtil;
@@ -76,6 +76,9 @@ public class ExternalAPIService extends AbstractService {
 
     @Autowired
     private UserOrganizationRepository userOrgRepo;
+
+    @Autowired
+    private OAuthService oAuthService;
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Variables
@@ -204,12 +207,10 @@ public class ExternalAPIService extends AbstractService {
      * @return
      */
     public URI getBuilderUri() {
-        ServiceInstance serviceInstance=loadBalancer.choose("builder");
-
-        if (serviceInstance != null) {
-            return serviceInstance.getUri();
-        } else {
-            throw new ServiceUnavailableException("No Builder available.");
+        try {
+            return new URI(builderUrl);
+        } catch (Exception e) {
+            return null;
         }
     }
 
@@ -502,11 +503,80 @@ public class ExternalAPIService extends AbstractService {
         return result;
     }
 
+    /**
+     * get mirror state
+     * @param namespace
+     * @param name
+     * @param tagName
+     * @return
+     * @throws Exception
+     */
+    public ResponseEntity getMirrorState(String namespace, String name, String tagName) throws Exception {
+        logger.info("getMirrorState");
+        logger.info("namespace : {}", namespace);
+        logger.info("name : {}", name);
+        logger.info("tagName : {}", tagName);
+
+        String url = MessageFormat.format("{0}/v1/registry/mirrors-state/{1}/{2}?tag={3}", this.getBuilderUri().toString(), namespace, name, tagName);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
+        logger.info("status : {}", responseEntity.getStatusCode());
+
+        return responseEntity;
+    }
+
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    | Harbor
+    | Keycloak
     |-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
+    /**
+     * keycloak 유저 목록 싱크 (추가만)
+     */
+    public void syncKeycloakUsers() {
+        // 관리자 토큰 조회
+        List<Map> users = new ArrayList<>();
+        try {
+            users = oAuthService.getKeycloakUsers();
+        } catch (Exception e) {
+            logger.error("syncKeycloakUsers getKeycloakUsers error");
+        }
 
+        users.stream().forEach(value -> {
+            String username = (String) value.get("username");
+            String name = (String) value.get("firstName");
+            String email = (String) value.get("email");
+
+            try {
+                if (username.indexOf('@') > -1) {
+                    // 이메일 형식 아이디일 경우 '@'이하 삭제
+                    username = username.substring(0, username.indexOf('@'));
+                }
+                // '.' -> '-' 로 치환
+                username = username.replaceAll("\\.", "-");
+
+                User user = userService.getUser(username);
+
+                boolean isAdmin = false;
+                boolean isCreate = false;
+                String password = "";
+                if (user == null) {
+                    // 유저 없을 경우 생성
+
+                    isCreate = true;
+                    user = new User();
+                    user.setUsername(username);
+                    user.setPassword(password);
+                    user.setEmail(email);
+                    user.setName(name);
+
+                    userService.saveUser(user, isAdmin ? "ADMIN" : "USER", isCreate);
+                }
+
+            } catch (Exception e) {
+                logger.error("syncKeycloakUsers username : ", username);
+            }
+        });
+    }
 
     /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     | Protected Method

@@ -99,20 +99,19 @@ public class OAuthController {
     @ApiOperation(value = "dummy token", notes = "dummy token API")
     protected Object getDummyToken(
             @ApiParam(
-                defaultValue = "Basic cmVnaXN0cnk6cmVnaXN0cnktc2VjcmV0",
-                value = "",
-                required = true) @RequestHeader(name = "Authorization") String authorization,
-           @ApiParam(
-                   defaultValue = "admin",
-                   value = "username",
-                   required = true
-           ) @RequestParam(name = "username") String username,
-           @ApiParam(
-                   defaultValue = "password",
-                   value = "password",
-                   required = true
-           ) @RequestParam(name = "password") String password ) throws Exception {
-
+                    defaultValue = "Basic cmVnaXN0cnk6cmVnaXN0cnktc2VjcmV0",
+                    value = "",
+                    required = true) @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    defaultValue = "admin",
+                    value = "username",
+                    required = true
+            ) @RequestParam(name = "username") String username,
+            @ApiParam(
+                    defaultValue = "password",
+                    value = "password",
+                    required = true
+            ) @RequestParam(name = "password") String password ) throws Exception {
         Map result = oAuthService.getToken(username, password);
         return result;
     }
@@ -129,7 +128,7 @@ public class OAuthController {
             @RequestParam(name = "offline_token", required = false) String offline_token,
             @RequestParam(name = "client_id", required = false) String client_id,
             HttpServletRequest request
-            ) throws Exception {
+    ) throws Exception {
 
         int index = authorization.toLowerCase().indexOf("basic ");
 
