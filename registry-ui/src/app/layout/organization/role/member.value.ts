@@ -12,6 +12,7 @@ export namespace Member {
     public kind: Main.Type;
     public isOrgMember: boolean;
     public role: string;
+    public username: string;
   }
 
   export class MemberList extends Page {

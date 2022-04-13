@@ -114,7 +114,7 @@ export class TeamDetailComponent extends PageComponent implements OnInit {
     });
 
     if (!exist) {
-      this.teamService.createTeamMember(this.orgName, this.teamName, value.name).then(result => {
+      this.teamService.createTeamMember(this.orgName, this.teamName, value.username).then(result => {
         this.getTeamMemberList();
 
         Alert.success(CommonConstant.MESSAGE.SUCCESS);

@@ -19,7 +19,14 @@ security:
       client-id: registry
       client-secret: registry-secret
     resource:
-      token-info-uri: http://localhost:8080/oauth/check_token
+      token-info-uri: http://localhost:8081/oauth/check_token
+    auth-server-uri: http://localhost:8081/oauth/token
+    keycloak:
+      auth-server-uri: https://btvpaas-dev-keycloak.skbroadband.com/auth
+      client-id: registry
+      realm: nextpaas
+      adminUser: keycloak
+      adminPassword: ehdwkrxkzh1!
 
 # LOG 설정
 logging:
@@ -27,7 +34,7 @@ logging:
 
 # WAS 설정
 server:
-  port: 8080
+  port: 8081
   servlet:
     session:
       timeout: 120m
@@ -54,6 +61,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/registry?useUnicode=true&characterEncoding=utf-8
     username: registry
     password: registry1234$$
+    hikari:
+      max-lifetime: 600000
   jpa:
     show-sql: false
     hibernate:
@@ -69,27 +78,11 @@ spring:
         hbm2ddl:
           import_files: /sql/init.sql
 
-  # Redis
-  redis:
-    host: localhost
-    port: 6379
-    password:
-
-# Ribbon
-builder:
-  username: builder
-  redis:
-    key: builderList
-    health_uri: /v1/health
-    connect-timeout: 3000
-  ribbon:
-    eureka:
-      enabled: false
-    NIWSServerListClassName: com.registry.config.RibbonServerList
-    ServerListRefreshInterval: 15000
-
 # Config
 config:
+  builder:
+    url: http://192.168.201.146:4000
+    username: builder
   minio:
     available: true
   time-zone: Asia/Seoul
@@ -101,9 +94,9 @@ config:
     jwt:
       issuer: taco-registry
       key: classpath:registry.jks
-      password: registry.starkube.com
+      password: taco-registry
       key-pair-alias: servercert
-      key-pair-password: exntu
+      key-pair-password: taco-registry
 ---
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Exntu Dev Profile
@@ -114,9 +107,11 @@ spring:
   # DB
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://192.168.201.146:5432/registry?useUnicode=true&characterEncoding=utf-8
-    username: registry
-    password: registry1234$$
+    url: jdbc:postgresql://localhost:5432/exntu?useUnicode=true&characterEncoding=utf-8
+    username: exntu
+    password: exntu123!
+    hikari:
+      max-lifetime: 600000
   jpa:
     show-sql: false
     hibernate:
@@ -132,28 +127,11 @@ spring:
         hbm2ddl:
           import_files: /sql/init.sql
 
-  # Redis
-  redis:
-    host: 192.168.201.146
-    port: 6379
-    password:
-    timeout: 60
-
-# Ribbon
-builder:
-  username: builder
-  redis:
-    key: builderList
-    health_uri: /v1/health
-    connect-timeout: 3000
-  ribbon:
-    eureka:
-      enabled: false
-    NIWSServerListClassName: com.registry.config.RibbonServerList
-    ServerListRefreshInterval: 15000
-
 # Config
 config:
+  builder:
+    url: http://192.168.201.146:4000
+    username: builder
   minio:
     available: true
   time-zone: Asia/Seoul
@@ -165,9 +143,9 @@ config:
     jwt:
       issuer: taco-registry
       key: classpath:registry.jks
-      password: registry.starkube.com
+      password: taco-registry
       key-pair-alias: servercert
-      key-pair-password: exntu
+      key-pair-password: taco-registry
 ---
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Log Profile

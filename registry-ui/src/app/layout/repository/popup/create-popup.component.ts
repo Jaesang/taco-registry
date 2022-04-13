@@ -78,7 +78,7 @@ export class CreateRepoPopupComponent extends AbstractComponent implements OnIni
         this.errorMsg = '';
         this.orgName = '';
         this.repo = new Repository.Entity();
-        this.repo.isPublic = false;
+        this.repo.isPublic = true;
         this.createType = this.CreateType.DEFAULT;
         this.errorRepoName = false;
         this.errorTagName = false;
