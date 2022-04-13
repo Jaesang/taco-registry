@@ -12,7 +12,6 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.*;
@@ -98,10 +97,24 @@ public class OAuthController {
 
     @PostMapping(Path.OAUTH_TOKEN)
     @ApiOperation(value = "dummy token", notes = "dummy token API")
-    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Resource Not Found")
-    protected Object postToken() throws Exception {
-        logger.info("dummy function for containerd");
-        return null;
+    protected Object getDummyToken(
+            @ApiParam(
+                    defaultValue = "Basic cmVnaXN0cnk6cmVnaXN0cnktc2VjcmV0",
+                    value = "",
+                    required = true) @RequestHeader(name = "Authorization") String authorization,
+            @ApiParam(
+                    defaultValue = "admin",
+                    value = "username",
+                    required = true
+            ) @RequestParam(name = "username") String username,
+            @ApiParam(
+                    defaultValue = "password",
+                    value = "password",
+                    required = true
+            ) @RequestParam(name = "password") String password ) throws Exception {
+
+        Map result = oAuthService.getToken(username, password);
+        return result;
     }
 
     @GetMapping(Path.OAUTH_TOKEN)
